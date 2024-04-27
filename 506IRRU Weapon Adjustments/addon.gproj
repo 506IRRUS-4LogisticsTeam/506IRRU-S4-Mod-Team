@@ -1,0 +1,22 @@
+GameProject {
+ ID "WeaponAdjustments"
+ GUID "610950C88EB64D07"
+ TITLE "Weapon Adjustments"
+ Dependencies {
+  "58D0FB3206B6F859" "5E4F1725CF7FD63A" "5AF6E0F075D79473" "5B3ED33ADA805340" "5ABD0CB57F7E9EB1" "5AB301290317994A" "5AB890B71D748750"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

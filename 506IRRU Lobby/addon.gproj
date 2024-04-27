@@ -1,0 +1,8 @@
+GameProject {
+ ID "506Lobby"
+ GUID "612239A8CFA15F91"
+ TITLE "506Lobby"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
