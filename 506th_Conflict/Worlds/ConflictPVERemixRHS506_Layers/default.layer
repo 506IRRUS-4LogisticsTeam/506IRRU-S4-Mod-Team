@@ -1,0 +1,1183 @@
+SCR_AIWorld : "{70CCCF16487C927F}Prefabs/AI/SCR_AIWorld_Eden.et" {
+ components {
+  AIBirdManagerComponent "{5CC2D99CC5111D80}" {
+   CheckAnimalTime 10
+  }
+  NavmeshWorldComponent "{5584F30E67F617AD}" {
+   NavmeshSettings NavmeshWorld "{50FC63BEBE3973C5}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{5AF8B9A1D80D8DFA}" : "{568C7122442FC9F2}Configs/Navmesh/Navmesh_CTI_Campaign_Eden_Soldier.conf" {
+     NavmeshFileOveride {
+      "{89A93526D95514B2}Worlds/Conflict_Eden_US/seaRelayNav.nmn"
+     }
+    }
+   }
+  }
+  NavmeshWorldComponent "{5584F30EEFEE1223}" {
+   NavmeshSettings NavmeshWorld "{50FC63BEBE3973C5}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{598EDE772036D79B}" : "{A3D6AEFB172D819C}Configs/Navmesh/Navmesh_CTI_Campaign_Eden_Vehicle.conf" {
+    }
+   }
+  }
+ }
+ coords 4772.179 26.323 10658.781
+ LimitOfSpawnedAIAgents 2000
+ "Max number of cached BTs" 100
+ m_iActiveAILimit 1000
+}
+RadioManagerEntity {
+ coords 2884.968 91.924 6293.253
+}
+PerceptionManager PerceptionManager1 : "{028DAEAD63E056BE}Prefabs/World/Game/PerceptionManager.et" {
+ coords 4926.701 34.279 10717.344
+}
+SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Conflict/GameMode_Campaign.et" {
+ components {
+  SCR_ArsenalManagerComponent "{5D167A243AC85931}" {
+   m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
+   m_fLoadoutSpawnSupplyCostMultiplier 1
+  }
+  SCR_ArsenalManagerComponent "{614A8A4324E037DA}" {
+   m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
+  }
+  SCR_CampaignBuildingManagerComponent "{5C6878C4C62529D2}" {
+   m_sFreeRoamBuildingClientTrigger "{5E191CEAF4B95816}Prefabs/MP/FreeRoamBuildingClientTrigger.et"
+   m_BudgetType CAMPAIGN
+   m_iCompositionRefundPercentage 100
+   m_bSameFactionDisassembleOnly 1
+   m_OutlineManager SCR_CampaignBuildingCompositionOutlineManager "{5D7A73031D9A11E1}" : "{96A8B496A076F1C0}scripts/Game/Building/CampaignBuildingCompositionOutline.conf" {
+   }
+   m_sPrefabsToBuildResource "{44E2C65A40084496}Configs/Editor/PlaceableEntities/Compositions/506Compositions_FreeRoamBuilding.conf"
+  }
+  SCR_CommandingManagerComponent "{5D16783AFAE684F8}" {
+   m_iMaxAIPerGroup 3
+  }
+  SCR_DataCollectorComponent "{5ADE83EE64329989}" {
+   m_bOptionalKicking 1
+  }
+  SCR_DebriefingScreenComponent "{5D349E302A88E42C}" {
+   m_sHeaderTitle "#AR-Campaign_ScenarioName_Everon"
+  }
+  SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
+   m_fDOTScale 0.138
+   m_fRegenScale 5
+   m_bPermitUnconsciousVON 1
+  }
+  SCR_GameOverScreenManagerComponent "{56DEC646298AD219}" {
+   m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
+    m_aGameOverScreens {
+     SCR_FactionGameOverScreenInfo "{568E79DBAC19013D}" {
+      m_OptionalParams SCR_BaseGameOverScreenInfoOptional "{568E79DBB3E97D11}" {
+       m_sDebriefing "#AR-Campaign_MatchResult_DefeatDetail_Score"
+      }
+     }
+    }
+   }
+  }
+  SCR_GroupsManagerComponent "{5706EC99934496F5}" {
+   m_iPlayableGroupFrequencyOffset 1
+  }
+  SCR_MapConfigComponent "{5C669498E250A34B}" {
+   m_sSpawnMapConfigPath "{901F9ED2088BBCA4}Configs/Map/MapSpawnConflict.conf"
+  }
+  SCR_NametagConfigComponent "{571AA9E54FC9210D}" {
+   m_sConfigPath "{09F7AAA14A642683}Configs/NameTags/NametagFriendlies.conf"
+  }
+  SCR_NotificationSenderComponent "{56FA84B04BE7D4C0}" {
+   m_iKillFeedType DISABLED
+   m_iReceiveKillFeedType ALL
+  }
+  SCR_PlayerSpawnPointManagerComponent "{5CDABA98894199D0}" {
+   m_bRadioVehicleSpawningEnabled 1
+  }
+  SCR_RespawnBriefingComponent "{5B2A94A3CF791D6F}" {
+   m_sJournalConfigPath "{FFB1A12A7BFC4957}Configs/Journal/JournalConflict.conf"
+   m_Info SCR_UIInfo "{5B2A94A66BB56FB3}" {
+    Description "#AR-Campaign_GamemodeTutorial"
+   }
+   m_aGameModeHints {
+    SCR_UIInfo "{5B2A94A72CAF0E18}" {
+     Name "#AR-BriefingCampaign_Hint_Name_01"
+     Description "#AR-BriefingCampaign_Hint_Description_01"
+     Icon "{324E923535DCACF8}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_1_UI.edds"
+    }
+    SCR_UIInfo "{5B2A94A72AB20D65}" {
+     Name "#AR-BriefingCampaign_Hint_Name_02"
+     Description "#AR-BriefingCampaign_Hint_Description_02"
+     Icon "{3C50D67D082BA322}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_2_UI.edds"
+    }
+    SCR_UIInfo "{5B2A94A729D6B272}" {
+     Name "#AR-BriefingCampaign_Hint_Name_03"
+     Description "#AR-BriefingCampaign_Hint_Description_03"
+     Icon "{39A515BAE3795994}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_3_UI.edds"
+    }
+   }
+   m_aWinConditions {
+    SCR_BriefingVictoryCondition "{5B2A94A7531ADD24}" {
+     victoryCondition SEIZE
+     name "Condition_01"
+     description "#AR-BriefingCampaign_VictoryCondition_01"
+    }
+    SCR_BriefingVictoryCondition "{5B2A94A752415E44}" {
+     victoryCondition GUARD
+     name "Condition_02"
+     description "#AR-BriefingCampaign_VictoryCondition_02"
+    }
+    SCR_BriefingVictoryCondition "{5B2A94A75295460F}" {
+     victoryCondition SEIZE_RELAY
+     name "Condition_03"
+     description "#AR-BriefingCampaign_VictoryCondition_03"
+    }
+   }
+  }
+  SCR_RespawnSystemComponent "{56B2B4793051E7C9}" {
+   m_SpawnLogic SCR_MenuSpawnLogic "{5CEAA65B714D5CFF}" {
+   }
+  }
+  SCR_RespawnTimerComponent "{5B2A94A0E605AAFF}" {
+   m_fRespawnTime 5
+  }
+  SCR_SaveLoadComponent "{58FA739CBE3E9FC5}" {
+   m_Struct SCR_MissionStruct "{5C6E86B1D6F0EC89}" {
+    m_Struct0 SCR_CampaignStruct "{5C6E86B1D41E4E2F}" {
+    }
+    m_Struct1 SCR_EditorStruct "{5E2C9BB6F87D9794}" {
+     m_AttributeList SCR_EditorAttributeList "{5E2C9BB656E63FCF}" : "{F3D6C6D25642352C}Configs/Editor/AttributeLists/Edit.conf" {
+     }
+     m_bSaveFactions 0
+     m_bSaveMissionAttributes 0
+     m_eRequiredEntityFlags LINKED_CHILDREN
+    }
+    m_Struct2 SCR_EditorStruct "{604AE588166D0165}" {
+     m_AttributeList SCR_EditorAttributeList "{604AFD87084A5DB6}" {
+     }
+     m_bSaveFactions 0
+     m_bSaveMissionAttributes 0
+     m_eRequiredEntityFlags FREE_ROAM_BUILDING_AI
+    }
+   }
+  }
+  SCR_SpawnProtectionComponent "{5D167A246026C95B}" {
+   m_fProtectionTime 5
+  }
+  SCR_TimeAndWeatherHandlerComponent "{5CC49B5A1313B84E}" {
+   m_iStartingHours 5
+   m_iStartingMinutes 30
+   m_bRandomStartingDaytime 0
+   m_bRandomStartingWeather 0
+   m_bRandomWeatherChanges 0
+  }
+  SCR_VotingManagerComponent "{5650BB6B6089393A}" {
+   m_aVotingTemplates {
+    SCR_VotingKick "{58EA836E8F9304A4}" {
+     m_fThreshold 0.5
+     m_iMinParticipation 0.5
+    }
+   }
+  }
+  SCR_WelcomeScreenComponent "{5D349E3E9CC39991}" {
+   m_sHeaderTitle "#AR-Campaign_ScenarioName_Everon"
+  }
+  SCR_XPHandlerComponent "{5CAAA397E5408ABF}" {
+   m_sXPRewardsConfig "{8227B4636C73C5B5}Configs/Campaign/CampaignXPRewards.conf"
+   m_iVeterancyXPAwardThreshold 500
+  }
+ }
+ coords 26.726 0 10.962
+ m_iControlPointsThreshold 61
+ m_iSuppliesReplenishThreshold 200
+ m_iQuickSuppliesReplenishThreshold 40
+ m_fQuickSuppliesReplenishMultiplier 2
+ m_iRegularSuppliesIncome 5
+ m_iRegularSuppliesIncomeExtra 5
+ m_iMinStartingSupplies 25
+ m_iMaxStartingSupplies 175
+ m_iSpawnCost 10
+ m_iSuicideRespawnDelay 60
+}
+ScriptedChatEntity : "{536D80EB494DDC43}Prefabs/MP/Campaign/CampaignMPChatEntity.et" {
+ coords 20.291 0 5.837
+}
+SCR_CampaignFactionManager CampaignFactionManager1 : "{F1AC26310BAE3788}Prefabs/MP/Campaign/CampaignFactionManager.et" {
+ coords 20.291 0 5.837
+ Factions {
+  SCR_CampaignFaction "{50B30C3AF4BFD934}" {
+   UIInfo SCR_FactionUIInfo "{528C96127F8B6B08}" {
+    Name "RF VDV"
+    Icon "{51B9E47090841936}UI/Textures/Editor/ContentBrowser/RHS_AFRF_GF_VDV_Icon.edds"
+    m_sNameUpper "RF VDV"
+   }
+   m_bIsPlayable 0
+   m_sFactionFlag "{72E8159766C00C3D}UI/Textures/Flags/rhs_flag_rus.edds"
+   m_FactionFlagMaterial "{15AB376863D1724E}Assets/Props/Fabric/Flags/Data/Flag_1_2_Russia.emat"
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0E9BD5E5DD9}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C548ABBCDDD71F8}" {
+       m_bEnabled 0
+      }
+     }
+    }
+   }
+  }
+  SCR_CampaignFaction "{50B30C3ADB052C80}" {
+   UIInfo SCR_FactionUIInfo "{528C961236B7DCD3}" {
+    Name "US Army"
+    Icon "{EB7F65DBC9392557}UI/Textures/Editor/EditableEntities/Factions/EditableEntity_Faction_USA.edds"
+    m_sNameUpper "US Army"
+   }
+   m_aFriendlyFactionsIds {
+    "US"
+   }
+   m_CallsignInfo SCR_FactionCallsignInfo "{5DA0F2A6677ADA9E}" {
+    m_sCallsignCharacterWithRoleFormat ""
+   }
+   m_aPredefinedGroups {
+    SCR_GroupPreset "{610C54C300778F64}" {
+     m_sGroupName "HAVOC"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription "Air Assault Infantry"
+     m_iGroupSize 10
+     m_iRadioFrequency 37000
+    }
+    SCR_GroupPreset "{610C54C303E3F13D}" {
+     m_sGroupName "CHAOS"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription "Air Assault Infantry"
+     m_iGroupSize 10
+     m_iRadioFrequency 38000
+    }
+    SCR_GroupPreset "{610C54C303B67BCB}" {
+     m_sGroupName "BROADSWORD"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription "Air Assault Infantry"
+     m_iGroupSize 10
+     m_iRadioFrequency 39000
+    }
+    SCR_GroupPreset "{610C54C3037DF1D5}" {
+     m_sGroupName "GOLIATH"
+     m_sGroupFlag "{744F42DE714B7E7D}UI/Textures/Editor/ContentBrowser/RHS_USAF_USA_Infantry_Icon.edds"
+     m_sGroupDescription "Server Admin/Ares Slots"
+     m_iGroupSize 3
+     m_iRadioFrequency 40000
+    }
+    SCR_GroupPreset "{614A8A51339320F1}" {
+     m_sGroupName "WRENCH"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription "Logistics Troopers"
+     m_iGroupSize 5
+     m_iRadioFrequency 50000
+    }
+   }
+   m_aRanks {
+    SCR_CharacterRank "{528E9D967C251E5F}" {
+     m_sInsignia "{C77B9DF71500AC21}Images/private-first-class.edds"
+    }
+   }
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0EE815FA292}" : "{B56E8B4D4B195559}Configs/EntityCatalog/US/US_Characters.conf" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{6108239EAD123FCF}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EAC0DBA05}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EAF040697}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EAE4A9118}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA99A5378}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA8A9D39C}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EAB883D74}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EAA90FFFE}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA5E4833E}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA4E193EB}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA43F6841}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA72AD16F}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA61D323F}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA17C8DBD}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA009B525}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA37770BA}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EA242762E}" {
+       m_bEnabled 0
+      }
+      SCR_EntityCatalogEntry "{6108239EBDAB7506}" {
+       m_bEnabled 0
+      }
+     }
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{6056BD5F6A436153}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{6108239F1E0BF04E}" {
+         m_bEnabled 0
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C9E82F29B327997}" {
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{60569780DE4EE17A}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{605098A5BB9816E3}" {
+         m_sEntityPrefab "{F649585ABB3706C4}Prefabs/Vehicles/Wheeled/M151A2/M151A2.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10588CBB27}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D2348262D0503DF}" {
+         m_sEntityPrefab "{86D830868F026D54}Prefabs/Vehicles/Wheeled/M151A2/M151A2_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB105275A42B}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D24733149FB87D0}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5CD78830A}" {
+         m_sEntityPrefab "{47D94E1193A88497}Prefabs/Vehicles/Wheeled/M151A2/M151A2_transport.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB1023178C31}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826CBF8D6F7}" {
+         m_sEntityPrefab "{94DE32169691AC34}Prefabs/Vehicles/Wheeled/M151A2/M151A2_transport_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB102AE08168}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D24732167BCE446}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{60569780561141EC}" {
+         m_sEntityPrefab "{5674FAEB9AB7BDD0}Prefabs/Vehicles/Wheeled/M998/M998.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6056978059BDD0CC}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{6056978054CDBCDD}" {
+         m_sEntityPrefab "{6B24D5AFD884D64C}Prefabs/Vehicles/Wheeled/M998/M998_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{60569780241590E8}" {
+           m_eValidEditorModes 33
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5E34E23E1}" {
+         m_sEntityPrefab "{B55C6990A6A9411B}Prefabs/Vehicles/Wheeled/M998/M998_covered.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB103C4C8F1E}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826CAEE99CC}" {
+         m_sEntityPrefab "{AF0578D66D51946B}Prefabs/Vehicles/Wheeled/M998/M998_covered_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10385CEA01}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D24733150F3076E}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5FC332A75}" {
+         m_sEntityPrefab "{9B1BF9644E0378D6}Prefabs/Vehicles/Wheeled/M998/M998_covered_long.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB100012DBD2}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826C9B9A827}" {
+         m_sEntityPrefab "{751AFEEA19DDFB04}Prefabs/Vehicles/Wheeled/M998/M998_covered_long_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB100D69A39C}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473214050CF76}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5080B4108}" {
+         m_sEntityPrefab "{4A71F755A4513227}Prefabs/Vehicles/Wheeled/M998/M1025.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB101642EC08}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826C833965C}" {
+         m_sEntityPrefab "{27E2E58E734A80EC}Prefabs/Vehicles/Wheeled/M998/M1025_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB104AF90B9F}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D247333867A34BF}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A51F263850}" {
+         m_sEntityPrefab "{00C9BBE426F7D459}Prefabs/Vehicles/Wheeled/M998/M997_maxi_ambulance.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB1019C5DDFF}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D8951ED51D7359E}" {
+         m_sEntityPrefab "{3B1EB924602C7A07}Prefabs/Vehicles/Wheeled/M998/M997_maxi_ambulance_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10E46BE097}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D8951ED2DD91FF2}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A52C667A85}" {
+         m_sEntityPrefab "{F1FBD0972FA5FE09}Prefabs/Vehicles/Wheeled/M923A1/M923A1_transport.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10EEE810B4}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826D775735C}" {
+         m_sEntityPrefab "{3F2AA823B6C65E1E}Prefabs/Vehicles/Wheeled/M923A1/M923A1_transport_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10EC610460}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D24732153C66553}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A525B4AB0F}" {
+         m_sEntityPrefab "{81FDAD5EB644CC3D}Prefabs/Vehicles/Wheeled/M923A1/M923A1_transport_covered.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10F69F36CE}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826D7E0C9A8}" {
+         m_sEntityPrefab "{04BDACC0BB83284E}Prefabs/Vehicles/Wheeled/M923A1/M923A1_transport_covered_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10F2AA2FD1}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473215D4EF21F}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A54E39C18C}" {
+         m_sEntityPrefab "{2BE1F8B9299B67C1}Prefabs/Vehicles/Wheeled/M923A1/M923A1_tanker.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10CE829778}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826D52D0504}" {
+         m_sEntityPrefab "{26013123314183EA}Prefabs/Vehicles/Wheeled/M923A1/M923A1_tanker_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10CC72BB25}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D247321239625FB}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A545E912FC}" {
+         m_bEnabled 0
+        }
+        SCR_EntityCatalogEntry "{5D23482664F150D9}" {
+         m_bEnabled 0
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10DE50FA41}" {
+           m_eValidEditorModes EDIT
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473212D8AA734}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A55E8A4C93}" {
+         m_sEntityPrefab "{1FF144F8A209239D}Prefabs/Vehicles/Wheeled/M923A1/M923A1_arsenal.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10D919A793}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5C76BEF2BF41FF08}" {
+         m_sEntityPrefab "{EA4819E0745DFAEA}Prefabs/Vehicles/Wheeled/M923A1/M923A1_arsenal_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10A52C97B3}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D247321D1EAF4A9}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A573358E03}" {
+         m_sEntityPrefab "{92264FF932676C13}Prefabs/Vehicles/Wheeled/M923A1/M923A1_ammo.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10AC5B3263}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5756ED0D1}" {
+         m_sEntityPrefab "{EC657C9B3C73E192}Prefabs/Vehicles/Wheeled/M923A1/M923A1_ammo_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10A8B4101F}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A557B1F6E0}" {
+         m_sEntityPrefab "{A042ACE5C2B13206}Prefabs/Vehicles/Wheeled/M923A1/M923A1_repair.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10B66A7FCC}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5C76BEF2A52AEAA2}" {
+         m_sEntityPrefab "{C8656AECF5DF41D9}Prefabs/Vehicles/Wheeled/M923A1/M923A1_repair_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10B01C2163}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473219F11029A}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+           m_aVariantData {
+            SCR_SpawnerVariantData "{5D895EB8B62A5D29}" {
+             m_sVariantPrefab "{C8656AECF5DF41D9}Prefabs/Vehicles/Wheeled/M923A1/M923A1_repair_MERDC.et"
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A53304A4F3}" {
+         m_sEntityPrefab "{2D74C39A650A3030}Prefabs/Vehicles/Wheeled/M923A1/M923A1_engineer.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10FB989E56}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826D6BF5CE8}" {
+         m_sEntityPrefab "{37A9871AD4CC9610}Prefabs/Vehicles/Wheeled/M923A1/M923A1_engineer_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10C4023CEF}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D24732158EDBD57}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A5D7AEAD02}" {
+         m_sEntityPrefab "{F6B23D17D5067C11}Prefabs/Vehicles/Wheeled/M151A2/M151A2_M2HB.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB1037DBF3E7}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826CA7617D2}" {
+         m_sEntityPrefab "{5168FEA3054D6D15}Prefabs/Vehicles/Wheeled/M151A2/M151A2_M2HB_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB1033E0D5A8}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473217359F181}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{605098A507386856}" {
+         m_sEntityPrefab "{3EA6F47D95867114}Prefabs/Vehicles/Wheeled/M998/M1025_armed_M2HB.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB1010592092}" {
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5D234826C8C740EF}" {
+         m_sEntityPrefab "{DD774A8FD0989A78}Prefabs/Vehicles/Wheeled/M998/M1025_armed_M2HB_MERDC.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB101C855C27}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D247321486AE512}" {
+           m_eSlotTypes 24
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{610624AC87AC5A3D}" {
+        }
+        SCR_EntityCatalogEntry "{610624AD127FFF56}" {
+         m_sEntityPrefab "{36EA87CEC1BE77E0}Prefabs/Vehicles/Wheeled/JLTV/JLTV_OGPK_Olive.et"
+        }
+        SCR_EntityCatalogEntry "{6064E51C196084B2}" {
+         m_sEntityPrefab "{9CB496688A3BCC3E}Prefabs/MP/Campaign/Assets/CampaignMobileAssemblyWest.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6064E51C31106C57}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{6064E51C30E92A0B}" {
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{60569780DC27DDBC}" {
+       m_sIdentifier "Helicopters"
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5D23482661E39833}" {
+         m_sEntityPrefab "{70BAEEFC2D3FEE64}Prefabs/Vehicles/Helicopters/UH1H/UH1H.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10BA6FF517}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{5D2473213748C772}" {
+           m_eSlotTypes VEHICLE_LARGE
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C9AD18D0588C053}" {
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EE8B97CA50}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54F92C13994FAF}" {
+       m_sEntityPrefab "{84E5BBAB25EA23E5}Prefabs/Groups/BLUFOR/Group_US_FireTeam.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052BB14F17A196D}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D112940310EC}" {
+         m_eSlotTypes 7
+        }
+        SCR_EntityCatalogEditorData "{6052BB14FBAAAA08}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{5CFADAD1D9C32B81}" {
+         m_eSlotTypes 7
+         m_iEntityCount 4
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C1389DCDD}" {
+       m_sEntityPrefab "{DDF3799FA1387848}Prefabs/Groups/BLUFOR/Group_US_RifleSquad.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052BB14FBAAAA08}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{5CFADAD1D9C32B81}" {
+         m_eSlotTypes 7
+         m_iEntityCount 4
+        }
+        SCR_EntityCatalogEditorData "{6052BB14F17A196D}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D112940310EC}" {
+         m_eSlotTypes 7
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C127F0004}" {
+       m_sEntityPrefab "{FCF7F5DC4F83955C}Prefabs/Groups/BLUFOR/Group_US_LightFireTeam.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E5D49BCAD}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D1129A83FAB5}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C125401E3}" {
+       m_sEntityPrefab "{EF62027CC75A7459}Prefabs/Groups/BLUFOR/Group_US_MedicalSection.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E25437DB3}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D112641019E9}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C12486573}" {
+       m_sEntityPrefab "{DE747BC9217D383C}Prefabs/Groups/BLUFOR/Group_US_Team_GL.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E2CF2BB26}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D1126FFF07AD}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C123CDCAB}" {
+       m_sEntityPrefab "{FAEA8B9E1252F56E}Prefabs/Groups/BLUFOR/Group_US_Team_LAT.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E37CEA468}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D11269138546}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C12103EC3}" {
+       m_sEntityPrefab "{81B6DBF2B88545F5}Prefabs/Groups/BLUFOR/Group_US_Team_Suppress.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E319D3160}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D1127420D0BC}" {
+         m_eSlotTypes 7
+        }
+        SCR_EntityCatalogSpawnerData "{5D4A8E6044D38042}" {
+         m_eSlotTypes 3
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C12EF81F1}" {
+       m_sEntityPrefab "{958039B857396B7B}Prefabs/Groups/BLUFOR/Group_US_MachineGunTeam.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E3A531E28}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D1127F62A8A6}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5C54F92C112F3EB0}" {
+       m_sEntityPrefab "{3BF36BDEEB33AEC9}Prefabs/Groups/BLUFOR/Group_US_SentryTeam.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052CE8E04215BE4}" {
+        }
+        SCR_EntityCatalogSpawnerData "{5D24D112795D14A1}" {
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalog "{5C68A0EEB7DB3E84}" : "{0E4B62F186F97C43}Configs/EntityCatalog/US/US_WeaponTripod.conf" {
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EEB3F124F9}" {
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{5C68AD59AB9FBDDC}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{60834A2BEFFFF97C}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5EA4B58355C229C8}" {
+           m_iSupplyCost 35
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD59AA6FA1B8}" {
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD59AA315A22}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5D6AA6F4AAD8071F}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D6AA6F4C1F0EBFE}" {
+           m_iSupplyCost 5
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{60FF59E95BE0A846}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D6AA6F4C1F0EBFE}" {
+           m_iSupplyCost 5
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{60FF59E94F71B1DF}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D6AA6F4C1F0EBFE}" {
+           m_iSupplyCost 5
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD59F0753ABE}" {
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD59AA2B2FF4}" {
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD59AA1A6D59}" {
+      }
+     }
+    }
+    SCR_EntityCatalog "{5C9EDDD37394AD40}" : "{0BF36EFF9FFAF92B}Configs/EntityCatalog/US/US_SupplyContainerItems.conf" {
+    }
+   }
+   m_DefendersGroupPrefab "{DDF3799FA1387848}Prefabs/Groups/BLUFOR/Group_US_RifleSquad.et"
+  }
+  SCR_CampaignFaction "{56F0C3A6336375DC}" {
+   FactionColor 0.561 0.071 0.071 1
+   UIInfo SCR_FactionUIInfo "{5570936866E0AD08}" {
+    Name "RF MSV"
+    Icon "{BCB8597BC900DE58}UI/Textures/Editor/EditableEntities/Factions/AFRF_icon.edds"
+    m_sNameUpper "RF MSV"
+   }
+   m_OutlineFactionColor 0.502 0 0 1
+   m_sFactionFlag "{72E8159766C00C3D}UI/Textures/Flags/rhs_flag_rus.edds"
+   m_FactionFlagMaterial "{15AB376863D1724E}Assets/Props/Fabric/Flags/Data/Flag_1_2_Russia.emat"
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0EABE8B7B2A}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54C23B82FF632E}" {
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EABB80080C}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54F92F4674F967}" {
+       m_sEntityPrefab "{A5647958579A4149}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_repair.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F466216D7}" {
+       m_sEntityPrefab "{1BABF6B33DA0AEB6}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_command.et"
+      }
+      SCR_EntityCatalogEntry "{5C54F92F54200650}" {
+       m_sEntityPrefab "{C012BB3488BEA0C2}Prefabs/Vehicles/Wheeled/BTR70/BTR70.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{5D2473278EB8D9E7}" {
+         m_eSlotTypes 24
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5D247327A7DF9711}" {
+       m_sEntityPrefab "{16A674FE31B0921C}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469_uncovered.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F5446F5E6}" {
+       m_sEntityPrefab "{259EE7B78C51B624}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F540A16D3}" {
+       m_sEntityPrefab "{16C1F16C9B053801}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_transport.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F54E036C8}" {
+       m_sEntityPrefab "{D9B91FAB817A6033}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_transport_covered.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5D2473274C0136C7}" {
+       m_sEntityPrefab "{32E77EC32ED2B6D1}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_Arsenal.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F5416B33D}" {
+       m_sEntityPrefab "{4C81D7ED8F8C0D87}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_tanker.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5D2473274EC4AE03}" {
+       m_sEntityPrefab "{6E9142CD2471741C}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_engineer.et"
+       m_bEnabled 1
+      }
+     }
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{60569783D4C68630}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5D247327A7DF9711}" {
+         m_sEntityPrefab "{16A674FE31B0921C}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469_uncovered.et"
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EAB887A0C4}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54F92C5A81DFA5}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052F82B06AA6BAB}" {
+        }
+       }
+      }
+     }
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{6056978561718DDB}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5CCEA181947C4060}" {
+         m_sEntityPrefab "{EC8BAC199BAF3740}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_FireGroup_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E8F32CAFC}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA181928A4CA5}" {
+         m_sEntityPrefab "{06D32ED260762934}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_MachineGunTeam_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E45A29187}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA181914326A2}" {
+         m_sEntityPrefab "{C54B99330F4C59F8}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_SentryTeam_NotSpawned.et"
+        }
+        SCR_EntityCatalogEntry "{5CCEA181901D0475}" {
+         m_sEntityPrefab "{7159E20D1B547A4E}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_RifleSquad_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E19E61A30}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA18190D50A71}" {
+         m_sEntityPrefab "{96FD5857FC75F022}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_Team_AT_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E7B73E73F}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+   m_BaseBuildingHQ "{847605BB95F1F066}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/E_Headquarters_S_USSR_01.et"
+  }
+  SCR_Faction "{611054E02E834122}" : "{627A8CDE681D223D}Configs/Factions/RHS_RF_MSV.conf" {
+   m_bIsPlayable 0
+  }
+  SCR_Faction "{614A8A565BBBA817}" : "{5EB46557DF2AA24F}Configs/Factions/US.conf" {
+   FactionKey "US"
+   m_CallsignInfo SCR_FactionCallsignInfo "{5DA0F2A6677ADA9E}" {
+    m_sCallsignCharacterWithRoleFormat ""
+   }
+  }
+ }
+ m_aRanks {
+  SCR_RankIDCampaign "{5CB0777E83631136}" {
+   m_iRequestCD -1
+   m_iRadioRespawnCooldown 600
+   m_iFastTravelCooldown 3600
+   m_eRadioMsg DEMOTION_RENEGADE
+  }
+  SCR_RankIDCampaign "{5CB0777E828E61F3}" {
+   m_iRequestCD 75
+   m_iRadioRespawnCooldown 45
+   m_iFastTravelCooldown 600
+   m_eRadioMsg PROMOTION_PRIVATE
+  }
+  SCR_RankIDCampaign "{5CB0777E803B7EA2}" {
+   m_iRequestCD 75
+   m_iRadioRespawnCooldown 42
+   m_iFastTravelCooldown 540
+   m_eRadioMsg PROMOTION_CORPORAL
+  }
+  SCR_RankIDCampaign "{5CB0777E8F0E82AF}" {
+   m_iRequestCD 50
+   m_iRadioRespawnCooldown 39
+   m_iFastTravelCooldown 480
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8BE66EC2}" {
+   m_iRequiredXP 3000
+   m_iRequestCD 20
+   m_iRadioRespawnCooldown 18
+   m_iFastTravelCooldown 240
+   m_eRadioMsg PROMOTION_LIEUTENANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8AD658D6}" {
+   m_iRequiredXP 3500
+   m_iRequestCD 25
+   m_iRadioRespawnCooldown 17
+   m_iFastTravelCooldown 220
+  }
+  SCR_RankIDCampaign "{5CB0777E88380770}" {
+   m_iRequiredXP 4000
+   m_iRequestCD 23
+   m_iRadioRespawnCooldown 16
+   m_iFastTravelCooldown 210
+  }
+  SCR_RankIDCampaign "{610AA4FF351E620A}" {
+   m_iRank CUSTOM1
+   m_iRequiredXP 50
+   m_iRequestCD 75
+   m_iRadioRespawnCooldown 42
+   m_iFastTravelCooldown 580
+  }
+  SCR_RankIDCampaign "{610AA4FF138D3FAA}" {
+   m_iRank CUSTOM2
+   m_iRequiredXP 1050
+   m_iRequestCD 40
+   m_iRadioRespawnCooldown 35
+   m_iFastTravelCooldown 350
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{610AA4FF125D3234}" {
+   m_iRank CUSTOM3
+   m_iRequiredXP 1500
+   m_iRequestCD 35
+   m_iRadioRespawnCooldown 25
+   m_iFastTravelCooldown 320
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{610AA4FF2C2CCADA}" {
+   m_iRank CUSTOM4
+   m_iRequiredXP 2000
+   m_iRequestCD 30
+   m_iRadioRespawnCooldown 20
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{610AA4FF2D035FD3}" {
+   m_iRank CUSTOM5
+   m_iRequiredXP 2500
+   m_iRequestCD 25
+   m_iRadioRespawnCooldown 15
+   m_iFastTravelCooldown 280
+  }
+  SCR_RankIDCampaign "{610AA4FF283F94D2}" {
+   m_iRank CUSTOM6
+   m_iRequiredXP 4000
+   m_iRequestCD 25
+   m_iRadioRespawnCooldown 15
+   m_iFastTravelCooldown 180
+  }
+  SCR_RankIDCampaign "{610AA4FF2AE12F3E}" {
+   m_iRank CUSTOM7
+   m_iRequiredXP 5000
+   m_iRequestCD 20
+   m_iRadioRespawnCooldown 12
+   m_iFastTravelCooldown 160
+  }
+  SCR_RankIDCampaign "{610AA4FF251AC67C}" {
+   m_iRank CUSTOM8
+   m_iRequiredXP 6000
+   m_iRequestCD 20
+   m_iRadioRespawnCooldown 10
+   m_iFastTravelCooldown 140
+  }
+  SCR_RankIDCampaign "{610AA4FF242EEE7B}" {
+   m_iRank CUSTOM9
+   m_iRequiredXP 7000
+   m_iRequestCD 15
+   m_iRadioRespawnCooldown 10
+   m_iFastTravelCooldown 120
+  }
+  SCR_RankIDCampaign "{610AA4FF20EDD774}" {
+   m_iRank CUSTOM10
+   m_iRequiredXP 10000
+   m_iRadioRespawnCooldown 5
+   m_iFastTravelCooldown 60
+  }
+ }
+}
+ItemPreviewManagerEntity ItemPreviewManagerEntity1 {
+ coords -0.018 0 0.077
+ PreviewWorld "{4391FE7994EE6FE2}Prefabs/World/Game/InventoryPreviewWorld.et"
+ DefaultRenderAttributes PreviewRenderAttributes "{52EF3E2AF2E07544}" {
+ }
+}
+SCR_MapLocator {
+ coords 10434.78 0 1142.689
+ m_WorldDirections SCR_MapLocationQuadHint "{5AAA8B37D1168EEB}" : "{ABA21F381437DFE8}Configs/Map/MapLocatorHints/LocationHintsEveron.conf" {
+ }
+}
+HitRegistrationManager HitRegManager1 : "{0EDA3D48791120DD}Prefabs/MP/HitRegManager.et" {
+ coords 0 0 0
+}
+SCR_BaseTaskManager : "{17E3EF2CF455460F}Prefabs/MP/Campaign/CampaignTaskManager.et" {
+ coords 20.724 0 7.936
+}
+BasePreloadManager PreloadManager_Campaign1 : "{32BFDCDE99092FCE}Prefabs/World/Game/PreloadManager_Campaign.et" {
+ coords 27.209 0 10.918
+}
+SCR_LoadoutManager : "{58FBD035E53D95C1}Prefabs/MP/Campaign/CampaignLoadoutManager.et" {
+ coords 9766.826 223.528 3459.972
+ m_aPlayerLoadouts {
+  SCR_FactionPlayerLoadout "{5690D9DB9BA76597}" {
+   m_sLoadoutName "Rifleman"
+   m_sLoadoutResource "{26A9756790131354}Prefabs/Characters/Factions/BLUFOR/US_Army/Character_US_Rifleman.et"
+   m_sLoadoutImage "{2B0877799B9B6C66}UI/Textures/EditorPreviews/Characters/BLUFOR/US_Army/Character_US_Rifleman.edds"
+  }
+  SCR_FactionPlayerLoadout "{5690D9DB9400735C}" {
+   m_sLoadoutName "Medic"
+   m_sLoadoutResource "{C9E4FEAF5AAC8D8C}Prefabs/Characters/Factions/BLUFOR/US_Army/Character_US_Medic.et"
+   m_sLoadoutImage "{8D3E9B959DCE2B60}UI/Textures/EditorPreviews/Characters/BLUFOR/US_Army/Character_US_Medic.edds"
+   m_sAffiliatedFaction "US"
+  }
+  SCR_PlayerArsenalLoadout "{5B108B49559B24A2}" {
+   m_sLoadoutName "Saved Loadout"
+   m_sLoadoutResource "{8D89B17BCFBFAE44}Prefabs/Characters/Campaign/Final/Campaign_US_Player.et"
+  }
+  SCR_FactionPlayerLoadout "{5B108B4948B445F8}" {
+   m_sLoadoutName "Auto Rifleman"
+   m_sLoadoutResource "{5B1996C05B1E51A4}Prefabs/Characters/Factions/BLUFOR/US_Army/Character_US_AR.et"
+   m_sLoadoutImage "{43EA535E240F0B17}UI/Textures/EditorPreviews/Characters/BLUFOR/US_Army/Character_US_AR.edds"
+   m_sAffiliatedFaction "US"
+  }
+  SCR_FactionPlayerLoadout "{6110BD1DC11855C4}" {
+   m_sLoadoutName "Team Leader"
+   m_sLoadoutResource "{E398E44759DA1A43}Prefabs/Characters/Factions/BLUFOR/US_Army/Character_US_TL.et"
+   m_sLoadoutImage "{34E9DBD5693E1B7F}UI/Textures/EditorPreviews/Characters/BLUFOR/US_Army/Character_US_TL.edds"
+   m_sAffiliatedFaction "US"
+  }
+  SCR_FactionPlayerLoadout "{614A8A5A538F3C12}" {
+   m_sLoadoutName "Grenadier"
+   m_sLoadoutResource "{84029128FA6F6BB9}Prefabs/Characters/Factions/BLUFOR/US_Army/Character_US_GL.et"
+   m_sLoadoutImage "{99D02888988DED59}UI/Textures/EditorPreviews/Characters/BLUFOR/US_Army/Character_US_GL.edds"
+   m_sAffiliatedFaction "US"
+  }
+ }
+}
+$grp DecalEntity : "{CA8AB522F7C90A28}Prefabs/Decals/Miscellaneous/CigarButts_01.et" {
+ {
+  coords 5513.298 95.551 6091.646
+  angleX -89.96
+  angleY 121.122
+  angleZ 180
+ }
+ {
+  coords 7552.569 82.731 5505.062
+  angleX -89.972
+  angleY 160.279
+  angleZ -180
+ }
+ {
+  coords 7547.042 82.758 5501.631
+  angleX -89.98
+  angleY 130.252
+  angleZ 180
+ }
+ {
+  coords 7562.955 82.784 5493.819
+  angleX -89.98
+  angleY -79.813
+  angleZ 180
+ }
+}
