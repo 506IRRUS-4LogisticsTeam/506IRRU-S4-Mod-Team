@@ -1,0 +1,21 @@
+SCR_GameModeEditor : "{D2DE7F43D48A3667}Prefabs/MP/Modes/Editor/GameMode_Editor.et" {
+ ID "56B2B479C6B96951"
+ components {
+  SCR_VotingManagerComponent "{5650BB6B6089393A}" {
+   m_aVotingTemplates {
+    SCR_VotingEditorIn "{58D06C7270F3CE2C}" {
+     m_fDuration 0
+     m_fThreshold 1
+     m_iMinParticipation 1
+     m_iMinVotes 9999
+    }
+    SCR_VotingEditorOut "{58D06C7271BA2FDE}" {
+     m_fDuration 0
+     m_fThreshold 1
+     m_iMinParticipation 1
+     m_iMinVotes 9999
+    }
+   }
+  }
+ }
+}

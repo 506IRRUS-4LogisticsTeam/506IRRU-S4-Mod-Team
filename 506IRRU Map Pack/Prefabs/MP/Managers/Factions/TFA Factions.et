@@ -1,0 +1,61 @@
+SCR_FactionManager : "{4A188E44289B9A50}Prefabs/MP/Managers/Factions/FactionManager_Editor.et" {
+ ID "56B2B4776E6E4499"
+ Factions {
+  SCR_Faction "{56DEAC40D2DBC8B1}" {
+   UIInfo SCR_FactionUIInfo "{528C961236B7DCD3}" {
+    m_sNameUpper "506IRRU"
+   }
+   m_bIsPlayable 1
+   m_aPredefinedGroups {
+    SCR_GroupPreset "{61703362FE12A090}" {
+     m_sGroupName "Ares"
+     m_iGroupSize 4
+     m_iRadioFrequency 39000
+    }
+    SCR_GroupPreset "{61703362FE12A0A4}" {
+     m_sGroupName "Havoc HQ"
+     m_sGroupDescription "Havoc HQ/Dagger/Havoc 4"
+     m_iGroupSize 8
+     m_iRadioFrequency 32500
+    }
+    SCR_GroupPreset "{61703362FE12A0A0}" {
+     m_sGroupName "ODA 5221 - Stalker"
+     m_iGroupSize 4
+     m_iRadioFrequency 35000
+    }
+    SCR_GroupPreset "{61703362FE12A0A3}" {
+     m_sGroupName "Havoc 1-6"
+     m_iGroupSize 2
+     m_iRadioFrequency 40500
+    }
+    SCR_GroupPreset "{61703362FE12A0AE}" {
+     m_sGroupName "Havoc 1-7"
+     m_iGroupSize 2
+     m_iRadioFrequency 40500
+    }
+    SCR_GroupPreset "{61703362FE12A0B7}" {
+     m_sGroupName "Havoc 1-1"
+     m_iGroupSize 10
+     m_iRadioFrequency 41000
+    }
+    SCR_GroupPreset "{61703362FE12A0B2}" {
+     m_sGroupName "Havoc 1-2"
+     m_iGroupSize 10
+     m_iRadioFrequency 43000
+    }
+    SCR_GroupPreset "{61703362FE12A0BD}" {
+     m_sGroupName "Havoc 1-3"
+     m_iGroupSize 10
+     m_iRadioFrequency 45000
+    }
+    SCR_GroupPreset "{61703362FE12A0BF}" {
+     m_sGroupName "Havoc 1-4"
+     m_iGroupSize 10
+     m_iRadioFrequency 47000
+    }
+   }
+   m_bCreateOnlyPredefinedGroups 1
+   m_iFactionRadioFrequency 40000
+  }
+ }
+}

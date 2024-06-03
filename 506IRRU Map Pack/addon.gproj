@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRUMapPack"
+ GUID "616F4E06D52EF074"
+ TITLE "506IRRU Map Pack"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}

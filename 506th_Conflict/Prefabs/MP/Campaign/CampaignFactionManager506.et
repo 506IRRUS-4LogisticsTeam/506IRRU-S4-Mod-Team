@@ -1,0 +1,91 @@
+SCR_CampaignFactionManager : "{A242612865F2A48E}Prefabs/MP/Managers/Factions/FactionManager_Base.et" {
+ ID "56B2B4776E6E4499"
+ coords -809.495 293.802 2850.857
+ Factions {
+  SCR_CampaignFaction "{50B30C3ADB052C80}" : "{ADFDBDA163950168}Configs/Factions/US_Campaign.conf" {
+   UIInfo SCR_FactionUIInfo "{528C961236B7DCD3}" {
+    Name "US Army Airborne"
+    Icon "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+    m_sNameUpper "US Army Airborne"
+   }
+   m_aPredefinedGroups {
+    SCR_GroupPreset "{610C54C300778F64}" {
+     m_sGroupName "HAVOC"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription ""
+     m_iRadioFrequency 41000
+    }
+    SCR_GroupPreset "{610C54C303E3F13D}" {
+     m_sGroupName "BROADSWORD"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription ""
+    }
+    SCR_GroupPreset "{610C54C303B67BCB}" {
+     m_sGroupName "CHAOS"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription ""
+     m_iRadioFrequency 43000
+    }
+    SCR_GroupPreset "{610C54C3037DF1D5}" {
+     m_sGroupName "GOLIATH"
+     m_sGroupFlag "{5433FCD38596EB3B}UI/Textures/Editor/ContentBrowser/506th.edds"
+     m_sGroupDescription "H/HQ"
+     m_iRadioFrequency 32000
+    }
+   }
+   m_aRanks {
+    SCR_CharacterRank "{610AA4F0675EF567}" {
+     m_sRankNameShort "2LT"
+    }
+   }
+   m_DefendersGroupPrefab "{D4A1576757665D02}Prefabs/Groups/Campaign/Group_US_Defenders.et"
+  }
+  SCR_CampaignFaction "{56F0C3A6336375DC}" : "{CF9447B87AB774DB}Configs/Factions/FIA_Campaign.conf" {
+   m_FactionLabel FACTION_USSR
+   m_DefendersGroupPrefab "{55639D277F6DE0BA}Prefabs/Groups/Campaign/Group_FIA_Defenders.et"
+  }
+ }
+ m_bCanChangeFactionsPlayable 0
+ m_aRanks {
+  SCR_RankIDCampaign "{5CB0777E83631136}" {
+   m_iRequestCD -1
+   m_iRadioRespawnCooldown 600
+   m_iFastTravelCooldown 3600
+   m_eRadioMsg DEMOTION_RENEGADE
+  }
+  SCR_RankIDCampaign "{5CB0777E828E61F3}" {
+   m_iRequestCD 105
+   m_iRadioRespawnCooldown 45
+   m_iFastTravelCooldown 600
+   m_eRadioMsg PROMOTION_PRIVATE
+  }
+  SCR_RankIDCampaign "{5CB0777E803B7EA2}" {
+   m_iRequestCD 75
+   m_iRadioRespawnCooldown 42
+   m_iFastTravelCooldown 540
+   m_eRadioMsg PROMOTION_CORPORAL
+  }
+  SCR_RankIDCampaign "{5CB0777E8F0E82AF}" {
+   m_iRequestCD 50
+   m_iRadioRespawnCooldown 39
+   m_iFastTravelCooldown 480
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8BE66EC2}" {
+   m_iRequestCD 30
+   m_iRadioRespawnCooldown 36
+   m_iFastTravelCooldown 420
+   m_eRadioMsg PROMOTION_LIEUTENANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8AD658D6}" {
+   m_iRequestCD 30
+   m_iRadioRespawnCooldown 33
+   m_iFastTravelCooldown 360
+   m_eRadioMsg PROMOTION_CAPTAIN
+  }
+  SCR_RankIDCampaign "{5CB0777E88380770}" {
+   m_iRequestCD 5
+   m_eRadioMsg PROMOTION_MAJOR
+  }
+ }
+}

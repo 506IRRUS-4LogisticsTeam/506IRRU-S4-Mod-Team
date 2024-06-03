@@ -1,0 +1,61 @@
+SCR_FactionManager : "{4A188E44289B9A50}Prefabs/MP/Managers/Factions/FactionManager_Editor.et" {
+ ID "56B2B4776E6E4499"
+ Factions {
+  SCR_Faction "{56DEAC40D2DBC8B1}" {
+   UIInfo SCR_FactionUIInfo "{528C961236B7DCD3}" {
+    m_sNameUpper "506IRRU"
+   }
+   m_bIsPlayable 1
+   m_aPredefinedGroups {
+    SCR_GroupPreset "{617033625731657B}" {
+     m_sGroupName "S-3 Training HQ"
+     m_iGroupSize 3
+     m_iRadioFrequency 39000
+    }
+    SCR_GroupPreset "{617033625731657F}" {
+     m_sGroupName "OSUT Instructors"
+     m_iGroupSize 4
+     m_iRadioFrequency 32500
+    }
+    SCR_GroupPreset "{6170336257316573}" {
+     m_sGroupName "Recruit Instructor"
+     m_iGroupSize 4
+     m_iRadioFrequency 35000
+    }
+    SCR_GroupPreset "{6170336257316574}" {
+     m_sGroupName "OSUT Helpers"
+     m_iGroupSize 10
+     m_iRadioFrequency 40500
+    }
+    SCR_GroupPreset "{617033625731656A}" {
+     m_sGroupName "CMS Instructors"
+     m_iGroupSize 4
+     m_iRadioFrequency 41000
+    }
+    SCR_GroupPreset "{6170336257316568}" {
+     m_sGroupName "Recruits"
+     m_iGroupSize 2
+     m_iRadioFrequency 40500
+    }
+    SCR_GroupPreset "{617033625731656F}" {
+     m_sGroupName "OSUT Trainees"
+     m_iGroupSize 10
+     m_iRadioFrequency 43000
+    }
+    SCR_GroupPreset "{6170336257316561}" {
+     m_sGroupName "Anvil 1-1"
+     m_sGroupDescription "Day 4 OSUT Squad"
+     m_iGroupSize 10
+     m_iRadioFrequency 45000
+    }
+    SCR_GroupPreset "{6170336257316563}" {
+     m_sGroupName "CMS Students"
+     m_iGroupSize 10
+     m_iRadioFrequency 47000
+    }
+   }
+   m_bCreateOnlyPredefinedGroups 1
+   m_iFactionRadioFrequency 40000
+  }
+ }
+}

@@ -1,0 +1,9 @@
+SCR_MapMarkerSquadLeader {
+ ID "617B5283F4CB73EB"
+ components {
+  RplComponent "{617B5283F4CB73FC}" {
+   SpatialTracking 0
+  }
+ }
+ Flags 0
+}

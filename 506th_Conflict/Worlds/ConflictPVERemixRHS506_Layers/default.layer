@@ -87,7 +87,9 @@ SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Co
    m_iReceiveKillFeedType ALL
   }
   SCR_PlayerSpawnPointManagerComponent "{5CDABA98894199D0}" {
+   m_bEnablePlayerSpawnPoints 1
    m_bRadioVehicleSpawningEnabled 1
+   m_bDeployableSpawnPointsEnabled 0
   }
   SCR_RespawnBriefingComponent "{5B2A94A3CF791D6F}" {
    m_sJournalConfigPath "{FFB1A12A7BFC4957}Configs/Journal/JournalConflict.conf"
@@ -163,8 +165,7 @@ SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Co
    m_iStartingHours 5
    m_iStartingMinutes 30
    m_bRandomStartingDaytime 0
-   m_bRandomStartingWeather 0
-   m_bRandomWeatherChanges 0
+   m_fNightTimeAcceleration 8
   }
   SCR_VotingManagerComponent "{5650BB6B6089393A}" {
    m_aVotingTemplates {
@@ -271,6 +272,28 @@ SCR_CampaignFactionManager CampaignFactionManager1 : "{F1AC26310BAE3788}Prefabs/
    m_aRanks {
     SCR_CharacterRank "{528E9D967C251E5F}" {
      m_sInsignia "{C77B9DF71500AC21}Images/private-first-class.edds"
+    }
+    SCR_CharacterRank "{610AA4F3C583E30F}" {
+     m_sRankName "Private First Class"
+     m_sRankNameUpper "PRIVATE FIRST CLASS"
+     m_sRankNameShort "PFC"
+    }
+    SCR_CharacterRank "{610AA4F7DE7F46A6}" {
+     m_sRankNameShort "SSG"
+    }
+    SCR_CharacterRank "{610AA4F2FDDC8CE3}" {
+     m_sRankName "Sergeant First Class"
+     m_sRankNameUpper "SERGEANT FIRST CLASS"
+     m_sRankNameShort "SFC"
+    }
+    SCR_CharacterRank "{610AA4F0675EF567}" {
+     m_sRankNameShort "2LT"
+    }
+    SCR_CharacterRank "{610AA4F082555F7E}" {
+     m_sRankNameShort "LTC"
+    }
+    SCR_CharacterRank "{610AA4F16441CDA7}" {
+     m_sRankNameShort "COL"
     }
    }
    m_aEntityCatalogs {
@@ -1102,6 +1125,75 @@ ItemPreviewManagerEntity ItemPreviewManagerEntity1 {
  PreviewWorld "{4391FE7994EE6FE2}Prefabs/World/Game/InventoryPreviewWorld.et"
  DefaultRenderAttributes PreviewRenderAttributes "{52EF3E2AF2E07544}" {
  }
+}
+SCR_ChimeraAIAgent {
+ components {
+  SCR_AIConfigComponent "{61704D122DE33647}" {
+   m_Skill 0.7
+   m_EnableLeaderStop 1
+   m_aDefaultReactions {
+    SCR_AIIdleReaction "{61704D13F8B58DE1}" {
+    }
+    SCR_AIReactionBase "{61704D1387BA0761}" {
+    }
+    SCR_AIWaitReaction "{61704D138759704E}" {
+    }
+   }
+   m_aDangerReactions {
+    SCR_AIDangerReaction "{61704D13F757095B}" {
+     m_eType Danger_NewEnemy
+    }
+    SCR_AIDangerReaction_DamageTaken "{61704D13F2384EFE}" {
+     m_eType Danger_DamageTaken
+    }
+    SCR_AIDangerReaction_DoorMovement "{61704D13FD51F274}" {
+     m_eType Danger_DoorMovement
+    }
+    SCR_AIDangerReaction_Explosion "{61704D1396F3A705}" {
+     m_eType Danger_Explosion
+    }
+    SCR_AIDangerReaction_GrenadeLanding "{61704D1395948A95}" {
+     m_eType Danger_GrenadeLanding
+    }
+    SCR_AIDangerReaction_MeleeDamageTaken "{61704D1393C9EF56}" {
+     m_eType Danger_MeleeDamageTaken
+    }
+    SCR_AIDangerReaction_ProjectileHit "{61704D13922B7F97}" {
+     m_eType Danger_ProjectileHit
+    }
+    SCR_AIDangerReaction_StartedBleeding "{61704D139113503B}" {
+     m_eType Danger_StartedBleeding
+    }
+    SCR_AIDangerReaction_Vehicle "{61704D13903D0663}" {
+     m_eType Danger_Vehicle
+    }
+    SCR_AIDangerReaction_VehicleHorn "{61704D139FD523B4}" {
+     m_eType Danger_VehicleHorn
+    }
+    SCR_AIDangerReaction_WeaponFired "{61704D139EEFC338}" {
+     m_eType Danger_WeaponFire
+    }
+   }
+   m_aInfoReactions {
+    SCR_AIInfoReaction_UnderFire "{61704D134AC64500}" {
+     m_eType UNDER_FIRE
+    }
+    SCR_AIInfoReaction_Wounded "{61704D1352A94A96}" {
+     m_eType WOUNDED
+    }
+    SCR_AIInfoReaction_NoAmmo "{61704D136142F2A5}" {
+     m_eType NO_AMMO
+    }
+   }
+   m_Reaction_UnknownTarget SCR_AITargetReaction_Unknown "{61704D1232AB3E17}" {
+   }
+   m_Reaction_RetreatFromTarget SCR_AITargetReaction_RetreatFromEnemy "{61704D1231578BA7}" {
+   }
+   m_Reaction_SelectedTargetChanged SCR_AITargetReaction_SelectedTargetChanged "{61704D123EE44653}" {
+   }
+  }
+ }
+ coords 26.531 0 10.98
 }
 SCR_MapLocator {
  coords 10434.78 0 1142.689
