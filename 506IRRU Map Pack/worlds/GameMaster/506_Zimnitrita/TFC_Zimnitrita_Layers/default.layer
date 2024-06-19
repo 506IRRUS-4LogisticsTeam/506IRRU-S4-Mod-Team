@@ -102,7 +102,18 @@ SCR_GameModeEditor GameMode_Editor_Full1 : "{DA3986AF1B5032B7}Prefabs/MP/Modes/E
        m_iGroupSize 10
        m_iRadioFrequency 47000
       }
+      SCR_GroupPreset "{61896BE052AC292D}" {
+       m_sGroupName "D/Co"
+       m_iGroupSize 4
+       m_iRadioFrequency 36000
+      }
+      SCR_GroupPreset "{61896BE0522E8097}" {
+       m_sGroupName "Thunder"
+       m_iGroupSize 3
+       m_iRadioFrequency 38000
+      }
      }
+     m_iFactionRadioFrequency 40000
     }
     SCR_Faction "{60B2C12A30116932}" : "{5D80677CCEE7ACD8}Configs/Factions/ZAF.conf" {
      m_bIsPlayable 0
