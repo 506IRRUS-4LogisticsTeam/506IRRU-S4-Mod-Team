@@ -1,8 +1,8 @@
-SCR_AIWorld {
+SCR_AIWorld : "{551907F0C9AE6F12}Prefabs/AI/SCR_AIWorld_Zimnitrita.et" {
  components {
   NavmeshWorldComponent "{5584F30E67F617AD}" {
    NavmeshSettings NavmeshWorld "{50FC63BEBE3973C5}" {
-    NavmeshFilesConfig BaseNavmeshFilesConfig "{5AF8B9A179E3C542}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{5AF8B9A179E3C542}" : "{43CE6A21F4C7E552}Config/Navmesh/Navmesh_GM_Zimnitrita_Soldier.conf" {
     }
     RecastConfig NavmeshRecastConfig "{50FC63BEB95B1C06}" {
      WalkableClimb 0.9
@@ -12,13 +12,13 @@ SCR_AIWorld {
   }
   NavmeshWorldComponent "{5584F30EEFEE1223}" {
    NavmeshSettings ChimeraNavmeshWorld "{50FC63BEBE3973C5}" {
-    NavmeshFilesConfig BaseNavmeshFilesConfig "{5CF6FEFB1C2A1B4B}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{5CF6FEFB1C2A1B4B}" : "{34F0D0C5FDBAF21D}Config/Navmesh/Navmesh_GM_Zimnitrita_Vehicles.conf" {
     }
    }
   }
   NavmeshWorldComponent "{5C8C9B750D124A63}" {
    NavmeshSettings NavmeshWorld "{5C8C9B750B60C6E2}" {
-    NavmeshFilesConfig BaseNavmeshFilesConfig "{5C90B7788942D4B8}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{5C90B7788942D4B8}" : "{85227B19147B1336}Config/Navmesh/Navmesh_LowRes_GM_Zimnitrita_Soldier.conf" {
     }
     RecastConfig NavmeshRecastConfig "{5C8C9B7561D60061}" {
      WalkableClimb 0.9
@@ -73,49 +73,47 @@ SCR_GameModeEditor GameMode_Editor_Full1 : "{DA3986AF1B5032B7}Prefabs/MP/Modes/E
        m_iRadioFrequency 35000
       }
       SCR_GroupPreset "{617101297B63B5AD}" {
-       m_sGroupName "Havoc 2-6"
+       m_sGroupName "Platoon Leader"
        m_iGroupSize 2
        m_iRadioFrequency 40500
       }
       SCR_GroupPreset "{617101297B480208}" {
-       m_sGroupName "Havoc 2-7"
+       m_sGroupName "Platoon Sergeant"
        m_iGroupSize 2
        m_iRadioFrequency 40500
       }
       SCR_GroupPreset "{617101297AB6EE51}" {
-       m_sGroupName "Havoc 2-1"
+       m_sGroupName "1st Squad"
        m_iGroupSize 10
        m_iRadioFrequency 41000
       }
       SCR_GroupPreset "{617101297A914E99}" {
-       m_sGroupName "Havoc 2-2"
+       m_sGroupName "2nd Squad"
        m_iGroupSize 10
        m_iRadioFrequency 43000
       }
       SCR_GroupPreset "{617101297A84C635}" {
-       m_sGroupName "Havoc 2-3"
+       m_sGroupName "3rd Squad"
        m_iGroupSize 10
        m_iRadioFrequency 45000
       }
       SCR_GroupPreset "{617101297A2EA234}" {
-       m_sGroupName "Havoc 2-4"
+       m_sGroupName "4th Squad"
        m_iGroupSize 10
        m_iRadioFrequency 47000
       }
-      SCR_GroupPreset "{61864455DB904867}" {
+      SCR_GroupPreset "{61896BE052AC292D}" {
        m_sGroupName "D/Co"
-       m_iGroupSize 8
+       m_iGroupSize 4
        m_iRadioFrequency 36000
       }
-      SCR_GroupPreset "{61864455DB6BA3B4}" {
+      SCR_GroupPreset "{61896BE0522E8097}" {
        m_sGroupName "Thunder"
        m_iGroupSize 3
        m_iRadioFrequency 38000
       }
      }
-    }
-    SCR_Faction "{60B2C12A30116932}" {
-     m_bIsPlayable 0
+     m_iFactionRadioFrequency 40000
     }
    }
   }
