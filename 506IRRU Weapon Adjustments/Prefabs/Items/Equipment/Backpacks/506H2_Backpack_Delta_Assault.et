@@ -1,0 +1,94 @@
+GenericEntity : "{09D6A1C9543E4A95}Prefabs/Items/Core/Backpack_Base.et" {
+ ID "511E9C6ADE70F798"
+ components {
+  SignalsManagerComponent "{6242F34762F88871}" {
+  }
+  BaseRadioComponent "{6242F34762F88805}" {
+   "Encryption key" "chickenNuggets"
+   "Turned on" 1
+   Transceivers {
+    RadioTransceiver "{6242F34762F88802}" {
+     ChannelFrequency 130000
+     "Transmitting Range" 2000
+     "Min tunable frequency" 100000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6242F34762F8880E}" {
+     ChannelFrequency 130000
+     "Transmitting Range" 2000
+     "Min tunable frequency" 100000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+   }
+  }
+  MeshObject "{511E9C6ADE70F7BD}" {
+   Object "{3966590F67D7D19B}Assets/Items/Backpacks/3RBN_Pack_Delta_Triage_Item.xob"
+  }
+  SCR_RadioComponent "{6242F34762F88810}" {
+   m_iRadioCategory MANPACK
+   m_iRadioType ANPRC152A
+  }
+  SCR_UniversalInventoryStorageComponent "{5222CB03A40528FA}" {
+   Attributes SCR_ItemAttributeCollection "{5222CB039E9715D1}" {
+    ItemDisplayName UIInfo "{5222CB03904B414C}" {
+     Name "Assault Backpack w/ LR - Havoc 2"
+     Description "Delta Multicam Pack"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
+     Weight 1
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 8001
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{52BCBDD2B54658EC}" {
+      CameraDistanceToItem 4
+      PreviewWornModel 1
+      PreviewModel "{5839842DD729D30F}Assets/Items/Equipment/Backpacks/Backpack_Medical_M5/Backpack_Medical_M5.xob"
+     }
+    }
+   }
+   UseCapacityCoefficient 0
+   CapacityCoefficient 1
+   MaxCumulativeVolume 8000
+   MaxItemSize 20 20 20
+   MultiSlots {
+    MultiSlotConfiguration "{6242F34762F88835}" {
+     SlotTemplate InventoryStorageSlot SmokeGrenades {
+      Prefab "{14C1A0F061D9DDEE}Prefabs/Weapons/Grenades/M18/Smoke_M18_Violet.et"
+     }
+     NumSlots 4
+    }
+   }
+   m_fMaxWeight 40
+  }
+  SimpleSoundComponent "{6242F34762F88839}" {
+   Filenames {
+    "{3D8789E7ACF6EDD3}Sounds/Items/_SharedData/PickUp/Items_PickUp_BackPack.acp" "{F2BEB3DF3F95849F}Sounds/Items/_SharedData/Open/Backpack_Medical_M5/Items_Backpack_Medical_M5.acp"
+   }
+  }
+  BaseLoadoutClothComponent "{511E9C6ADE70F7BB}" {
+   WornModel "{D3B96CC2D1963EC8}Assets/Items/Backpacks/3RBN_Pack_Delta_Triage.xob"
+   ItemModel "{3966590F67D7D19B}Assets/Items/Backpacks/3RBN_Pack_Delta_Triage_Item.xob"
+  }
+  ActionsManagerComponent "{511E9C6ADE70F786}" {
+   ActionContexts {
+    UserActionContext "{511E9C6ADE70F788}" {
+     Position PointInfo "{511E9C6ADE70F78D}" {
+      Offset 0 0.0686 -0.042
+     }
+     Radius 1
+    }
+   }
+   additionalActions {
+    SCR_EquipClothAction "{52E6EC758DC7DC4B}" {
+     m_sEquipActionString "Put on Delta Assault Pack"
+     m_sSwapActionString "Put on Delta Assault Pack"
+    }
+   }
+  }
+ }
+ coords 132.572 1.034 117.494
+}

@@ -1,0 +1,111 @@
+$grp GenericEntity : "{D4A604DD154470CD}Prefabs/Systems/AmbientVehicles/AmbientVehicleSpawnpoint_FIA.et" {
+ StPhillipeVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     54 50 53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 4404.532 1.634 11039.24
+  angleY 159.315
+ }
+ StPierreHarbourVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     54 50 53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 10135.22 2.489 1541.396
+  angleX -0.243
+  angleY 105.744
+  angleZ 0.862
+ }
+ ChotainMilitaryVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     54 50 53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 7439.964 9.687 6783.278
+  angleY 134.418
+ }
+ AirfieldHeliFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     51
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 4883.501 28.594 11870.372
+  angleY -89.967
+ }
+ LevieMilitaryVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 7472.574 164.594 4325.095
+  angleX -0.555
+  angleY 18.997
+  angleZ -1.138
+ }
+ MilitaryHospitalVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 3915.823 15.219 8450.604
+ }
+ MaidensBayVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     54 50 53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 5227.726 40.019 10481.089
+  angleX 1.343
+  angleY -41.42
+  angleZ -1.184
+ }
+ ReginaTowerVicFIA {
+  components {
+   SCR_AmbientVehicleSpawnPointComponent "{5D5E85F932F777FA}" {
+    m_aIncludedEditableEntityLabels {
+     54 50 53
+    }
+    m_aExcludedEditableEntityLabels {
+    }
+   }
+  }
+  coords 7681.231 340.875 3087.47
+  angleY 134.824
+ }
+}

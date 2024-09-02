@@ -1,0 +1,10 @@
+BaseGameTriggerEntity {
+ ID "61C777A3957D79C2"
+ coords 2.798 3.928 3.194
+ TriggerShapeType Sphere
+ SphereRadius 1
+ UpdatePeriod 1
+ ClassesFilter {
+  "ChimeraCharacter"
+ }
+}

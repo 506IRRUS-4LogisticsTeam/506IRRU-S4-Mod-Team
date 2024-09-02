@@ -1,0 +1,9 @@
+GenericEntity {
+ ID "5AFC9B0D8792F4E2"
+ components {
+  SCR_CoverageRadioComponent "{5C669673C2A82A2B}" {
+   "Turned on" 1
+   m_bIsSource 1
+  }
+ }
+}

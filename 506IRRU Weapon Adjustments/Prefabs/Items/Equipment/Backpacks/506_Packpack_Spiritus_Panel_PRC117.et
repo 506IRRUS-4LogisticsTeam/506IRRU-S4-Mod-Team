@@ -1,0 +1,102 @@
+GenericEntity : "{9B6B61BB3FE3DFB0}Prefabs/Items/Equipment/Radios/Radio_ANPRC77.et" {
+ ID "508AB2013EEE1E00"
+ components {
+  BaseRadioComponent "{5A30BAE7673C63CA}" {
+   Enabled 1
+   Transceivers {
+    RadioTransceiver "{6242E02DE8DCD431}" {
+     "Transmitting Range" 15000
+    }
+   }
+  }
+  InventoryItemComponent "{5222EB4D0C73006B}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{5222EB4D0A2B466B}" {
+    ItemDisplayName UIInfo "{5222EB4D07D865FA}" {
+     Name "Spiritus Backpanel"
+     Description "PRC117G Long Range Radio"
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{6242E02DE8DCD4D7}" {
+      CameraDistanceToItem 4
+      CameraOffset 0 -0.15 0
+      PreviewWornModel 1
+      PreviewModel ""
+     }
+    }
+   }
+  }
+  MeshObject "{5A30BAE7673C63D1}" {
+   Object "{7D69E525BAF52A11}Assets/Items/Backpacks/3RBN_Panel_Spiritus_PRC_Item.xob"
+  }
+  SCR_RadioComponent "{5A30BAE7673C63D4}" {
+   m_iRadioType ANPRC152A
+  }
+  SCR_UniversalInventoryStorageComponent "{6242E02DE8DCD4FE}" {
+   Attributes SCR_ItemAttributeCollection "{6242E02DE8DCD4F9}" {
+    ItemDisplayName UIInfo "{6242E02DE8DCD4FB}" {
+     Name "PRC117G Manpack Radio"
+     Description "15km Transmit"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{6242E02DE8DCD486}" {
+     Weight 1.75
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 2500
+     DimensionScaler 1.75
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{6242E02DE8DCD481}" {
+      CameraPreset Back
+      CameraOrbitAngles 25 -25 180
+      CameraDistanceToItem 4
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    m_Size SLOT_2x2
+    m_SlotType SLOT_BACKPACK
+   }
+   Priority 8
+   UseCapacityCoefficient 0
+   CapacityCoefficient 1
+   MaxCumulativeVolume 4000
+   MaxItemSize 20 20 20
+   m_fMaxWeight 10
+  }
+  BaseLoadoutClothComponent "{5EA4A89F0D06E1DE}" {
+   Enabled 0
+  }
+  BaseLoadoutClothComponent "{6242E02DE8DCD48A}" {
+   AreaType LoadoutBackpackArea "{6242E02DE8DCD495}" {
+   }
+   WornModel "{1317838D51B5E947}Assets/Items/Backpacks/3RBN_Panel_Spiritus_PRC.xob"
+   ItemModel "{7D69E525BAF52A11}Assets/Items/Backpacks/3RBN_Panel_Spiritus_PRC_Item.xob"
+   DeflatedModel "{1317838D51B5E947}Assets/Items/Backpacks/3RBN_Panel_Spiritus_PRC.xob"
+  }
+  ActionsManagerComponent "{508AB5952B584B2E}" {
+   ActionContexts {
+    UserActionContext "{508AC2ABEC97066C}" {
+     Position PointInfo "{508AC2ABEAC4A0F5}" {
+      Offset 0 0.0863 -0.0193
+     }
+    }
+   }
+   additionalActions {
+    SCR_EquipClothAction "{553AEBE8F3B60801}" {
+     m_sEquipActionString "Put on PRC117 Manpack"
+     m_sSwapActionString "Put on PRC117 Manpack"
+    }
+    SCR_OpenStorageAction "{6242E02DE8DCD4A5}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{6242E02DE8DCD4A6}" {
+      Name "#AR-Inventory_OpenStorage"
+     }
+    }
+   }
+  }
+ }
+ coords 2809.374 73.492 1641.319
+}
