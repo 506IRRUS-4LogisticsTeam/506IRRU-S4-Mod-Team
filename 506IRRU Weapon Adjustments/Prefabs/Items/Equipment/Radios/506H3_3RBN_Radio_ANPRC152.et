@@ -8,12 +8,14 @@ GenericEntity : "{73950FBA2D7DB5C5}Prefabs/Items/Equipment/Radios/Radio_ANPRC68.
      "Transmitting Range" 5000
      "Min tunable frequency" 100000
      "Max tunable frequency" 139000
+     "Frequency resolution" 100
     }
     RadioTransceiver "{5A8E721FD75D0F5F}" {
      ChannelFrequency 130000
      "Transmitting Range" 5000
      "Min tunable frequency" 100000
      "Max tunable frequency" 139000
+     "Frequency resolution" 100
     }
    }
   }

@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et"
+ Name "{0ABE022D8C5BF9B3}Prefabs/Weapons/MachineGuns/XM250/MG_XM250_blk.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,8 +12,6 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
-  }
-  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

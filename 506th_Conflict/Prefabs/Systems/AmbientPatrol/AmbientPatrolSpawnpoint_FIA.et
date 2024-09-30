@@ -1,10 +1,7 @@
-GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+GenericEntity : "{1E4C8AD00BBB16AA}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_Base.et" {
  ID "5CCEC603A58CB072"
  components {
-  SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
-   m_eGroupType SQUAD_RIFLE
-   m_bPickRandomGroupType 1
-   m_fAILimitThreshold 0.95
+  Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
   }
  }
 }

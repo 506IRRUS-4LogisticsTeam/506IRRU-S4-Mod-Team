@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et"
+ Name "{EA4EE1DCD7832122}Prefabs/Items/GPNVG/Green/506_PVS31_FLAT_GRN_DUAL.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,8 +12,6 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
-  }
-  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

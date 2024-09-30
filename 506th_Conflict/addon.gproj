@@ -3,7 +3,7 @@ GameProject {
  GUID "613C235CEDAB685F"
  TITLE "506th_Conflict"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "622120A5448725E3" "61FC2597B16A5396"
  }
  Configurations {
   GameProjectConfig PC {

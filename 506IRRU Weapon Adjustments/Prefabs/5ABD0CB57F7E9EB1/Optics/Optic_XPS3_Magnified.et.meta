@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et"
+ Name "{FD75A60672D2755B}Prefabs/5ABD0CB57F7E9EB1/Optics/Optic_XPS3_Magnified.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,8 +12,6 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
-  }
-  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

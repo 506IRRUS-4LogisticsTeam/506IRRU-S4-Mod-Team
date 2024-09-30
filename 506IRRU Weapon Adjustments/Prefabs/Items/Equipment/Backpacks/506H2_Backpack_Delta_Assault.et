@@ -8,15 +8,15 @@ GenericEntity : "{09D6A1C9543E4A95}Prefabs/Items/Core/Backpack_Base.et" {
    "Turned on" 1
    Transceivers {
     RadioTransceiver "{6242F34762F88802}" {
-     ChannelFrequency 130000
-     "Transmitting Range" 2000
+     ChannelFrequency 120000
+     "Transmitting Range" 20000
      "Min tunable frequency" 100000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
     }
     RadioTransceiver "{6242F34762F8880E}" {
-     ChannelFrequency 130000
-     "Transmitting Range" 2000
+     ChannelFrequency 120000
+     "Transmitting Range" 20000
      "Min tunable frequency" 100000
      "Max tunable frequency" 150000
      "Frequency resolution" 100

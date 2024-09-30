@@ -1,0 +1,342 @@
+$grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+ StPierre_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 9651.163 18.711 1490.318
+ }
+ StPierre_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 9810.622 8.218 1595.54
+  angleY -156.531
+ }
+ Vernon_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 9356.276 56.72 2028.171
+  angleY -156.531
+ }
+ Durras_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 8915.389 96.165 2802.253
+  angleY -156.531
+ }
+ Durras_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 8776.342 98.923 2799.813
+  angleY -156.531
+ }
+ Vernon_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 9228.294 61.866 2114.828
+  angleY -156.531
+ }
+ Lancre_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 11705.62 8.62 2221.845
+  angleY -156.531
+ }
+ Regina_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 7301.715 138.996 2525.157
+  angleY -156.531
+ }
+ Regina_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 7148.943 138.112 2357.698
+  angleY -156.531
+ }
+ Perelle_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 9337.07 7.006 5043.055
+  angleY -156.531
+ }
+ Levie_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 7565.347 140.158 4711.958
+  angleY -156.531
+ }
+ Levie_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 7368.502 136.167 4710.852
+  angleY -156.531
+ }
+ Laruns_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 7580.274 81.694 5516.455
+  angleY -156.531
+ }
+ Chotain_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 7067.214 118.856 6026.036
+  angleY -156.531
+ }
+ Provins_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 5491.391 94.608 6044.386
+  angleY -156.531
+ }
+ Provins_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 5589.612 89.34 5846.681
+  angleY -156.531
+ }
+ CowbellPond_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 5236.062 80.91 6414.804
+  angleY -156.531
+ }
+ Figari_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 5270.537 63.263 5345.185
+ }
+ Morton_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 5124.998 14.278 3997.706
+ }
+ Richemont_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 3339.88 119.859 5130.343
+  angleY -156.531
+ }
+ LeMoule_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 2665.035 94.375 5401.437
+  angleY -156.531
+ }
+ LeMoule_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 2525.566 107.434 5545.477
+  angleY -156.531
+ }
+ Lamentin_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 1273.604 37.063 6011.875
+ }
+ Villeneuf_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 2854.665 86.691 6345.534
+ }
+ PinewoodLake_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 4464.835 51.724 6122.106
+  angleY -156.531
+ }
+ EntreDeux_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_MEDIUM
+   }
+  }
+  coords 5753.344 218.031 7072.076
+ }
+ Montignac_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 4747.031 164.378 6978.929
+ }
+ Montignac_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 4749.927 162.244 7097.243
+ }
+ Gravette_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 4132.026 35.937 7826.044
+  angleY -156.531
+ }
+ Tyrone_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 4901.172 35.705 9132.116
+  angleY -156.531
+ }
+ Tyrone_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 4945.986 42.223 8995.885
+  angleY -156.531
+ }
+ Meaux_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 4536.424 14.576 9464.408
+ }
+ Kermovan_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 6346.749 5.607 9646.565
+  angleY -156.531
+ }
+ LesCreux_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 5250.689 38.646 11362.219
+  angleY -156.531
+ }
+ StPhillipe_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 4524.178 14.665 10910.364
+ }
+ StPhillipe_CIV_2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV
+   }
+  }
+  coords 4406.292 11.299 10697.309
+ }
+ StPhillipe_CIV_3 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 4618.433 15.371 10490.2
+  angleY -156.531
+ }
+ Erquy_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 10927.96 24.828 11702.996
+  angleY -156.531
+ }
+ Thollevast_CIV_1 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_CIV_SMALL
+   }
+  }
+  coords 3110.249 5.895 2125.494
+  angleY -156.531
+ }
+}

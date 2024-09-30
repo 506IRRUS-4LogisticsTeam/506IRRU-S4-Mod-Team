@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et"
+ Name "{A242612865F2A48F}Prefabs/MP/Managers/Factions/FactionManager_Base.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
