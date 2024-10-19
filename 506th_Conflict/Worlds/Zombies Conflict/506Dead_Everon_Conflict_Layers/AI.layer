@@ -1,9 +1,10 @@
 $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
  Airfield01 {
-  coords 4943.664 28.38 11979.461
+  coords 4943.664 28.381 11979.461
+  angleZ 0.895
  }
  Airfield02 {
-  coords 4932.009 28.775 11763.162
+  coords 4932.009 28.775 11763.161
  }
  Airfield04 {
   coords 4919.885 40.206 11787.742
@@ -27,7 +28,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4907.893 28.593 11730.095
  }
  AirfieldPatrol02 {
-  coords 4318.532 11.074 12213.433
+  coords 4318.532 11.074 12213.434
  }
  AndresBeacon02 {
   coords 6839.05 82.465 8202.721
@@ -78,7 +79,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 6495.767 168.117 7577.234
  }
  BenacSwitchbacks01 {
-  coords 7033.336 93.889 7121.103
+  coords 7033.335 93.889 7121.103
  }
  BlackLake01 {
   coords 9422.346 213.497 2992.72
@@ -90,7 +91,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9546.538 236.455 2792.253
  }
  BlackLake04 {
-  coords 9535.622 211.523 3009.083
+  coords 9535.621 211.523 3009.083
  }
  BlackLake05 {
   coords 9479.211 211.669 2922.25
@@ -126,7 +127,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 6703.821 12.118 3041.469
  }
  CamuracPatrol01 {
-  coords 6980.356 58.329 3486.067
+  coords 6980.355 58.329 3486.067
  }
  CamuracSwitchbacks01 {
   coords 7058.72 79.637 3384.838
@@ -151,7 +152,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9246.099 201.309 1162.658
  }
  Castle05 {
-  coords 9289.361 196.697 1226.219
+  coords 9289.36 196.697 1226.219
  }
  CastlePatrol01 {
   coords 9340.755 196.788 1146.238
@@ -175,7 +176,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10517.799 193.195 2413.023
  }
  Cave05 {
-  coords 10732.026 244.464 2529.951
+  coords 10732.025 244.464 2529.951
   angleY -150.603
  }
  CavePatrol01 {
@@ -185,7 +186,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9921.422 295.697 2579.852
  }
  ChevalGinLodge03 {
-  coords 10095.324 312.823 2633.477
+  coords 10095.323 312.823 2633.477
   angleY 144.714
  }
  ChevalGinLodge04 {
@@ -210,7 +211,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 7118.523 114.96 5955.867
  }
  Chotain05 {
-  coords 6959.376 117.632 6005.038
+  coords 6959.375 117.632 6005.038
  }
  Chotain06 {
   coords 7089.026 119.858 6128.405
@@ -258,7 +259,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8403.782 12.968 795.862
  }
  Courbet03 {
-  coords 8384.108 2.747 825.382
+  coords 8384.107 2.747 825.382
  }
  Courbet04 {
   coords 8379.055 12.485 775.1
@@ -267,7 +268,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8422.039 12.671 790.453
  }
  Courbet06 {
-  coords 8459.124 2.191 847.811
+  coords 8459.123 2.191 847.811
  }
  Courbet07 {
   coords 8602.53 49.774 747.714
@@ -279,7 +280,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 11668.986 12.006 1446.578
  }
  CragPoint02 {
-  coords 11807.026 3.143 1374.871
+  coords 11807.025 3.143 1374.871
  }
  CragPoint03 {
   coords 11705.461 6.295 1424.9
@@ -312,7 +313,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8637.379 124.451 2722.704
  }
  EasternSeaRelay01 {
-  coords 9184.933 10.519 9351.826
+  coords 9184.934 10.519 9351.825
  }
  EntreDeux02 {
   coords 5758.389 221.984 7139.044
@@ -348,10 +349,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5299.644 21.442 9818.14
  }
  FarmSupply01 {
-  coords 5021.277 25.561 10151.654
+  coords 5021.277 25.561 10151.653
  }
  FarmSupply02 {
-  coords 4928.357 25.517 10003.364
+  coords 4928.356 25.517 10003.363
  }
  FarmSupply03 {
   coords 5023.841 26.484 9970.443
@@ -408,10 +409,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 7233.742 47.507 7691.181
  }
  FishermansCove01 {
-  coords 6038.96 2.978 10032.475
+  coords 6038.96 2.978 10032.476
  }
  FishermansCove02 {
-  coords 6125.813 2.288 10278.565
+  coords 6125.813 2.288 10278.564
  }
  FishermansCove03 {
   coords 5732.693 30.08 10248.549
@@ -444,7 +445,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   angleY -20.38
  }
  GhostTown01 {
-  coords 11169.694 3.895 1615.81
+  coords 11169.693 3.895 1615.81
  }
  GhostTown02 {
   coords 11130.031 35.643 1843.552
@@ -465,7 +466,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 11125.343 19.622 1731.108
  }
  GhostTown09 {
-  coords 11090.355 31.055 1841.17
+  coords 11090.354 31.055 1841.17
  }
  Gorey01 {
   coords 4869.353 111.135 8133.261
@@ -507,10 +508,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8489.271 153.321 3631.78
  }
  GreenValley02 {
-  coords 8496.066 177.583 3828.973
+  coords 8496.065 177.583 3828.973
  }
  GreenValley03 {
-  coords 8333.434 154.28 3428.449
+  coords 8333.435 154.28 3428.449
  }
  GreenValley04 {
   coords 8807.301 139.148 3341.627
@@ -537,10 +538,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5256.946 26.073 9369.313
  }
  HedgehogHill03 {
-  coords 5306.694 25.712 9409.524
+  coords 5306.694 25.712 9409.523
  }
  HedgehogHill04 {
-  coords 5246.345 25.022 9402.621
+  coords 5246.345 25.022 9402.62
  }
  HedgehogHill05 {
   coords 5323.333 26.946 9330.809
@@ -570,25 +571,25 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5608.675 69.548 8162.809
  }
  IndustrialNorth01 {
-  coords 5059.557 27.82 10864.436
+  coords 5059.557 27.82 10864.437
  }
  IndustrialSupply01 {
   coords 6260.813 164.25 6480.371
  }
  IslandArgent01 {
-  coords 10839.796 8.088 8734.435
+  coords 10839.796 8.088 8734.436
  }
  IslandArgent02 {
-  coords 10885.771 14.311 8639.315
+  coords 10885.771 14.311 8639.314
  }
  IslandArgent03 {
-  coords 10847.751 8.577 8661.473
+  coords 10847.751 8.577 8661.474
  }
  IslandArgent04 {
-  coords 10909.119 12.795 8538.691
+  coords 10909.118 12.795 8538.69
  }
  IslandArgent05 {
-  coords 10900.526 20.197 8863.613
+  coords 10900.525 20.197 8863.612
  }
  IslandErquy01 {
   coords 11141.215 33.973 11599.64
@@ -597,7 +598,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10946.516 25.242 11685.998
  }
  IslandErquy03 {
-  coords 10894.434 23.855 11773.313
+  coords 10894.435 23.855 11773.313
  }
  IslandErquy04 {
   coords 10982.188 24.123 11816.682
@@ -606,7 +607,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 11053.011 22.643 11996.797
  }
  IslandErquy06 {
-  coords 11340.977 17.618 11842.539
+  coords 11340.978 17.618 11842.539
  }
  IslandErquyDocks01 {
   coords 11494.531 2.453 10918.919
@@ -615,10 +616,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10637.24 2.844 11838.957
  }
  IslandErquyLighthouse01 {
-  coords 11372.74 68.582 11199.823
+  coords 11372.74 68.582 11199.822
  }
  IslandErquyLighthouse2 {
-  coords 11369.15 61.886 11237.835
+  coords 11369.149 61.886 11237.835
   angleY -145.464
  }
  IslandNorthernShoals01 {
@@ -646,7 +647,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 1093.666 41.724 11409.981
  }
  IslandPinsTower01 {
-  coords 1551.349 20.032 11212.154
+  coords 1551.349 20.032 11212.153
  }
  IslandSaules01 {
   coords 3075.977 6.187 2121.926
@@ -676,7 +677,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 6389.641 3.123 9599.926
  }
  Kermovan04 {
-  coords 6252.966 11.628 9752.12
+  coords 6252.966 11.628 9752.119
   angleY -135.133
  }
  Kervel01 {
@@ -776,13 +777,13 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 11702.459 8.594 2225.048
  }
  Lancre08 {
-  coords 11624.66 0.471 2217.059
+  coords 11624.659 0.471 2217.059
  }
  LancreAnchorBayLighthouse01 {
   coords 11247.554 17.142 2743.335
  }
  LancrePatrol01 {
-  coords 11666.437 4.839 2109.406
+  coords 11666.438 4.839 2109.406
  }
  LaRoue01 {
   coords 9355.755 13.306 297.372
@@ -800,7 +801,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9315.488 12.151 397.594
  }
  LaRoue07 {
-  coords 9361.818 3.166 239.931
+  coords 9361.817 3.166 239.931
  }
  LaRouePatrol01 {
   coords 8963.561 52.76 551.776
@@ -906,10 +907,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5302.581 38.232 11336.376
  }
  LesCreux03 {
-  coords 5227.516 37.862 11405.165
+  coords 5227.516 37.862 11405.164
  }
  LesCreux05 {
-  coords 5260.535 38.742 11345.154
+  coords 5260.535 38.742 11345.153
  }
  Levie01 {
   coords 7455.575 137.308 4738.149
@@ -979,7 +980,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5227.861 39.869 10497.311
  }
  MaidensBay04 {
-  coords 5373.246 46.814 10480.612
+  coords 5373.246 46.814 10480.611
  }
  MaidensBay05 {
   coords 5352.424 41.713 10422.962
@@ -994,10 +995,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4505.906 13.906 9476.052
  }
  Meaux02 {
-  coords 4520.853 18.748 9426.11
+  coords 4520.853 18.748 9426.109
  }
  Meaux03 {
-  coords 4371.523 8.742 9537.147
+  coords 4371.523 8.742 9537.146
  }
  Meaux04 {
   coords 4446.588 15.093 9596.274
@@ -1015,10 +1016,10 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4064.888 23.541 9016.969
  }
  MilitaryHospital01 {
-  coords 3901.469 15.312 8434.823
+  coords 3901.469 15.312 8434.822
  }
  MilitaryHospital02 {
-  coords 3944.165 15.656 8491.522
+  coords 3944.165 15.656 8491.521
  }
  MilitaryHospital03 {
   coords 3828.346 12.062 8459.833
@@ -1042,7 +1043,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4787.128 167.715 6918.269
  }
  Montignac04 {
-  coords 4849.314 167.194 6917.546
+  coords 4849.313 167.194 6917.546
  }
  Montignac05 {
   coords 4879.692 170.979 7036.134
@@ -1131,7 +1132,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8282.413 269.129 2569.876
  }
  PennantsPassPatrol02 {
-  coords 8338.665 217.875 2115.242
+  coords 8338.664 217.875 2115.242
  }
  Perelle01 {
   coords 9338.8 5.531 5052.15
@@ -1210,7 +1211,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10388.095 147.166 2097.363
  }
  PickMountain02 {
-  coords 9953.358 316.076 2266.294
+  coords 9953.357 316.076 2266.294
  }
  PinewoodLake01 {
   coords 4452.477 57.42 6188.285
@@ -1255,7 +1256,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 5709.325 12.874 9603.14
  }
  PowerPlantHouse01 {
-  coords 5583.957 28.435 9843.158
+  coords 5583.957 28.435 9843.157
  }
  PowerPlantHouse02 {
   coords 5611.755 26.898 9869.836
@@ -1303,7 +1304,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 8873.739 204.98 3949.443
  }
  Quarry03 {
-  coords 8783.119 196.754 3900.04
+  coords 8783.118 196.754 3900.04
  }
  Quarry04 {
   coords 8774.766 200.49 3989.741
@@ -1390,7 +1391,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 7680.854 340.665 3055.743
  }
  ReginaTower03 {
-  coords 7714.834 341.17 3054.034
+  coords 7714.833 341.17 3054.034
  }
  ReginaTower04 {
   coords 7709.807 326.738 3225.539
@@ -1444,7 +1445,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10300.887 46.429 472.623
  }
  RushesPatrol01 {
-  coords 6370.162 74.124 8459.658
+  coords 6370.162 74.124 8459.657
  }
  SawmillSouth01 {
   coords 2863.056 90.535 4851.723
@@ -1525,7 +1526,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 6798.276 70.824 4848.595
  }
  SimonsWoodCheckpoint02 {
-  coords 6784.335 69.227 4833.848
+  coords 6784.334 69.227 4833.848
  }
  SimonsWoodPatrol01 {
   coords 6002.676 96.42 5295.926
@@ -1534,14 +1535,14 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9582.354 11.875 5348.252
  }
  SkuaPoint02 {
-  coords 9615.358 3.359 5593.458
+  coords 9615.357 3.359 5593.458
   angleY 161.195
  }
  SkuaPoint03 {
   coords 9572.6 11.136 5339.305
  }
  SkuaPoint04 {
-  coords 9681.115 9.045 5435.215
+  coords 9681.114 9.045 5435.215
  }
  SkuaPoint05 {
   coords 9586.886 12.934 5412.543
@@ -1571,7 +1572,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10282.012 170.809 2892.755
  }
  SmugglersHole05 {
-  coords 10770.122 29.914 2862.758
+  coords 10770.121 29.914 2862.758
  }
  SmugglersHole06 {
   coords 10688.132 110.397 2751.254
@@ -1629,13 +1630,13 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4165.502 15.873 10595.063
  }
  StPierre01 {
-  coords 9752.156 5.312 1500.015
+  coords 9752.155 5.312 1500.015
  }
  StPierre02 {
   coords 9786.938 5.296 1400.378
  }
  StPierre03 {
-  coords 9581.189 24.491 1568.736
+  coords 9581.188 24.491 1568.736
  }
  StPierre04 {
   coords 9225.892 85.756 1559.208
@@ -1656,16 +1657,16 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 9724.085 22.151 1708.909
  }
  StPierre16 {
-  coords 9666.433 21.161 1707.728
+  coords 9666.434 21.161 1707.728
  }
  StPierre17 {
-  coords 9840.126 7.656 1584.718
+  coords 9840.125 7.656 1584.718
  }
  StPierre18 {
-  coords 9779.858 15.256 1596.078
+  coords 9779.857 15.256 1596.078
  }
  StPierre19 {
-  coords 9422.526 44.926 1625.149
+  coords 9422.525 44.926 1625.149
  }
  StPierre21 {
   coords 9418 45.216 1618.158
@@ -1680,7 +1681,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10142.891 2.538 1482.01
  }
  StPierreHarbour05 {
-  coords 10005.322 9.984 1555.63
+  coords 10005.321 9.984 1555.63
  }
  StPierreHarbour07 {
   coords 10192.225 2.687 1546.076
@@ -1689,7 +1690,7 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 10124.28 2.509 1388.117
  }
  StPierreHarbour10 {
-  coords 10283.36 6.803 1555.362
+  coords 10283.359 6.803 1555.362
  }
  StPierrePatrol01 {
   coords 9689.188 13.158 1541.953
@@ -1736,24 +1737,33 @@ $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPat
   coords 4898.059 35.676 9133.182
  }
  Tyrone06 {
-  coords 4980.563 40.515 9029.148
+  coords 4980.563 40.515 9029.147
  }
  TyroneBay01 {
-  coords 5377.314 10.531 8708.339
+  coords 5377.313 10.531 8708.339
  }
  TyroneBayPatrol01 {
   coords 5382.06 10.531 8732.003
  }
  Vernon04 {
-  coords 9104.477 79.243 2318.027
+  coords 9104.478 79.243 2318.027
  }
  Vernon05 {
   coords 8987.752 82.929 2152.406
  }
  Vernon07 {
-  coords 9276.814 61.725 2114.787
+  coords 9276.813 61.725 2114.787
  }
  Vernon08 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_SpawnData {
+     Bacon_622120A5448725E3_AmbientPatrolData "{627D68930532A931}" {
+      Prefab "{6AEA65C9E88BB0B2}622120A5448725E3/Prefabs/Groups/Group_Zombies_Horde.et"
+     }
+    }
+   }
+  }
   coords 9354.68 56.735 2027.018
  }
  Vernon09 {

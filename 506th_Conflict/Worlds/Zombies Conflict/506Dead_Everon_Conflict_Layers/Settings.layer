@@ -20,9 +20,9 @@ SCR_AIWorld : "{70CCCF16487C927F}Prefabs/AI/SCR_AIWorld_Eden.et" {
   }
  }
  coords 4772.179 26.323 10658.781
- LimitOfSpawnedAIAgents 2000
+ LimitOfSpawnedAIAgents 200
  "Max number of cached BTs" 100
- m_iActiveAILimit 1000
+ m_iActiveAILimit 400
 }
 RadioManagerEntity {
  coords 2884.968 91.924 6293.253
@@ -51,8 +51,12 @@ SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Co
    m_fRegenScale 2.5
    m_bPermitUnconsciousVON 0
   }
+  SCR_GroupsManagerComponent "{5706EC99934496F5}" {
+   m_aGroupFlags {
+   }
+  }
   SCR_NotificationSenderComponent "{56FA84B04BE7D4C0}" {
-   m_iKillFeedType FULL
+   m_iKillFeedType DISABLED
    m_iReceiveKillFeedType ALL
   }
   SCR_PlayerSpawnPointManagerComponent "{5CDABA98894199D0}" {
@@ -65,10 +69,20 @@ SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Co
    }
   }
   SCR_TimeAndWeatherHandlerComponent "{5CC49B5A1313B84E}" {
-   m_iStartingHours 5
-   m_iStartingMinutes 30
+   m_iStartingHours 4
    m_bRandomStartingDaytime 0
+   m_iRangeHoursStart 4
+   m_iRangeHoursEnd 4
+   m_fDayTimeAcceleration 0.1
+   m_fNightTimeAcceleration 0.1
    m_bRandomStartingWeather 0
+   m_bUsePredefineStartingTimeAndWeatehr 1
+   m_aStartingWeatherAndTime {
+    SCR_TimeAndWeatherState "{628224A7584EBA1E}" {
+     m_sWeatherPresetName "Foggy"
+     m_iStartingHour 5
+    }
+   }
    m_bRandomWeatherChanges 0
   }
   SCR_VotingManagerComponent "{5650BB6B6089393A}" {

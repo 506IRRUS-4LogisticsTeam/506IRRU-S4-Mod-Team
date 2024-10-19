@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{0A697FF8CA33F9A5}Prefabs/Weapons/Attachments/Optics/exps/Optic_EXPS3-1_tan.et"
+ Name "{2E0E3D7D1DD0FF8F}Prefabs/Weapons/Core/Attachment_Base.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }

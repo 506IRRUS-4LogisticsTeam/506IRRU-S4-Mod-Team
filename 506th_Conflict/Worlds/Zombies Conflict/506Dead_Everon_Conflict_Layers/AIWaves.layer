@@ -1,473 +1,868 @@
 $grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
  AirfieldCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5256.749 21.405 11802.335
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  AirfieldCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4388.396 10.673 11976.975
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  AirfieldCounter3 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5112.643 30.019 11565.13
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  AndresBeaconCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7212.679 60 8466.158
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  BenacCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 6667.522 134.237 7434.765
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  BlackLakeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9522.16 255.153 3329.038
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  CalvaryHillCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 3617.443 121.836 6243.119
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  CamuracCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 6992.193 109.367 2843.605
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  CaveCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10390.15 167.752 2181.768
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ChevalGinLodgeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10041.159 245.663 2829.575
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ChotainCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7183.188 99.184 5707.967
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ChotainCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 6649.477 146.448 6247.349
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ChotainMilitaryCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7137.985 87.217 6799.59
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  CourbetCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 8603.798 120.194 1189.791
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  CragPointCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 11478.107 24.804 1875.997
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  DurrasCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 8507.087 162.627 2749.696
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  EntreDeuxCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 6024.353 168.85 6769.086
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  FigariCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5766.265 86.908 5106.39
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  FiringRangeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7603.683 15.796 8475.757
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  FishermansCoveCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5951.178 24.079 10472.977
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  GhostTownCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10886.248 46.12 1712.652
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  GravetteCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4115.984 51.901 7517.524
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  HedgehogHillCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5050.748 26.467 9642.512
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  HornbeamValleyCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5126.008 63.947 8198.269
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  KervelCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 2866.317 28.672 4117.465
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LamentinCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 1766.939 27.185 6046.521
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LamentinCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 1384.342 13.002 5453.884
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LancreCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 11318.898 53.923 2094.131
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LaRoueCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9450.325 74.212 558.25
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LarunsCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7868.146 141.716 5100.943
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LeBoscCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7672.472 42.935 1637.784
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LeMouleCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 2350.421 125.039 5716.717
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LeMouleCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 2653.568 97.761 5016.883
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LesCreuxCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5184.736 33.19 10989.321
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LevieCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7348.304 122.565 4939.23
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LevieMilitaryCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7137.407 137.006 4097.639
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  LevieMilitaryCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7184.365 121.376 4413.453
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MaidensBayCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5660.084 27.593 10863.929
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MaidensBayCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5046.298 25.119 10240.686
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MeauxCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4541.789 43.096 8985.808
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MeauxCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4113.029 10.941 10098.822
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MilitaryHospitalCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4141.734 51.641 8668.604
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MilitaryHospitalCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4231.03 66.956 8288.273
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MontfortCastleCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9586.9 108.428 1129.699
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MontfortCastleCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9456.678 71.715 1423.543
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MontignacCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4436.099 123.138 7399.478
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MontignacCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4941.382 100.942 6570.522
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MortonCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5218.733 109.444 4398.246
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MortonCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4416.462 29.717 3702.471
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  MortonValleyCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4707.099 82.385 4770.344
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PennantsPassCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 8191.853 139.682 1833.162
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PerelleCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9220.614 56.729 4798.608
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PinewoodLakeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4237.341 94.161 6382.527
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PinewoodLakeCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4113.725 74.627 6001.251
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PowerPlantCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5559.84 32.39 9420.227
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  PowerPlantCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5794.482 26.552 10098.275
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ProvinsCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5111.003 57.142 6079.269
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ProvinsCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5945.614 87.67 5818.259
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  QuarryCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 8586.653 204.858 3983.531
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  RedonCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 2560.304 59.615 7101.124
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ReginaCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 7620.718 146.315 2227.885
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ReginaCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 6960.518 139.434 2603.877
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  RockweedCapeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10271.62 3.938 752.746
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ShepherdsPondCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 3745.593 152.79 4270.05
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  ShepherdsPondCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 3174.461 105.948 4834.38
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  SimonsWoodCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 5882.535 104.857 5117.932
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  SkuaPointCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9613.088 15.145 5140.315
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  SmugglersHoleCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10518.772 27.17 3025.716
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPhillipeCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4092.859 25.454 10300.652
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPhillipeCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4614.424 16.32 11307.502
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPhillipeCounter3 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4044.312 6.256 10543.103
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPierreCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9905.842 19.178 1159.198
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPierreCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 10374.396 30.526 1730.495
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  StPierreCounter3 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9586.494 89.832 2017.481
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  TillersFindCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4131.328 86.731 7066.1
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  TyroneCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4958.594 67.859 8776.252
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  TyroneCounter2 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 4947.252 41.521 9531.437
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  VernonCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 9392.702 103.139 2205.28
   angleX -6.49
   angleY -4.081
   angleZ 0.391
  }
  VilleneufCounter1 {
+  components {
+   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_iRespawnWaves 5
+   }
+  }
   coords 3179.523 74.674 6559.79
   angleX -6.49
   angleY -4.081

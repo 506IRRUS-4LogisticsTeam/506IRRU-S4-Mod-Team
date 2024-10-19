@@ -1,8 +1,0 @@
-GameEntity : "{2E0E3D7D1DD0FF8F}Prefabs/Weapons/Core/Attachment_Base.et" {
- ID "4BA426CBAED42A14"
- components {
-  SCR_CollimatorSightsComponent "{5CF0DAB93951A970}" {
-   m_bIsNVGCompatible 1
-  }
- }
-}

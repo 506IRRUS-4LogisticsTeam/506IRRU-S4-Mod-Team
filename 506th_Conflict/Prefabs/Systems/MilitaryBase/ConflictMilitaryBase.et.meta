@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{311393C82B783721}Prefabs/5ABD0CB57F7E9EB1/Optics/Optic_XPS3.et"
+ Name "{1391CE8C0E255636}Prefabs/Systems/MilitaryBase/ConflictMilitaryBase.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

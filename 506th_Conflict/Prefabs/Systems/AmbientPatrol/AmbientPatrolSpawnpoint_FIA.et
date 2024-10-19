@@ -2,6 +2,16 @@ GenericEntity : "{1E4C8AD00BBB16AA}Prefabs/Systems/AmbientPatrol/AmbientPatrolSp
  ID "5CCEC603A58CB072"
  components {
   Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+   m_bPickRandomGroupType 1
+   m_SpawnData {
+    Bacon_622120A5448725E3_AmbientPatrolData "{627D68931C93BD56}" {
+     Prefab "{BC8CAB39EF1B138D}622120A5448725E3/Prefabs/Groups/AmbientPatrol/Group_Zombies_AmbientPatrol_Tier1_Medium.et"
+    }
+   }
+  }
+  SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+   "faction affiliation" "BACON_622120A5448725E3_FACTION"
   }
  }
+ coords 9244.979 56.53 2032.222
 }

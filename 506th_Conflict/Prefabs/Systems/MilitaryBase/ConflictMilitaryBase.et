@@ -1,0 +1,34 @@
+GenericEntity {
+ ID "5AFC9B0D8792F4E2"
+ components {
+  SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+   "faction affiliation" "BACON_622120A5448725E3_FACTION"
+  }
+ }
+ {
+  GenericEntity {
+   ID "5CCED514A5908822"
+   components {
+    Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+     m_SpawnData {
+      Bacon_622120A5448725E3_AmbientPatrolData "{627D68931C93BD56}" {
+       Prefab "{0DCA56B2A252E69D}622120A5448725E3/Prefabs/Groups/AmbientPatrol/Group_Zombies_AmbientPatrol_Tier1_Small.et"
+      }
+     }
+    }
+   }
+  }
+  GenericEntity {
+   ID "606078EE23DE48AC"
+   components {
+    Bacon_622120A5448725E3_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+     m_SpawnData {
+      Bacon_622120A5448725E3_AmbientPatrolData "{627D68931C93BD56}" {
+       Prefab "{0DCA56B2A252E69D}622120A5448725E3/Prefabs/Groups/AmbientPatrol/Group_Zombies_AmbientPatrol_Tier1_Small.et"
+      }
+     }
+    }
+   }
+  }
+ }
+}
