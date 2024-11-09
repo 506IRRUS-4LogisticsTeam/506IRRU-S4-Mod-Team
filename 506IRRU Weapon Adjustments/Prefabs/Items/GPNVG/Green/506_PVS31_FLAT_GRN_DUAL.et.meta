@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{EA4EE1DCD7832122}Prefabs/Items/GPNVG/Green/506_PVS31_FLAT_GRN_DUAL.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

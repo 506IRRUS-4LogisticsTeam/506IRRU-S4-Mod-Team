@@ -1,0 +1,27 @@
+GenericEntity : "{F54F6C453A8CB478}Prefabs/Weapons/Core/MachineGun_Base.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    SightsComponent "{BB23A637957CFFF8}" {
+     m_bIsNVGCompatible 1
+    }
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     WeaponAimModifiers {
+      RecoilWeaponAimModifier "{5584D015D93F5EAF}" {
+       TurnOffsetData RecoilData "{58789524D0F8AFDE}" {
+        "Curve X" {
+         0 0.5 0.057 0.754 0.121 0.499 1 0.5
+        }
+        "Curve Y" {
+         0 0.5 0.012 0.549 0.047 0.744 0.083 0.445 0.176 0.5 1 0.5
+        }
+        "Base Recoil Scale" 0.55
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

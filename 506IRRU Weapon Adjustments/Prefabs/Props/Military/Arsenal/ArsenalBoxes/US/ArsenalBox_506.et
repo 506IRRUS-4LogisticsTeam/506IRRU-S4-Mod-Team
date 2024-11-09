@@ -1,0 +1,13 @@
+GenericEntity : "{BE99D77D1155B127}Prefabs/Props/Military/Arsenal/ArsenalBoxes/US/ArsenalBox_US.et" {
+ ID "56F2C6D6F7C6DAFA"
+ components {
+  UniversalInventoryStorageComponent "{56F2C6D15FE6C4CE}" {
+   Attributes SCR_ItemAttributeCollection "{56F2C6D6A36680FB}" {
+    ItemDisplayName SCR_InventoryUIInfo "{56F2C6D6A229E091}" {
+     Name "506th IRRU Arsenal"
+     Description "Arsenal Containing 506 Approved Gear"
+    }
+   }
+  }
+ }
+}
