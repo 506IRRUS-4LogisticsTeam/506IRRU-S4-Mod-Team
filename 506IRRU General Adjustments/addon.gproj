@@ -3,13 +3,10 @@ GameProject {
  GUID "610950C88EB64D07"
  TITLE "506IRRU General Adjustments"
  Dependencies {
-  "58D0FB3206B6F859" "595F2BF2F44836FB"
+  "58D0FB3206B6F859"
  }
  Configurations {
   GameProjectConfig PC {
-   ChimeraGlobalConfig ChimeraGlobalConfig "{6F12664687156A7B}" {
-    "Maximum View Distance" 10000
-   }
   }
   GameProjectConfig XBOX_ONE {
   }
