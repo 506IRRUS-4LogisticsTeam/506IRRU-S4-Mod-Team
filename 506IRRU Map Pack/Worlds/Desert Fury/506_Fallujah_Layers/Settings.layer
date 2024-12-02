@@ -30,7 +30,7 @@ PerceptionManager PerceptionManager : "{028DAEAD63E056BE}Prefabs/World/Game/Perc
 SCR_GameModeEditor GameMode_Editor_Full : "{DA3986AF1B5032B7}Prefabs/MP/Modes/Editor/GameMode_Editor_Full.et" {
  components {
   SCR_ArsenalManagerComponent "{6120A34EB1E9BBEF}" {
-   m_sArsenalSaveTypeInfoHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
+   m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
   }
   SCR_HintManagerComponent "{5702B54C6CBC9D7F}" {
    Enabled 0
