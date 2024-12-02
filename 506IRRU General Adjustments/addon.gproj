@@ -3,7 +3,7 @@ GameProject {
  GUID "610950C88EB64D07"
  TITLE "506IRRU General Adjustments"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "595F2BF2F44836FB"
  }
  Configurations {
   GameProjectConfig PC {

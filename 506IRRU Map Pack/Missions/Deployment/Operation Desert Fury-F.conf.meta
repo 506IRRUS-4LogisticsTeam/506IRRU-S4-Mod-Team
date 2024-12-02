@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{D6BAE220F886F490}Missions/Zimnitrita/Operation Invictus-TFC.conf"
+ Name "{4B81BC83EA0343E6}Missions/Deployment/Operation Desert Fury.conf"
  Configurations {
   CONFResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   CONFResourceClass PS5 : PC {
   }
   CONFResourceClass HEADLESS : PC {
+  }
+  CONFResourceClass Xbox : PC {
   }
  }
 }

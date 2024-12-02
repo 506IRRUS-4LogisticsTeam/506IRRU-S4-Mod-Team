@@ -1,0 +1,76 @@
+ForestGeneratorEntity : "{115250035A610D03}Prefabs/WEGenerators/Brushland/FG_Brushland_Picea_Mountain.et" {
+ coords 203.427 101.511 3626.665
+ Flags 1048579
+}
+$grp GenericEntity : "{9633134198F3AB1A}Prefabs/Rocks/Granite/GraniteRock_01.et" {
+ {
+  coords -130.694 27.569 3034.8
+  angleY 90.584
+  scale 27.449
+ }
+ {
+  coords -14.128 124.629 148.291
+  angleY 65.528
+  scale 27.449
+ }
+ {
+  coords -74.4 74.857 322.03
+  angleY 90.584
+  scale 27.449
+ }
+ {
+  coords -68.131 77.393 613.7
+  angleY 90.584
+  scale 27.449
+ }
+ {
+  coords -81.554 38.391 872.942
+  angleY 90.584
+  scale 27.449
+ }
+ {
+  coords 931.496 -38.821 -34.459
+  angleY -15.538
+  scale 27.449
+ }
+ {
+  coords 1137.704 97.412 -40.139
+  angleY -6.075
+  scale 27.449
+ }
+ {
+  coords -52.797 44.082 1834.247
+  angleY 95.835
+  scale 27.449
+ }
+ {
+  coords 2564.049 -24.854 59.994
+  angleY -6.075
+  scale 27.449
+ }
+ {
+  coords 916.2 -58.105 221.626
+  angleY -6.075
+  scale 12.352
+ }
+ {
+  coords 927.129 -47.893 165.695
+  angleY -6.075
+  scale 12.352
+ }
+ {
+  coords 848.347 -63.941 142.763
+  angleY -6.075
+  scale 12.352
+ }
+ {
+  coords 884.518 -31.586 93.904
+  angleY -6.075
+  scale 12.352
+ }
+ {
+  coords 691.815 -1.983 -80.745
+  angleY -10.464
+  scale 27.449
+ }
+}
