@@ -3,6 +3,22 @@ GameProject {
  GUID "616F4E06D52EF074"
  TITLE "506IRRU Map Pack"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "5F04F5A0383C44B1" "618917F81719EC45" "5F0D245931200FD1"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+  GameProjectConfig Xbox {
+  }
  }
 }
