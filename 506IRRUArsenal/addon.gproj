@@ -1,8 +1,0 @@
-GameProject {
- ID "506IRRUArsenal"
- GUID "61D55EBAE7AE09F8"
- TITLE "506IRRU Arsenal"
- Dependencies {
-  "58D0FB3206B6F859"
- }
-}
