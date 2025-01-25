@@ -1,0 +1,516 @@
+$grp GenericEntity : "{01E0B52B5BA2EF72}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_04.et" {
+ {
+  coords 2633.284 9.384 2399.228
+  angleY -22.833
+ }
+ {
+  coords 2755.014 2.156 2225.455
+  angleY -109.818
+ }
+ {
+  coords 2685.835 3.731 2267.383
+  angleX -5.982
+  angleY 154.702
+  angleZ -0.132
+ }
+ {
+  coords 2784.034 2.283 2282.061
+  angleX -0.842
+  angleY -118.042
+  angleZ -1.58
+ }
+ {
+  coords 2769.257 3.343 2316.567
+  angleY -109.931
+ }
+ {
+  coords 2829.136 2.687 2487.366
+  angleY -114.829
+ }
+ {
+  coords 2810.378 3.4 2503.002
+  angleX -3.657
+  angleY 173.193
+  angleZ -0.463
+ }
+ {
+  coords 2729.205 6.687 2671.07
+  angleY -108.474
+ }
+ {
+  coords 2730.613 8.255 2835.888
+  angleX 3.968
+  angleY -33.462
+  angleZ -0.48
+ }
+ {
+  coords 2457.397 5.477 2294.43
+  angleX -3.224
+  angleY 146.694
+  angleZ -0.022
+ }
+ {
+  coords 2842.184 2.75 2405.364
+  angleY -101.732
+ }
+ {
+  coords 2839.594 2.712 2420.565
+  angleX -0.886
+  angleY -98.23
+  angleZ 0.128
+ }
+ {
+  coords 3076.356 3.173 2466.611
+  angleX 1.023
+  angleY -98.935
+  angleZ 0.745
+ }
+ {
+  coords 3052.333 2.656 2565.2
+  angleY -109.812
+ }
+}
+$grp GenericEntity : "{16148BF23770F1D3}Prefabs/Compositions/Slotted/SlotFlatSmall/MachineGunNest_S_USSR_02.et" {
+ {
+  coords 2140.291 5.469 2350.245
+  angleY -96.442
+ }
+ {
+  coords 3158.934 2.343 2586.127
+  angleY -107.968
+ }
+ {
+  coords 3173.839 2.531 2500.492
+  angleY -12.67
+ }
+ {
+  coords 3120.716 9.924 3110.456
+  angleX -1.936
+  angleY -135.68
+  angleZ -3.138
+ }
+ {
+  coords 3217.393 9.132 3114.765
+  angleX 0.447
+  angleY 166.331
+  angleZ -1.951
+ }
+}
+$grp GenericEntity : "{21D83950DF36F250}Prefabs/Props/Military/Sandbags/Sandbag_01_long_burlap.et" {
+ {
+  coords 3162.359 9.602 3001.337
+  angleY -96.073
+ }
+ {
+  coords 3161.74 9.619 3004.619
+  angleY -98.546
+ }
+}
+$grp GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+ {
+  coords 3020.818 5.513 2591.923
+  angleX -8.43
+  angleY 162.636
+  angleZ -0.157
+ }
+ {
+  coords 3008.316 9.001 2611.127
+  angleX -7.59
+  angleY 162.917
+  angleZ -0.459
+ }
+ {
+  coords 2890.619 2.411 2321.727
+  angleX -0.799
+  angleY -26.76
+  angleZ 0.403
+ }
+ {
+  coords 2910.235 3.153 2425.291
+  angleX 0.881
+  angleY -100.048
+  angleZ -0.156
+ }
+ {
+  coords 2929.868 5.305 2828.064
+  angleX 4.802
+  angleY 71.482
+  angleZ 0.275
+ }
+ {
+  coords 2922.849 7.937 2968.737
+  angleY -106.482
+ }
+ {
+  coords 3062.925 6.489 2863.463
+  angleX -1.898
+  angleY -98.102
+  angleZ -0.634
+ }
+ {
+  coords 3045.604 7.662 2928.115
+  angleX 0.862
+  angleY -105.581
+  angleZ -0.24
+ }
+ {
+  coords 2969.142 7.709 2906.494
+  angleX 0.61
+  angleY -106.189
+  angleZ -1.109
+ }
+ {
+  coords 2945.354 8.24 2968.02
+  angleX -0.254
+  angleY -16.505
+  angleZ -0.858
+ }
+ {
+  coords 3179.506 6.169 2780.846
+  angleX 0.534
+  angleY 53.377
+  angleZ 0.718
+ }
+}
+$grp GenericEntity : "{32DE30B02A04B844}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Corner_BarbedWire_USSR_01.et" {
+ {
+  coords 2835.74 3.098 2366.05
+  angleX 0.681
+  angleY -49.54
+  angleZ 0.581
+ }
+ {
+  coords 2895.27 2.406 2323.798
+  angleY 23.41
+ }
+ {
+  coords 2930.183 5.442 2832.767
+  angleX 2.543
+  angleY 113.963
+  angleZ 3.085
+ }
+ {
+  coords 2931.5 5.453 2824.591
+  angleX 1.015
+  angleY 145.466
+  angleZ 1.474
+ }
+ {
+  coords 2992.501 7.602 2914.338
+  angleX -2.553
+  angleY 108.007
+  angleZ -0.829
+ }
+ {
+  coords 2992.64 7.625 2910.426
+  angleY -179.052
+ }
+}
+GenericEntity : "{3AE1A95C1023F894}Prefabs/Compositions/Slotted/SlotFlatSmall/SandbagPosition_S_USSR_04.et" {
+ coords 3389.393 3.28 2721.019
+ angleX 2.121
+ angleY -98.574
+ angleZ -3.932
+}
+$grp GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+ {
+  coords 2542.927 7.393 2464.942
+  angleX -1.218
+  angleY -1.592
+  angleZ -11.451
+ }
+ {
+  coords 2753.55 2.149 2229.129
+  angleX -0.813
+  angleY -65.286
+  angleZ -0.374
+ }
+ {
+  coords 2681.917 3.795 2266.105
+  angleX -2.354
+  angleY -139.655
+  angleZ -5.503
+ }
+ {
+  coords 2767.78 3.509 2321.375
+  angleX 1.219
+  angleY -58.392
+  angleZ 1.214
+ }
+ {
+  coords 2946.048 2.938 2523.518
+  angleY -58.576
+ }
+ {
+  coords 2816.302 3.29 2503.204
+  angleX -2.453
+  angleY -145.721
+  angleZ -2.752
+ }
+ {
+  coords 2700.203 11.108 2884.884
+  angleX -1.163
+  angleY 21.685
+  angleZ 0.501
+ }
+ {
+  coords 2841.668 2.744 2410.034
+  angleX -0.823
+  angleY -66.861
+  angleZ -0.352
+ }
+ {
+  coords 3077.142 3.124 2460.383
+  angleY -71.042
+ }
+ {
+  coords 3167.581 2.531 2497.027
+  angleY -110.826
+ }
+}
+GenericEntity : "{7A40BF128BB47EFD}Prefabs/Compositions/Slotted/SlotFlatSmall/MachineGunNest_S_USSR_01.et" {
+ coords 2747.412 21.599 2531.831
+ angleX -13.278
+ angleY -168.801
+ angleZ -0.829
+}
+$grp GenericEntity : "{7AF4B627D5C90235}Prefabs/Props/Military/Sandbags/Sandbag_01_round_high_burlap.et" {
+ {
+  coords 2756.688 2.653 2386.227
+  angleX -0.895
+ }
+ {
+  coords 2756.603 3.317 2386.233
+  angleX -0.895
+  angleY -1.373
+  angleZ 0.022
+ }
+ {
+  coords 2754.427 3.131 2384.882
+  angleX -0.257
+  angleY -73.311
+  angleZ 0.858
+ }
+}
+$grp StaticModelEntity : "{8125DEB23B3FF39E}Prefabs/Compositions/Misc/CustomEntities/DestructionEntities/Sandbag_01_bunker_burlap_CompositionDestruction.et" {
+ {
+  coords 2850.5 2.531 2301.39
+  angleY -25.144
+ }
+ {
+  coords 2840.364 2.531 2295.101
+  angleY -24.457
+ }
+}
+$grp StaticModelEntity : "{93E06E731212BD96}Prefabs/Structures/Walls/BarbedWire/BarbedTape_01/BarbedTape_01_Triple.et" {
+ {
+  coords 3016.787 -0.091 2567.269
+  angleY -108.724
+ }
+ {
+  coords 3028.611 0.039 2570.813
+  angleY 71.104
+ }
+}
+GenericEntity : "{A2D4DAC9EDE8BD6E}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_MG_USSR_01_NSV.et" {
+ coords 3459.501 2.032 2694.456
+ angleX -1.266
+ angleY -136.048
+ angleZ 0.023
+}
+GenericEntity : "{B31A14BC1A0E7776}Prefabs/Props/Military/Sandbags/Sandbag_01_round_burlap.et" {
+ coords 2754.474 2.673 2384.933
+ angleX -0.345
+ angleY -67.358
+ angleZ 0.826
+}
+$grp GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+ {
+  coords 2547.661 7.596 2471.837
+  angleX 0.615
+  angleY -19.453
+  angleZ 1.232
+ }
+ {
+  coords 2753.147 2.303 2233.099
+  angleY -104.813
+ }
+ {
+  coords 2784.727 2.307 2275.943
+  angleY -49.735
+ }
+ {
+  coords 2820.364 3.375 2505.601
+  angleX -3.686
+  angleY 166.175
+  angleZ -0.014
+ }
+ {
+  coords 2726.146 6.531 2677.81
+  angleY -104.416
+ }
+ {
+  coords 2737.499 6.531 2685.668
+  angleY 73.814
+ }
+ {
+  coords 2732.908 8.435 2841.402
+  angleX 2.225
+  angleY -70.271
+  angleZ 1.747
+ }
+ {
+  coords 2908.796 3.362 2430.737
+  angleY 80.334
+ }
+}
+GenericEntity : "{B547CF929FCC6BB7}Prefabs/Props/Military/Sandbags/Sandbag_01_end_high_burlap.et" {
+ coords 2762.399 2.653 2386.183
+ angleX -0.895
+}
+$grp GenericEntity : "{BE16EE8FAA315FE2}Prefabs/Props/Military/Sandbags/Sandbag_01_long_high_burlap.et" {
+ {
+  coords 2759.708 2.655 2386.099
+  angleX -0.895
+ }
+ {
+  coords 3161.709 8.468 3004.563
+  angleY -98.692
+ }
+ {
+  coords 3162.319 8.468 3001.293
+  angleY -98.798
+ }
+}
+$grp GenericEntity : "{D948DCEA222BF12E}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_02.et" {
+ {
+  coords 2545.039 7.294 2468.753
+  angleX 1.247
+  angleY 114.895
+  angleZ 1.565
+ }
+ {
+  coords 2781.194 2.377 2284.072
+  angleX 0.214
+  angleY 83.128
+  angleZ 1.777
+ }
+ {
+  coords 2947.979 2.937 2519.789
+  angleY 72.374
+ }
+ {
+  coords 2840.444 2.718 2414.462
+  angleY 80.838
+ }
+ {
+  coords 2910.865 3.124 2418.845
+  angleY 82.534
+ }
+ {
+  coords 3075.384 3.352 2474.409
+  angleY 79.967
+ }
+ {
+  coords 3181.702 2.757 2502.038
+ }
+}
+$grp GenericEntity : "{DDF59362051B28BC}Prefabs/Props/Military/Fortification/BarbedTape_KnifeRest.et" {
+ {
+  coords 3019.514 2.853 2568.287
+  angleY 67.367
+ }
+ {
+  coords 3031.985 2.857 2571.644
+  angleY 67.705
+ }
+ {
+  coords 3024.726 5.097 2590.541
+  angleX -0.286
+  angleY 71.588
+  angleZ 7.599
+ }
+ {
+  coords 3021.755 5.144 2589.605
+  angleX 0.08
+  angleY 71.026
+  angleZ 8.431
+ }
+ {
+  coords 3018.919 5.156 2588.753
+  angleX 0.136
+  angleY 70.646
+  angleZ 8.431
+ }
+ {
+  coords 3003.086 8.998 2607.805
+  angleY 78.828
+ }
+ {
+  coords 3006.193 8.766 2608.455
+  angleX -0.519
+  angleY 73.336
+  angleZ 7.586
+ }
+ {
+  coords 3009.477 8.729 2609.456
+  angleX 0.173
+  angleY 70.396
+  angleZ 8.43
+ }
+ {
+  coords 2835.019 3.09 2372.311
+  angleX -3.349
+  angleY -10.685
+  angleZ 1.541
+ }
+ {
+  coords 2859.522 2.437 2311.957
+  angleY 56.131
+ }
+ {
+  coords 2854.665 2.468 2308.467
+  angleY 47.363
+ }
+ {
+  coords 2848.837 2.504 2305.728
+  angleX -0.44
+  angleY 60.526
+  angleZ -0.779
+ }
+ {
+  coords 2844.1 2.507 2301.508
+  angleX -0.561
+  angleY 51.187
+  angleZ -0.697
+ }
+ {
+  coords 2838.229 2.64 2298.839
+  angleY 64.965
+  angleZ -0.001
+ }
+ {
+  coords 2846.375 2.506 2303.606
+  angleX -0.594
+  angleY 48.41
+  angleZ -0.669
+ }
+ {
+  coords 2816.615 9.086 2924.733
+  angleX 0.689
+  angleY 67.36
+  angleZ 1.652
+ }
+ {
+  coords 2819.805 9.096 2925.99
+  angleX -0.189
+  angleY 68.864
+  angleZ 1.992
+ }
+ {
+  coords 2822.489 9.155 2927.132
+  angleX 1.882
+  angleY 66.757
+  angleZ 2.112
+ }
+}

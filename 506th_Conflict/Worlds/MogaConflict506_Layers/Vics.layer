@@ -1,0 +1,178 @@
+$grp Vehicle : "{056FE90E52C26938}Prefabs/Vehicles/Wheeled/Gatoma/Gatoma_Armed_armored.et" {
+ Gatoma_Armed_armored1 {
+  coords 4192.483 1.562 2979.697
+  angleY -107.758
+ }
+ Gatoma_Armed_armored2 {
+  coords 4108.472 3.845 3039.83
+  angleX 1.239
+  angleY -159.756
+  angleZ -3.355
+ }
+ Gatoma_Armed_armored3 {
+  coords 4263.196 2.569 3018.397
+  angleX 0.145
+  angleY -80.686
+  angleZ -0.883
+ }
+}
+$grp Vehicle : "{35518B86BCCCEB55}Prefabs/Vehicles/Toyotas/Combat/Toyotaa_Green_Armoured_Gun.et" {
+ Toyotaa_Green_Armoured_Gun1 {
+  coords 2189.244 5.752 2329.917
+  angleX -0.216
+  angleY -76.034
+  angleZ 0.869
+ }
+ Toyotaa_Green_Armoured_Gun2 {
+  coords 2347.944 6.481 2451.224
+  angleX 0.359
+  angleY -113.654
+  angleZ 0.82
+ }
+ Toyotaa_Green_Armoured_Gun3 {
+  coords 2679.884 4.348 2270.65
+  angleX -5.948
+  angleY 159.695
+  angleZ -0.651
+ }
+ Toyotaa_Green_Armoured_Gun4 {
+  coords 2815.483 3.526 2506.52
+  angleX -5.409
+  angleY 165.623
+  angleZ 0.464
+ }
+ Toyotaa_Green_Armoured_Gun5 {
+  coords 2642.383 3.006 2379.532
+  angleX -0.859
+  angleY -106.226
+  angleZ 0.25
+ }
+ Toyotaa_Green_Armoured_Gun6 {
+  coords 2345.317 14.093 2917.387
+  angleX -1.744
+  angleY -139.485
+  angleZ 2.04
+ }
+ Toyotaa_Green_Armoured_Gun7 {
+  coords 2839.75 3.062 2370.215
+  angleY -99.748
+ }
+ Toyotaa_Green_Armoured_Gun8 {
+  coords 3166.901 8.468 3004.082
+  angleY -102.061
+ }
+}
+$grp Vehicle : "{447CFE8D73F95C3E}Prefabs/Vehicles/Wheeled/BTR70/BTR70_AFRF.et" {
+ BTR70_AFRF1 {
+  coords 2362.156 6.654 2417.75
+  angleX -1.169
+  angleY -112.488
+  angleZ -0.485
+ }
+ BTR70_AFRF2 {
+  coords 2706.596 1.521 2221.397
+  angleX -0.461
+  angleY -121.021
+  angleZ -0.767
+ }
+ BTR70_AFRF3 {
+  coords 3035.364 2.687 2561.09
+  angleY -110.871
+ }
+ BTR70_AFRF4 {
+  coords 2901.621 8.031 2974.075
+  angleY -154.803
+ }
+ BTR70_AFRF5 {
+  coords 2951.46 5.754 2828.286
+  angleX 0.86
+  angleY -16.071
+  angleZ -0.248
+ }
+ BTR70_AFRF6 {
+  coords 2599.678 12.664 2615.8
+  angleX -3.033
+  angleY -129.142
+  angleZ 4.762
+ }
+}
+$grp Vehicle : "{83C1508A3BD066EC}Prefabs/Vehicles/Wheeled/Gatoma/PLX_Gatoma_01_armored_Armed.et" {
+ PLX_Gatoma_01_armored_Armed1 {
+  coords 2729.374 6.531 2679.51
+  angleY -105.186
+ }
+ PLX_Gatoma_01_armored_Armed2 {
+  coords 2748.594 6.147 2803.063
+  angleX 0.745
+  angleY -56.344
+  angleZ 0.496
+ }
+}
+$grp Vehicle : "{90053F2D35B41EB2}Prefabs/Vehicles/Toyotas/Combat/Toyotaa_Green_Gun.et" {
+ Toyotaa_Green_Gun1 {
+  coords 2165.839 6.048 2216.95
+  angleX 1.249
+  angleY -54.443
+  angleZ -0.208
+ }
+ Toyotaa_Green_Gun2 {
+  coords 2641.736 8.718 2536.623
+  angleY -133.895
+ }
+ Toyotaa_Green_Gun3 {
+  coords 2756.346 2.78 2382.04
+  angleX -1.79
+ }
+}
+$grp Vehicle : "{B8B31D57F3EF1E05}Prefabs/Vehicles/Toyotas/Combat/Toyotaa_White_Gun.et" {
+ Toyotaa_White_Gun1 {
+  coords 2275.749 16.411 2618.914
+  angleX -2.895
+  angleY -120.159
+  angleZ -1.421
+ }
+ Toyotaa_White_Gun2 {
+  coords 2654.249 6.747 2764.43
+  angleX 2.925
+  angleY -87.386
+  angleZ -5.222
+ }
+}
+$grp Vehicle : "{C012BB3488BEA0C2}Prefabs/Vehicles/Wheeled/BTR70/BTR70.et" {
+ BTR1 {
+  coords 1850.485 7.867 2335.277
+  angleY 86.806
+ }
+ BTR2 {
+  coords 2846.447 2.5 2297.026
+  angleY -26.392
+ }
+ BTR3 {
+  coords 3392.515 3.183 2720.613
+  angleX -0.821
+  angleY -87.65
+  angleZ -1.825
+ }
+ BTR4 {
+  coords 4185.424 2.273 2993.74
+  angleX -0.826
+  angleY -112.763
+  angleZ 0.346
+ }
+}
+$grp Vehicle : "{ECBAE423A5533048}Prefabs/Vehicles/Wheeled/Gatoma/Gatoma_Armed.et" {
+ Gatoma_Armed1 {
+  coords 3080.79 3.094 2463.221
+  angleY -101.273
+ }
+ Gatoma_Armed2 {
+  coords 2982.688 7.625 2914.698
+  angleY 171.022
+ }
+ Gatoma_Armed3 {
+  coords 2927.564 7.993 2968.112
+  angleX -0.841
+  angleY -110.072
+  angleZ 0.307
+ }
+}

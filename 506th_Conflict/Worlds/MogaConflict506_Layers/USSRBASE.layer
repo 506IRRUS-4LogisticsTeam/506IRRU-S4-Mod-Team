@@ -1,0 +1,2006 @@
+$grp GenericEntity : "{1391CE8C0E255636}Prefabs/Systems/MilitaryBase/ConflictMilitaryBase.et" {
+ Control_Base {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bCanBeHQ 1
+    m_sBaseName "CNTRLBASE"
+    m_sBaseNameUpper "CNTRLBASE"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    Enabled 0
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 452.21 32.093 5633.05
+  angleX -1.79
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+  }
+ }
+ Checkpoint_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "Checkpoint"
+    m_sBaseNameUpper "Checkpoint"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 1912.821 7.878 2382.93
+  angleX 0.916
+  angleY -178.647
+  angleZ -0.874
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -2.285 -0.016 -14.034
+      angleX 0.895
+      angleY 178.633
+      angleZ -0.896
+      CompletionRadius 100
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -7.92 -0.049 -18.046
+      angleX 0.895
+      angleY 178.633
+      angleZ -0.896
+      CompletionRadius 100
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType TEAM_MG
+      }
+     }
+     coords -42.189 -0.64 37.06
+     angleX 0.895
+     angleY 178.633
+     angleZ -0.896
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -0.327 0.004 -1
+       angleY 0
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType TEAM_MG
+      }
+     }
+     coords -11.734 -0.948 37.092
+     angleX 0.895
+     angleY 178.633
+     angleZ -0.896
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 1.021 -0.011 0.312
+       angleY 0
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       Enabled 0
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 26.583 4.455 -85.686
+     angleX 0.895
+     angleY 178.633
+     angleZ -0.896
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 23.554 -3.495 -83.01
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+   }
+  }
+ }
+ GasStation_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "Gas Station"
+    m_sBaseNameUpper "Gas Station"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2356.493 6.593 2359.332
+  angleY -17.307
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.208 -0.093 -0.106
+      angleY 17.307
+      CompletionRadius 100
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -1.465 -0.093 -2.841
+      angleY 17.307
+      CompletionRadius 100
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 51.541 1.484 -39.538
+     angleY 17.307
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -60.502 -1.483 22.456
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -67.278 -0.25 -2.685
+     angleY 17.307
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 64.615 0.245 24.05
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -63.999 -0.787 -61.291
+     angleY 17.307
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 44.647 0.761 80.766
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType SQUAD_RIFLE
+       m_iRespawnPeriod 600
+      }
+     }
+     coords 84.818 -2.02 133.829
+     angleY 17.307
+     {
+      AIWaypointCycle : "{35BD6541CBB8AC08}Prefabs/AI/Waypoints/AIWaypoint_Cycle.et" {
+       coords 3.965 -0.157 2.655
+      }
+      $grp SCR_AIWaypoint : "{FBA8DC8FDA0E770D}Prefabs/AI/Waypoints/AIWaypoint_Patrol_Hierarchy.et" {
+       {
+        coords -241.824 0.122 -93.967
+       }
+       {
+        coords -193.908 1.549 -296.817
+       }
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType TEAM_MG
+      }
+     }
+     coords -206.223 -1.124 57.434
+     angleY 17.307
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 0.74 1.724 -2.324
+       angleY 0
+      }
+     }
+    }
+   }
+  }
+ }
+ OuterHaven_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 75
+    m_bIsControlPoint 1
+    m_sBaseName "Outer Haven"
+    m_sBaseNameUpper "Outer Haven"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2572.392 2 2233.727
+  angleY 61.438
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.627 0 -13.015
+      angleY -61.438
+      CompletionRadius 75
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.719 0 -15.204
+      angleY -61.438
+      CompletionRadius 75
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -47.775 0 40.518
+     angleY -61.438
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -14.687 0 -64.789
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -3.817 0 -66.797
+     angleY -61.438
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 66.87 0 27.375
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 40.045 0 35.579
+     angleY -61.438
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -45.889 0 14.825
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+   }
+  }
+ }
+ BusStop_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Bus Stop"
+    m_sBaseNameUpper "Bus Stop"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2724.946 6 2457.249
+  angleY 6.622
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.755 0.001 -4.61
+      angleY -6.622
+      CompletionRadius 75
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.194 0 -5.903
+      angleY -6.622
+      CompletionRadius 75
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 43.18 -1.431 25.864
+     angleY -6.622
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -45.756 1.432 -16.749
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -5.938 -3.84 -62.813
+     angleY -6.622
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 14.274 3.841 64.972
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 13.857 15.897 78.075
+     angleX 11.479
+     angleY -6.804
+     angleZ -0.913
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords 0.511 -0.004 -0.846
+       angleY 0.178
+       angleZ 0.877
+      }
+     }
+    }
+   }
+  }
+ }
+ SlumCity_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Slum City"
+    m_sBaseNameUpper "Slum City"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2708.934 6.777 2792.659
+  angleX -3.661
+  angleY 159.29
+  angleZ 0.428
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -0.848 0.016 -10.234
+      angleX -3.576
+      angleY -159.275
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.195 0 -13.489
+      angleX -3.576
+      angleY -159.275
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -32.498 -0.847 -14.272
+     angleX -3.576
+     angleY -159.275
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -24.085 -0.563 -28.404
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 16.069 0.114 -21.327
+     angleX -3.576
+     angleY -159.275
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 24.803 -1.467 -16.027
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ Apartments_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Apartments"
+    m_sBaseNameUpper "Apartments"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2897.439 6.432 2893.035
+  angleX -1.151
+  angleY 159.562
+  angleZ -0.526
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 2.191 -0.044 -8.695
+      angleX -0.895
+      angleY -159.549
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.043 -0.021 -13.193
+      angleX -0.895
+      angleY -159.549
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 32.188 -1.224 9.79
+     angleX -0.895
+     angleY -159.549
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 26.756 0.901 12.091
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -34.436 0.894 -21.268
+     angleX -0.895
+     angleY -159.549
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -24.827 -1.169 -37.667
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ ConstuctionDistrict_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Constuction District"
+    m_sBaseNameUpper "Constuction District"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3046.042 5.802 2821.36
+  angleX 1.157
+  angleY -68.957
+  angleZ -0.514
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -0.558 -0.004 -9.473
+      angleX -0.895
+      angleY 68.959
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -1.998 -0.007 -11.541
+      angleX -0.895
+      angleY 68.959
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 18.762 -0.492 36.757
+     angleX -0.895
+     angleY 68.959
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 27 -0.377 -29.973
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 10.77 0.495 -36.559
+     angleX -0.895
+     angleY 68.959
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -39.922 0.167 3.149
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ BeachResort_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Beach Resort"
+    m_sBaseNameUpper "Beach Resort"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2856.685 2.473 2305.709
+  angleX 0.375
+  angleY -114.751
+  angleZ 0.813
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.567 0.003 -11.179
+      angleX 0.895
+      angleY 114.754
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.42 0.002 -14.116
+      angleX 0.895
+      angleY 114.754
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -25.458 -0.333 9.383
+     angleX 0.895
+     angleY 114.754
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -4.011 -0.094 28.876
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -13.162 0.103 -38.127
+     angleX 0.895
+     angleY 114.754
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -41.799 -0.038 -3.167
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ CentralHub_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Central Hub"
+    m_sBaseNameUpper "Central Hub"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2898.39 3.291 2465.48
+  angleX -1.789
+  angleY -0.028
+  angleZ 0.896
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.686 0 -12.532
+      angleX 1.79
+      angleY 0
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.317 0 -14.698
+      angleX 1.79
+      angleY 0
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -14.687 -1.859 -46.675
+     angleX 1.79
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 16.85 0.172 45.602
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -9.589 0.551 35.762
+     angleX 1.79
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 11.696 0.41 -36.595
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ BusinessD_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Business District"
+    m_sBaseNameUpper "Business District"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3074.868 2.458 2508.172
+  angleX 0.895
+  angleY 0.014
+  angleZ 0.895
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.891 0.012 -10.681
+      angleX -0.895
+      angleY 0
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.428 0 -13.525
+      angleX -0.895
+      angleY 0
+      angleZ -0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 33.29 0.599 21.652
+     angleX -0.895
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -33.532 -0.411 -21.472
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -22.092 0.671 -36.366
+     angleX -0.895
+     angleZ -0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 23.527 -0.424 38.638
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ CoastG_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 75
+    m_bIsControlPoint 1
+    m_sBaseName "Coast Guard HQ"
+    m_sBaseNameUpper "Coast Guard HQ"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3441.971 2 2443.309
+  angleY 86.894
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -28.337 0 -12.51
+      angleY -86.894
+      CompletionRadius 30
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -48.208 0.041 -22.482
+      angleY -86.894
+      CompletionRadius 25
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -49.518 0.032 -17.06
+     angleY -86.894
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 36.374 0.077 -1.42
+       angleY 0
+       CompletionRadius 25
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 2.166 0 14.508
+     angleY -86.894
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -0.211 0.033 -1.15
+       angleY 0
+       CompletionRadius 22
+      }
+     }
+    }
+   }
+  }
+ }
+ Hotel_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 75
+    m_bIsControlPoint 1
+    m_sBaseName "Marhaba Hotel"
+    m_sBaseNameUpper "Marhaba Hotel"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3243.711 1.778 2584.111
+  angleX -1.075
+  angleY -103.093
+  angleZ -0.669
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 3.87 0.032 -12.215
+      angleX -0.895
+      angleY 103.092
+      angleZ 0.895
+      CompletionRadius 75
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 2.86 0.032 -12.367
+      angleX -0.895
+      angleY 103.092
+      angleZ 0.895
+      CompletionRadius 75
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -47.851 2.717 25.015
+     angleX -0.895
+     angleY 103.092
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 10.712 -1.656 55.224
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -2.418 -1.201 -39.696
+     angleX -0.895
+     angleY 103.092
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -40.292 0.565 -2.508
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType TEAM_MG
+      }
+     }
+     coords 20.514 1.813 81.916
+     angleX -0.895
+     angleY 103.092
+     angleZ 1.791
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 0.153 0.053 0.647
+       angleY 0
+       angleZ -0.895
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType TEAM_MG
+      }
+     }
+     coords -68.344 6.246 86.822
+     angleX -0.895
+     angleY 103.092
+     angleZ 0.896
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 0.269 -1.183 1.045
+       angleY 0
+      }
+     }
+    }
+   }
+  }
+ }
+ Graveyard_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Graveyard"
+    m_sBaseNameUpper "Graveyard"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3229.643 6.266 2747.788
+  angleX 2.683
+  angleY -0.042
+  angleZ -0.896
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.013 -0.008 -11.527
+      angleX -2.683
+      angleY 0
+      angleZ 0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 1.948 -0.017 -13.112
+      angleX -2.683
+      angleY 0
+      angleZ 0.895
+      CompletionRadius 50
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -34.568 0.646 -16.183
+     angleX -2.683
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 36.735 0.745 18.044
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 36.162 -0.309 -22.544
+     angleX -2.683
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -33.633 0.815 22.353
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+   }
+  }
+ }
+ Outskirts_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "Outskirts"
+    m_sBaseNameUpper "Outskirts"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2462.714 14.709 2990.356
+  angleX 1.178
+  angleY -27.39
+  angleZ -1.618
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 0.325 0.001 -12.141
+      angleX -1.79
+      angleY 27.359
+      angleZ 0.895
+      CompletionRadius 100
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 2.77 0.001 -14.204
+      angleX -1.79
+      angleY 27.359
+      angleZ 0.895
+      CompletionRadius 100
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 8.276 -1.935 67.336
+     angleX -1.79
+     angleY 27.359
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 27.75 0.409 -62.521
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 61.977 -2.316 -14.702
+     angleX -1.79
+     angleY 27.359
+     angleZ 0.895
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -57.666 0.96 -14.374
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+   }
+  }
+ }
+ NorthSlums_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "North Slums"
+    m_sBaseNameUpper "North Slums"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 2211.09 9.06 2671.643
+  angleX -0.56
+  angleY 18.217
+  angleZ 1.7
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords -17.672 0 -56.181
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords 18.542 0.005 57.541
+      angleY -18.225
+      angleZ -1.79
+      CompletionRadius 100
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords 10.153 0 60.772
+    {
+     SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+      coords -8.543 0.021 -58.42
+      angleY -18.225
+      angleZ -1.79
+      CompletionRadius 100
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     coords -72.321 -0.661 -6.751
+     angleY -18.225
+     angleZ -1.79
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 73.633 -1.61 -14.923
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     coords 78.849 9.619 6.505
+     angleY -18.225
+     angleZ -1.79
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -73.545 -7.294 18.392
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+   }
+  }
+ }
+ Mosque_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 50
+    m_bIsControlPoint 1
+    m_sBaseName "Mosque"
+    m_sBaseNameUpper "Mosque"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3422.206 1.868 2699.214
+  angleX 1.242
+  angleY -136.052
+  angleZ -1.289
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords 24.084 0 9.695
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords -11.701 0 8.65
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 30.508 0.38 8.888
+     angleY 136.038
+     angleZ -1.79
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 25.607 -1.202 -14.589
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -28.593 0.783 -5.841
+     angleY 136.038
+     angleZ -1.79
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -27.913 0.058 17.103
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 2.432 -0.905 45.262
+     angleY 136.038
+     angleZ -1.79
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 29.707 -0.043 29.519
+       angleY 0
+       CompletionRadius 50
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 34.354 0.282 9.349
+     angleY 136.038
+     angleZ -1.79
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords 2.107 0.031 1.173
+       CompletionRadius 10
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -27.963 1.375 -25.445
+     angleY 136.038
+     angleZ -1.79
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords -0.891 -0.015 -0.191
+       m_holdingTime 10
+      }
+     }
+    }
+   }
+  }
+ }
+ Farm_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 75
+    m_sBaseName "Farm"
+    m_sBaseNameUpper "Farm"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3164.26 9.646 3081.542
+  angleX 2.663
+  angleY -90.332
+  angleZ -3.588
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     coords 10.856 0.155 -26.256
+     angleX -3.572
+     angleY 90.332
+     angleZ -2.684
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -25.796 0.369 -10.973
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     coords 11.504 -2.934 54.109
+     angleX -3.572
+     angleY 90.332
+     angleZ -2.684
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 54.358 -0.342 -11.805
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     coords -55.217 2.711 17.213
+     angleX -3.572
+     angleY 90.332
+     angleZ -2.684
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 16.526 -0.036 55.352
+       angleY 0
+       CompletionRadius 75
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -76.062 4.156 -12.185
+     angleX -3.572
+     angleY 90.332
+     angleZ -2.684
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords -9.326 0 -1.483
+       CompletionRadius 5
+      }
+     }
+    }
+   }
+  }
+ }
+ SlumBeach_USSR {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 65
+    m_bIsControlPoint 1
+    m_sBaseName "Slum Beach"
+    m_sBaseNameUpper "Slum Beach"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_fMaximumSeizingTime 300
+    m_fMinimumSeizingTime 300
+   }
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 3887.419 3.62 2818.876
+  angleX 3.315
+  angleY 67.945
+  angleZ -1.342
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords -16.205 0 31.956
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+    coords 21.908 0 28.238
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 2.898 -1.257 29.306
+     angleY -67.984
+     angleZ 3.576
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -26.561 -0.383 -8.411
+       angleY 0
+       CompletionRadius 65
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -35.085 -0.164 -15.276
+     angleY -67.984
+     angleZ 3.576
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 27.436 1.879 -26.72
+       angleY 0
+       CompletionRadius 65
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 18.757 1.486 -24.742
+     angleY -67.984
+     angleZ 3.576
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 17.48 -0.382 25.821
+       angleY 0
+       CompletionRadius 65
+      }
+     }
+    }
+   }
+  }
+ }
+ MilitaryTown_USSR {
+  components {
+   SCR_FactionAffiliationComponent "{5AFC974A2595F05D}" {
+    "faction affiliation" "USSR"
+   }
+  }
+  coords 4198.595 2.219 3044.656
+  angleY 157.299
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+   GenericEntity {
+    ID "606078EE23DE48AC"
+    components {
+     SCR_FactionAffiliationComponent "{5CCEC6039525B984}" {
+      "faction affiliation" "USSR"
+     }
+    }
+   }
+   $grp GenericEntity : "{A73205DEA8361F26}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_USSR.et" {
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -38.331 1.322 -6.351
+     angleY -157.299
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -33.075 -1.33 -21.764
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 47.8 -0.688 56.423
+     angleY -157.299
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 22.831 0.656 67.134
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords 71.974 1.099 -38.818
+     angleY -157.299
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords 82.607 -1.13 -11.073
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -40.951 0.067 64.047
+     angleY -157.299
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -60.007 -0.092 39.957
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType FIRETEAM
+      }
+     }
+     coords -55.724 0.456 33.735
+     angleY -157.299
+     {
+      SCR_DefendWaypoint : "{AAE8882E0DE0761A}Prefabs/AI/Waypoints/AIWaypoint_Defend_Hierarchy.et" {
+       coords -63.167 -0.474 7.863
+       angleY 0
+       CompletionRadius 100
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType SQUAD_RIFLE
+      }
+     }
+     coords 22.663 0.093 42.413
+     angleY -157.299
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords -8.398 -0.031 -2.55
+       CompletionRadius 10
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType SQUAD_RIFLE
+      }
+     }
+     coords 20.929 -0.656 58.705
+     angleY -157.299
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords -8.613 0 -2.631
+       CompletionRadius 10
+      }
+     }
+    }
+    {
+     components {
+      SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+       m_eGroupType SQUAD_RIFLE
+      }
+     }
+     coords 80.201 1.191 -28.426
+     angleY -157.299
+     {
+      SCR_BoardingWaypoint : "{B049D4C74FBC0C4D}Prefabs/AI/Waypoints/AIWaypoint_GetInNearest.et" {
+       coords -4.151 0.372 -1.417
+       CompletionRadius 10
+      }
+     }
+    }
+   }
+  }
+ }
+}
