@@ -1,0 +1,15 @@
+GameEntity : "{C55821E8E86C074E}Prefabs/Items/Equipment/Radios/Radio_ANPRC152.et" {
+ ID "5AE6A8F43E1265DB"
+ components {
+  BaseRadioComponent "{5A30BAE7673C63CA}" {
+   Transceivers {
+    RHS_RadioTransceiver "{5E113972E2944A14}" {
+     "Transmitting Range" 7000
+    }
+    RHS_RadioTransceiver "{5E113972E2944A17}" {
+     "Transmitting Range" 7000
+    }
+   }
+  }
+ }
+}
