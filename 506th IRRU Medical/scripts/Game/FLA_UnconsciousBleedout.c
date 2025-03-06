@@ -151,4 +151,3 @@ modded class SCR_CharacterDamageManagerComponent : SCR_DamageManagerComponent
         // If the base class does not have Update, you can use this method to manually call `UpdateUnconsciousState` here
         UpdateUnconsciousState(deltaTime);
     }
-}
