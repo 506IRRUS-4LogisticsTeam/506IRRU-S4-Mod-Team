@@ -1,0 +1,8 @@
+GameProject {
+ ID "RadioSplitter"
+ GUID "64DCC376A5E11782"
+ TITLE "Radio Splitter"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
