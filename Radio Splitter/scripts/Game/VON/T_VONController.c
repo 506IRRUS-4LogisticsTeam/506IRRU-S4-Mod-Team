@@ -1,6 +1,6 @@
 modded class SCR_VONController
 {
-	protected ref map<SCR_VONEntry, float> m_EarAssignment; // Stores radio → ear assignments (-1: Left, 0: Center, 1: Right)
+	protected ref map<SCR_VONEntry, float> m_EarAssignment; // Stores radio → ear assignments
 	protected ref array<SCR_VONEntry> m_ActiveEntries; // Active channels currently transmitting
 	protected ref map<SCR_VONEntry, vector> m_OriginalPositions; // Stores original positions for reset
 
@@ -12,7 +12,7 @@ modded class SCR_VONController
         m_ActiveEntries = new array<SCR_VONEntry>();
         m_OriginalPositions = new map<SCR_VONEntry, vector>(); // Initialize original positions storage
 
-        // 🎮 Register Keybinds for Assigning Radios to Ears
+        // Register Keybinds for Assigning Radios to Ears
         InputManager inputManager = GetGame().GetInputManager();
         if (inputManager)
         {
@@ -23,7 +23,7 @@ modded class SCR_VONController
     }
 
 	//------------------------------------------------------------------------------------------------
-	//! Assign a VON radio channel to a specific ear (-1 = Left, 0 = Center, 1 = Right)
+	//! Assign a VON radio channel to a specific ear -- **Not sure if this is functional, refer to 3D Positional Audio below**
 	void AssignChannelToEar(SCR_VONEntry entry, float earSide)
 	{
 		if (!entry || entry == m_DirectSpeechEntry) // Ensure Direct Speech is NOT modified
@@ -57,7 +57,7 @@ modded class SCR_VONController
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Apply 3D positional audio by shifting the radio entity slightly left or right
+	//! Apply 3D positional audio by shifting the radio entity slightly left or right -- Can tweak the offset amount to make it more realistic.
 	void ApplyPositionalAudio(SCR_VONEntry entry, bool isActive)
 	{
 		// Ensure the entry is a radio entry
@@ -106,7 +106,7 @@ modded class SCR_VONController
 		// Apply the new position
 		radioEntity.SetOrigin(pos);
 
-		// 🔹 FIXED: Correct way to get the radio name using SCR_VONEntryRadio
+		// Get the radio name using SCR_VONEntryRadio
 		UIInfo uiInfo = radioEntry.GetUIInfo();
 		string radioName = "Unknown Radio"; // Default
 
@@ -120,13 +120,13 @@ modded class SCR_VONController
 	}
 	
 	//------------------------------------------------------------------------------------------------
-    //! Moves the currently selected radio's sound to the left ear (-0.3)
+    // Moves the currently selected radio's sound to the left ear (-0.3)
     void MoveActiveRadioLeft(float value, EActionTrigger reason)
     {
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
         AssignChannelToEar(activeRadio, -0.3);
-        Print("📻 Moved radio to LEFT ear (-0.3). ");
+        Print("Moved radio to LEFT ear (-0.3). ");
     }
 
     //! Moves the currently selected radio's sound to the center (0.0)
@@ -135,7 +135,7 @@ modded class SCR_VONController
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
         AssignChannelToEar(activeRadio, 0.0);
-        Print("📻 Moved radio to CENTER (0.0). ");
+        Print("Moved radio to CENTER (0.0). ");
     }
 
     //! Moves the currently selected radio's sound to the right ear (0.03)
@@ -144,7 +144,7 @@ modded class SCR_VONController
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
         AssignChannelToEar(activeRadio, 0.03);
-        Print("📻 Moved radio to RIGHT ear (0.03). ");
+        Print("Moved radio to RIGHT ear (0.03). ");
     }
 
 	//------------------------------------------------------------------------------------------------
@@ -153,7 +153,7 @@ modded class SCR_VONController
 	{
 		foreach (SCR_VONEntry entry : m_ActiveEntries)
 		{
-			ApplyPositionalAudio(entry, false); // Reset positions
+			ApplyPositionalAudio(entry, false); // Reset positions to ensure no drift overtime.
 		}
 		m_ActiveEntries.Clear();
 		m_OriginalPositions.Clear();
