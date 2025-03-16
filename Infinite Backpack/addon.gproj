@@ -1,0 +1,8 @@
+GameProject {
+ ID "backpackbackpack"
+ GUID "64E09812218B29EE"
+ TITLE "backpack backpack"
+ Dependencies {
+  "5CF0C3158AB2337E" "595F2BF2F44836FB" "58D0FB3206B6F859"
+ }
+}
