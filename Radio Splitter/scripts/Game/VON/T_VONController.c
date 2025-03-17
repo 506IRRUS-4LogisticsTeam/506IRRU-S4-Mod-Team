@@ -88,8 +88,8 @@ modded class SCR_VONController
 		if (m_EarAssignment.Contains(entry))
 			earSide = m_EarAssignment.Get(entry);
 
-		// Apply a fixed positional shift of -0.3 for Left and 0.3 for Right
-		float offsetAmount = 0.3;
+		// Apply a fixed positional shift of -1.0 for Left and 1.0 for Right
+		float offsetAmount = 1;
 		vector playerRight = playerEntity.GetTransformAxis(0); // Get right direction
 
 		// Apply offset if active, reset if inactive
@@ -120,31 +120,31 @@ modded class SCR_VONController
 	}
 	
 	//------------------------------------------------------------------------------------------------
-    // Moves the currently selected radio's sound to the left ear (-0.3)
+    // Moves the currently selected radio's sound to the left ear (-1)
     void MoveActiveRadioLeft(float value, EActionTrigger reason)
     {
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
-        AssignChannelToEar(activeRadio, -0.3);
-        Print("Moved radio to LEFT ear (-0.3). ");
+        AssignChannelToEar(activeRadio, -1.0);
+        Print("Moved radio to LEFT ear.");
     }
 
-    //! Moves the currently selected radio's sound to the center (0.0)
+    //! Moves the currently selected radio's sound to the center (0)
     void MoveActiveRadioCenter(float value, EActionTrigger reason)
     {
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
         AssignChannelToEar(activeRadio, 0.0);
-        Print("Moved radio to CENTER (0.0). ");
+        Print("Moved radio to CENTER.");
     }
 
-    //! Moves the currently selected radio's sound to the right ear (0.03)
+    //! Moves the currently selected radio's sound to the right ear (+1)
     void MoveActiveRadioRight(float value, EActionTrigger reason)
     {
         SCR_VONEntry activeRadio = GetActiveEntry();
         if (!activeRadio) return;
-        AssignChannelToEar(activeRadio, 0.03);
-        Print("Moved radio to RIGHT ear (0.03). ");
+        AssignChannelToEar(activeRadio, 1.0);
+        Print("Moved radio to RIGHT ear.");
     }
 
 	//------------------------------------------------------------------------------------------------
