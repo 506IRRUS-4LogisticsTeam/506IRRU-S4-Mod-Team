@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{76EE4316BF86A496}Prefabs/Items/Equipment/Patches/Unit Patches/Data/101st Patch.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

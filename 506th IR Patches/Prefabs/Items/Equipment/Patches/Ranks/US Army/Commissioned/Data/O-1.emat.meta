@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{ACF20E9D4C119424}Prefabs/Items/Equipment/Patches/Ranks/US Army/Commissioned/Data/O-1.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

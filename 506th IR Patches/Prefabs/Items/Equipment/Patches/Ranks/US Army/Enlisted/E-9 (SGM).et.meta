@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{C96E66C0BF58CBD2}Prefabs/Items/Equipment/Patches/Ranks/US Army/Enlisted/E-9 (SGM).et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}
