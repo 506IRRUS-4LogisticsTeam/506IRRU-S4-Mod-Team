@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{BE1326D941114FAA}Ranks/USAF/Enlisted/Data/E-8 (1Sgt).emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{8B67BCDF00CCA0D5}Prefabs/Items/Equipment/Patches/USAF Detachments/19th Air SOS/Data/DefaultGeneratedMaterial.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

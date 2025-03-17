@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{4A800D075B8D727B}Ranks/US Army/Enlisted/Data/E-8 (MSG).emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{F49BACB187A2EB3D}Prefabs/Items/Equipment/Patches/Ranks/USAF/Enlisted/Data/E-7 (1Sgt).emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

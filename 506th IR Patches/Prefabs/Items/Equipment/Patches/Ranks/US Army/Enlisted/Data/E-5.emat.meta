@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{05C7334431DC3E5C}Prefabs/Items/Equipment/Patches/Ranks/US Army/Enlisted/Data/E-5.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

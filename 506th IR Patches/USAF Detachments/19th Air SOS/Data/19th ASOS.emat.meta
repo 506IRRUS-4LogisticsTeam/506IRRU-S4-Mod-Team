@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{40FBC4BA5EA24B90}USAF Detachments/19th Air SOS/Data/19th ASOS.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}
