@@ -1,0 +1,10 @@
+GenericEntity : "{D6455039CDEABCF0}Prefabs/Items/Equipment/Backpacks/3RBN_Backpack_Delta_Assault.et" {
+ ID "511E9C6ADE70F798"
+ components {
+  SCR_UniversalInventoryStorageComponent "{5222CB03A40528FA}" {
+   UseCapacityCoefficient 1
+   CapacityCoefficient 99999
+   m_fMaxWeight 99999
+  }
+ }
+}
