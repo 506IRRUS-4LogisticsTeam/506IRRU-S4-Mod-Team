@@ -1,0 +1,410 @@
+			{
+				"comments": "no dependencies, essential tools for server admin; creates a ServerAdminTools_Config.json in the server profile",
+				"developer": "bacon8008",
+				"modId": "5AAAC70D754245DD",
+				"name": "SERVER ADMIN TOOLS",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5AAAC70D754245DD-ServerAdminTools"
+			},
+			{
+				"comments": "dependency - Server Admin Tools, allows changing of missions",
+				"developer": "TilW",
+				"modId": "606D03292879EF5B",
+				"name": "SCENARIO RELOAD MENU",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/606D03292879EF5B-ScenarioReloadMenu"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "acemod",
+				"modId": "611CB1D409001EB0",
+				"name": "ACE REPACK",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/611CB1D409001EB0-ACEMagazineRepack"
+			},
+			{
+				"comments": "no dependencies, must have this for any contemporary uniforms and helmets",
+				"developer": "zelik",
+				"modId": "5D0551624969C92E",
+				"name": "ZELIKS CHARACTER",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5D0551624969C92E-ZeliksCharacter"
+			},
+			{
+				"comments": "no dependencies",
+				"modId": "60C4CE4888FF4621",
+				"name": "ACE CORE",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/60C4CE4888FF4621-ACECore"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "Cyborgmatt",
+				"modId": "629B2BA37EFFD577",
+				"name": "WCS_Armaments",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/629B2BA37EFFD577-WCS_Armaments"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "ATiM",
+				"modId": "5F268647F8A1A1F4",
+				"name": "CRX",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5F268647F8A1A1F4-CRXEnfusionA.I."
+			},
+			{
+				"comments": "no dependencies, requirement for the M4A1 Block II and URG-I mod",
+				"developer": "bacon8008",
+				"modId": "5ABD0CB57F7E9EB1",
+				"name": "BACON RIS Laser Attachments",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5ABD0CB57F7E9EB1-RISLaserAttachments"
+			},
+			{
+				"comments": "dependency - ACE Core",
+				"developer": "acemod",
+				"modId": "606C369BAC3F6CC3",
+				"name": "ACE FINGER",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/606C369BAC3F6CC3-ACEFinger"
+			},
+			{
+				"comments": "dependency - ACE Core",
+				"developer": "acemod",
+				"modId": "5DBD560C5148E1DA",
+				"name": "ACE CARRYING",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5DBD560C5148E1DA-ACECarrying"
+			},
+			{
+				"comments": "dependencies - ACE Core",
+				"modId": "61226BB18D360BDD",
+				"name": "ACE Tactical Ladder Prototype",
+				"version": "0.1.0",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/61226BB18D360BDD-ACETacticalLadderPrototype"
+			},
+			{
+				"comments": "dependency - ACE Core",
+				"modId": "5EB744C5F42E0800",
+				"name": "ACE Chopping",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5EB744C5F42E0800-ACEChopping"
+			},
+			{
+				"comments": "dependency - ACE Core",
+				"modId": "60C53A9372ED3964",
+				"name": "ACE COMPASS",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/60C53A9372ED3964-ACECompass"
+			},
+			{
+				"comments": "dependencies - ACE Core",
+				"developer": "acemod",
+				"modId": "60E573C9B04CC408",
+				"name": "ACE BACKBLAST",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/60E573C9B04CC408-ACEBackblast"
+			},
+			{
+				"comments": "dependencies - ACE Core",
+				"developer": "acemod",
+				"modId": "60EAEA0389DB3CC2",
+				"name": "ACE TRENCHES",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/60EAEA0389DB3CC2-ACETrenches"
+			},
+			{
+				"comments": "dependency - WCS_Armaments",
+				"developer": "Cyborgmatt, AkiraSeki, Tonimontana",
+				"modId": "5E389BB9F58B79A6",
+				"name": "SpaceCore",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5E389BB9F58B79A6-SpaceCore"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "Searing Star",
+				"modId": "61C2509A023211FE",
+				"name": "M3 MAAWS",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/61C2509A023211FE-M3MAAWS"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "",
+				"modId": "5994AD5A9F33BE57",
+				"name": "Game Master FX",
+				"version": "",
+				"workshopLink": ""
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "",
+				"modId": "62113AA293414DB9",
+				"name": "Bandage Patch",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/62113AA293414DB9-BandagePatch"
+			},
+			{
+				"comments": "no dependencies, simple stamina bar at bottom of screen",
+				"developer": "Skamdrept",
+				"modId": "5F26B8DC102B3E26",
+				"name": "SESOF Stamina",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5F26B8DC102B3E26-SESOFStamina"
+			},
+			{
+				"comments": "no dependencies, changes default 6 man squad to 12 man",
+				"developer": "V-lst",
+				"modId": "5EF50A556AFB690D",
+				"name": "12 TEAMMATES",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5EF50A556AFB690D-12Teammates"
+			},
+			{
+				"comments": "no dependencies, changes vanilla save loadout for current session and saves permanently on server",
+				"developer": "bacon8008",
+				"modId": "5C73156675E11A0F",
+				"name": "GM PERSISTENT LOADOUTS",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5C73156675E11A0F-GMPersistentLoadouts"
+			},
+			{
+				"comments": "no dependencies, Game Master placeable zones that prevent damage while zone is active",
+				"developer": "bacon8008",
+				"modId": "5CE334EA7649C7CC",
+				"name": "GAME MASTER SAFE ZONES",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5CE334EA7649C7CC-GameMasterSafeZones"
+			},
+			{
+				"comments": "Replaces Base Game LAW [M72] with m72a6 round, law with Rangefinder-RIS mods",
+				"developer": "dylan dee",
+				"modId": "610D71F50145A8F6",
+				"name": "LAW HEATDP M72",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/610D71F50145A8F6-LAWHEATDPM72"
+			},
+			{
+				"comments": "",
+				"developer": "TheAussieMerc",
+				"modId": "5CF0C3158AB2337E",
+				"name": "TASK FORCE MATTOCK Uniforms",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5B3ED33ADA805340-TaskForceMattockWeapons"
+			},
+			{
+				"comments": "windows no longer blind shooters",
+				"developer": "Zguba",
+				"modId": "611772813EE29E17",
+				"name": "HDRFIX",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/611772813EE29E17-HDRFix"
+			},
+			{
+				"comments": "",
+				"developer": "",
+				"modId": "5B0D1E4380971EBD",
+				"name": "Coalition Squad Interface",
+				"version": "",
+				"workshopLink": ""
+			},
+			{
+				"comments": "prevents weapon from dropping when you go unconscious",
+				"developer": "bacon8008",
+				"modId": "6088A3044B7ECBFD",
+				"name": "KEEP GUN WHEN UNCON",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/6088A3044B7ECBFD-KeepGunWhenUncon"
+			},
+			{
+				"comments": "",
+				"developer": "",
+				"modId": "62E0B4EB51FCE050",
+				"name": "Keep Map Markers on Disconnect",
+				"version": "",
+				"workshopLink": ""
+			},
+			{
+				"name": "Wirecutters 2",
+				"modId": "62F364B35E9B51B0",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/62F364B35E9B51B0",
+				"comments": "The sequel to the classic"
+			},
+			{
+				"comments": "simple compass at bottom of screen, for testing purposes only",
+				"developer": "Skamdrept",
+				"modId": "5F0CA2820542039B",
+				"name": "SESOF Compass",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5F0CA2820542039B-SESOFCompass"
+			},
+			{
+				"comments": "",
+				"developer": "",
+				"modId": "61E0C92BB08EE665",
+				"name": "Persistent Vehicles",
+				"version": "",
+				"workshopLink": ""
+			},
+			{
+				"comments": "dependency - WCS_Armaments",
+				"developer": "",
+				"modId": "62CCD69DD17E4F2F",
+				"name": "Aki-Core",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/62CCD69DD17E4F2F-AKICORE"
+			},
+			{
+				"comments": "dependency - RIS Laser Attachments",
+				"developer": "TheAussieMerc",
+				"modId": "5B3ED33ADA805340",
+				"name": "TASK FORCE MATTOCK WEAPONS",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5B3ED33ADA805340-TaskForceMattockWeapons"
+			},
+			{
+				"comments": "dependencies - RIS Laser Attachments, M249 Scope Rails",
+				"developer": "SRGshadows",
+				"modId": "5E4F1725CF7FD63A",
+				"name": "BACON M249 pkm rpk rails",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5E4F1725CF7FD63A-BaconsM249pkmrpkrails"
+			},
+			{
+				"comments": "dependencies - Bacon Suppressors, RIS Laser Attachments",
+				"developer": "bacon8008",
+				"modId": "5CA6BA2F63DE1174",
+				"name": "BACON M17 Pistol",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5CA6BA2F63DE1174-M17Pistol"
+			},
+			{
+				"comments": "updated for v1.3, dependencies - SpaceCore, WCS_Armaments",
+				"developer": "",
+				"modId": "5C721177A220B42F",
+				"name": "JLTV",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5C721177A220B42F-JointLightTacticalVehicle"
+			},
+			{
+				"comments": "dependencies - SpaceCore, WCS_Armaments",
+				"developer": "TheSpaceStrider",
+				"modId": "5D5A20A8AE33C21E",
+				"name": "Cougar MRAP",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5C721177A220B42F-JointLightTacticalVehicle"
+			},
+			{
+				"comments": "updated for v1.3, dependencies - WCS_Armaments, MFD Framework",
+				"developer": "Colton1070",
+				"modId": "61957C5C6FB7A773",
+				"name": "H-47 Chinook",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/61957C5C6FB7A773-H-47Chinook"
+			},
+			{
+				"comments": "dependency - RIS Laser Attachments",
+				"developer": "TheAussieMerc",
+				"modId": "6470FD91F0646126",
+				"name": "Mk-48 Machine Gun",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/6470FD91F0646126-Mk-48MachineGun"
+			},
+			{
+				"comments": "updated for v1.3, dependencies - Bacon Suppressors, RIS Laser Attachments",
+				"developer": "bacon8008",
+				"modId": "5CA125536EE7430A",
+				"name": "M110 DMR",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5CA125536EE7430A-M110DMR"
+			},
+			{
+				"comments": "no dependencies, Fixes the radial menu for map marker for PC",
+				"developer": "Kexanone",
+				"modId": "609E8CAD8A403EA6",
+				"name": "MAP MARKER MENU FIX",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/609E8CAD8A403EA6-MapMarkerMenuFix"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "Izzkhalifa",
+				"modId": "6176C854FF5FAFA8",
+				"name": "25K Draw Distance",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/6176C854FF5FAFA8-25KViewDistance"
+			},
+			{
+				"comments": "no dependencies, highly recommended by community for Game Master enhancements",
+				"developer": "GME Mod Team",
+				"modId": "5964E0B3BB7410CE",
+				"name": "GAME MASTER ENHANCED",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5964E0B3BB7410CE-GameMasterEnhanced"
+			},
+			{
+				"comments": "updated for v1.3, dependencies - WCS_Armaments, MFD Framework",
+				"developer": "Colton1070",
+				"modId": "61957C5C6FB7A773",
+				"name": "H-47 Chinook",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/61957C5C6FB7A773-H-47Chinook"
+			},
+			{
+				"comments": "updated for v1.3, dependencies - RHS Status Quo, AkiCore, WCS_Armaments, MFD Framework",
+				"developer": "AkiraSeki",
+				"modId": "62AE96D92179F7A0",
+				"name": "WCS_AH-6M_Upgrade",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/62AE96D92179F7A0-WCS_AH-6M_Upgrade"
+			},
+			{
+				"comments": "needs update for v1.3, Weapon Recoil Mod for the 506IRRU, produced by SSG Mitchell",
+				"developer": "Flannel97 aka SSG Mitchell aka 506th IRRU",
+				"modId": "610950C88EB64D07",
+				"name": "506IRRU - General Adjustments",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/610950C88EB64D07-506IRRU-GeneralAdjustments"
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "",
+				"modId": "606B100247F5C709",
+				"name": "Bacon Loadout Editor",
+				"version": "",
+				"workshopLink": ""
+			},
+			{
+				"comments": "no dependencies",
+				"developer": "bacon8008",
+				"modId": "5AB890B71D748750",
+				"name": "BACON M4A1 Block II and URG-I",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/5AB890B71D748750-M4A1BlockIIandURG-I"
+			},
+			{
+				"comments": "needs update for v1.3",
+                "developer": "Flannel97 aka SSG Mitchell aka 506th IRRU",
+				"modId": "61D55EBAE7AE09F8",
+				"name": "506IRRU Arsenals",
+				"version": "",
+				"workshopLink": "Unlisted"
+			},
+			{
+				"comments": "no dependencies",
+				"modId": "62F14425925F6277",
+				"name": "Littleberry Tweaks",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/62F14425925F6277"
+			},
+			{
+				"comments": "needs update for v1.3, dependencies - AUS_Core, WCS_Armaments",
+				"developer": "TheAussieMerc",
+				"modId": "60ED3CC6E7E40221",
+				"name": "Sikorsky MH60 DAP Project",
+				"version": "",
+				"workshopLink": "https://reforger.armaplatform.com/workshop/60ED3CC6E7E40221-SikorskyMH60DAPProject"
+			}

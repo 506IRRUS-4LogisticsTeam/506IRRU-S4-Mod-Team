@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{0ABE022D8C5BF9B3}Prefabs/Weapons/MachineGuns/XM250/MG_XM250_blk.et"
+ Name "{5459D2D8293BD275}Prefabs/Weapons/MachineGuns/XM250/MG_XM250.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
