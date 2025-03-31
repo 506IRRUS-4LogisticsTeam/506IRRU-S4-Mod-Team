@@ -1,0 +1,8 @@
+GameProject {
+ ID "TRF"
+ GUID "64F42AD3A5360593"
+ TITLE "TRF"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
