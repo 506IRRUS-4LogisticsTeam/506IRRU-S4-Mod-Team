@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{253BD8FF0469CDF6}Prefabs/MP/Modes/Editor/GameMode_Editor.et"
+ Name "{E0A05C76552E7F58}Prefabs/AI/SCR_AIWorld.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }

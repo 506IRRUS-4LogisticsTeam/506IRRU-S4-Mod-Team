@@ -1,4 +1,4 @@
-SCR_GameModeEditor : "{D2DE7F43D48A3667}Prefabs/MP/Modes/Editor/GameMode_Editor.et" {
+SCR_GameModeCampaign : "{0F307326459A1395}Prefabs/MP/Modes/GameMode_Base.et" {
  ID "56B2B479C6B96951"
  components {
   SCR_AdditionalGameModeSettingsComponent "{6170E11C3C452ACC}" {
@@ -8,12 +8,8 @@ SCR_GameModeEditor : "{D2DE7F43D48A3667}Prefabs/MP/Modes/Editor/GameMode_Editor.
   SCR_ArsenalManagerComponent "{6120A34EB1E9BBEF}" {
    m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
   }
-  SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
-   m_fDOTScale 0.5
-   m_fRegenScale 2.5
-  }
-  SCR_NotificationSenderComponent "{56FA84B04BE7D4C0}" {
-   m_iKillFeedType DISABLED
+  SCR_PerceivedFactionManagerComponent "{61AA7E6E0C6A76F9}" {
+   m_ePunishmentKillingWhileDisguised 0
   }
  }
 }
