@@ -13,12 +13,7 @@ modded class SCR_PlayerController : SCR_PlayerController
 		BaseGameEntity baseEntity = BaseGameEntity.Cast(playerEntity);
 		if (!baseEntity) return;
 
-		if (!baseEntity.FindComponent(VONRoutingComponent))
-		{
-			ScriptComponent comp = ScriptComponent.Cast(baseEntity.AddComponent("VONRoutingComponent"));
-			if (!comp) return;
-		}
-
+		// Try to find the VONRoutingComponent
 		VONRoutingComponent routing = VONRoutingComponent.Cast(baseEntity.FindComponent(VONRoutingComponent));
 		if (routing)
 			routing.ApplyRouting(EVONAudioRouting.CENTER);
