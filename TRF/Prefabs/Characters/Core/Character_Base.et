@@ -1,0 +1,7 @@
+SCR_ChimeraCharacter {
+ ID "520EC961A090B1EE"
+ components {
+  VONRoutingComponent "{6517650DA3CDF41C}" {
+  }
+ }
+}
