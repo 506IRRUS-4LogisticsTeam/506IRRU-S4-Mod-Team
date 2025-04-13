@@ -48,13 +48,22 @@ class NoInstantDeathComponent : ScriptComponent
 		if (m_bIsUnconscious)
 			return;
 
+		SCR_CharacterDamageManagerComponent dmg = SCR_CharacterDamageManagerComponent.Cast(owner.FindComponent(SCR_CharacterDamageManagerComponent));
+		if (!dmg)
+			return;
+            
+		// Check if ACE Medical's Second Chance is already triggered
+		if (dmg.ACE_Medical_IsInitialized() && dmg.ACE_Medical_WasSecondChanceTrigged())
+		{
+			Print("[NoInstantDeath] ACE Medical Second Chance already triggered, skipping duplicate unconsciousness.");
+			return;
+		}
+
 		Print("[NoInstantDeath] Entering unconscious state.");
 		m_bIsUnconscious = true;
 		m_fUnconsciousTimer = 0.0;
 
-		SCR_CharacterDamageManagerComponent dmg = SCR_CharacterDamageManagerComponent.Cast(owner.FindComponent(SCR_CharacterDamageManagerComponent));
-		if (dmg)
-			dmg.ForceUnconsciousness(0.05); // Small health buffer to simulate knockdown
+		dmg.ForceUnconsciousness(0.05); // Small health buffer to simulate knockdown
 
 		if (Replication.IsServer())
 			Replication.BumpMe();
