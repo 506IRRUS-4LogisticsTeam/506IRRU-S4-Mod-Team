@@ -9,6 +9,7 @@ class NoInstantDeathComponent : ScriptComponent
 	protected float m_fBleedOutTime = 60.0;
 	protected float m_fUnconsciousTimer = 0.0;
 	protected RplComponent m_Rpl;
+	protected const float CHECK_INTERVAL = 1.0; // Check only once per second instead of every frame
 
 	override void OnPostInit(IEntity owner)
 	{
@@ -29,18 +30,23 @@ class NoInstantDeathComponent : ScriptComponent
 		}
 	}
 
-	override void EOnFrame(IEntity owner, float timeSlice)
+	// New method to update the unconscious timer using scheduled callbacks
+	protected void UpdateUnconsciousTimer()
 	{
 		if (!m_bIsUnconscious || !Replication.IsServer())
 			return;
-
-		m_fUnconsciousTimer += timeSlice;
-
+			
+		m_fUnconsciousTimer += CHECK_INTERVAL;
+		
 		if (m_fUnconsciousTimer >= m_fBleedOutTime)
 		{
 			Print("[NoInstantDeath] Bleed-out timer expired. Killing character.");
-			KillCharacter(owner);
+			KillCharacter(GetOwner());
+			return; // Don't schedule another check if we're killing the character
 		}
+		
+		// Schedule next check
+		GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 	}
 
 	void MakeUnconscious(IEntity owner)
@@ -66,13 +72,20 @@ class NoInstantDeathComponent : ScriptComponent
 		dmg.ForceUnconsciousness(0.05); // Small health buffer to simulate knockdown
 
 		if (Replication.IsServer())
+		{
 			Replication.BumpMe();
+			// Start timer checks on server only
+			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
+		}
 	}
 
 	void KillCharacter(IEntity owner)
 	{
 		Print("[NoInstantDeath] Forcing character death.");
 		m_bIsUnconscious = false;
+		
+		// Make sure to clear any pending timer callbacks
+		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
 		SCR_CharacterDamageManagerComponent dmg = SCR_CharacterDamageManagerComponent.Cast(owner.FindComponent(SCR_CharacterDamageManagerComponent));
 		if (dmg)
