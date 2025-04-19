@@ -18,30 +18,41 @@ class VONRoutingComponent : ScriptComponent
 	{
 		m_Owner = owner;
 
-		// Get RplComponent if needed
 		if (!m_Rpl)
 			m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
 
-		// Server check and replication bump
 		if (Replication.IsServer())
 			Replication.BumpMe();
 
-		// Only apply routing once
 		if (!m_routingInitialized)
 		{
 			ApplyRouting(EVONAudioRouting.CENTER);
 			m_routingInitialized = true;
 		}
 	}
-	
+
+	ref map<string, EVONAudioRouting> m_channelRouting = new map<string, EVONAudioRouting>();
+
+	void ApplyRoutingForEntry(SCR_VONEntry entry)
+	{
+		if (!entry)
+			return;
+
+		string entryId = entry.GetUniqueId();
+
+		EVONAudioRouting routing = EVONAudioRouting.CENTER;
+		if (m_channelRouting.Contains(entryId))
+			routing = m_channelRouting[entryId];
+
+		ApplyRouting(routing);
+	}
+
 	void ApplyRouting(EVONAudioRouting routing)
 	{
 		m_currentRouting = routing;
 
 		if (!m_Owner)
 			return;
-
-		m_Rpl = RplComponent.Cast(m_Owner.FindComponent(RplComponent));
 
 		switch (routing)
 		{
@@ -62,14 +73,65 @@ class VONRoutingComponent : ScriptComponent
 				AudioSystem.SetVariableByName("VON_RIGHT", 1.5, "ToastyRadios:Sounds/VON/VON_DIRECTION.conf");
 				ShowRoutingHint("VON routed to CENTER");
 				break;
-			
-			if (Replication.IsServer())
-				Replication.BumpMe();
 		}
+
+		if (Replication.IsServer())
+			Replication.BumpMe();
 	}
+
+	EVONAudioRouting GetNextRouting(EVONAudioRouting current)
+	{
+		int nextIndex = ((int)current + 1) % 3;
+		switch (nextIndex)
+		{
+			case 0: return EVONAudioRouting.LEFT;
+			case 1: return EVONAudioRouting.RIGHT;
+			case 2: return EVONAudioRouting.CENTER;
+		}
+		return EVONAudioRouting.CENTER;
+	}
+	
+	string RoutingToString(EVONAudioRouting routing)
+	{
+		switch (routing)
+		{
+			case EVONAudioRouting.LEFT: return "LEFT";
+			case EVONAudioRouting.RIGHT: return "RIGHT";
+			case EVONAudioRouting.CENTER: return "CENTER";
+			default: return "UNKNOWN";
+		}
+	
+		// Redundant but satisfies compiler
+		return "UNKNOWN";
+	}
+	
+	void CycleRoutingForEntry(SCR_VONEntry entry)
+	{
+		if (!entry)
+			return;
+
+		string entryId = entry.GetUniqueId();
+
+		EVONAudioRouting current = EVONAudioRouting.CENTER;
+		if (m_channelRouting.Contains(entryId))
+			current = m_channelRouting[entryId];
+
+		EVONAudioRouting next = GetNextRouting(current);
+		m_channelRouting[entryId] = next;
+
+		ApplyRouting(next);
+		ShowRoutingHint("VON channel routed to " + RoutingToString(next));
+	}
+
+
 
 	void ShowRoutingHint(string msg)
 	{
 		SCR_HintManagerComponent.ShowCustomHint(msg, "VON Routing", 4);
+	}
+
+	EVONAudioRouting GetCurrentRouting()
+	{
+		return m_currentRouting;
 	}
 }
