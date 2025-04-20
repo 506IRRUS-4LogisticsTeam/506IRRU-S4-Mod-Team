@@ -17,6 +17,8 @@ modded class SCR_PlayerController : SCR_PlayerController
 		VONRoutingComponent routing = VONRoutingComponent.Cast(baseEntity.FindComponent(VONRoutingComponent));
 		if (routing)
 			routing.ApplyRouting(EVONAudioRouting.CENTER);
+		else
+			PrintFormat("TRF_PlayerController: InitializeRouting failed - VONRoutingComponent not found on entity '%1' (%2).", baseEntity.ToString(), baseEntity.GetPrefabData().GetPrefabName());
 	}
 
 	override void UpdateLocalPlayerController()
@@ -58,6 +60,8 @@ modded class SCR_PlayerController : SCR_PlayerController
 		VONRoutingComponent routing = VONRoutingComponent.Cast(entity.FindComponent(VONRoutingComponent));
 		if (routing)
 			routing.ApplyRouting(direction);
+		else
+			PrintFormat("TRF_PlayerController: ApplyVONRouting failed - VONRoutingComponent not found on entity '%1' (%2).", entity.ToString(), entity.GetPrefabData().GetPrefabName());
 	}
 
 	
