@@ -1,74 +1,82 @@
 modded class SCR_VONEntryRadio : SCR_VONEntry
 {
-	const string LABEL_FREQUENCY_UNITS = "#AR-VON_FrequencyUnits_MHz";
+	// ------------------------------------------------------------------ constants
+	const string LABEL_FREQUENCY_UNITS = "#AR‑VON_FrequencyUnits_MHz";
 
-	protected int m_iFrequency;
-	protected int m_iTransceiverNumber;
-	protected string m_sChannelText;
-
-	protected BaseTransceiver m_RadioTransceiver;
+	// ------------------------------------------------------------------ state
+	protected int               m_iFrequency;
+	protected int               m_iTransceiverNumber;
+	protected string            m_sChannelText;
+	protected BaseTransceiver   m_RadioTransceiver;
 	protected SCR_GadgetComponent m_GadgetComp;
 
-	void SetOwner(IEntity owner)
+	// ------------------------------------------------------------------ helpers
+	protected IEntity GetPlayerEntity()
 	{
-		m_Owner = owner;
+		SCR_PlayerController pc = SCR_PlayerController.Cast(GetGame().GetPlayerController());
+		return pc ? pc.GetControlledEntity() : null;
 	}
 
+	// ------------------------------------------------------------------ frequency knob
 	override void AdjustEntryModif(int modifier)
 	{
 		if (!IsUsable() && modifier != 0)
 			return;
 
+		// lazy‑initialise the transceiver from the player’s gadget
+		if (!m_RadioTransceiver)
+		{
+			IEntity ply = GetPlayerEntity();
+			if (ply)
+			{
+				m_GadgetComp      = SCR_GadgetComponent.Cast(ply.FindComponent(SCR_GadgetComponent));
+				m_RadioTransceiver = m_GadgetComp ? BaseTransceiver.Cast(m_GadgetComp.GetCurrentGadget()) : null;
+			}
+		}
 		if (!m_RadioTransceiver)
 			return;
 
-		m_iFrequency = m_RadioTransceiver.GetFrequency();
-		int minFreq = m_RadioTransceiver.GetMinFrequency();
-		int maxFreq = m_RadioTransceiver.GetMaxFrequency();
+		m_iFrequency  = m_RadioTransceiver.GetFrequency();
+		int minFreq   = m_RadioTransceiver.GetMinFrequency();
+		int maxFreq   = m_RadioTransceiver.GetMaxFrequency();
 
-		if ((modifier > 0  && m_iFrequency == maxFreq) || (modifier < 0 && m_iFrequency == minFreq))
+		if ((modifier > 0 && m_iFrequency == maxFreq) ||
+		    (modifier < 0 && m_iFrequency == minFreq))
+		{
 			SCR_UISoundEntity.SoundEvent(SCR_SoundEvent.SOUND_RADIO_CHANGEFREQUENCY_ERROR);
+		}
 		else if (modifier != 0)
+		{
 			SCR_UISoundEntity.SoundEvent(SCR_SoundEvent.SOUND_RADIO_CHANGEFREQUENCY);
+		}
 
-		m_iFrequency = m_iFrequency + (modifier * m_RadioTransceiver.GetFrequencyResolution());
-		m_iFrequency = Math.ClampInt(m_iFrequency, minFreq, maxFreq);
+		m_iFrequency  = Math.ClampInt(
+							m_iFrequency + modifier * m_RadioTransceiver.GetFrequencyResolution(),
+							minFreq, maxFreq);
 
 		float fFrequency = Math.Round(m_iFrequency * 0.1) * 0.01;
 		m_sText = string.Format("%.1f %1", fFrequency, LABEL_FREQUENCY_UNITS);
 	}
 
+	// ------------------------------------------------------------------ routing button
 	void CycleRouting()
 	{
-		// Get local player controller and controlled entity
-		SCR_PlayerController localPlayerController = SCR_PlayerController.Cast(GetGame().GetPlayerController());
-		if (!localPlayerController)
+		IEntity ply = GetPlayerEntity();
+		if (!ply)
 		{
-			Print("TRF_VONEntryRadio: Could not find local player controller.", LogLevel.WARNING);
-			return;
-		}
-		
-		IEntity controlledEntity = localPlayerController.GetControlledEntity();
-		if (!controlledEntity)
-		{
-			Print("TRF_VONEntryRadio: Local player controller has no controlled entity.", LogLevel.WARNING);
+			Print("SCR_VONEntryRadio: No local player entity.", LogLevel.WARNING);
 			return;
 		}
 
-		// Find the VONRoutingComponent on the controlled entity
-		VONRoutingComponent vonRoutingComponent = VONRoutingComponent.Cast(controlledEntity.FindComponent(VONRoutingComponent));
-
-		if (!vonRoutingComponent)
+		VONRoutingComponent routing = VONRoutingComponent.Cast(ply.FindComponent(VONRoutingComponent));
+		if (!routing)
 		{
-			Print("TRF_VONEntryRadio: Controlled entity is missing VONRoutingComponent.", LogLevel.WARNING);
+			Print("SCR_VONEntryRadio: Player missing VONRoutingComponent.", LogLevel.WARNING);
 			return;
 		}
-		
-		// Cycle routing using the found component
-		EVONAudioRouting currentRouting = vonRoutingComponent.GetCurrentRouting();
-		EVONAudioRouting newRouting = vonRoutingComponent.GetNextRouting(currentRouting);
 
-		vonRoutingComponent.ApplyRouting(newRouting);
-		vonRoutingComponent.ShowRoutingHint("VON channel routed to " + vonRoutingComponent.RoutingToString(newRouting));
+		EVONAudioRouting newRouting = routing.GetNextRouting(routing.GetCurrentRouting());
+		routing.ApplyRouting(newRouting);
+		routing.ShowRoutingHint("VON channel routed to " + routing.RoutingToString(newRouting));
 	}
 }
