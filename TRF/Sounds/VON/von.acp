@@ -1,46 +1,24 @@
 AudioClass {
  signals {
   SignalClass {
-   id 30733
-   name "Signal 1"
-   tl -792.242 -542.905
-   res "{CF1F9C4B120DE5F8}Sounds/VON/Von.sig"
-   inputsport {
-    1
-   }
-   outputsport {
-    5 8 12 18 20
-   }
-   inputvalues {
-    1
-   }
-   inputvaluesmin {
-    0
-   }
-   inputvaluesmax {
-    1
-   }
-   path "$profile:.tmp/AudioEditor/#CF1F9C4B120DE5F8#Von.sig"
-  }
-  SignalClass {
    id 66573
    name "Signal 65"
    tl -18.571 -1113.444
    res "{2DE6099BBD60C620}Sounds/_SharedData/Signals/Character/Character_Occlusion.sig"
    inputsport {
-    1 2 6 7 8 20 50 54
+    2 8 20 50
    }
    outputsport {
-    5 36
+    36
    }
    inputvalues {
-    0 0 0 0 0 0 1000 400
+    0 0 0 1000
    }
    inputvaluesmin {
-    0 0 0 0 0 0 0 0
+    0 0 0 0
    }
    inputvaluesmax {
-    1 1 1 1 1 1 10000 10000
+    1 1 1 10000
    }
    path "{2DE6099BBD60C620}Sounds/_SharedData/Signals/Character/Character_Occlusion.sig"
   }
@@ -53,7 +31,7 @@ AudioClass {
     1 35 40 112 139
    }
    outputsport {
-    34 39 105 106 107 110
+    34 39 105 107 106 110
    }
    inputvalues {
     40 1 1 16000 16000
@@ -65,6 +43,28 @@ AudioClass {
     100 1 1 16000 16000
    }
    path "{76CBB40EF7F227B6}Sounds/_SharedData/Signals/Reverb/Reverb_Base.sig"
+  }
+  SignalClass {
+   id 83981
+   name "Signal 82"
+   tl -771.084 -521.66
+   res "{CF1F9C4B120DE5F9}Sounds/VON/Von.sig"
+   inputsport {
+    1
+   }
+   outputsport {
+    5 8 12 28 29
+   }
+   inputvalues {
+    1
+   }
+   inputvaluesmin {
+    0
+   }
+   inputvaluesmax {
+    1
+   }
+   path "{CF1F9C4B120DE5F9}Sounds/VON/Von.sig"
   }
  }
  filters {
@@ -78,7 +78,7 @@ AudioClass {
      id 0
      links {
       ConnectionClass connection {
-       id 30733
+       id 83981
        port 5
       }
      }
@@ -385,7 +385,7 @@ AudioClass {
      id 0
      links {
       ConnectionClass connection {
-       id 30733
+       id 83981
        port 8
       }
      }
@@ -426,8 +426,8 @@ AudioClass {
      id 2
      links {
       ConnectionClass connection {
-       id 30733
-       port 20
+       id 83981
+       port 28
       }
      }
     }
@@ -435,8 +435,8 @@ AudioClass {
      id 3
      links {
       ConnectionClass connection {
-       id 30733
-       port 18
+       id 83981
+       port 29
       }
      }
     }
@@ -525,13 +525,13 @@ AudioClass {
   GeneratorClass {
    id 36869
    name "Generator 1"
-   version 5
+   version 6
    tl -792.242 -214.893
    function BrownianNoise
-   time 10
    volume 0.2
    volume_dB -14
-   loopCount 255
+   time 10
+   infinite 1
   }
  }
  mixers {
@@ -574,7 +574,7 @@ AudioClass {
    }
    path "{B764D803219C775E}Sounds/FinalMix.afm"
    inputs {
-    "WPN_Handling" "WPN_Shots" "WPN_Explosions" "WNP_BulletHits" "CHAR" "ENV_AMB_2D" "VEH_Animations" "Impacts" "Dialog" "Music" "ENV_Doors" "VEH_Engine" "VEH_Tires" "VON" "SFX" "SFX_Reverb" "VON_Reverb" "Dialog_Reverb" "Impacts_EXT" "ENV_AMB_3D" "WPN_SonicCracks" "CHAR_Gear" "PA" "SFX_Reverb_Exterior" "UI" "ENV_AMB_3D_Reverb_Exterior" "SFX_Direct" "SFX_Reverb_Small" "SFX_Reverb_Medium" "SFX_Reverb_Large" "WPN_Shots_Player" "Dialog_Reverb_Small" "Dialog_Reverb_Medium" "Dialog_Reverb_Large" "Dialog_Delay_Exterior"
+    "WPN_Handling" "WPN_Shots" "WPN_Explosions" "WNP_BulletHits" "CHAR" "ENV_AMB_2D" "VEH_Animations" "Impacts" "Dialog" "Music" "ENV_Doors" "VEH_Engine" "VEH_Tires" "VON" "SFX" "SFX_Reverb" "VON_Reverb" "Dialog_Reverb" "Impacts_EXT" "ENV_AMB_3D" "WPN_SonicCracks" "CHAR_Gear" "PA" "SFX_Reverb_Exterior" "UI" "ENV_AMB_3D_Reverb_Exterior" "SFX_Direct" "SFX_Reverb_Small" "SFX_Reverb_Medium" "SFX_Reverb_Large" "WPN_Shots_Player" "Dialog_Reverb_Small" "Dialog_Reverb_Medium" "Dialog_Reverb_Large" "WPN_TravelingProjectile" "Dialog_Delay_Exterior" "SFX_Reverb_InCabin"
    }
   }
  }

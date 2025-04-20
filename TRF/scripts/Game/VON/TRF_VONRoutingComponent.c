@@ -53,19 +53,19 @@ class VONRoutingComponent : ScriptComponent
 
         switch (routing)
         {
-            case EVONAudioRouting.LEFT:
+            case EVONAudioRouting.LEFT: //Audio set to 3 to boost sound as it's only one sided.
                 AudioSystem.SetVariableByName("VON_LEFT", 3.0, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 AudioSystem.SetVariableByName("VON_RIGHT", 0.0, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 ShowRoutingHint("VON routed to LEFT");
                 break;
 
-            case EVONAudioRouting.RIGHT:
+            case EVONAudioRouting.RIGHT: //Audio set to 3 to boost sound as it's only one sided.
                 AudioSystem.SetVariableByName("VON_LEFT", 0.0, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 AudioSystem.SetVariableByName("VON_RIGHT", 3.0, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 ShowRoutingHint("VON routed to RIGHT");
                 break;
 
-            case EVONAudioRouting.CENTER:
+            case EVONAudioRouting.CENTER: //Boosted slightly for better sound balancing on the radio when having it centered.
                 AudioSystem.SetVariableByName("VON_LEFT", 1.5, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 AudioSystem.SetVariableByName("VON_RIGHT", 1.5, "TRF:Sounds/VON/VON_DIRECTION.conf");
                 ShowRoutingHint("VON routed to CENTER");

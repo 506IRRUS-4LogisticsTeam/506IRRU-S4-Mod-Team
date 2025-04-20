@@ -28,24 +28,24 @@ AudioSignalResClass {
    value -12
   }
   IOPInputVariableClass {
-   id 22
+   id 24
    name "VON_LEFT"
-   tl -59 684
+   tl -51.71 676.789
    children {
-    21
+    27
    }
    varName "VON_LEFT"
-   varResource "{C524A0F532E430AB}Sounds/VON/VON_DIRECTION.conf"
+   varResource "{1C14FBA390717FC3}Sounds/VON/VON_DIRECTION.conf"
   }
   IOPInputVariableClass {
-   id 23
+   id 25
    name "VON_RIGHT"
-   tl -61 782
+   tl -95.815 783.251
    children {
-    19
+    26
    }
    varName "VON_RIGHT"
-   varResource "{C524A0F532E430AB}Sounds/VON/VON_DIRECTION.conf"
+   varResource "{1C14FBA390717FC3}Sounds/VON/VON_DIRECTION.conf"
   }
  }
  Ops {
@@ -104,9 +104,9 @@ AudioSignalResClass {
   IOPItemOpInterpolateClass {
    id 14
    name "Interpolate 14"
-   tl 41.528 477.639
+   tl 44.57 465.472
    children {
-    12 19 21
+    12 26 27
    }
    inputs {
     ConnectionClass connection {
@@ -135,37 +135,37 @@ AudioSignalResClass {
    }
   }
   IOPItemOpMulClass {
-   id 19
-   name "Mul Right"
-   tl 243.75 716.75
+   id 26
+   name "Mul 26"
+   tl 249.424 772.605
    children {
-    18
+    29
    }
    inputs {
     ConnectionClass connection {
-     id 23
+     id 14
      port 0
     }
     ConnectionClass connection {
-     id 14
+     id 25
      port 0
     }
    }
   }
   IOPItemOpMulClass {
-   id 21
-   name "Mul Left"
-   tl 242.75 614.75
+   id 27
+   name "Mul 27"
+   tl 263.111 652.455
    children {
-    20
+    28
    }
    inputs {
     ConnectionClass connection {
-     id 22
+     id 14
      port 0
     }
     ConnectionClass connection {
-     id 14
+     id 24
      port 0
     }
    }
@@ -191,21 +191,21 @@ AudioSignalResClass {
    input 14
   }
   IOPItemOutputClass {
-   id 18
-   name "VON_RIGHT"
-   tl 499.75 712.75
-   input 19
+   id 28
+   name "VON_LEFT"
+   tl 507.972 660.06
+   input 27
   }
   IOPItemOutputClass {
-   id 20
-   name "VON_LEFT"
-   tl 499.75 614.75
-   input 21
+   id 29
+   name "VON_RIGHT"
+   tl 500.368 771.084
+   input 26
   }
  }
  compiled IOPCompiledClass {
   visited {
-   517 389 261 519 133 263 5 391 779 518 651 390 262 135 134 7 6
+   517 389 261 519 133 263 5 391 779 390 651 518 262 135 134 7 6
   }
   ins {
    IOPCompiledIn {
@@ -262,12 +262,12 @@ AudioSignalResClass {
    }
    IOPCompiledOp {
     data {
-     1 196610 4 262144 0 196609 0
+     1 262146 4 196609 0 262144 0
     }
    }
    IOPCompiledOp {
     data {
-     1 262146 4 196608 0 196609 0
+     1 196610 4 196609 0 196608 0
     }
    }
   }
@@ -300,5 +300,8 @@ AudioSignalResClass {
   }
   processed 17
   version 2
+  ins_reeval_list {
+   3 4
+  }
  }
 }
