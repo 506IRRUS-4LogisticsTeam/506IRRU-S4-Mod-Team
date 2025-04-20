@@ -8,7 +8,6 @@ modded class SCR_VONEntryRadio : SCR_VONEntry
 
 	protected BaseTransceiver m_RadioTransceiver;
 	protected SCR_GadgetComponent m_GadgetComp;
-	protected IEntity m_Owner;
 
 	void SetOwner(IEntity owner)
 	{
@@ -41,14 +40,31 @@ modded class SCR_VONEntryRadio : SCR_VONEntry
 
 	void CycleRouting()
 	{
-		if (!m_Owner)
+		// Get local player controller and controlled entity
+		SCR_PlayerController localPlayerController = SCR_PlayerController.Cast(GetGame().GetPlayerController());
+		if (!localPlayerController)
+		{
+			Print("TRF_VONEntryRadio: Could not find local player controller.", LogLevel.WARNING);
 			return;
+		}
+		
+		IEntity controlledEntity = localPlayerController.GetControlledEntity();
+		if (!controlledEntity)
+		{
+			Print("TRF_VONEntryRadio: Local player controller has no controlled entity.", LogLevel.WARNING);
+			return;
+		}
 
-		VONRoutingComponent vonRoutingComponent = VONRoutingComponent.Cast(m_Owner.FindComponent(VONRoutingComponent));
+		// Find the VONRoutingComponent on the controlled entity
+		VONRoutingComponent vonRoutingComponent = VONRoutingComponent.Cast(controlledEntity.FindComponent(VONRoutingComponent));
 
 		if (!vonRoutingComponent)
+		{
+			Print("TRF_VONEntryRadio: Controlled entity is missing VONRoutingComponent.", LogLevel.WARNING);
 			return;
-
+		}
+		
+		// Cycle routing using the found component
 		EVONAudioRouting currentRouting = vonRoutingComponent.GetCurrentRouting();
 		EVONAudioRouting newRouting = vonRoutingComponent.GetNextRouting(currentRouting);
 
