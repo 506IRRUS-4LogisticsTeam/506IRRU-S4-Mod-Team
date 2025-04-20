@@ -40,9 +40,13 @@ class VONRoutingComponent : ScriptComponent
 	{
 		if (!entry) return;
 
-		EVONAudioRouting routing = m_channelRouting.Contains(entry.GetUniqueId())
-			? m_channelRouting[entry.GetUniqueId()]
-			: EVONAudioRouting.CENTER;
+		EVONAudioRouting routing;
+			string id = entry.GetUniqueId();
+
+	if (m_channelRouting.Contains(id))
+		routing = m_channelRouting[id];
+	else
+		routing = EVONAudioRouting.CENTER;
 
 		ApplyRouting(routing);
 	}
@@ -52,8 +56,12 @@ class VONRoutingComponent : ScriptComponent
 		if (!entry) return;
 
 		string id = entry.GetUniqueId();
-		EVONAudioRouting next = GetNextRouting(
-			m_channelRouting.Contains(id) ? m_channelRouting[id] : EVONAudioRouting.CENTER);
+		EVONAudioRouting next;
+		
+		if (m_channelRouting.Contains(id))
+			next = GetNextRouting(m_channelRouting[id]);
+		else
+			next = GetNextRouting(EVONAudioRouting.CENTER);
 
 		m_channelRouting[id] = next;
 		ApplyRouting(next);
@@ -79,7 +87,7 @@ class VONRoutingComponent : ScriptComponent
 	}
 
 	// ─────────────────────────── internals
-	protected void ApplyRouting(EVONAudioRouting routing)
+	void ApplyRouting(EVONAudioRouting routing)
 	{
 		m_currentRouting = routing;
 
@@ -107,7 +115,7 @@ class VONRoutingComponent : ScriptComponent
 			Replication.BumpMe();
 	}
 
-	protected void ShowRoutingHint(string msg)
+	void ShowRoutingHint(string msg)
 	{
 		SCR_HintManagerComponent.ShowCustomHint(msg, "VON Routing", 4);
 	}
