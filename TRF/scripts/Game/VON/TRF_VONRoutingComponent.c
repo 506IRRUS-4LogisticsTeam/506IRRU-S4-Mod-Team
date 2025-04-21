@@ -21,9 +21,6 @@ class VONRoutingComponent : ScriptComponent
         if (!m_Rpl)
             m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
 
-        if (Replication.IsServer())
-            Replication.BumpMe();
-
         if (!m_routingInitialized)
         {
             ApplyRouting(EVONAudioRouting.CENTER);  // Default to CENTER if not initialized
@@ -71,9 +68,6 @@ class VONRoutingComponent : ScriptComponent
                 ShowRoutingHint("VON routed to CENTER");
                 break;
         }
-
-        if (Replication.IsServer())
-            Replication.BumpMe();
     }
 
     // Helper to cycle through the routing options
