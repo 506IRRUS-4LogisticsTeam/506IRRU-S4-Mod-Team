@@ -1,76 +1,81 @@
+// Modifies the base Character Damage Manager
 modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerComponent
 {
+	// Existing invoker for custom damage events
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 
 	override protected void OnDamage(notnull BaseDamageContext damageContext)
 	{
 		super.OnDamage(damageContext);
+		// Use vector.Zero as a placeholder for hit direction if not directly available
 		vector hitDirPlaceholder = vector.Zero;
 		OnCustomDamageTaken.Invoke( GetOwner(), damageContext.damageValue, damageContext.instigator, hitDirPlaceholder, damageContext.struckHitZone);
 	}
 
-	override void Kill(notnull Instigator instigator)
+	// Override the default Kill behavior
+	override void Kill(notnull Instigator instigator) 
 	{
 		IEntity owner = GetOwner();
-		if (!owner) {
-			super.Kill(instigator);
-			return;
-		}
+		if (!owner) { super.Kill(instigator); return; } // Basic check
 
+		// Check if our NoInstantDeathComponent is present
 		NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 
-		// If the component exists...
-		if (noInstantDeathComp)
+		if (noInstantDeathComp) // Component found
 		{
-			// Check if the component's timer triggered this Kill call
+			// Did the component's timer trigger this Kill? (Check the flag)
 			if (noInstantDeathComp.IsInitiatingKill())
 			{
+				// Yes, proceed with the actual death
 				Print("[SCR_CharacterDamageManagerComponent] Kill confirmed by NoInstantDeathComponent flag. Resetting flag and calling super.Kill().");
-				noInstantDeathComp.ResetInitiatingKillFlag(); // Reset the flag
-				super.Kill(instigator); // Proceed with original death
+				noInstantDeathComp.ResetInitiatingKillFlag(); 
+				super.Kill(instigator); 
 				return;
 			}
 
-			// If it wasn't the component timer, check if player is already unconscious
+			// If timer didn't trigger it, check if already unconscious
 			if (noInstantDeathComp.IsUnconscious())
 			{
-				// Player is already down, but the call didn't come from the component timer. Ignore it.
+				// Already down, ignore this external/duplicate Kill call
 				Print("[SCR_CharacterDamageManagerComponent] Kill called externally while already unconscious. Ignoring.");
 				return; 
 			}
 			else
 			{
-				// Player is not unconscious yet, this is the initial lethal hit. Intercept it.
+				// Initial lethal hit, intercept and make unconscious instead
 				Print("[SCR_CharacterDamageManagerComponent] Intercepting initial Kill(). Calling MakeUnconscious().");
 				noInstantDeathComp.MakeUnconscious(owner);
-				return; // Prevent original death
+				return; // Prevent super.Kill()
 			}
 		}
-		else // Component doesn't exist
+		else // Component not found
 		{
+			// No component, normal death behavior
 			Print("[SCR_CharacterDamageManagerComponent] NoInstantDeathComponent not found. Proceeding with original Kill().");
 			super.Kill(instigator);
 		}
 	}
 
+	// Override state changes as a backup interceptor
 	override protected void OnDamageStateChanged(EDamageState state)
 	{
-		// This override remains important as a backup interceptor
+		// Intercept direct state change to DESTROYED if it wasn't initiated by our component's timer
 		if (state == EDamageState.DESTROYED)
 		{
 			IEntity owner = GetOwner();
 			if (owner)
 			{
 				NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
-				// Check component exists AND is NOT already unconscious AND is NOT the one initiating the kill
+				// Check: Component exists? Not already unconscious? Not the one killing?
 				if (noInstantDeathComp && !noInstantDeathComp.IsUnconscious() && !noInstantDeathComp.IsInitiatingKill())
 				{
 					Print("[SCR_CharacterDamageManagerComponent] Intercepting DESTROYED state change. Calling MakeUnconscious().");
 					noInstantDeathComp.MakeUnconscious(owner);
-					// Don't return, let state change proceed for anims, Kill() override handles the final block.
+					// Allow state change to proceed for animations etc., Kill() override prevents final death action.
 				}
 			}
 		}
+		// Allow other state changes to proceed normally
 		super.OnDamageStateChanged(state);
 	}
 }
