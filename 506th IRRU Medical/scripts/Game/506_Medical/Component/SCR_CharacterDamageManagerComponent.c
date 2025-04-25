@@ -6,6 +6,24 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 	override protected void OnDamage(notnull BaseDamageContext damageContext)
 	{
+		//--- 506th NoInstantDeath Compatibility Start ---
+		// Check if unconscious and filter incoming damage types
+		IEntity owner = GetOwner();
+		if (owner)
+		{
+			NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			if (noInstantDeathComp && noInstantDeathComp.IsUnconscious())
+			{
+				// If unconscious, ONLY allow HEALING damage type through
+				if (damageContext.damageType != EDamageType.HEALING)
+				{
+					Print(string.Format("[SCR_CharacterDamageManagerComponent][NoInstantDeath] Blocking non-healing damage (Type: %1) while unconscious.", typename.EnumToString(EDamageType, damageContext.damageType)), LogLevel.DEBUG);
+					return; // Prevent further processing of this damage
+				}
+			}
+		}
+		//--- 506th NoInstantDeath Compatibility End ---
+
 		super.OnDamage(damageContext);
 		// Use vector.Zero as a placeholder for hit direction if not directly available
 		vector hitDirPlaceholder = vector.Zero;

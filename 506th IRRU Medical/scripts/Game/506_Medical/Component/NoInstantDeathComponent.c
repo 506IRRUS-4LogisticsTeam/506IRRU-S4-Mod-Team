@@ -19,8 +19,6 @@ class NoInstantDeathComponent : ScriptComponent
 	// Stores the instigator responsible for the initial lethal damage
 	protected Instigator m_LastKnownInstigator; 
 
-	// Short delay before disabling damage handling to allow immediate follow-up damage (e.g., grenade fragments)
-	protected const int DAMAGE_DISABLE_DELAY_MS = 200; 
 
 	override void OnPostInit(IEntity owner)
 	{
@@ -66,10 +64,6 @@ class NoInstantDeathComponent : ScriptComponent
 		// Set health slightly above zero and force unconscious state
 		m_CachedDmgManager.ForceUnconsciousness(0.1); 
 
-		// Schedule damage handling disable after a short delay
-		PrintFormat("[NoInstantDeath] Scheduling damage handling disable in %1ms.", DAMAGE_DISABLE_DELAY_MS);
-		GetGame().GetCallqueue().CallLater(DisableDamageHandlingDelayed, DAMAGE_DISABLE_DELAY_MS, false);
-
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe(); // Sync unconscious state
@@ -77,17 +71,6 @@ class NoInstantDeathComponent : ScriptComponent
 		}
 	}
 	
-	// Disables damage handling after the delay specified in MakeUnconscious
-	protected void DisableDamageHandlingDelayed()
-	{
-		if (!m_bIsUnconscious || !m_CachedDmgManager) return; // Check validity
-			
-		if (m_CachedDmgManager.IsDamageHandlingEnabled())
-		{
-			m_CachedDmgManager.EnableDamageHandling(false);
-			Print("[NoInstantDeath] Disabled damage handling (delayed).");
-		} 
-	}
 
 	// Called when the bleedout timer expires
 	void KillCharacter(IEntity owner)
@@ -99,18 +82,11 @@ class NoInstantDeathComponent : ScriptComponent
 		
 		// Clean up timers
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-		GetGame().GetCallqueue().Remove(DisableDamageHandlingDelayed); 
 
 		// Set flag to signal this is the intended kill call
 		m_bIsInitiatingKill = true;
 		Print("[NoInstantDeath] Set IsInitiatingKill flag.");
 
-		// Ensure damage handling is enabled before calling Kill
-		if (!m_CachedDmgManager.IsDamageHandlingEnabled())
-		{
-			m_CachedDmgManager.EnableDamageHandling(true);
-			Print("[NoInstantDeath] Re-enabled damage handling.");
-		}
 
 		// Use the stored instigator for the Kill call
 		Instigator instigatorToUse = m_LastKnownInstigator;
