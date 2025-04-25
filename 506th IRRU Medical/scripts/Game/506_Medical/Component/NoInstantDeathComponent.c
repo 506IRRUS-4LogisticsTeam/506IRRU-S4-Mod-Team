@@ -9,104 +9,148 @@ class NoInstantDeathComponent : ScriptComponent
 	protected float m_fBleedOutTime = 60.0;
 	protected float m_fUnconsciousTimer = 0.0;
 	protected RplComponent m_Rpl;
-	protected const float CHECK_INTERVAL = 1.0; // Check only once per second instead of every frame
-	
-	// Cache damage manager to avoid repeated lookups
+	protected const float CHECK_INTERVAL = 1.0;
 	protected SCR_CharacterDamageManagerComponent m_CachedDmgManager;
+	protected bool m_bIsInitiatingKill = false;
+	protected Instigator m_LastKnownInstigator;
+
+	// Delay before disabling damage handling (in milliseconds)
+	protected const int DAMAGE_DISABLE_DELAY_MS = 200; 
 
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
-
 		m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
-		
-		// Cache the damage manager component
 		m_CachedDmgManager = SCR_CharacterDamageManagerComponent.Cast(owner.FindComponent(SCR_CharacterDamageManagerComponent));
-
-		// ✅ Load ACE-style mod settings
-		NoInstantDeath_Settings settings = ACE_SettingsHelperT<NoInstantDeath_Settings>.GetModSettings();
-		if (settings)
-		{
-			m_fBleedOutTime = settings.m_fBleedoutTime;
-			PrintFormat("[NoInstantDeath] Loaded bleedout time: %1s", m_fBleedOutTime);
-		}
-		else
-		{
-			Print("[NoInstantDeath] No settings found — using default bleedout time.");
-		}
+		PrintFormat("[NoInstantDeath] Using fixed bleedout time: %1s", m_fBleedOutTime);
 	}
 
-	// New method to update the unconscious timer using scheduled callbacks
 	protected void UpdateUnconsciousTimer()
 	{
+		// ... (timer logic remains the same) ...
 		if (!m_bIsUnconscious || !Replication.IsServer())
 			return;
-			
+
 		m_fUnconsciousTimer += CHECK_INTERVAL;
-		
+
 		if (m_fUnconsciousTimer >= m_fBleedOutTime)
 		{
 			Print("[NoInstantDeath] Bleed-out timer expired. Killing character.");
 			KillCharacter(GetOwner());
-			return; // Don't schedule another check if we're killing the character
+			return;
 		}
-		
-		// Schedule next check
+
 		GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 	}
 
 	void MakeUnconscious(IEntity owner)
 	{
-		if (m_bIsUnconscious)
+		if (m_bIsUnconscious || !m_CachedDmgManager)
 			return;
-
-		// Use cached damage manager instead of looking it up again
-		if (!m_CachedDmgManager)
-			return;
-            
-		// Check if ACE Medical's Second Chance is already triggered
-		if (m_CachedDmgManager.ACE_Medical_IsInitialized() && m_CachedDmgManager.ACE_Medical_WasSecondChanceTrigged())
-		{
-			Print("[NoInstantDeath] ACE Medical Second Chance already triggered, skipping duplicate unconsciousness.");
-			return;
-		}
 
 		Print("[NoInstantDeath] Entering unconscious state.");
 		m_bIsUnconscious = true;
 		m_fUnconsciousTimer = 0.0;
+		m_bIsInitiatingKill = false;
 
-		m_CachedDmgManager.ForceUnconsciousness(0.05); // Small health buffer to simulate knockdown
+		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
+		if (m_LastKnownInstigator) {
+			Print("[NoInstantDeath] Stored last known instigator.");
+		} else {
+			Print("[NoInstantDeath] Warning: Could not get last known instigator.");
+		}
+
+		m_CachedDmgManager.ForceUnconsciousness(0.1);
+
+		// Schedule the disabling of damage handling instead of doing it immediately
+		PrintFormat("[NoInstantDeath] Scheduling damage handling disable in %1ms.", DAMAGE_DISABLE_DELAY_MS);
+		GetGame().GetCallqueue().CallLater(DisableDamageHandlingDelayed, DAMAGE_DISABLE_DELAY_MS, false);
 
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe();
-			// Start timer checks on server only
 			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
 	}
+	
+	// --- New function to disable damage handling after a delay ---
+	protected void DisableDamageHandlingDelayed()
+	{
+		// Check if still unconscious and manager exists (state might have changed rapidly)
+		if (!m_bIsUnconscious || !m_CachedDmgManager) 
+		{
+			Print("[NoInstantDeath] Condition changed before damage handling disable could execute. Aborting disable.");
+			return;
+		}
+			
+		if (m_CachedDmgManager.IsDamageHandlingEnabled())
+		{
+			m_CachedDmgManager.EnableDamageHandling(false);
+			Print("[NoInstantDeath] Disabled damage handling (delayed).");
+		} else {
+			Print("[NoInstantDeath] Damage handling was already disabled when delayed call executed.");
+		}
+	}
+	// --- End new function ---
 
 	void KillCharacter(IEntity owner)
 	{
-		Print("[NoInstantDeath] Forcing character death.");
-		m_bIsUnconscious = false;
+		// ... (KillCharacter logic remains the same) ...
+		if (!m_bIsUnconscious || !m_CachedDmgManager) {
+			Print("[NoInstantDeath] KillCharacter called but not unconscious or no dmg manager. Aborting.");
+			return;
+		}
 		
-		// Make sure to clear any pending timer callbacks
+		Print("[NoInstantDeath] Forcing character death (timer expired).");
+		m_bIsUnconscious = false;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+		// Also remove the delayed damage disable call, just in case it hasn't run yet
+		GetGame().GetCallqueue().Remove(DisableDamageHandlingDelayed); 
 
-		// Use cached damage manager instead of looking it up again
-		if (m_CachedDmgManager)
-			m_CachedDmgManager.Kill(m_CachedDmgManager.GetInstigator());
 
-		if (Replication.IsServer())
-			Replication.BumpMe();
+		m_bIsInitiatingKill = true;
+		Print("[NoInstantDeath] Set IsInitiatingKill flag.");
+
+		if (!m_CachedDmgManager.IsDamageHandlingEnabled())
+		{
+			m_CachedDmgManager.EnableDamageHandling(true);
+			Print("[NoInstantDeath] Re-enabled damage handling.");
+		}
+
+		Instigator instigatorToUse = m_LastKnownInstigator;
+		
+		if (!instigatorToUse) {
+			Print("[NoInstantDeath] Error: Stored instigator is null. Cannot proceed with Kill if it requires notnull.");
+			HitZone defaultHZ = m_CachedDmgManager.GetDefaultHitZone(); 
+			if (defaultHZ) {
+				Print("[NoInstantDeath] Fallback: Setting health to 0 via Default HitZone due to null instigator.");
+				defaultHZ.SetHealth(0); 
+			} else {
+				Print("[NoInstantDeath] Critical Error: Cannot Kill due to null instigator and no Default HitZone.");
+			}
+			ResetInitiatingKillFlag(); 
+			return;
+		}
+		
+		PrintFormat("[NoInstantDeath] Calling DamageManager.Kill() with stored instigator: %1", instigatorToUse);
+		m_CachedDmgManager.Kill(instigatorToUse); 
+	}
+
+	bool IsInitiatingKill()
+	{
+		return m_bIsInitiatingKill;
+	}
+	
+	void ResetInitiatingKillFlag()
+	{
+		m_bIsInitiatingKill = false;
+		Print("[NoInstantDeath] Reset IsInitiatingKill flag.");
 	}
 
 	void OnRep_IsUnconscious()
 	{
 		IEntity owner = GetOwner();
-		if (!owner)
-			return;
-
+		if (!owner) return;
 		PrintFormat("[NoInstantDeath] Replicated unconscious state: %1", m_bIsUnconscious);
 	}
 
