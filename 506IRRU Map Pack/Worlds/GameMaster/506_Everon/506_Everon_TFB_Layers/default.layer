@@ -1,0 +1,86 @@
+SCR_AIWorld : "{70CCCF16487C927F}Prefabs/AI/SCR_AIWorld_Eden.et" {
+ components {
+  NavmeshWorldComponent "{5584F30E67F617AD}" {
+   NavmeshSettings NavmeshWorld "{50FC63BEBE3973C5}" {
+    NavmeshFilesConfig BaseNavmeshFilesConfig "{6170E647136C5EC8}" : "{8BBC73472092902E}Configs/Navmesh/Navmesh_GM_Eden_Soldier.conf" {
+    }
+   }
+  }
+ }
+ coords 7117.951 73.752 6405.746
+}
+PerceptionManager PerceptionManager : "{028DAEAD63E056BE}Prefabs/World/Game/PerceptionManager.et" {
+ coords 7114.537 75.031 6401.884
+}
+SCR_GameModeEditor GameMode_Editor_TFBase : "{DA3986AF1B5032B7}Prefabs/MP/Modes/Editor/GameMode_Editor_Full.et" {
+ components {
+  SCR_ArsenalManagerComponent "{57155C58179F516B}" {
+   m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
+  }
+  SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
+   m_fDOTScale 0.175
+   m_fRegenScale 5
+  }
+ }
+ coords 7114.537 75.265 6400.884
+ {
+  SCR_FactionManager "6171012375EB3950" {
+   ID "56E685E92F1B7E7A"
+   Factions {
+    SCR_Faction "{56DEAC40D2DBC8B1}" {
+     m_bIsPlayable 1
+     m_aPredefinedGroups {
+      SCR_GroupPreset "{6170F5D8E8E6FFD2}" {
+       m_sGroupName "Ares"
+       m_iGroupSize 3
+       m_iRadioFrequency 37000
+      }
+      SCR_GroupPreset "{6170F5D8E8C3F270}" {
+       m_sGroupName "Havoc HQ"
+       m_sGroupDescription "Havoc HQ/Dagger/Havoc 4"
+       m_iGroupSize 8
+       m_iRadioFrequency 32500
+      }
+      SCR_GroupPreset "{6170F5D8E81596E8}" {
+       m_sGroupName "ODA 5221"
+       m_sGroupDescription "Stalker"
+       m_iGroupSize 4
+       m_iRadioFrequency 35000
+      }
+      SCR_GroupPreset "{6170F5D8E8762C9F}" {
+       m_sGroupName "Havoc 2-6"
+       m_iGroupSize 2
+       m_iRadioFrequency 40500
+      }
+      SCR_GroupPreset "{6170F5D8E853AB6C}" {
+       m_sGroupName "Havoc 2-7"
+       m_iGroupSize 2
+       m_iRadioFrequency 40500
+      }
+      SCR_GroupPreset "{6170F5D8E8444FF9}" {
+       m_sGroupName "Havoc 2-1"
+       m_iGroupSize 10
+       m_iRadioFrequency 41000
+      }
+      SCR_GroupPreset "{6170F5D8F7A2A904}" {
+       m_sGroupName "Havoc 2-2"
+       m_iGroupSize 10
+       m_iRadioFrequency 43000
+      }
+      SCR_GroupPreset "{6170F5D8F7F76D82}" {
+       m_sGroupName "Havoc 2-3"
+       m_iGroupSize 10
+       m_iRadioFrequency 45000
+      }
+      SCR_GroupPreset "{6170F5D8F7CEA952}" {
+       m_sGroupName "Havoc 2-4"
+       m_iGroupSize 10
+       m_iRadioFrequency 47000
+      }
+     }
+     m_iFactionRadioFrequency 40000
+    }
+   }
+  }
+ }
+}
