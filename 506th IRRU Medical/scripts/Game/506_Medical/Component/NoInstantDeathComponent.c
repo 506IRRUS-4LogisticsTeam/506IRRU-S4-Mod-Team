@@ -1,45 +1,62 @@
+// ============================================================================
+//  NoInstantDeathComponent.c
+//
+//  Forces a bleed-out phase instead of an instant death.
+//  The bleed-out timer is cancelled automatically when the character’s
+//  life-state becomes ALIVE (polled once per second).
+// ============================================================================
+
 [ComponentEditorProps(category: "Health", description: "Overrides death to force unconsciousness")]
 class NoInstantDeathComponentClass : ScriptComponentClass {}
 
 class NoInstantDeathComponent : ScriptComponent
 {
+	// ------------------------------------------------------------------ state
 	[RplProp(onRplName: "OnRep_IsUnconscious")]
-	protected bool m_bIsUnconscious = false;
+	protected bool  m_bIsUnconscious     = false;
 
-	protected float m_fBleedOutTime = 360; 
-	protected float m_fUnconsciousTimer = 0.0;
-	
-	protected RplComponent m_Rpl;
-	protected const float CHECK_INTERVAL = 1.0; 
+	protected float m_fBleedOutTime      = 360.0; // seconds
+	protected float m_fUnconsciousTimer  = 0.0;
+
+	protected const float CHECK_INTERVAL = 1.0;   // seconds
+
+	// ---------------------------------------------------------------- cache
+	protected RplComponent                        m_Rpl;
 	protected SCR_CharacterDamageManagerComponent m_CachedDmgManager;
-	
-	protected bool m_bIsInitiatingKill = false; 
-	protected Instigator m_LastKnownInstigator; 
+	protected SCR_CharacterControllerComponent    m_Ctrl;          // for life-state polling
 
-	// Helper to get player name or entity string
-	protected string GetPlayerOrEntityNameStr(IEntity entity)
+	// ---------------------------------------------------------------- misc
+	protected bool        m_bIsInitiatingKill = false;
+	protected Instigator  m_LastKnownInstigator;
+
+	// ==================================================================
+	//  Helpers
+	// ==================================================================
+
+	protected string GetPlayerOrEntityNameStr(IEntity e)
 	{
-		if (!entity) return "UnknownEntity(null)";
+		if (!e) return "UnknownEntity(null)";
 
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (playerManager)
+		PlayerManager pm = GetGame().GetPlayerManager();
+		if (pm)
 		{
-			SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(entity);
-			if (character)
+			SCR_ChimeraCharacter ch = SCR_ChimeraCharacter.Cast(e);
+			if (ch)
 			{
-				int playerId = playerManager.GetPlayerIdFromControlledEntity(character);
-				if (playerId > 0) 
+				int pid = pm.GetPlayerIdFromControlledEntity(ch);
+				if (pid > 0)
 				{
-					string playerName = playerManager.GetPlayerName(playerId);
-					if (!playerName.IsEmpty())
-					{
-						return playerName;
-					}
+					string n = pm.GetPlayerName(pid);
+					if (!n.IsEmpty()) return n;
 				}
 			}
 		}
-		return entity.ToString(); // Fallback
+		return e.ToString();
 	}
+
+	// ==================================================================
+	//  Init / teardown
+	// ==================================================================
 
 	override void OnPostInit(IEntity owner)
 	{
@@ -47,170 +64,165 @@ class NoInstantDeathComponent : ScriptComponent
 		SetEventMask(owner, EntityEvent.INIT);
 	}
 
-	override void EOnInit(IEntity owner) 
+	override void EOnInit(IEntity owner)
 	{
-		m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
+		m_Rpl              = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_CachedDmgManager = SCR_CharacterDamageManagerComponent.Cast(owner.FindComponent(SCR_CharacterDamageManagerComponent));
+		m_Ctrl             = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
 
-		if (m_CachedDmgManager)
+		if (!m_CachedDmgManager)
 		{
-			m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
-			// PrintFormat("[NoInstantDeath] %1: Subscribed to DamageStateChanged.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose
-		} else {
-			PrintFormat("[NoInstantDeath] %1: CRITICAL ERROR: Could not find SCR_CharacterDamageManagerComponent.", GetPlayerOrEntityNameStr(owner));
-		}
-		
-		// PrintFormat("[NoInstantDeath] %1: Using fixed bleedout time: %2s", GetPlayerOrEntityNameStr(owner), m_fBleedOutTime); // Production: Verbose
-	}
-
-	protected void UpdateUnconsciousTimer()
-	{
-		IEntity owner = GetOwner();
-		if (!owner) return;
-
-		if (!m_bIsUnconscious || !Replication.IsServer()) 
-		{
-			// This case should ideally not happen if logic is sound elsewhere
-			// PrintFormat("[NoInstantDeath] %1: UpdateUnconsciousTimer called inappropriately (IsUnconscious=%2, IsServer=%3). Removing timer.", GetPlayerOrEntityNameStr(owner), m_bIsUnconscious, Replication.IsServer());
-			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-			m_fUnconsciousTimer = 0.0;
-			return; 
-		}
-
-		m_fUnconsciousTimer += CHECK_INTERVAL;
-
-		// Log bleed-out timer every 30 seconds
-		// Corrected to use Math.Mod for Enfusion Script
-		float remainder = Math.Mod(m_fUnconsciousTimer, 30.0);
-		if (remainder < CHECK_INTERVAL && remainder >= 0) // Check if we are at or just passed a 30s mark (remainder will be 0 if it's an exact multiple)
-		{
-			PrintFormat("[NoInstantDeath] %1: Bleed-out time remaining: %2s / %3s", GetPlayerOrEntityNameStr(owner), m_fBleedOutTime - m_fUnconsciousTimer, m_fBleedOutTime);
-		}
-
-		if (m_fUnconsciousTimer >= m_fBleedOutTime)
-		{
-			PrintFormat("[NoInstantDeath] %1: Bleed-out timer expired. Character died.", GetPlayerOrEntityNameStr(owner));
-			KillCharacter(owner); 
+			PrintFormat("[NoInstantDeath] %1: *** ERROR: DamageManager missing.", GetPlayerOrEntityNameStr(owner));
 		}
 		else
 		{
-			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false); 
+			m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
 		}
 	}
+
+	override void OnDelete(IEntity owner)
+	{
+		if (m_CachedDmgManager)
+			m_CachedDmgManager.GetOnDamageStateChanged().Remove(HandleDamageStateChange);
+
+		if (Replication.IsServer())
+			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+
+		super.OnDelete(owner);
+	}
+
+	// ==================================================================
+	//  Core logic
+	// ==================================================================
 
 	void MakeUnconscious(IEntity owner)
 	{
 		if (m_bIsUnconscious || !m_CachedDmgManager) return;
 
-		PrintFormat("[NoInstantDeath] %1: Entering unconscious state (bleed-out).", GetPlayerOrEntityNameStr(owner));
-		m_bIsUnconscious = true;
-		m_fUnconsciousTimer = 0.0; 
-		m_bIsInitiatingKill = false;
+		PrintFormat("[NoInstantDeath] %1: Entering unconscious state.", GetPlayerOrEntityNameStr(owner));
 
+		m_bIsUnconscious     = true;
+		m_fUnconsciousTimer  = 0.0;
+		m_bIsInitiatingKill  = false;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
-		// if (!m_LastKnownInstigator) PrintFormat("[NoInstantDeath] %1: Warning: Could not get last known instigator for MakeUnconscious.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose
-		
-		m_CachedDmgManager.ForceUnconsciousness(0.1); 
+
+		m_CachedDmgManager.ForceUnconsciousness(0.1);
 
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe();
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
-			// PrintFormat("[NoInstantDeath] %1: Started unconscious timer.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose, implied by "Entering unconscious state"
 		}
 	}
-	
 
 	void KillCharacter(IEntity owner)
 	{
-		if (!m_bIsUnconscious || !m_CachedDmgManager) 
+		if (!m_bIsUnconscious || !m_CachedDmgManager)
 		{
-			// PrintFormat("[NoInstantDeath] %1: KillCharacter called but no longer appropriately (IsUnconscious=%2, HasDmgManager=%3). Aborting kill.", GetPlayerOrEntityNameStr(owner), m_bIsUnconscious, m_CachedDmgManager != null); // Production: Verbose
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 			m_fUnconsciousTimer = 0.0;
-			return; 
+			return;
 		}
-		
-		// Message printed by UpdateUnconsciousTimer is sufficient: "Bleed-out timer expired. Character died."
-		// PrintFormat("[NoInstantDeath] %1: Forcing character death (timer expired)." , GetPlayerOrEntityNameStr(owner)); // Production: Redundant
-		
+
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 		m_fUnconsciousTimer = 0.0;
-
 		m_bIsInitiatingKill = true;
-		// PrintFormat("[NoInstantDeath] %1: Set IsInitiatingKill flag.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose
 
-		Instigator instigatorToUse = m_LastKnownInstigator;
-		if (!instigatorToUse) 
+		Instigator inst = m_LastKnownInstigator;
+		if (!inst)
 		{
-			PrintFormat("[NoInstantDeath] %1: Warning: Stored instigator is null for KillCharacter. Attempting health-set fallback.", GetPlayerOrEntityNameStr(owner));
-			HitZone defaultHZ = m_CachedDmgManager.GetDefaultHitZone(); 
-			if (defaultHZ) { defaultHZ.SetHealth(0); } 
-			else { PrintFormat("[NoInstantDeath] %1: CRITICAL ERROR: Cannot finalize Kill via HZ fallback.", GetPlayerOrEntityNameStr(owner)); }
+			PrintFormat("[NoInstantDeath] %1: instigator null; fallback to health-set.", GetPlayerOrEntityNameStr(owner));
+			HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
+			if (hz) hz.SetHealth(0);
 			ResetInitiatingKillFlagInternal(owner);
 			return;
 		}
-		
-		// PrintFormat("[NoInstantDeath] %1: Calling DamageManager.Kill() with stored instigator: %2", GetPlayerOrEntityNameStr(owner), instigatorToUse); // Production: Verbose
-		m_CachedDmgManager.Kill(instigatorToUse); 
+		m_CachedDmgManager.Kill(inst);
 	}
 
-	protected void HandleDamageStateChange(EDamageState newDamageState)
+	// -----------------------------------------------------------------
+	//  Timer
+	// -----------------------------------------------------------------
+
+	protected void UpdateUnconsciousTimer()
+	{
+		IEntity owner = GetOwner();
+		if (!owner) return;
+
+		// safety: if already alive, stop timer
+		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.ALIVE)
+		{
+			StopBleedoutTimer("Timer check: life-state is ALIVE");
+			return;
+		}
+
+		if (!m_bIsUnconscious || !Replication.IsServer())
+		{
+			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+			m_fUnconsciousTimer = 0.0;
+			return;
+		}
+
+		m_fUnconsciousTimer += CHECK_INTERVAL;
+
+		if (Math.Mod(m_fUnconsciousTimer, 30.0) < CHECK_INTERVAL)
+			PrintFormat("[NoInstantDeath] %1: Bleed-out remaining %2 / %3",
+			            GetPlayerOrEntityNameStr(owner),
+			            m_fBleedOutTime - m_fUnconsciousTimer, m_fBleedOutTime);
+
+		if (m_fUnconsciousTimer >= m_fBleedOutTime)
+		{
+			PrintFormat("[NoInstantDeath] %1: Bleed-out expired — character dies.",
+			            GetPlayerOrEntityNameStr(owner));
+			KillCharacter(owner);
+		}
+		else
+			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
+	}
+
+	// -----------------------------------------------------------------
+	//  Damage-state callback
+	// -----------------------------------------------------------------
+
+	protected void HandleDamageStateChange(EDamageState newState)
 	{
 		IEntity owner = GetOwner();
 		if (!owner || !Replication.IsServer()) return;
 
-		bool wasUnconscious = m_bIsUnconscious;
-		bool isNowConscious = (newDamageState == EDamageState.UNDAMAGED || newDamageState == EDamageState.INTERMEDIARY);
-
-		// PrintFormat("[NoInstantDeath] %1: HandleDamageStateChange: NewState=%2, WasUnconscious=%3, IsNowConscious=%4", GetPlayerOrEntityNameStr(owner), typename.EnumToString(EDamageState, newDamageState), wasUnconscious, isNowConscious); // Production: Verbose
-
-		if (wasUnconscious && isNowConscious)
+		if (m_bIsUnconscious &&
+		    (newState == EDamageState.UNDAMAGED || newState == EDamageState.INTERMEDIARY))
 		{
-			PrintFormat("[NoInstantDeath] %1: Revived or recovered from unconsciousness. (New state: %2). Stopping bleed-out timer.", GetPlayerOrEntityNameStr(owner), typename.EnumToString(EDamageState, newDamageState));
-			m_bIsUnconscious = false;
-			m_fUnconsciousTimer = 0.0;
-			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-			Replication.BumpMe();
+			StopBleedoutTimer("DamageState → conscious");
 		}
 	}
 
-	bool IsInitiatingKill() { return m_bIsInitiatingKill; }
-	
-	void ResetInitiatingKillFlagInternal(IEntity owner)
+	// -----------------------------------------------------------------
+	//  Centralised shut-off
+	// -----------------------------------------------------------------
+
+	protected void StopBleedoutTimer(string reason)
 	{
-		m_bIsInitiatingKill = false;
-		// PrintFormat("[NoInstantDeath] %1: Reset IsInitiatingKill flag.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose
+		if (!m_bIsUnconscious) return;
+
+		PrintFormat("[NoInstantDeath] %1: Bleed-out cancelled (%2).",
+		            GetPlayerOrEntityNameStr(GetOwner()), reason);
+
+		m_bIsUnconscious    = false;
+		m_fUnconsciousTimer = 0.0;
+		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+		if (Replication.IsServer()) Replication.BumpMe();
 	}
 
-    void ResetInitiatingKillFlag()
-    {
-        ResetInitiatingKillFlagInternal(GetOwner());
-    }
+	// -----------------------------------------------------------------
+	//  Replication / misc
+	// -----------------------------------------------------------------
 
-	void OnRep_IsUnconscious() 
-	{ 
-		IEntity owner = GetOwner(); 
-		if (!owner) return; 
-		// PrintFormat("[NoInstantDeath] CLIENT %1: Replicated unconscious state: %2", GetPlayerOrEntityNameStr(owner), m_bIsUnconscious); // Production: Verbose
-	}
+	void OnRep_IsUnconscious() {}
 
-	bool IsUnconscious() { return m_bIsUnconscious; }
-	
-	override void OnDelete(IEntity owner) 
-	{
-		if (m_CachedDmgManager)
-		{
-			m_CachedDmgManager.GetOnDamageStateChanged().Remove(HandleDamageStateChange);
-			// PrintFormat("[NoInstantDeath] %1: Unsubscribed from DamageStateChanged.", GetPlayerOrEntityNameStr(owner)); // Production: Verbose
-		}
-		
-		if (Replication.IsServer()) 
-		{
-			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-		}
+	bool IsUnconscious()     { return m_bIsUnconscious; }
+	bool IsInitiatingKill()  { return m_bIsInitiatingKill; }
 
-		super.OnDelete(owner);
-	}
+	void ResetInitiatingKillFlagInternal(IEntity owner) { m_bIsInitiatingKill = false; }
+	void ResetInitiatingKillFlag()                      { ResetInitiatingKillFlagInternal(GetOwner()); }
 }
