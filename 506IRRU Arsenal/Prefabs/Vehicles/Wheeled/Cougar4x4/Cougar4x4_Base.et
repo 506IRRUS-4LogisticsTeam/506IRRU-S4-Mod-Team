@@ -95,6 +95,12 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
      }
      NumSlots 20
     }
+    MultiSlotConfiguration "{658774295AE77C5D}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{5B2FD067D70C1E8F}Prefabs/Items/Medicine/EpinephrineInjection/ACE_Medical_EpinephrineInjection.et"
+     }
+     NumSlots 20
+    }
     MultiSlotConfiguration "{65872B295C9A7A35}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/SalineBag_US_01.et"
@@ -110,6 +116,12 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     MultiSlotConfiguration "{65872B2A0D904591}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{1663496AE5B9F10B}Prefabs/Weapons/Ammo/Ammo_Grenade_HEDP_M433.et"
+     }
+     NumSlots 10
+    }
+    MultiSlotConfiguration "{6587742942056018}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{D67A9CE4E0B22FB9}Prefabs/Weapons/Magazines/Magazine_9x19_BaconM17_Ball.et"
      }
      NumSlots 10
     }
