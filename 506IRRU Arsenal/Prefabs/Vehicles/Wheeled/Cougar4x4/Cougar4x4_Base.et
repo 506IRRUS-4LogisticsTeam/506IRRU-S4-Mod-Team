@@ -40,7 +40,7 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{D5E220EFDE235E7D}Prefabs/Weapons/Magazines/RM338/Box_338N_RM338_100rnd_Ball.et"
      }
-     NumSlots 5
+     NumSlots 10
     }
     MultiSlotConfiguration "{65334535AB1ADD0B}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
@@ -57,13 +57,13 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{BFF56AB3B8D57594}Prefabs/Weapons/Magazines/XM250/Box_68x51_XM250_100rnd_Tracer.et"
      }
-     NumSlots 4
+     NumSlots 5
     }
-    MultiSlotConfiguration "{65334535ABCA3059}" {
+    MultiSlotConfiguration "{65872B2898B301D7}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{9537345DE4A27A4D}Prefabs/Weapons/Magazines/XM250/Box_68x51_XM250_100rnd_Rainbow.et"
      }
-     NumSlots 10
+     NumSlots 15
     }
     MultiSlotConfiguration "{65334535ABEF8820}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
@@ -73,21 +73,45 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     }
     MultiSlotConfiguration "{65334535AB915CF5}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{C3345F9BD26E57C9}Prefabs/Ammo/HEAT551/Ammo_Rocket_HEAT551.et"
+      Prefab "{93AFBDAB0B0C3E38}Prefabs/Magazine/HEAT551_Magazine.et"
      }
-     NumSlots 4
+     NumSlots 2
     }
     MultiSlotConfiguration "{65334535ABBA9C89}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{9C5C20FB0E01E64F}Prefabs/Weapons/Launchers/M72/Launcher_M72A3.et"
      }
-     NumSlots 4
+     NumSlots 2
     }
     MultiSlotConfiguration "{65334535AA4E74C2}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{ED97A510AA0A46C5}Prefabs/Weapons/Grenades/Grenade_Stun.et"
      }
      NumSlots 4
+    }
+    MultiSlotConfiguration "{65872B290BC6FEB1}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{0D9A5DCF89AE7AA9}Prefabs/Items/Medicine/MorphineInjection_01/MorphineInjection_01.et"
+     }
+     NumSlots 20
+    }
+    MultiSlotConfiguration "{65872B295C9A7A35}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/SalineBag_US_01.et"
+     }
+     NumSlots 10
+    }
+    MultiSlotConfiguration "{65872B29F9C40710}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{5375FA7CB1F68573}Prefabs/Weapons/Ammo/Ammo_Grenade_HE_M406.et"
+     }
+     NumSlots 10
+    }
+    MultiSlotConfiguration "{65872B2A0D904591}" {
+     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
+      Prefab "{1663496AE5B9F10B}Prefabs/Weapons/Ammo/Ammo_Grenade_HEDP_M433.et"
+     }
+     NumSlots 10
     }
    }
   }
