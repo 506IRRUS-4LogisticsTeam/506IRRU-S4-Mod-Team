@@ -1,21 +1,27 @@
 // ============================================================================
-//  SCR_CharacterDamageManagerComponent.c     (modded, NID fixes 2025-06-15)
-//
-//  • Fix A – blocks DESTROYED while the custom bleed-out timer is active
-//  • Fix B – intercepts the first lethal hit before health reaches 0
-//  • Fix C – adds a 1 HP safety buffer when we knock the player out
-// ----------------------------------------------------------------------------
+//  NID_DamageManager.c  (No-Instant-Death patch, ACE-compatible)  •  v6
+//  – Restores OnCustomDamageTaken invoker
+//  – Uses portable hit-zone top-up (core, Head, Torso)
+// ============================================================================
 
-modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerComponent
+// Note! Enforce script has no ternary operator, so we use an explicit check.
+
+modded class SCR_CharacterDamageManagerComponent
+    : SCR_CharacterDamageManagerComponent
 {
-	// Public invoker so other scripts can subscribe
+	// Public invoker (DamageHandler subscribes here)
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 
-	// ─── helper: readable entity / player name ────────────────────────────
+	// ─── debug helper ─────────────────────────────────────────────────────
+	protected void NID_DebugPrint(string msg)
+	{
+		if (NoInstantDeath_Settings.IsDebugEnabled())
+			Print("[NoInstantDeath][DMG] " + msg);
+	}
+
 	protected string GetPlayerOrEntityNameStr(IEntity entity)
 	{
-		if (!entity)
-			return "UnknownEntity(null)";
+		if (!entity) return "UnknownEntity(null)";
 
 		PlayerManager pm = GetGame().GetPlayerManager();
 		if (pm)
@@ -27,16 +33,13 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 				if (pid > 0)
 				{
 					string n = pm.GetPlayerName(pid);
-					if (!n.IsEmpty())
-						return n;
+					if (!n.IsEmpty()) return n;
 				}
 			}
 		}
 		return entity.ToString();
 	}
 
-	// ───────────────────────────────────────────────────────────────────────
-	//  FIX B – intercept lethal damage before super.OnDamage()
 	// ───────────────────────────────────────────────────────────────────────
 	override void OnDamage(notnull BaseDamageContext damageContext)
 	{
@@ -45,35 +48,55 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		if (owner)
 			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 
-		// 1) First lethal hit → convert to knock-out
-		if (nid && !nid.IsUnconscious())
+		// EARLY-OUT: AI or un-initialised pawn
+		if (!nid || !nid.NID_IsInitialized())
 		{
-			float projectedHealth = GetHealth() - damageContext.damageValue;
-			if (projectedHealth <= 0.1)
+			super.OnDamage(damageContext);
+			vector zeroVecEarly = vector.Zero;
+			OnCustomDamageTaken.Invoke(owner, damageContext.damageValue,
+			                           damageContext.instigator, zeroVecEarly,
+			                           damageContext.struckHitZone);
+			return;
+		}
+
+		// First lethal hit → knock-out
+		if (!nid.IsUnconscious())
+		{
+			float projected = GetHealth() - damageContext.damageValue;
+			if (projected <= 0.1)
 			{
 				nid.MakeUnconscious(owner);
 
-				// FIX C – ensure at least 1 HP so DESTROYED isn’t queued
+				// ── Portable 5-HP buffer on core, Head, Torso ──
 				HitZone core = GetDefaultHitZone();
-				if (core && core.GetHealth() < 1.0)
-					core.SetHealth(1.0);
+				if (core && core.GetHealth() < 5.0) core.SetHealth(5.0);
 
-				return;                           // skip super → health stays > 0
+				HitZone head = GetHitZoneByName("Head");
+				if (head && head.GetHealth() < 5.0) head.SetHealth(5.0);
+
+				HitZone torso = GetHitZoneByName("Torso");
+				if (torso && torso.GetHealth() < 5.0) torso.SetHealth(5.0);
+				// if any other vital zones need to be added, do so here
+
+				NID_DebugPrint(string.Format(
+					"%1 – lethal hit intercepted (knock-out)",
+					GetPlayerOrEntityNameStr(owner)));
+				return;
 			}
 		}
 
-		// 2) While unconscious, ignore any non-healing damage
-		if (nid && nid.IsUnconscious() && damageContext.damageType != EDamageType.HEALING)
+		// Ignore damage while unconscious (unless healing)
+		if (nid.IsUnconscious() && damageContext.damageType != EDamageType.HEALING)
 			return;
 
-		// 3) Normal processing
+		// Normal processing
 		super.OnDamage(damageContext);
 		vector zeroVec = vector.Zero;
-		OnCustomDamageTaken.Invoke(owner, damageContext.damageValue, damageContext.instigator, zeroVec, damageContext.struckHitZone);
+		OnCustomDamageTaken.Invoke(owner, damageContext.damageValue,
+		                           damageContext.instigator, zeroVec,
+		                           damageContext.struckHitZone);
 	}
 
-	// ───────────────────────────────────────────────────────────────────────
-	//  FIX A – block DESTROYED while custom bleed-out owns the life-cycle
 	// ───────────────────────────────────────────────────────────────────────
 	override void OnDamageStateChanged(EDamageState state)
 	{
@@ -82,14 +105,25 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		if (owner)
 			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 
-		if (nid && nid.IsUnconscious() && !nid.IsInitiatingKill() && state == EDamageState.DESTROYED)
-			return;                       // swallow fatal state during bleed-out
+		if (!nid || !nid.NID_IsInitialized())
+		{
+			super.OnDamageStateChanged(state);
+			return;
+		}
+
+		// Block DESTROYED during bleed-out
+		if (nid.IsUnconscious() && !nid.IsInitiatingKill()
+		    && state == EDamageState.DESTROYED)
+		{
+			NID_DebugPrint(string.Format(
+				"%1 – DESTROYED state intercepted",
+				GetPlayerOrEntityNameStr(owner)));
+			return;
+		}
 
 		super.OnDamageStateChanged(state);
 	}
 
-	// ───────────────────────────────────────────────────────────────────────
-	//  Respect the bleed-out timer in Kill()
 	// ───────────────────────────────────────────────────────────────────────
 	override void Kill(notnull Instigator instigator)
 	{
@@ -98,29 +132,38 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		if (owner)
 			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 
-		if (nid)
+		// AI or un-initialised → vanilla
+		if (!nid || !nid.NID_IsInitialized())
 		{
-			// 1) Our timer reached 360 s → allow true death
-			if (nid.IsInitiatingKill())
-			{
-				nid.ResetInitiatingKillFlag();
-				super.Kill(instigator);
-				return;
-			}
-
-			// 2) Ignore external Kill() calls while unconscious
-			if (nid.IsUnconscious())
-				return;
-
-			// 3) Unexpected lethal call → convert to knock-out
-			nid.MakeUnconscious(owner);
-			HitZone core = GetDefaultHitZone();
-			if (core && core.GetHealth() < 1.0)
-				core.SetHealth(1.0);
+			super.Kill(instigator);
 			return;
 		}
 
-		// Entity has no NID component → vanilla behaviour
-		super.Kill(instigator);
+		// Timer-expired kill allowed
+		if (nid.IsInitiatingKill())
+		{
+			nid.ResetInitiatingKillFlag();
+			super.Kill(instigator);
+			return;
+		}
+
+		// Ignore external Kill() while unconscious
+		if (nid.IsUnconscious())
+		{
+			NID_DebugPrint(string.Format(
+				"%1 – Kill() ignored while unconscious",
+				GetPlayerOrEntityNameStr(owner)));
+			return;
+		}
+
+		// Unexpected lethal call → knock-out
+		nid.MakeUnconscious(owner);
+		HitZone core = GetDefaultHitZone();
+		if (core && core.GetHealth() < 1.0)
+			core.SetHealth(1.0);
+
+		NID_DebugPrint(string.Format(
+			"%1 – Kill() intercepted, converted to knock-out",
+			GetPlayerOrEntityNameStr(owner)));
 	}
 }
