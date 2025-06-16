@@ -1,122 +1,126 @@
-// Modifies the base Character Damage Manager
+// ============================================================================
+//  SCR_CharacterDamageManagerComponent.c     (modded, NID fixes 2025-06-15)
+//
+//  • Fix A – blocks DESTROYED while the custom bleed-out timer is active
+//  • Fix B – intercepts the first lethal hit before health reaches 0
+//  • Fix C – adds a 1 HP safety buffer when we knock the player out
+// ----------------------------------------------------------------------------
+
 modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerComponent
 {
-	// Existing invoker for custom damage events
+	// Public invoker so other scripts can subscribe
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 
-	// Helper to get player name or entity string (can be duplicated or moved to a shared utility script)
+	// ─── helper: readable entity / player name ────────────────────────────
 	protected string GetPlayerOrEntityNameStr(IEntity entity)
 	{
-		if (!entity) return "UnknownEntity(null)";
+		if (!entity)
+			return "UnknownEntity(null)";
 
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (playerManager)
+		PlayerManager pm = GetGame().GetPlayerManager();
+		if (pm)
 		{
-			SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(entity);
-			if (character)
+			SCR_ChimeraCharacter chr = SCR_ChimeraCharacter.Cast(entity);
+			if (chr)
 			{
-				int playerId = playerManager.GetPlayerIdFromControlledEntity(character);
-				if (playerId > 0) 
+				int pid = pm.GetPlayerIdFromControlledEntity(chr);
+				if (pid > 0)
 				{
-					string playerName = playerManager.GetPlayerName(playerId);
-					if (!playerName.IsEmpty())
-					{
-						return playerName;
-					}
+					string n = pm.GetPlayerName(pid);
+					if (!n.IsEmpty())
+						return n;
 				}
 			}
 		}
-		return entity.ToString(); // Fallback
+		return entity.ToString();
 	}
 
-	override protected void OnDamage(notnull BaseDamageContext damageContext)
+	// ───────────────────────────────────────────────────────────────────────
+	//  FIX B – intercept lethal damage before super.OnDamage()
+	// ───────────────────────────────────────────────────────────────────────
+	override void OnDamage(notnull BaseDamageContext damageContext)
 	{
 		IEntity owner = GetOwner();
+		NoInstantDeathComponent nid = null;
 		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+
+		// 1) First lethal hit → convert to knock-out
+		if (nid && !nid.IsUnconscious())
 		{
-			NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
-			if (noInstantDeathComp && noInstantDeathComp.IsUnconscious())
+			float projectedHealth = GetHealth() - damageContext.damageValue;
+			if (projectedHealth <= 0.1)
 			{
-				if (damageContext.damageType != EDamageType.HEALING)
-				{
-					// PrintFormat("[SCR_CharacterDamageManagerComponent][NoInstantDeath] %1: Blocking non-healing damage (Type: %2) while unconscious.", GetPlayerOrEntityNameStr(owner), typename.EnumToString(EDamageType, damageContext.damageType), LogLevel.DEBUG); // Production: Can be verbose
-					return; 
-				}
+				nid.MakeUnconscious(owner);
+
+				// FIX C – ensure at least 1 HP so DESTROYED isn’t queued
+				HitZone core = GetDefaultHitZone();
+				if (core && core.GetHealth() < 1.0)
+					core.SetHealth(1.0);
+
+				return;                           // skip super → health stays > 0
 			}
 		}
 
+		// 2) While unconscious, ignore any non-healing damage
+		if (nid && nid.IsUnconscious() && damageContext.damageType != EDamageType.HEALING)
+			return;
+
+		// 3) Normal processing
 		super.OnDamage(damageContext);
-		vector hitDirPlaceholder = vector.Zero;
-		OnCustomDamageTaken.Invoke( owner, damageContext.damageValue, damageContext.instigator, hitDirPlaceholder, damageContext.struckHitZone);
+		vector zeroVec = vector.Zero;
+		OnCustomDamageTaken.Invoke(owner, damageContext.damageValue, damageContext.instigator, zeroVec, damageContext.struckHitZone);
 	}
 
+	// ───────────────────────────────────────────────────────────────────────
+	//  FIX A – block DESTROYED while custom bleed-out owns the life-cycle
+	// ───────────────────────────────────────────────────────────────────────
+	override void OnDamageStateChanged(EDamageState state)
+	{
+		IEntity owner = GetOwner();
+		NoInstantDeathComponent nid = null;
+		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+
+		if (nid && nid.IsUnconscious() && !nid.IsInitiatingKill() && state == EDamageState.DESTROYED)
+			return;                       // swallow fatal state during bleed-out
+
+		super.OnDamageStateChanged(state);
+	}
+
+	// ───────────────────────────────────────────────────────────────────────
+	//  Respect the bleed-out timer in Kill()
+	// ───────────────────────────────────────────────────────────────────────
 	override void Kill(notnull Instigator instigator)
 	{
 		IEntity owner = GetOwner();
-		// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: Kill called. Instigator: %2", GetPlayerOrEntityNameStr(owner), instigator); // Production: Verbose
+		NoInstantDeathComponent nid = null;
+		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 
-		if (!owner) 
+		if (nid)
 		{
-			// PrintFormat("[SCR_CharacterDamageManagerComponent] Kill called on null owner. Instigator: %1. Calling super.Kill().", instigator); // Production: Verbose
-			super.Kill(instigator); 
-			return; 
-		}
-
-		NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
-
-		if (noInstantDeathComp) 
-		{
-			if (noInstantDeathComp.IsInitiatingKill())
+			// 1) Our timer reached 360 s → allow true death
+			if (nid.IsInitiatingKill())
 			{
-				// Logged by NoInstantDeathComponent: "Bleed-out timer expired. Character died."
-				// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: Kill confirmed by NoInstantDeathComponent flag. Instigator: %2", GetPlayerOrEntityNameStr(owner), instigator); // Production: Redundant
-				noInstantDeathComp.ResetInitiatingKillFlag(); 
-				super.Kill(instigator); 
+				nid.ResetInitiatingKillFlag();
+				super.Kill(instigator);
 				return;
 			}
 
-			if (noInstantDeathComp.IsUnconscious())
-			{
-				// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: Kill called externally while already unconscious (NoInstantDeath). Ignoring. Instigator: %2", GetPlayerOrEntityNameStr(owner), instigator); // Production: Verbose
+			// 2) Ignore external Kill() calls while unconscious
+			if (nid.IsUnconscious())
 				return;
-			}
-			else
-			{
-				// Logged by NoInstantDeathComponent: "Entering unconscious state (bleed-out)."
-				// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: Intercepting initial Kill(). Calling MakeUnconscious(). Instigator: %2", GetPlayerOrEntityNameStr(owner), instigator); // Production: Redundant
-				noInstantDeathComp.MakeUnconscious(owner);
-				return; 
-			}
-		}
-		else 
-		{
-			PrintFormat("[SCR_CharacterDamageManagerComponent] %1: NoInstantDeathComponent not found. Standard Kill. Instigator: %2", GetPlayerOrEntityNameStr(owner), instigator);
-			super.Kill(instigator);
-		}
-	}
 
-	override protected void OnDamageStateChanged(EDamageState state)
-	{
-		IEntity owner = GetOwner();
-		if (!owner) 
-		{
-			// PrintFormat("[SCR_CharacterDamageManagerComponent] OnDamageStateChanged called on null owner. NewState: %1", typename.EnumToString(EDamageState, state)); // Production: Verbose
-			super.OnDamageStateChanged(state);
+			// 3) Unexpected lethal call → convert to knock-out
+			nid.MakeUnconscious(owner);
+			HitZone core = GetDefaultHitZone();
+			if (core && core.GetHealth() < 1.0)
+				core.SetHealth(1.0);
 			return;
 		}
 
-		// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: OnDamageStateChanged. NewState: %2", GetPlayerOrEntityNameStr(owner), typename.EnumToString(EDamageState, state)); // Production: Highly verbose, logged by NoInstantDeathComponent anyway.
-
-		if (state == EDamageState.DESTROYED)
-		{
-			NoInstantDeathComponent noInstantDeathComp = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
-			if (noInstantDeathComp && !noInstantDeathComp.IsUnconscious() && !noInstantDeathComp.IsInitiatingKill())
-			{
-				// PrintFormat("[SCR_CharacterDamageManagerComponent] %1: Intercepting external/initial DESTROYED state. Calling MakeUnconscious().", GetPlayerOrEntityNameStr(owner)); // Production: Verbose, MakeUnconscious will log.
-				noInstantDeathComp.MakeUnconscious(owner);
-				return;
-			}
-		}
-		super.OnDamageStateChanged(state);
+		// Entity has no NID component → vanilla behaviour
+		super.Kill(instigator);
 	}
 }
