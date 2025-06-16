@@ -1,19 +1,20 @@
 // ============================================================================
-//  NoInstantDeathComponent.c  (EnforceScript)
+//  NoInstantDeathComponent.c  (EnforceScript – patched 2025-06-16)
 //
 //  Players get a reversible 6-min bleed-out instead of instant death.
-//  AI/GMs are untouched – the logic only activates after SCR_PlayerController
-//  calls NID_Initialize() on the controlled player entity.
+//  • Adds a 5 HP safety buffer when the knockout is triggered           (Fix C)
+//  • Uses ForceUnconsciousness() **without** the bogus “360 s” param
+//    – the bleed-out timer is handled entirely by our own CallLater loop.
 // ============================================================================
 
-[ComponentEditorProps(category: "Health", description: "Overrides death to force player bleed-out")]
+[ComponentEditorProps(category: "Health",
+        description: "Overrides death to force player bleed-out")]
 class NoInstantDeathComponentClass : ScriptComponentClass {}
 
-// ────────────────────────────────────────────────────────────────────────────
 class NoInstantDeathComponent : ScriptComponent
 {
-	// ─── external init flag (set only by player controller) ────────────────
-	protected bool  m_bNID_Initialized = false;     // ← AI stays FALSE
+	// ─── external init flag (set only by player-controller) ───────────────
+	protected bool m_bNID_Initialized = false;   // ← AI stays FALSE
 	bool   NID_IsInitialized()        { return m_bNID_Initialized; }
 
 	void   NID_Initialize()
@@ -29,15 +30,16 @@ class NoInstantDeathComponent : ScriptComponent
 		m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
 		m_bNID_Initialized = true;
 		Replication.BumpMe();
-		PrintFormat("[NoInstantDeath] %1: initialized.", GetPlayerOrEntityNameStr(GetOwner()));
+		PrintFormat("[NoInstantDeath] %1: initialized.",
+		            GetPlayerOrEntityNameStr(GetOwner()));
 	}
 
-	// ─── config ────────────────────────────────────────────────────────────
+	// ─── config ───────────────────────────────────────────────────────────
 	[RplProp(onRplName: "OnRep_IsUnconscious")]
 	protected bool  m_bIsUnconscious = false;
 
-	protected const float m_fBleedOutTime     = 360.0; // s
-	protected const float CHECK_INTERVAL      =   1.0; // s
+	protected const float m_fBleedOutTime = 360.0;  // seconds
+	protected const float CHECK_INTERVAL   =   1.0; // seconds
 
 	protected float m_fUnconsciousTimer = 0.0;
 	protected bool  m_bIsInitiatingKill = false;
@@ -73,31 +75,40 @@ class NoInstantDeathComponent : ScriptComponent
 		super.OnDelete(owner);
 	}
 
-	// ─── bleed-out core ────────────────────────────────────────────────────
+	// ─── bleed-out core ───────────────────────────────────────────────────
 	void MakeUnconscious(IEntity owner)
 	{
-		if (!m_bNID_Initialized || m_bIsUnconscious || !m_CachedDmgManager) return;
+		if (!m_bNID_Initialized || m_bIsUnconscious || !m_CachedDmgManager)
+			return;
 
-		PrintFormat("[NoInstantDeath] %1: entering unconscious state.", GetPlayerOrEntityNameStr(owner));
+		PrintFormat("[NoInstantDeath] %1: entering unconscious state.",
+		            GetPlayerOrEntityNameStr(owner));
 
 		m_bIsUnconscious     = true;
 		m_fUnconsciousTimer  = 0.0;
 		m_bIsInitiatingKill  = false;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 
-		// give the engine the full bleed-out window
-		m_CachedDmgManager.ForceUnconsciousness(m_fBleedOutTime);
+		// --- Fix C: ensure at least 5 HP buffer so DESTROYED is never queued
+		HitZone core = m_CachedDmgManager.GetDefaultHitZone();
+		if (core && core.GetHealth() < 5.0)
+			core.SetHealth(5.0);
+
+		// Knock the engine into the unconscious animation state
+		m_CachedDmgManager.ForceUnconsciousness();  // param = resilience HP, not time
 
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe();
-			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
+			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer,
+			                                   CHECK_INTERVAL * 1000, false);
 		}
 	}
 
 	void KillCharacter(IEntity owner)
 	{
-		if (!m_bIsUnconscious || !m_CachedDmgManager) return;
+		if (!m_bIsUnconscious || !m_CachedDmgManager)
+			return;
 
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 		m_bIsInitiatingKill = true;
@@ -106,7 +117,7 @@ class NoInstantDeathComponent : ScriptComponent
 		if (!inst)
 		{
 			HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
-			if (hz) hz.SetHealth(0);
+			if (hz) hz.SetHealth(0);   // fallback hard-kill
 			m_bIsInitiatingKill = false;
 			return;
 		}
@@ -117,7 +128,8 @@ class NoInstantDeathComponent : ScriptComponent
 	protected void UpdateUnconsciousTimer()
 	{
 		IEntity owner = GetOwner();
-		if (!owner || !m_bIsUnconscious || !Replication.IsServer()) return;
+		if (!owner || !m_bIsUnconscious || !Replication.IsServer())
+			return;
 
 		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.ALIVE)
 		{
@@ -129,8 +141,8 @@ class NoInstantDeathComponent : ScriptComponent
 
 		if (Math.Mod(m_fUnconsciousTimer, 30.0) < CHECK_INTERVAL)
 			PrintFormat("[NoInstantDeath] %1: bleed-out remaining %2 / %3",
-				GetPlayerOrEntityNameStr(owner),
-				m_fBleedOutTime - m_fUnconsciousTimer, m_fBleedOutTime);
+			            GetPlayerOrEntityNameStr(owner),
+			            m_fBleedOutTime - m_fUnconsciousTimer, m_fBleedOutTime);
 
 		if (m_fUnconsciousTimer >= m_fBleedOutTime)
 		{
@@ -139,16 +151,19 @@ class NoInstantDeathComponent : ScriptComponent
 			KillCharacter(owner);
 		}
 		else
-			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
+			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer,
+			                                   CHECK_INTERVAL * 1000, false);
 	}
 
 	// ─── damage-state callback ────────────────────────────────────────────
 	protected void HandleDamageStateChange(EDamageState newState)
 	{
-		if (!m_bNID_Initialized || !Replication.IsServer()) return;
+		if (!m_bNID_Initialized || !Replication.IsServer())
+			return;
 
 		if (m_bIsUnconscious &&
-		    (newState == EDamageState.UNDAMAGED || newState == EDamageState.INTERMEDIARY))
+		    (newState == EDamageState.UNDAMAGED ||
+		     newState == EDamageState.INTERMEDIARY))
 		{
 			StopBleedoutTimer("damage-state conscious");
 		}
@@ -157,7 +172,8 @@ class NoInstantDeathComponent : ScriptComponent
 	// ─── central stop ─────────────────────────────────────────────────────
 	protected void StopBleedoutTimer(string reason)
 	{
-		if (!m_bIsUnconscious) return;
+		if (!m_bIsUnconscious)
+			return;
 
 		PrintFormat("[NoInstantDeath] %1: bleed-out cancelled (%2).",
 		            GetPlayerOrEntityNameStr(GetOwner()), reason);
@@ -192,7 +208,8 @@ class NoInstantDeathComponent : ScriptComponent
 		return e.ToString();
 	}
 
-	bool IsUnconscious()    { return m_bIsUnconscious; }
-	bool IsInitiatingKill() { return m_bIsInitiatingKill; }
-	void ResetInitiatingKillFlag() { m_bIsInitiatingKill = false; }
+	// ─── public state accessors ──────────────────────────────────────────
+	bool IsUnconscious()          { return m_bIsUnconscious; }
+	bool IsInitiatingKill()       { return m_bIsInitiatingKill; }
+	void ResetInitiatingKillFlag(){ m_bIsInitiatingKill = false; }
 }
