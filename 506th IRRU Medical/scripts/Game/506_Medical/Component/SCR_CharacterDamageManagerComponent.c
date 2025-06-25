@@ -79,7 +79,9 @@ modded class SCR_CharacterDamageManagerComponent
 		}
 
 		// —— 3) Damage while unconscious (non‑healing) ——
-		if (nid.IsUnconscious() && damageContext.damageType != EDamageType.HEALING)
+		if (nid.IsUnconscious() &&
+			damageContext.damageType != EDamageType.HEALING &&
+			!nid.IsInitiatingKill())   // ← skip clamp for bleed-out kill
 		{
 			// Keep both struck zone and core ≥1 HP
 			EnforceMinHealth(damageContext.struckHitZone, 1.0);
@@ -142,8 +144,8 @@ modded class SCR_CharacterDamageManagerComponent
 
 		if (nid.IsInitiatingKill())
 		{
-			nid.ResetInitiatingKillFlag();
 			super.Kill(instigator);
+			nid.ResetInitiatingKillFlag();
 			return;
 		}
 

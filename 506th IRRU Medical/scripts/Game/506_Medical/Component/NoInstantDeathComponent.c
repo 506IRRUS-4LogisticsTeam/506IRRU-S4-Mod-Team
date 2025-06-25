@@ -1,13 +1,10 @@
 // ============================================================================
-//  NoInstantDeathComponent.c   – 2025-06-16  (v3)
-//  • 6-min bleed-out, 5 HP buffer
-//  • One “Attempted to prevent DEAD state” line; WARNING + timer cancel if DEAD
-//  • Failsafe: if damage-state DESTROYED arrives, timer cancels and warns
-//  • 15-second remaining-time debug pings
+//  NoInstantDeathComponent.c   – 2025-06-25  (v3.1)
+//  • InitiatingKill flag reset delayed to ensure kill when timer expires
 // ============================================================================
 
 [ComponentEditorProps(category: "Health",
-        description: "Overrides death to force player bleed-out")]
+		description: "Overrides death to force player bleed-out")]
 class NoInstantDeathComponentClass : ScriptComponentClass {}
 
 class NoInstantDeathComponent : ScriptComponent
