@@ -28,7 +28,7 @@ class NoInstantDeathComponent : ScriptComponent
 	protected bool m_bDeadWarned       = false;  // one-shot warn
 
 	// ─── timer config ────────────────────────────────────────────────────
-	protected const float m_fBleedOutTime = 18.0; // s
+	protected const float m_fBleedOutTime = 360.0; // s
 	protected const float CHECK_INTERVAL   =   1.0; // s
 	protected float       m_fUnconsciousTimer = 0.0;
 
