@@ -1,0 +1,8 @@
+GameProject {
+ ID "506thIRRUMortars"
+ GUID "65CF352757188FCF"
+ TITLE "506th IRRU Mortars"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
