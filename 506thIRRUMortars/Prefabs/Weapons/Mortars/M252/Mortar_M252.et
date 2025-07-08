@@ -6,6 +6,8 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     "{BAFA286ACB945CF7}Sounds/Weapons/Mortars/M252/Weapons_Mortars_M252_Shot.acp"
    }
   }
+  IRRU_MortarArtilleryComputerComponent "{65CF5DC8CA360D5D}" {
+  }
   LongRangeSoundComponent "{6188B6F21280DC32}" {
    SoundDataName "Weapons_Mortars_M252_Shot"
   }
@@ -381,6 +383,12 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
       PivotID "w_sight"
      }
      Height 0
+    }
+   }
+   additionalActions {
+    IRRU_MortarComputerUserAction "{65CF5DC8BF01657E}" {
+     ActionTitle "Open Computer"
+     VisibilityRange 2
     }
    }
   }
