@@ -1,4 +1,2 @@
-modded enum ChimeraMenuPreset
-{
-    MortarComputerMenu = 50000  // Use a high number to avoid conflicts
-}
+// this file is no longer needed for direct map approach
+// keeping it empty to avoid compilation errors if referenced elsewhere

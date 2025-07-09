@@ -1,9 +1,4 @@
-// Temporarily removed - using existing MapMenu
-// modded enum ChimeraMenuPreset
-// {
-//     MortarComputerMenu
-// }
-
+/*
 class IRRU_MortarComputerUI : ChimeraMenuBase
 {
     protected SCR_MapEntity m_MapEntity;

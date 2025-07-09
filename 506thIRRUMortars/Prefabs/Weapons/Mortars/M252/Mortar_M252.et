@@ -384,10 +384,20 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      }
      Height 0
     }
+    UserActionContext "{65D2E1AAA4FFA5F8}" {
+     ContextName "artillery_computer"
+     Position PointInfo "{65D2E1AB7B692570}" {
+      Offset 0 0.5 0.5
+     }
+     Radius 1
+    }
    }
    additionalActions {
-    IRRU_MortarComputerUserAction "{65CF5DC8BF01657E}" {
-     ActionTitle "Open Computer"
+    IRRU_MortarComputerUserAction "{65D2E1AB2E168BAE}" {
+     ParentContextList {
+      "artillery_computer"
+     }
+     ActionTitle "Open Artillery Computer"
      VisibilityRange 2
     }
    }
