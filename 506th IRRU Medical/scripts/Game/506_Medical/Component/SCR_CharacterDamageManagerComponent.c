@@ -1,7 +1,8 @@
 // ============================================================================
 //  SCR_CharacterDamageManagerComponent.c  (No‑Instant‑Death patch, ACE‑compatible)  •  v7
-//  – Prevents any vital hit‑zone from falling below 1 HP
+//  – Prevents any vital hit‑zone from falling below 1 HP
 //  – Restores OnCustomDamageTaken invoker
+//  – ADDED: Methods to return exact percentages for inspection
 // ============================================================================
 
 modded class SCR_CharacterDamageManagerComponent
@@ -38,6 +39,146 @@ modded class SCR_CharacterDamageManagerComponent
 		return entity.ToString();
 	}
 
+	// ══════════════════════════════════════════════════════════════════════
+	// NEW PERCENTAGE METHODS FOR INSPECTION
+	// ══════════════════════════════════════════════════════════════════════
+
+	//! Get exact health percentage (0-100)
+	float GetHealthPercentage()
+	{
+		HitZone defaultHZ = GetDefaultHitZone();
+		if (!defaultHZ)
+			return 100.0;
+		
+		// For No-Instant-Death compatibility, check if unconscious
+		IEntity owner = GetOwner();
+		NoInstantDeathComponent nid = null;
+		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+		
+		// If unconscious and NID is active, show very low health but not 0
+		if (nid && nid.IsUnconscious())
+		{
+			float currentHealth = defaultHZ.GetHealth();
+			float maxHealth = defaultHZ.GetMaxHealth();
+			
+			// Ensure we show at least 1% when unconscious
+			if (maxHealth > 0)
+				return Math.Max(1.0, (currentHealth / maxHealth) * 100.0);
+			else
+				return 1.0;
+		}
+		
+		// Normal health calculation
+		return GetHealthScaled() * 100.0;
+	}
+
+	//! Get exact blood percentage (0-100)
+	float GetBloodPercentage()
+	{
+		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
+		if (!bloodHZ)
+			return 100.0;
+		
+		float currentBlood = bloodHZ.GetHealth();
+		float maxBlood = bloodHZ.GetMaxHealth();
+		
+		if (maxBlood <= 0)
+			return 100.0;
+			
+		return (currentBlood / maxBlood) * 100.0;
+	}
+
+	//! Get exact resilience percentage (0-100) 
+	float GetResiliencePercentage()
+	{
+		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
+		if (!resilienceHZ)
+			return -1.0; // Return -1 to indicate no resilience system
+		
+		float currentResilience = resilienceHZ.GetHealth();
+		float maxResilience = resilienceHZ.GetMaxHealth();
+		
+		if (maxResilience <= 0)
+			return 100.0;
+			
+		return (currentResilience / maxResilience) * 100.0;
+	}
+
+	//! Check if character has resilience system
+	bool HasResilienceSystem()
+	{
+		return GetResilienceHitZone() != null;
+	}
+
+	//! Get bleeding rate in ml/s (more intuitive than the raw value)
+	float GetBleedingRateMLPerSecond()
+	{
+		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
+		if (!bloodHZ)
+			return 0.0;
+			
+		// Convert the game's bleeding rate to ml/s
+		// Adjust multiplier based on your mod's bleeding scale
+		return bloodHZ.GetTotalBleedingAmount() * 1000.0 * GetBleedingScale(); 
+	}
+
+	//! Get detailed medical status for inspection
+	void GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent, 
+								  out float resiliencePercent, out bool hasResilience,
+								  out float bleedingRateMLs, out bool isUnconscious)
+	{
+		healthPercent = GetHealthPercentage();
+		bloodPercent = GetBloodPercentage();
+		resiliencePercent = GetResiliencePercentage();
+		hasResilience = HasResilienceSystem();
+		bleedingRateMLs = GetBleedingRateMLPerSecond();
+		
+		// Check unconscious state using your NID system
+		IEntity owner = GetOwner();
+		NoInstantDeathComponent nid = null;
+		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			
+		isUnconscious = (nid && nid.IsUnconscious());
+	}
+
+	//! Get color code for health percentage (for UI display)
+	string GetHealthColorCode(float percentage)
+	{
+		if (percentage >= 75)
+			return "00FF00"; // Green
+		else if (percentage >= 50)
+			return "FFFF00"; // Yellow
+		else if (percentage >= 25)
+			return "FFA500"; // Orange
+		else
+			return "FF0000"; // Red
+	}
+
+	//! Get specific limb health percentage
+	float GetLimbHealthPercentage(ECharacterHitZoneGroup limb)
+	{
+		float limbHealth = GetGroupHealthScaled(limb);
+		return limbHealth * 100.0;
+	}
+
+	//! Get all limb health percentages at once
+	void GetAllLimbHealthPercentages(out float head, out float chest, out float abdomen,
+									  out float leftArm, out float rightArm, 
+									  out float leftLeg, out float rightLeg)
+	{
+		head = GetLimbHealthPercentage(ECharacterHitZoneGroup.HEAD);
+		chest = GetLimbHealthPercentage(ECharacterHitZoneGroup.UPPERTORSO);
+		abdomen = GetLimbHealthPercentage(ECharacterHitZoneGroup.LOWERTORSO);
+		leftArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTARM);
+		rightArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
+		leftLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
+		rightLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
+	}
+
+	// ─────────────────────────────────────────────────────────────────────
+	// ORIGINAL NO-INSTANT-DEATH METHODS
 	// ─────────────────────────────────────────────────────────────────────
 	override void OnDamage(notnull BaseDamageContext damageContext)
 	{
@@ -66,7 +207,7 @@ modded class SCR_CharacterDamageManagerComponent
 			{
 				nid.MakeUnconscious(owner);
 
-				// Apply 5‑HP buffer but ALSO guarantee ≥1 HP everywhere
+				// Apply 5‑HP buffer but ALSO guarantee ≥1 HP everywhere
 				EnforceMinHealth(GetDefaultHitZone(),     5.0);
 				EnforceMinHealth(GetHitZoneByName("Head"),5.0);
 				EnforceMinHealth(GetHitZoneByName("Torso"),5.0);
@@ -83,7 +224,7 @@ modded class SCR_CharacterDamageManagerComponent
 			damageContext.damageType != EDamageType.HEALING &&
 			!nid.IsInitiatingKill())   // ← skip clamp for bleed-out kill
 		{
-			// Keep both struck zone and core ≥1 HP
+			// Keep both struck zone and core ≥1 HP
 			EnforceMinHealth(damageContext.struckHitZone, 1.0);
 			EnforceMinHealth(GetDefaultHitZone(),         1.0);
 			return;
