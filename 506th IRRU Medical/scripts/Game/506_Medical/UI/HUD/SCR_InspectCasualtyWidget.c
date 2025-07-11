@@ -1,6 +1,6 @@
 // ============================================================================
 //  SCR_InspectCasualtyWidget.c - Modified for 506thIRRUMedical
-//  Shows exact health, blood, and resilience percentages
+//  Shows exact health, blood, resilience percentages, and bleedout timer
 // ============================================================================
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
@@ -23,6 +23,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	// NEW: Additional widgets for enhanced display
 	protected TextWidget m_wResilienceText;
 	protected RichTextWidget m_wDetailedStatus;
+	protected TextWidget m_wBleedoutTimerText;
 
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
@@ -34,6 +35,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
 			m_wDetailedStatus = RichTextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DetailedStatus"));
+			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
 		}
 		
 		DisableWidget();
@@ -106,7 +108,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Gather and update data of target character into widget - MODIFIED FOR PERCENTAGES
+	//! Gather and update data of target character into widget - MODIFIED FOR PERCENTAGES AND TIMER
 	override protected void UpdateWidgetData()
 	{
 		if (!m_Target || !m_wCasualtyInspectWidget)
@@ -134,12 +136,14 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		if (!damageMan)
 			return;
 
-		// NEW: Get all percentage data using our new methods
+		// NEW: Get all percentage data including timer using our new methods
 		float healthPercent, bloodPercent, resiliencePercent, bleedingRateMLs;
-		bool hasResilience, isUnconscious;
+		float bleedoutTimeRemaining;
+		bool hasResilience, isUnconscious, isBleedingOut;
 		
 		damageMan.GetDetailedMedicalStatus(healthPercent, bloodPercent, resiliencePercent, 
-		                                   hasResilience, bleedingRateMLs, isUnconscious);
+		                                   hasResilience, bleedingRateMLs, isUnconscious,
+		                                   bleedoutTimeRemaining, isBleedingOut);
 		
 		// Format the display texts with exact percentages
 		string damageIntensityText = string.Format("Health: %1%%", Math.Round(healthPercent));
@@ -181,10 +185,39 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			bleedingIntensityText = string.Format("Blood: %1%%", Math.Round(bloodPercent));
 		}
 		
-		// Add unconscious state to name if applicable
+		// Add unconscious state and timer to name if applicable
 		if (isUnconscious)
 		{
-			sName = sName + " [UNCONSCIOUS]";
+			if (isBleedingOut && bleedoutTimeRemaining > 0)
+			{
+				// Format time as MM:SS
+				int minutes = Math.Floor(bleedoutTimeRemaining / 60);
+				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
+				string timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
+				
+				// Color code based on time remaining
+				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
+				
+				if (percentRemaining > 50)
+				{
+					// White/normal for > 50%
+					sName = string.Format("%1 [UNCONSCIOUS - %2]", sName, timeText);
+				}
+				else if (percentRemaining > 25)
+				{
+					// Orange for 25-50%
+					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,165,0,255'>%2</color>]", sName, timeText);
+				}
+				else
+				{
+					// Red for < 25%
+					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,0,0,255'>%2</color>]", sName, timeText);
+				}
+			}
+			else
+			{
+				sName = sName + " [UNCONSCIOUS]";
+			}
 		}
 		
 		// Get medical treatment states
@@ -233,11 +266,54 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			string resilienceText = string.Format("Resilience: %1%%", Math.Round(resiliencePercent));
 			m_wResilienceText.SetText(resilienceText);
+			
+			// Set color based on percentage
+			Color resilienceDisplayColor;
+			if (resiliencePercent >= 75)
+				resilienceDisplayColor = Color.FromSRGBA(0, 255, 0, 255); // Green
+			else if (resiliencePercent >= 50)
+				resilienceDisplayColor = Color.FromSRGBA(255, 255, 0, 255); // Yellow
+			else if (resiliencePercent >= 25)
+				resilienceDisplayColor = Color.FromSRGBA(255, 165, 0, 255); // Orange
+			else
+				resilienceDisplayColor = Color.FromSRGBA(255, 0, 0, 255); // Red
+				
+			m_wResilienceText.SetColor(resilienceDisplayColor);
 			m_wResilienceText.SetVisible(true);
 		}
 		else if (m_wResilienceText)
 		{
 			m_wResilienceText.SetVisible(false);
+		}
+		
+		// NEW: Update separate bleedout timer widget if it exists
+		if (m_wBleedoutTimerText)
+		{
+			if (isBleedingOut && bleedoutTimeRemaining > 0)
+			{
+				int minutes = Math.Floor(bleedoutTimeRemaining / 60);
+				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
+				string timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
+				
+				// Color based on time
+				Color timerColor;
+				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
+				
+				if (percentRemaining > 50)
+					timerColor = Color.White;
+				else if (percentRemaining > 25)
+					timerColor = Color.FromSRGBA(255, 165, 0, 255); // Orange
+				else
+					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red
+					
+				m_wBleedoutTimerText.SetText(timeText);
+				m_wBleedoutTimerText.SetColor(timerColor);
+				m_wBleedoutTimerText.SetVisible(true);
+			}
+			else
+			{
+				m_wBleedoutTimerText.SetVisible(false);
+			}
 		}
 		
 		// NEW: Show which limbs have tourniquets if detail widget exists

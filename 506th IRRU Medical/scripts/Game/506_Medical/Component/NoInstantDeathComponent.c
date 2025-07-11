@@ -1,6 +1,8 @@
 // ============================================================================
-//  NoInstantDeathComponent.c   – 2025-06-25  (v3.1)
+//  NoInstantDeathComponent.c   – 2025-06-25  (v3.2)
 //  • InitiatingKill flag reset delayed to ensure kill when timer expires
+//  • ADDED: Methods to expose bleedout timer for UI display
+//  • ADDED: Fix for bleeding-to-unconscious without timer
 // ============================================================================
 
 [ComponentEditorProps(category: "Health",
@@ -49,12 +51,20 @@ class NoInstantDeathComponent : ScriptComponent
 			owner.FindComponent(SCR_CharacterDamageManagerComponent));
 		m_Ctrl             = SCR_CharacterControllerComponent.Cast(
 			owner.FindComponent(SCR_CharacterControllerComponent));
+		
+		// NEW: Register for life state changes to catch bleed-to-unconscious
+		if (m_Ctrl)
+			m_Ctrl.m_OnLifeStateChanged.Insert(OnLifeStateChanged);
 	}
 
 	override void OnDelete(IEntity owner)
 	{
 		if (m_CachedDmgManager && m_bNID_Initialized)
 			m_CachedDmgManager.GetOnDamageStateChanged().Remove(HandleDamageStateChange);
+
+		// NEW: Unregister life state listener
+		if (m_Ctrl)
+			m_Ctrl.m_OnLifeStateChanged.Remove(OnLifeStateChanged);
 
 		if (Replication.IsServer())
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
@@ -76,6 +86,20 @@ class NoInstantDeathComponent : ScriptComponent
 		NID_DebugPrint(GetNameStr(GetOwner()) + ": initialized.");
 	}
 
+	// ─── NEW: Life state change handler ──────────────────────────────────
+	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
+	{
+		// Catch transition to unconscious from any source (bleeding, resilience, etc)
+		if (newLifeState == ECharacterLifeState.INCAPACITATED && 
+		    previousLifeState == ECharacterLifeState.ALIVE &&
+		    m_bNID_Initialized && !m_bIsUnconscious)
+		{
+			NID_DebugPrint(GetNameStr(GetOwner()) + 
+			               ": detected unconscious from bleeding/resilience, starting timer");
+			MakeUnconscious(GetOwner());
+		}
+	}
+
 	// ─── knock-out transition ────────────────────────────────────────────
 	void MakeUnconscious(IEntity owner)
 	{
@@ -94,6 +118,9 @@ class NoInstantDeathComponent : ScriptComponent
 
 		if (Replication.IsServer())
 		{
+			// Safety: Remove any existing timer before starting new one
+			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+			
 			Replication.BumpMe();
 			GetGame().GetCallqueue().CallLater(
 			    UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
@@ -252,7 +279,42 @@ class NoInstantDeathComponent : ScriptComponent
 		return e.ToString();
 	}
 
-	// public getters
+	// ══════════════════════════════════════════════════════════════════════
+	// NEW TIMER EXPOSURE METHODS FOR UI
+	// ══════════════════════════════════════════════════════════════════════
+
+	//! Get remaining bleedout time in seconds
+	float GetBleedoutTimeRemaining()
+	{
+		if (!m_bIsUnconscious)
+			return -1.0; // Not bleeding out
+			
+		return m_fBleedOutTime - m_fUnconsciousTimer;
+	}
+
+	//! Get total bleedout time in seconds
+	float GetBleedoutTimeTotal()
+	{
+		return m_fBleedOutTime;
+	}
+
+	//! Get bleedout timer percentage (0-100)
+	float GetBleedoutPercentage()
+	{
+		if (!m_bIsUnconscious)
+			return 100.0; // Full time if not bleeding out
+			
+		float remaining = GetBleedoutTimeRemaining();
+		if (remaining <= 0)
+			return 0.0;
+			
+		return (remaining / m_fBleedOutTime) * 100.0;
+	}
+
+	// ══════════════════════════════════════════════════════════════════════
+	// ORIGINAL PUBLIC GETTERS
+	// ══════════════════════════════════════════════════════════════════════
+	
 	bool IsUnconscious()          { return m_bIsUnconscious; }
 	bool IsInitiatingKill()       { return m_bIsInitiatingKill; }
 	void ResetInitiatingKillFlag(){ m_bIsInitiatingKill = false; }

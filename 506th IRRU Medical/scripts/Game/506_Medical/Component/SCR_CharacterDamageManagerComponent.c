@@ -3,6 +3,7 @@
 //  – Prevents any vital hit‑zone from falling below 1 HP
 //  – Restores OnCustomDamageTaken invoker
 //  – ADDED: Methods to return exact percentages for inspection
+//  – ADDED: Bleedout timer support
 // ============================================================================
 
 modded class SCR_CharacterDamageManagerComponent
@@ -118,15 +119,37 @@ modded class SCR_CharacterDamageManagerComponent
 		if (!bloodHZ)
 			return 0.0;
 			
-		// Convert the game's bleeding rate to ml/s
-		// Adjust multiplier based on your mod's bleeding scale
-		return bloodHZ.GetTotalBleedingAmount() * 1000.0 * GetBleedingScale(); 
+		// Return raw bleeding rate value
+		return bloodHZ.GetTotalBleedingAmount() * GetBleedingScale(); 
+	}
+
+	//! Get bleedout timer info
+	void GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
+	{
+		IEntity owner = GetOwner();
+		NoInstantDeathComponent nid = null;
+		if (owner)
+			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			
+		if (nid && nid.IsUnconscious())
+		{
+			isBleedingOut = true;
+			timeRemaining = nid.GetBleedoutTimeRemaining();
+			totalTime = nid.GetBleedoutTimeTotal();
+		}
+		else
+		{
+			isBleedingOut = false;
+			timeRemaining = -1.0;
+			totalTime = 360.0; // Default total time
+		}
 	}
 
 	//! Get detailed medical status for inspection
 	void GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent, 
 								  out float resiliencePercent, out bool hasResilience,
-								  out float bleedingRateMLs, out bool isUnconscious)
+								  out float bleedingRateMLs, out bool isUnconscious,
+								  out float bleedoutTimeRemaining, out bool isBleedingOut)
 	{
 		healthPercent = GetHealthPercentage();
 		bloodPercent = GetBloodPercentage();
@@ -141,6 +164,10 @@ modded class SCR_CharacterDamageManagerComponent
 			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
 			
 		isUnconscious = (nid && nid.IsUnconscious());
+		
+		// Get bleedout timer
+		float totalTime;
+		GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
 	}
 
 	//! Get color code for health percentage (for UI display)
