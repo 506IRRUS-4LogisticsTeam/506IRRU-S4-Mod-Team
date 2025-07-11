@@ -1,0 +1,10 @@
+GenericEntity : "{9B6B61BB3FE3DFB0}Prefabs/Items/Equipment/Radios/Radio_ANPRC77.et" {
+ ID "508AB2013EEE1E00"
+ components {
+  SCR_UniversalInventoryStorageComponent "{5D30C5CDCBACE06B}" {
+   Attributes SCR_ItemAttributeCollection "{5D34438C176F6F0B}" {
+    CommonItemType "RHS_RADIO_MANPACK"
+   }
+  }
+ }
+}
