@@ -5,5 +5,9 @@ SCR_ChimeraCharacter {
   }
   NoInstantDeathComponent "{65220AD00D6BA968}" {
   }
+  SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
+   m_fUnconsciousRegenerationScale 0.6
+   m_fMovementDamageMultiplier 1.5
+  }
  }
 }
