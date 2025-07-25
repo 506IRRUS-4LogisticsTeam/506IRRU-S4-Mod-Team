@@ -31,8 +31,6 @@ class MortarBallisticTables
         InitializeHETables();
         InitializeSmokeTables();
         InitializeIlluminationTables();
-        
-        Print("[MORTAR] Ballistic tables initialized");
     }
     
     //------------------------------------------------------------------------------------------------
@@ -55,8 +53,15 @@ class MortarBallisticTables
         if (!s_Tables)
             Initialize();
             
-        // Try charges from highest to lowest
-        for (int charge = 4; charge >= 0; charge--)
+        const float MAX_ELEVATION_MILS = 1515.0; // Physical mortar elevation limit
+        
+        float bestTimeOfFlight = 9999.0;
+        float bestElevation = 0;
+        int bestChargeFound = -1;
+        bool solutionFound = false;
+        
+        // Check all charges and find the one with shortest flight time that respects elevation limit
+        for (int charge = 0; charge <= 4; charge++)
         {
             array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
             if (!table || table.Count() == 0)
@@ -68,14 +73,34 @@ class MortarBallisticTables
             
             if (range >= firstEntry.range && range <= lastEntry.range)
             {
-                // This charge works!
-                bestCharge = charge;
-                InterpolateElevation(table, range, elevationMils, timeOfFlight);
-                return true;
+                // Calculate the elevation and time for this charge
+                float testElevation, testTimeOfFlight;
+                InterpolateElevation(table, range, testElevation, testTimeOfFlight);
+                
+                // Check if elevation is within physical limits
+                if (testElevation <= MAX_ELEVATION_MILS)
+                {
+                    // This is a valid solution - check if it's better (shorter flight time)
+                    if (testTimeOfFlight < bestTimeOfFlight)
+                    {
+                        bestTimeOfFlight = testTimeOfFlight;
+                        bestElevation = testElevation;
+                        bestChargeFound = charge;
+                        solutionFound = true;
+                    }
+                }
             }
         }
         
-        // No valid solution found
+        if (solutionFound)
+        {
+            elevationMils = bestElevation;
+            timeOfFlight = bestTimeOfFlight;
+            bestCharge = bestChargeFound;
+            return true;
+        }
+        
+        // No valid solution found within elevation limits
         bestCharge = -1;
         elevationMils = 0;
         timeOfFlight = 0;
