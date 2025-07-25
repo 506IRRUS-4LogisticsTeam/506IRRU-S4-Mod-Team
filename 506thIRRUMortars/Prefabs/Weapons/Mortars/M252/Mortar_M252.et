@@ -397,7 +397,10 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      ParentContextList {
       "artillery_computer"
      }
-     ActionTitle "Open Artillery Computer"
+     UIInfo SCR_ActionUIInfo "{65F2F5952835C28E}" {
+      Name "Mortar Computer"
+     }
+     ActionTitle "Mortar Computer"
      VisibilityRange 2
     }
    }
