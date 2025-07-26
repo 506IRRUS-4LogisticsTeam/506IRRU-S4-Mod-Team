@@ -20,6 +20,7 @@ class NoInstantDeathComponent : ScriptComponent
 
 	// ─── state ───────────────────────────────────────────────────────────
 	protected bool m_bNID_Initialized  = false;
+	[RplProp(onRplName: "OnUnconsciousStateChanged")]
 	protected bool m_bIsUnconscious    = false;
 	protected bool m_bIsInitiatingKill = false;
 
@@ -29,6 +30,7 @@ class NoInstantDeathComponent : ScriptComponent
 	// ─── timer config ────────────────────────────────────────────────────
 	protected const float m_fBleedOutTime = 360.0; // s
 	protected const float CHECK_INTERVAL   =   1.0; // s
+	[RplProp()]
 	protected float       m_fUnconsciousTimer = 0.0;
 
 	// ─── cached refs ─────────────────────────────────────────────────────
@@ -82,7 +84,8 @@ class NoInstantDeathComponent : ScriptComponent
 
 		m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
 		m_bNID_Initialized = true;
-		Replication.BumpMe();
+		if (m_Rpl)
+			Replication.BumpMe();
 		NID_DebugPrint(GetNameStr(GetOwner()) + ": initialized.");
 	}
 
@@ -121,7 +124,8 @@ class NoInstantDeathComponent : ScriptComponent
 			// Safety: Remove any existing timer before starting new one
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 			
-			Replication.BumpMe();
+			if (m_Rpl)
+				Replication.BumpMe();
 			GetGame().GetCallqueue().CallLater(
 			    UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
@@ -178,6 +182,13 @@ class NoInstantDeathComponent : ScriptComponent
 
 		// Timer + 15-s ping
 		m_fUnconsciousTimer += CHECK_INTERVAL;
+		
+		// Bump replication periodically so clients get timer updates
+		// Update every 5 seconds to balance network traffic
+		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, 5.0) < CHECK_INTERVAL)
+		{
+			Replication.BumpMe();
+		}
 
 		if (NoInstantDeath_Settings.IsDebugEnabled()
 		    && Math.Mod(m_fUnconsciousTimer, 15.0) < CHECK_INTERVAL)
@@ -253,7 +264,8 @@ class NoInstantDeathComponent : ScriptComponent
 		m_bIsUnconscious    = false;
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-		if (Replication.IsServer()) Replication.BumpMe();
+		if (Replication.IsServer() && m_Rpl) 
+			Replication.BumpMe();
 	}
 
 	void OnRep_IsUnconscious() {}
@@ -318,4 +330,15 @@ class NoInstantDeathComponent : ScriptComponent
 	bool IsUnconscious()          { return m_bIsUnconscious; }
 	bool IsInitiatingKill()       { return m_bIsInitiatingKill; }
 	void ResetInitiatingKillFlag(){ m_bIsInitiatingKill = false; }
+	
+	// ══════════════════════════════════════════════════════════════════════
+	// REPLICATION CALLBACKS
+	// ══════════════════════════════════════════════════════════════════════
+	
+	//! Called when unconscious state changes (for client synchronization)
+	protected void OnUnconsciousStateChanged()
+	{
+		// This is called on clients when the server updates m_bIsUnconscious
+		// No action needed - the UI will read the updated value
+	}
 }
