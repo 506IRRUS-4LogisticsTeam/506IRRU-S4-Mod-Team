@@ -198,20 +198,20 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				// Color code based on time remaining
 				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
 				
-				if (percentRemaining > 50)
+				if (percentRemaining > 66)
 				{
-					// White/normal for > 50%
-					sName = string.Format("%1 [UNCONSCIOUS - %2]", sName, timeText);
+					// Cyan/Light Blue for > 66% (good time remaining)
+					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='0,255,255,255'>%2</color>]", sName, timeText);
 				}
-				else if (percentRemaining > 25)
+				else if (percentRemaining > 33)
 				{
-					// Orange for 25-50%
-					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,165,0,255'>%2</color>]", sName, timeText);
+					// Yellow for 33-66% (caution)
+					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,255,0,255'>%2</color>]", sName, timeText);
 				}
 				else
 				{
-					// Red for < 25%
-					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,0,0,255'>%2</color>]", sName, timeText);
+					// Magenta/Pink for < 33% (critical)
+					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,0,255,255'>%2</color>]", sName, timeText);
 				}
 			}
 			else
@@ -295,16 +295,16 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
 				string timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
 				
-				// Color based on time
+				// Color based on time - matching the name display colors
 				Color timerColor;
 				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
 				
-				if (percentRemaining > 50)
-					timerColor = Color.White;
-				else if (percentRemaining > 25)
-					timerColor = Color.FromSRGBA(255, 165, 0, 255); // Orange
+				if (percentRemaining > 66)
+					timerColor = Color.FromSRGBA(0, 255, 255, 255); // Cyan
+				else if (percentRemaining > 33)
+					timerColor = Color.FromSRGBA(255, 255, 0, 255); // Yellow
 				else
-					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red
+					timerColor = Color.FromSRGBA(255, 0, 255, 255); // Magenta
 					
 				m_wBleedoutTimerText.SetText(timeText);
 				m_wBleedoutTimerText.SetColor(timerColor);
