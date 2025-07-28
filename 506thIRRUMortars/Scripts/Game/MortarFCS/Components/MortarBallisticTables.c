@@ -54,6 +54,7 @@ class MortarBallisticTables
             Initialize();
             
         const float MAX_ELEVATION_MILS = 1515.0; // Physical mortar elevation limit
+        const float MIN_ELEVATION_MILS = 800.0;  // Physical mortar minimum elevation
         
         float bestTimeOfFlight = 9999.0;
         float bestElevation = 0;
@@ -78,7 +79,7 @@ class MortarBallisticTables
                 InterpolateElevation(table, range, testElevation, testTimeOfFlight);
                 
                 // Check if elevation is within physical limits
-                if (testElevation <= MAX_ELEVATION_MILS)
+                if (testElevation <= MAX_ELEVATION_MILS && testElevation >= MIN_ELEVATION_MILS)
                 {
                     // This is a valid solution - check if it's better (shorter flight time)
                     if (testTimeOfFlight < bestTimeOfFlight)
@@ -108,7 +109,29 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
-    protected static void InterpolateElevation(array<ref MortarBallisticEntry> table, float range, out float elevationMils, out float timeOfFlight)
+    static bool GetSolutionForCharge(string ammoType, float range, int charge, out float elevationMils, out float timeOfFlight)
+    {
+        if (!s_Tables)
+            Initialize();
+            
+        array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
+        if (!table || table.Count() == 0)
+            return false;
+            
+        // Check if range is within this charge's capabilities
+        MortarBallisticEntry firstEntry = table.Get(0);
+        MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+        
+        if (range < firstEntry.range || range > lastEntry.range)
+            return false;
+            
+        // Calculate elevation for this specific charge
+        InterpolateElevation(table, range, elevationMils, timeOfFlight);
+        return true;
+    }
+    
+    //------------------------------------------------------------------------------------------------
+    static void InterpolateElevation(array<ref MortarBallisticEntry> table, float range, out float elevationMils, out float timeOfFlight)
     {
         // Find the two entries to interpolate between
         for (int i = 0; i < table.Count() - 1; i++)

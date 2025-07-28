@@ -1,0 +1,22 @@
+GenericEntity : "{D182DCDD72BF7E34}Prefabs/Weapons/MachineGuns/M60/MG_M60.et" {
+ ID "44CAE740AE799642"
+ components {
+  StaticWeaponBagComponent "{65F7243E3F8B0FB9}" {
+   m_rWeaponPrefab "{887DB60486A18575}Prefabs/Weapons/Tripods/Tripod_M122_MG_M60.et"
+  }
+  ActionsManagerComponent "{A29AE67FF4D82B0F}" {
+   additionalActions {
+    AssembleWeaponAction "{65F7243E3F8B0FA0}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{65F7243E3F8B0FA2}" {
+      Name "Assemble Weapon"
+     }
+     Duration 5
+     "Sort Priority" 3
+    }
+   }
+  }
+ }
+}
