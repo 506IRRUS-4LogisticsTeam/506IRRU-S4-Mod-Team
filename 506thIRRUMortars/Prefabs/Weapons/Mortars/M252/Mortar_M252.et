@@ -409,6 +409,9 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      VisibilityRange 1
     }
     DisassembleWeaponAction "{65F7243317C16092}" {
+     ParentContextList {
+      "default"
+     }
      UIInfo SCR_ActionUIInfo "{65F72430C198F3E9}" {
       Name "Disassemble Weapon"
       Description "Disassemble Weapon"
