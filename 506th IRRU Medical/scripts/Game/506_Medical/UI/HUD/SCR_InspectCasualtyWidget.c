@@ -210,8 +210,8 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				}
 				else
 				{
-					// Magenta/Pink for < 33% (critical)
-					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,0,255,255'>%2</color>]", sName, timeText);
+					// Red for < 33% (critical) - Make entire line red
+					sName = string.Format("<color rgba='255,0,0,255'>%1 [CRITICAL! - %2]</color>", sName, timeText);
 				}
 			}
 			else
@@ -304,7 +304,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				else if (percentRemaining > 33)
 					timerColor = Color.FromSRGBA(255, 255, 0, 255); // Yellow
 				else
-					timerColor = Color.FromSRGBA(255, 0, 255, 255); // Magenta
+					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red
 					
 				m_wBleedoutTimerText.SetText(timeText);
 				m_wBleedoutTimerText.SetColor(timerColor);
