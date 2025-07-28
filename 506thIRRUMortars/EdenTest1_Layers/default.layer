@@ -1,10 +1,20 @@
-GenericEntity {
- components {
-  MeshObject "{65D2E1BC6DDB03FF}" {
-   Object "{16CBC89D8BE3152C}Assets/Weapons/Ammo/Shells/81mm_Mortar_M252/Shell_81mm_HE_M821_2charges.xob"
+$grp GenericEntity {
+ {
+  components {
+   MeshObject "{65D2E1BC6DDB03FF}" {
+    Object "{16CBC89D8BE3152C}Assets/Weapons/Ammo/Shells/81mm_Mortar_M252/Shell_81mm_HE_M821_2charges.xob"
+   }
   }
+  coords 4582.076 18.438 10698.059
  }
- coords 4582.076 18.438 10698.059
+ {
+  components {
+   MeshObject "{65D2E1BC6DDB03FF}" {
+    Object "{16CBC89D8BE3152C}Assets/Weapons/Ammo/Shells/81mm_Mortar_M252/Shell_81mm_HE_M821_2charges.xob"
+   }
+  }
+  coords 9952.745 315.167 2281.438
+ }
 }
 $grp Projectile : "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821.et" {
  {
@@ -22,12 +32,118 @@ $grp Projectile : "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M82
  {
   coords 4582.204 18.437 10695.967
  }
+ {
+  coords 9954.554 315.159 2274.925
+ }
+ {
+  coords 9954.346 315.167 2277.243
+ }
+ {
+  coords 9953.266 315.167 2277.379
+ }
+ {
+  coords 9952.873 315.166 2279.347
+ }
+ {
+  coords 9957.306 315.241 2277.269
+ }
+ {
+  coords 9956.226 315.241 2277.404
+ }
+ {
+  coords 9957.884 315.228 2277.718
+ }
+ {
+  coords 9956.804 315.228 2277.854
+ }
+ {
+  coords 9957.051 315.268 2276.595
+ }
+ {
+  coords 9955.971 315.268 2276.731
+ }
+ {
+  coords 9958.04 315.251 2276.926
+ }
+ {
+  coords 9956.96 315.251 2277.061
+ }
+ {
+  coords 9957.605 315.23 2277.642
+ }
+ {
+  coords 9956.525 315.23 2277.777
+ }
+ {
+  coords 9957.327 315.236 2277.426
+ }
+ {
+  coords 9956.247 315.236 2277.561
+ }
+ {
+  coords 9957.443 315.26 2276.679
+ }
+ {
+  coords 9956.363 315.26 2276.815
+ }
+ {
+  coords 9959.401 315.032 2283.274
+ }
+ {
+  coords 9958.321 315.032 2283.41
+ }
+ {
+  coords 9959.468 315.057 2282.452
+ }
+ {
+  coords 9958.388 315.057 2282.588
+ }
+ {
+  coords 9959.481 315.073 2282.133
+ }
+ {
+  coords 9958.401 315.073 2282.268
+ }
+ {
+  coords 9960.278 315.042 2282.52
+ }
+ {
+  coords 9959.198 315.042 2282.655
+ }
+ {
+  coords 9960.272 315.022 2283.152
+ }
+ {
+  coords 9959.192 315.022 2283.288
+ }
+ {
+  coords 9959.121 315.064 2282.41
+ }
+ {
+  coords 9958.041 315.064 2282.546
+ }
+ {
+  coords 9959.665 315.07 2281.819
+ }
+ {
+  coords 9958.585 315.07 2281.954
+ }
 }
-Projectile : "{8AEB3E3846780747}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821_EffectModule.et" {
- coords 4586.635 18.399 10691.383
+$grp Projectile : "{8AEB3E3846780747}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821_EffectModule.et" {
+ {
+  coords 4586.635 18.399 10691.383
+ }
+ {
+  coords 9957.304 315.128 2274.763
+ }
 }
-Turret : "{A5DAAB7A8572166D}Prefabs/Weapons/Mortars/M252/Mortar_M252.et" {
- coords 4586.908 18.436 10696.561
+$grp Turret : "{A5DAAB7A8572166D}Prefabs/Weapons/Mortars/M252/Mortar_M252.et" {
+ {
+  coords 4586.908 18.436 10696.561
+ }
+ {
+  coords 9957.577 315.165 2279.94
+ }
 }
 Projectile : "{DD2065AE34D8DFA9}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_Illum_M853A1.et" {
  coords 4585.969 18.406 10687.82
