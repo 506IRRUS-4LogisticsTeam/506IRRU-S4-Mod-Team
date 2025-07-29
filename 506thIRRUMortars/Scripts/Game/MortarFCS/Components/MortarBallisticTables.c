@@ -6,7 +6,7 @@ class MortarBallisticEntry
     int range;              // Range in meters
     int elevation;          // Elevation in mils
     float timeOfFlight;     // Time of flight in seconds
-    int elevationCorrection; // D ELEV PER 100M (DR MIL) - elevation correction per 100m range change
+    int elevationCorrection; // D ELEV PER 100M - altitude correction factor in mils per 100m elevation difference
     
     void MortarBallisticEntry(int r, int e, float t, int ec)
     {
@@ -50,10 +50,10 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    // Calculates the best firing solution for a given range
+    // Returns elevation in mils, time of flight, best charge, and D_ELEV correction factor
     static bool CalculateSolution(string ammoType, float range, out float elevationMils, out float timeOfFlight, out int bestCharge, out int dElevCorrection)
     {
-        Print(string.Format("[BALLISTIC DEBUG] CalculateSolution called: ammoType=%1, range=%2m", ammoType, range));
-        
         if (!s_Tables)
             Initialize();
             
@@ -71,63 +71,32 @@ class MortarBallisticTables
         {
             array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
             if (!table || table.Count() == 0)
-            {
-                Print(string.Format("[BALLISTIC DEBUG] No table found for %1 charge %2", ammoType, charge));
                 continue;
-            }
                 
             // Check if this charge can reach the target
             MortarBallisticEntry firstEntry = table.Get(0);
             MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
             
-            Print(string.Format("[BALLISTIC DEBUG] Charge %1: Range limits %2m - %3m", 
-                charge, firstEntry.range, lastEntry.range));
-            
             if (range >= firstEntry.range && range <= lastEntry.range)
             {
-                Print(string.Format("[BALLISTIC DEBUG] Charge %1 can reach target at %2m", charge, range));
-                
                 // Calculate the elevation and time for this charge
                 float testElevation, testTimeOfFlight;
                 int testDElev;
                 InterpolateElevation(table, range, testElevation, testTimeOfFlight, testDElev);
                 
-                Print(string.Format("[BALLISTIC DEBUG] Charge %1: Calculated elevation=%2 mils, TOF=%3 sec", 
-                    charge, testElevation, testTimeOfFlight));
-                
                 // Check if elevation is within physical limits
                 if (testElevation <= MAX_ELEVATION_MILS && testElevation >= MIN_ELEVATION_MILS)
                 {
-                    Print(string.Format("[BALLISTIC DEBUG] Charge %1: Elevation %2 mils is within limits [%3-%4]", 
-                        charge, testElevation, MIN_ELEVATION_MILS, MAX_ELEVATION_MILS));
-                    
                     // This is a valid solution - check if it's better (shorter flight time)
                     if (testTimeOfFlight < bestTimeOfFlight)
                     {
-                        Print(string.Format("[BALLISTIC DEBUG] Charge %1 is new best solution (TOF %2 < %3)", 
-                            charge, testTimeOfFlight, bestTimeOfFlight));
-                            
                         bestTimeOfFlight = testTimeOfFlight;
                         bestElevation = testElevation;
                         bestChargeFound = charge;
                         bestDElev = testDElev;
                         solutionFound = true;
                     }
-                    else
-                    {
-                        Print(string.Format("[BALLISTIC DEBUG] Charge %1 not optimal (TOF %2 >= %3)", 
-                            charge, testTimeOfFlight, bestTimeOfFlight));
-                    }
                 }
-                else
-                {
-                    Print(string.Format("[BALLISTIC DEBUG] Charge %1: Elevation %2 mils OUTSIDE limits [%3-%4]", 
-                        charge, testElevation, MIN_ELEVATION_MILS, MAX_ELEVATION_MILS));
-                }
-            }
-            else
-            {
-                Print(string.Format("[BALLISTIC DEBUG] Charge %1 cannot reach %2m (outside range)", charge, range));
             }
         }
         
@@ -137,16 +106,10 @@ class MortarBallisticTables
             timeOfFlight = bestTimeOfFlight;
             bestCharge = bestChargeFound;
             dElevCorrection = bestDElev;
-            
-            Print(string.Format("[BALLISTIC DEBUG] FINAL SOLUTION: Charge %1, Elevation %2 mils, TOF %3 sec, D_ELEV %4", 
-                bestCharge, elevationMils, timeOfFlight, dElevCorrection));
-            
             return true;
         }
         
         // No valid solution found within elevation limits
-        Print("[BALLISTIC DEBUG] NO VALID SOLUTION FOUND!");
-        
         bestCharge = -1;
         elevationMils = 0;
         timeOfFlight = 0;
@@ -178,10 +141,10 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    // Interpolates elevation between table entries using linear interpolation
+    // Returns base elevation, time of flight, and D_ELEV correction factor
     static void InterpolateElevation(array<ref MortarBallisticEntry> table, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection)
     {
-        Print(string.Format("[INTERP DEBUG] InterpolateElevation called for range %1m", range));
-        
         // Find the two entries to interpolate between
         for (int i = 0; i < table.Count() - 1; i++)
         {
@@ -190,17 +153,9 @@ class MortarBallisticTables
             
             if (range >= entry1.range && range <= entry2.range)
             {
-                Print(string.Format("[INTERP DEBUG] Found range bracket: %1m - %2m", entry1.range, entry2.range));
-                Print(string.Format("[INTERP DEBUG] Entry1: Range=%1m, Elev=%2 mils, D_ELEV=%3 mils/100m", 
-                    entry1.range, entry1.elevation, entry1.elevationCorrection));
-                Print(string.Format("[INTERP DEBUG] Entry2: Range=%1m, Elev=%2 mils, D_ELEV=%3 mils/100m", 
-                    entry2.range, entry2.elevation, entry2.elevationCorrection));
-                
                 // Calculate using linear interpolation
                 float rangeDifference = range - entry1.range;
                 float ratio = rangeDifference / (entry2.range - entry1.range);
-                
-                Print(string.Format("[INTERP DEBUG] Range difference from Entry1: %1m, Ratio: %2", rangeDifference, ratio));
                 
                 // Always use linear interpolation for base elevation
                 elevationMils = entry1.elevation - (entry1.elevation - entry2.elevation) * ratio;
@@ -211,10 +166,6 @@ class MortarBallisticTables
                 // Return the D_ELEV value for altitude corrections
                 dElevCorrection = entry1.elevationCorrection;
                 
-                Print(string.Format("[INTERP DEBUG] Linear interpolation: elev=%1 mils", elevationMils));
-                Print(string.Format("[INTERP DEBUG] Time of flight: %1 sec", timeOfFlight));
-                Print(string.Format("[INTERP DEBUG] D_ELEV for altitude correction: %1 mils/100m", dElevCorrection));
-                
                 return;
             }
         }
@@ -224,9 +175,6 @@ class MortarBallisticTables
         elevationMils = lastEntry.elevation;
         timeOfFlight = lastEntry.timeOfFlight;
         dElevCorrection = lastEntry.elevationCorrection;
-        
-        Print(string.Format("[INTERP DEBUG] Using last entry (edge case): Elev=%1 mils, TOF=%2 sec, D_ELEV=%3", 
-            elevationMils, timeOfFlight, dElevCorrection));
     }
     
     //------------------------------------------------------------------------------------------------
