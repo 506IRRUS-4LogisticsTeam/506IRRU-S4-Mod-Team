@@ -184,8 +184,8 @@ class NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer += CHECK_INTERVAL;
 		
 		// Bump replication periodically so clients get timer updates
-		// Update every 5 seconds to balance network traffic
-		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, 5.0) < CHECK_INTERVAL)
+		// Update every 0.5 seconds for smooth timer display
+		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, 0.5) < CHECK_INTERVAL)
 		{
 			Replication.BumpMe();
 		}
