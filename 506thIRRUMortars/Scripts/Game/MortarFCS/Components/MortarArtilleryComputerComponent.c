@@ -91,6 +91,8 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     //------------------------------------------------------------------------------------------------
     protected void OnMapSelection(vector selectedPos)
     {
+        Print("[MORTAR DEBUG] ========== NEW FIRING SOLUTION CALCULATION ==========");
+        
         // Convert screen coordinates to world coordinates
         float worldX, worldY, heightAtPos;
         m_MapEntity.ScreenToWorld(selectedPos[0], selectedPos[2], worldX, worldY);
@@ -100,48 +102,64 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         vector targetPos = Vector(worldX, heightAtPos, worldY);
         vector mortarPos = m_eOwner.GetOrigin();
         
+        Print(string.Format("[MORTAR DEBUG] Mortar Position: X=%1, Y=%2, Z=%3", 
+            mortarPos[0], mortarPos[1], mortarPos[2]));
+        Print(string.Format("[MORTAR DEBUG] Target Position: X=%1, Y=%2, Z=%3", 
+            targetPos[0], targetPos[1], targetPos[2]));
+        
         // Calculate distance and bearing
         vector toTarget = targetPos - mortarPos;
         
-        // Calculate slant distance (direct 3D distance)
-        float slantDistance = toTarget.Length();
+        Print(string.Format("[MORTAR DEBUG] Vector to Target: X=%1, Y=%2, Z=%3", 
+            toTarget[0], toTarget[1], toTarget[2]));
         
-        // Calculate horizontal distance (for ballistic tables)
+        // Calculate horizontal distance (used for ballistic table lookup)
         float horizontalDistance = Math.Sqrt(toTarget[0] * toTarget[0] + toTarget[2] * toTarget[2]);
         
-        // Calculate elevation difference
-        float elevationDifference = targetPos[1] - mortarPos[1];
-        
-        // Use horizontal distance for all calculations
-        float distance = horizontalDistance;
+        Print(string.Format("[MORTAR DEBUG] Horizontal Distance: %1m", horizontalDistance));
+        Print(string.Format("[MORTAR DEBUG] Elevation Difference: %1m (Target Y - Mortar Y)", 
+            targetPos[1] - mortarPos[1]));
+        Print(string.Format("[MORTAR DEBUG] Slant Distance: %1m", toTarget.Length()));
         
         // Calculate azimuth
         float azimuth = Math.Atan2(toTarget[0], toTarget[2]) * Math.RAD2DEG;
         if (azimuth < 0) 
             azimuth = azimuth + 360;
+            
+        Print(string.Format("[MORTAR DEBUG] Azimuth: %1 degrees", azimuth));
         
         // Check if target is in range
         string ammoType = GetCurrentAmmoType();
         float minRange, maxRange;
         MortarBallisticTables.GetMinMaxRange(ammoType, minRange, maxRange);
         
-        if (distance < minRange)
+        Print(string.Format("[MORTAR DEBUG] Selected Ammo Type: %1", ammoType));
+        Print(string.Format("[MORTAR DEBUG] Min Range for %1: %2m", ammoType, minRange));
+        Print(string.Format("[MORTAR DEBUG] Max Range for %1: %2m", ammoType, maxRange));
+        
+        if (horizontalDistance < minRange)
         {
+            Print(string.Format("[MORTAR DEBUG] ERROR: Target too close! Distance %1m < Min %2m", 
+                horizontalDistance, minRange));
+                
             string hint = string.Format(
                 "TARGET TOO CLOSE!\n\nMinimum Range: %1m\nTarget Distance: %2m\n\nSelect a target further away!",
                 minRange.ToString(0),
-                distance.ToString(0)
+                horizontalDistance.ToString(0)
             );
             
             // Display error hint to player
             SCR_HintManagerComponent.ShowCustomHint(hint, "Range Error", 8.0, false);
         }
-        else if (distance > maxRange)
+        else if (horizontalDistance > maxRange)
         {
+            Print(string.Format("[MORTAR DEBUG] ERROR: Target out of range! Distance %1m > Max %2m", 
+                horizontalDistance, maxRange));
+                
             string hint = string.Format(
                 "TARGET OUT OF RANGE!\n\nMaximum Range: %1m\nTarget Distance: %2m\n\nSelect a closer target!",
                 maxRange.ToString(0),
-                distance.ToString(0)
+                horizontalDistance.ToString(0)
             );
             
             // Display error hint to player
@@ -149,106 +167,85 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
         else
         {
-            // Target is in valid range - calculate firing solution
+            Print("[MORTAR DEBUG] Target is in valid range, calculating firing solution...");
+            
+            // Target is in valid range - calculate firing solution using ballistic tables
             float elevationMils;
             float timeOfFlight;
             int charge;
-            float siteAngleMils = 0;
-            float fullSiteAngleMils = 0;
+            int dElevCorrection;
             
-            bool solutionFound = MortarBallisticTables.CalculateSolution(ammoType, distance, elevationMils, timeOfFlight, charge);
+            Print(string.Format("[MORTAR DEBUG] Calling CalculateSolution for %1 at %2m", ammoType, horizontalDistance));
             
-            // Calculate site angle first if there's elevation difference
-            if (horizontalDistance > 0)
-            {
-                // Calculate site angle correction
-                // Site angle = arctan(elevation difference / horizontal distance)
-                // Convert to mils (1 radian = 1000 milliradians, 2π radians = 6400 mils)
-                float siteAngleRadians = Math.Atan2(elevationDifference, horizontalDistance);
-                fullSiteAngleMils = (siteAngleRadians * 6400.0) / (2.0 * Math.PI);
-                
-                // Apply scaling factor - game physics don't fully match real mortar ballistics
-                // 0.20 factor provides optimal balance for Arma Reforger's simplified ballistics
-                const float SITE_ANGLE_SCALE_FACTOR = 0.20;
-                siteAngleMils = fullSiteAngleMils * SITE_ANGLE_SCALE_FACTOR;
-                
-            }
-            
-            // If we have a solution, check if it's still valid after site angle correction
-            if (solutionFound)
-            {
-                float baseElevation = elevationMils;
-                // For mortars: 800 mils (45°) = max range, 1515 mils (85°) = min range
-                // When firing downhill, gravity helps, so we need MORE elevation (higher angle) to reduce range
-                // Negative elevation difference → negative site angle → subtract to get higher elevation
-                float correctedElevation = elevationMils - siteAngleMils;
-                
-                // Check if corrected elevation is within physical limits
-                if (correctedElevation >= 800.0 && correctedElevation <= 1515.0)
-                {
-                    // Solution is valid - apply the correction
-                    elevationMils = correctedElevation;
-                }
-                else
-                {
-                    // Corrected elevation exceeds limits - try to find alternative charge
-                    // Try to find a charge that works with site angle correction
-                    bool alternativeFound = false;
-                    for (int altCharge = 0; altCharge <= 4; altCharge++)
-                    {
-                        float altElevation, altTimeOfFlight;
-                        if (MortarBallisticTables.GetSolutionForCharge(ammoType, distance, altCharge, altElevation, altTimeOfFlight))
-                        {
-                            float altCorrected = altElevation - siteAngleMils;
-                            if (altCorrected >= 800.0 && altCorrected <= 1515.0)
-                            {
-                                // Found valid alternative
-                                charge = altCharge;
-                                elevationMils = altCorrected;
-                                timeOfFlight = altTimeOfFlight;
-                                alternativeFound = true;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (!alternativeFound)
-                    {
-                        // No valid alternative - clamp to limits as last resort
-                        if (correctedElevation > 1515.0)
-                            elevationMils = 1515.0;
-                        else if (correctedElevation < 800.0)
-                            elevationMils = 800.0;
-                    }
-                }
-            }
+            bool solutionFound = MortarBallisticTables.CalculateSolution(ammoType, horizontalDistance, elevationMils, timeOfFlight, charge, dElevCorrection);
             
             if (!solutionFound)
             {
+                Print("[MORTAR DEBUG] ERROR: No valid solution found!");
+                
                 // No solution found - likely due to elevation limits
-                string hint = string.Format("NO VALID SOLUTION!\n\nTarget at %1m requires elevation\noutside mortar's 800-1515 mil limits.\n\nMove closer/further to target or\nuse different firing position.", 
-                    distance.ToString(0));
+                string hint = string.Format("NO VALID SOLUTION!\n\nTarget at %1m requires elevation\noutside mortar's physical limits.\n\nMove closer/further to target or\nuse different firing position.", 
+                    horizontalDistance.ToString(0));
                 SCR_HintManagerComponent.ShowCustomHint(hint, "Elevation Limit", 8.0, false);
             }
             else
             {
+                Print("[MORTAR DEBUG] Solution found!");
+                Print(string.Format("[MORTAR DEBUG] Best Charge: %1 rings", charge));
+                Print(string.Format("[MORTAR DEBUG] Base Elevation (before altitude correction): %1 mils", elevationMils));
+                Print(string.Format("[MORTAR DEBUG] Time of Flight: %1 seconds", timeOfFlight));
+                Print(string.Format("[MORTAR DEBUG] D_ELEV value: %1 mils/100m", dElevCorrection));
+                
+                // Calculate elevation difference for altitude correction
+                float elevationDifference = targetPos[1] - mortarPos[1];
+                
+                // Apply D_ELEV altitude correction
+                if (dElevCorrection > 0 && elevationDifference != 0)
+                {
+                    float altitudeCorrection = (elevationDifference / 100.0) * dElevCorrection;
+                    
+                    // When firing downhill (negative elevation difference), we need to INCREASE elevation to shorten the shot
+                    // When firing uphill (positive elevation difference), we need to DECREASE elevation to lengthen the shot
+                    elevationMils = elevationMils - altitudeCorrection;
+                    
+                    Print(string.Format("[MORTAR DEBUG] Altitude correction: elev diff %1m / 100 * D_ELEV %2 = %3 mils", 
+                        elevationDifference, dElevCorrection, altitudeCorrection));
+                    Print(string.Format("[MORTAR DEBUG] Final elevation: %1 - %2 = %3 mils", 
+                        elevationMils + altitudeCorrection, altitudeCorrection, elevationMils));
+                }
+                else
+                {
+                    Print("[MORTAR DEBUG] No altitude correction applied (D_ELEV = 0 or no elevation difference)");
+                }
+                
+                // Check if final elevation is within limits
+                if (elevationMils < 800.0 || elevationMils > 1515.0)
+                {
+                    Print(string.Format("[MORTAR DEBUG] WARNING: Final elevation %1 mils exceeds physical limits [800-1515]", elevationMils));
+                    // Clamp to limits
+                    if (elevationMils < 800.0) elevationMils = 800.0;
+                    if (elevationMils > 1515.0) elevationMils = 1515.0;
+                }
+                
                 // Convert mils to degrees (6400 mils = 360 degrees)
                 float elevationDegrees = (elevationMils / 6400.0) * 360.0;
                 
-                // Display results - build in parts due to parameter limit
-                string rangeInfo = string.Format(
-                    "Horizontal Range: %1m\nSlant Range: %2m\nElevation Diff: %3m\nSite Angle: %4 mils (scaled from %5)",
-                    distance.ToString(0),
+                Print(string.Format("[MORTAR DEBUG] Final elevation in degrees: %1°", elevationDegrees));
+                
+                // Calculate slant distance for display purposes
+                float slantDistance = toTarget.Length();
+                
+                Print("[MORTAR DEBUG] ========== FIRING SOLUTION COMPLETE ==========");
+                Print(string.Format("[MORTAR DEBUG] SUMMARY: %1 at %2m, Charge %3, Elevation %4 mils (%5°)", 
+                    ammoType, horizontalDistance, charge, elevationMils, elevationDegrees));
+                
+                // Display firing solution
+                string hint = string.Format(
+                    "FIRING SOLUTION - %1\n\nRange: %2m\nSlant Range: %3m\nElev Diff: %4m\nAzimuth: %5°\nElevation: %6 mils (%7°)\n\nCharge: %8 rings\nTime of Flight: %9 sec",
+                    ammoType,
+                    horizontalDistance.ToString(0),
                     slantDistance.ToString(0),
                     elevationDifference.ToString(0),
-                    siteAngleMils.ToString(0),
-                    fullSiteAngleMils.ToString(0)
-                );
-                
-                string hint = string.Format(
-                    "FIRING SOLUTION - %1\n\n%2\nAzimuth: %3°\nElevation: %4 mils (%5°)\n\nCharge: %6 rings\nTime of Flight: %7 sec",
-                    ammoType,
-                    rangeInfo,
                     azimuth.ToString(1),
                     elevationMils.ToString(0),
                     elevationDegrees.ToString(1),
@@ -256,10 +253,8 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
                     timeOfFlight.ToString(1)
                 );
                 
-                
                 // Display hint to player using SCR_HintManagerComponent
                 SCR_HintManagerComponent.ShowCustomHint(hint, "Mortar Computer", 30.0, false);
-                
             }
         }
         
