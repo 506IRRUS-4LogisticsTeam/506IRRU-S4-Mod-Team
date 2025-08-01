@@ -30,7 +30,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
      Description ""
     }
     ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
-     Weight 4
+     Weight 2.5
      SizeSetupStrategy Manual
      ItemDimensions 20 20 20
      ItemVolume 10001
