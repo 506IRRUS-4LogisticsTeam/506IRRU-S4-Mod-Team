@@ -1,12 +1,12 @@
 GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_ALICE_Medium_frame.et" {
- ID "65F7243458F26720"
+ ID "511E9C6ADE70F798"
  components {
   ClothNodeStorageComponent "{52C8F5E9F0154D30}" {
    Enabled 0
    Attributes SCR_ItemAttributeCollection "{52C8F5E9918808ED}" {
     ItemDisplayName UIInfo "{52C8F5E9AF0F57B2}" {
-     Name "M252 Weapon Bag"
-     Description "Contains M252 mortar tube"
+     Name "#AR-Backpack_ALICE_Medium_Name"
+     Description "#AR-Backpack_ALICE_Medium_Description"
     }
     ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
      Weight 2.5
@@ -29,7 +29,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
    Enabled 1
    Attributes SCR_ItemAttributeCollection "{5222CB039E9715D1}" {
     ItemDisplayName UIInfo "{5222CB03904B414C}" {
-     Name "M252 Weapon Bag"
+     Name "M252 Weapon Bag (Light)"
      Description ""
     }
     ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
@@ -51,7 +51,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
    MaxItemSize 20 20 20
    m_fMaxWeight 0
   }
-  StaticWeaponBagComponent "{65F724344E129D52}" {
+  StaticWeaponBagComponent "{66073E266EFFA49B}" {
    m_rWeaponPrefab "{8094D99689ABE241}Prefabs/Weapons/Mortars/M252/Mortar_M252.et"
   }
   BaseLoadoutClothComponent "{511E9C6ADE70F7BB}" {
@@ -60,7 +60,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
    ItemModel "{B982CAE1F85001D0}Assets/Items/Equipment/Backpacks/Backpack_ALICE_Medium/Backpack_ALICE_Medium_item.xob"
    DeflatedModel "{A2D3D022764E0F74}Assets/Items/Equipment/Backpacks/Backpack_ALICE_Medium/Backpack_ALICE_Medium_combined_Inflated.xob"
    AreaTypeWhenModelChange {
-    LoadoutArmoredVestSlotArea "{65F724344E129D41}" {
+    LoadoutArmoredVestSlotArea "{66073E266EFFA488}" {
     }
    }
   }
@@ -73,13 +73,12 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
     }
    }
    additionalActions {
-    AssembleWeaponAction "{65F724344E129D4A}" {
+    AssembleWeaponAction "{66073E266EFFA4F1}" {
      ParentContextList {
       "default"
      }
-     UIInfo UIInfo "{65F724344E129D4C}" {
-      Name "Assemble Mortar"
-      Description "Assemble Mortar"
+     UIInfo UIInfo "{66073E266EFFA4F2}" {
+      Name "Assemble Weapon"
      }
      Duration 5
      "Sort Priority" 3

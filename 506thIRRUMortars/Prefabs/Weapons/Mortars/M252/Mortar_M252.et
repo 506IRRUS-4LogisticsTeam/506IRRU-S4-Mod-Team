@@ -235,9 +235,9 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     Angles 90 0 0
    }
   }
-  StaticWeaponComponent "{65F7243321AF3476}" {
+  StaticWeaponComponent "{653B2CE879522D35}" {
    m_rWeaponBagPrefab "{A464AB5D72298CFD}Prefabs/Items/Equipment/Backpacks/M252/Backpack_M252_Weapon.et"
-   m_rBipodBagPrefab "{7E18E9547816195B}Prefabs/Items/Equipment/Backpacks/M252/Backpad_M252_Bipod.et"
+   m_rBipodBagPrefab "{45FC0FA9FE5A6C26}Prefabs/Items/Equipment/Backpacks/Backpack_US_Tripod.et"
   }
   TagComponent "{6124671047E09B64}" {
    "Tag categories" 32
@@ -404,17 +404,6 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      }
      ActionTitle "Mortar Computer"
      VisibilityRange 1
-    }
-    DisassembleWeaponAction "{65F7243317C16092}" {
-     ParentContextList {
-      "default"
-     }
-     UIInfo SCR_ActionUIInfo "{65F72430C198F3E9}" {
-      Name "Disassemble Weapon"
-      Description "Disassemble Weapon"
-     }
-     Duration 5
-     "Sort Priority" 1
     }
    }
   }
