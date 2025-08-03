@@ -8,6 +8,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected bool m_bMapOpen = false;
     protected string m_sSelectedAmmoType = "HE"; // Default to HE
     protected ref array<string> m_aAvailableAmmoTypes = {"HE", "Smoke", "Illumination"};
+    protected bool m_bHintShown = false;
     
     //------------------------------------------------------------------------------------------------
     override void OnPostInit(IEntity owner)
@@ -71,6 +72,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         // Show initial hint about controls
         string controlHint = string.Format("Current Shell: %1\n\nClick map to calculate firing solution\nEscape to close", m_sSelectedAmmoType);
         SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 8.0, false);
+        m_bHintShown = false;
     }
     
     //------------------------------------------------------------------------------------------------
@@ -184,22 +186,33 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
                 // Calculate slant distance for display purposes
                 float slantDistance = toTarget.Length();
                 
-                // Display firing solution
-                string hint = string.Format(
-                    "FIRING SOLUTION - %1\n\nRange: %2m\nSlant Range: %3m\nElev Diff: %4m\nAzimuth: %5°\nElevation: %6 mils (%7°)\n\nCharge: %8 rings\nTime of Flight: %9 sec",
+                // Convert azimuth to mils (6400 mils = 360 degrees)
+                float azimuthMils = (azimuth / 360.0) * 6400.0;
+                
+                // Display firing solution - split into parts due to parameter limit
+                string hint1 = string.Format(
+                    "FIRING SOLUTION - %1\n\nRange: %2m\nSlant Range: %3m\nElev Diff: %4m\nAzimuth: %5° (%6 mils)",
                     ammoType,
                     horizontalDistance.ToString(0),
                     slantDistance.ToString(0),
                     elevationDifference.ToString(0),
                     azimuth.ToString(1),
+                    azimuthMils.ToString(0)
+                );
+                
+                string hint2 = string.Format(
+                    "\nElevation: %1 mils (%2°)\n\nCharge: %3 rings\nTime of Flight: %4 sec",
                     elevationMils.ToString(0),
                     elevationDegrees.ToString(1),
                     charge.ToString(),
                     timeOfFlight.ToString(1)
                 );
                 
+                string hint = hint1 + hint2;
+                
                 // Display hint to player using SCR_HintManagerComponent
                 SCR_HintManagerComponent.ShowCustomHint(hint, "Mortar Computer", 30.0, false);
+                m_bHintShown = true;
             }
         }
         
@@ -217,6 +230,12 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         
         // Remove escape key handler
         GetGame().GetInputManager().RemoveActionListener("MenuBack", EActionTrigger.DOWN, CloseComputer);
+        
+        // Reset hint shown flag when closing
+        if (m_bHintShown)
+        {
+            m_bHintShown = false;
+        }
         
         m_bMapOpen = false;
     }

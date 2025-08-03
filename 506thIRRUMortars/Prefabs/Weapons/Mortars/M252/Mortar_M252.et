@@ -13,8 +13,7 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
   }
   MeshObject "{51ACD09C4E0B7D16}" {
    Object "{8D8079616D19137C}Assets/Weapons/Mortars/M252/M252.xob"
-   LODFactors {
-    4 2 1 0.05 0.01
+   LODFactors +{
    }
   }
   RigidBody "{51ACD09C423F175F}" {
@@ -57,8 +56,7 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
       SCR_MortarElevationDisplay "{60DEAB9DDA1BC0E8}" {
       }
       SCR_BallisticTableDisplay "{60F2FA4DBC3CE379}" {
-       m_aRangeListWidgetNames {
-        "Range1" "Range2" "Range3"
+       m_aRangeListWidgetNames +{
        }
        m_iBallisticDataOffset -1
        m_aBallisticConfigs {
@@ -146,21 +144,18 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     SCR_ParticleSpawnable "{62389B75370663C2}" {
     }
     SCR_DebrisSpawnable "{62389B7FB3A10867}" {
-     m_ModelPrefabs {
-      "{DF881592214B0EB4}Prefabs/Weapons/Mortars/M252/M252_Cannon_Damaged.et"
+     m_ModelPrefabs +{
      }
      m_fMass 15
      m_eMaterialSoundType MORTAR
     }
     SCR_DebrisSpawnable "{6318DDB62738B5C9}" {
      m_vOffsetPosition 0 0.2 0
-     m_ModelPrefabs {
-      "{9484ABC74E0A74A9}Prefabs/Weapons/Mortars/M252/M252_Baseplate_Damaged.et"
+     m_ModelPrefabs +{
      }
     }
     SCR_DebrisSpawnable "{6318DDB625239667}" {
-     m_ModelPrefabs {
-      "{ADCAC8FCB62A77BD}Prefabs/Weapons/Mortars/M252/M252_Mount_Damaged.et"
+     m_ModelPrefabs +{
      }
     }
    }
@@ -312,6 +307,8 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      }
     }
    }
+   TurretSpeed 15 7
+   TurretAcceleration 17 15
   }
   WeaponComponent "{5D56B131A6921887}" {
    components {
