@@ -38,9 +38,7 @@ class NoInstantDeath_Settings
 		if (m_fBleedingScale <= 0)
 			m_fBleedingScale = 1.0;
 		
-		// Default to descriptive timer if not set
-		if (!m_bUseDescriptiveTimer)
-			m_bUseDescriptiveTimer = true;
+		// m_bUseDescriptiveTimer is now properly configurable - don't override it
 	}
 	
 	//------------------------------------------------------------------------------------------------

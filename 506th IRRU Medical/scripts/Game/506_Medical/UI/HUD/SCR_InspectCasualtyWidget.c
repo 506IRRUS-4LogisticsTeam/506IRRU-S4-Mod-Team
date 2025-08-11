@@ -26,6 +26,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	protected TextWidget m_wResilienceText;
 	protected RichTextWidget m_wDetailedStatus;
 	protected TextWidget m_wBleedoutTimerText;
+	protected TextWidget m_wCPRStatusText;
 
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
@@ -38,6 +39,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
 			m_wDetailedStatus = RichTextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DetailedStatus"));
 			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
+			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
 		}
 		
 		DisableWidget();
@@ -219,6 +221,10 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 						timeText = "VERY CRITICAL";
 					else
 						timeText = "IMMEDIATE";
+					
+					// Add CPR indicator if receiving CPR
+					if (nid && nid.IsReceivingCPR())
+						timeText = timeText + " - CPR";
 				}
 				else
 				{
@@ -425,6 +431,28 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		else if (m_wDetailedStatus)
 		{
 			m_wDetailedStatus.SetVisible(false);
+		}
+		
+		// NEW: Show CPR status
+		if (m_wCPRStatusText)
+		{
+			NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+			if (nid && nid.IsReceivingCPR())
+			{
+				m_wCPRStatusText.SetText("CPR IN PROGRESS");
+				m_wCPRStatusText.SetColor(Color.FromSRGBA(200, 100, 255, 255)); // Purple
+				m_wCPRStatusText.SetVisible(true);
+			}
+			else if (nid && nid.IsUnconscious())
+			{
+				m_wCPRStatusText.SetText("No CPR");
+				m_wCPRStatusText.SetColor(Color.FromSRGBA(128, 128, 128, 255)); // Gray
+				m_wCPRStatusText.SetVisible(true);
+			}
+			else
+			{
+				m_wCPRStatusText.SetVisible(false);
+			}
 		}
 	}
 

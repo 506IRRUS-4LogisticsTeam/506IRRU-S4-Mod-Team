@@ -25,6 +25,8 @@ class NoInstantDeathComponent : ScriptComponent
 	[RplProp(onRplName: "OnUnconsciousStateChanged")]
 	protected bool m_bIsUnconscious    = false;
 	protected bool m_bIsInitiatingKill = false;
+	[RplProp(onRplName: "OnCPRStateChanged")]
+	protected bool m_bReceivingCPR     = false;  // CPR flag to pause timer
 
 	protected bool m_bDeadBlockPrinted = false;  // one-shot info
 	protected bool m_bDeadWarned       = false;  // one-shot warn
@@ -196,8 +198,20 @@ class NoInstantDeathComponent : ScriptComponent
 			}
 		}
 
-		// Timer + 15-s ping
-		m_fUnconsciousTimer += CHECK_INTERVAL;
+		// Timer only increments if NOT receiving CPR
+		if (!m_bReceivingCPR)
+		{
+			m_fUnconsciousTimer += CHECK_INTERVAL;
+		}
+		else
+		{
+			// Log CPR is pausing timer (only once every 10 seconds to avoid spam)
+			if (NoInstantDeath_Settings.IsDebugEnabled() 
+			    && Math.Mod(m_fUnconsciousTimer, 10.0) < CHECK_INTERVAL)
+			{
+				NID_DebugPrint(GetNameStr(owner) + ": Timer paused - receiving CPR");
+			}
+		}
 		
 		// Bump replication periodically so clients get timer updates
 		// Update every 0.5 seconds for smooth timer display
@@ -360,5 +374,37 @@ class NoInstantDeathComponent : ScriptComponent
 	{
 		// This is called on clients when the server updates m_bIsUnconscious
 		// No action needed - the UI will read the updated value
+	}
+	
+	// ─── CPR Methods ─────────────────────────────────────────────────────
+	
+	//! Set whether patient is receiving CPR
+	void SetReceivingCPR(bool receiving)
+	{
+		if (m_bReceivingCPR == receiving)
+			return;
+			
+		m_bReceivingCPR = receiving;
+		
+		if (m_Rpl)
+			Replication.BumpMe();
+		
+		NID_DebugPrint(string.Format("%1: CPR state changed to %2", 
+		                            GetNameStr(GetOwner()), receiving));
+	}
+	
+	//! Check if patient is receiving CPR
+	bool IsReceivingCPR()
+	{
+		return m_bReceivingCPR;
+	}
+	
+	//! RPC callback for CPR state changes
+	protected void OnCPRStateChanged()
+	{
+		// Could add visual/audio feedback here
+		if (NoInstantDeath_Settings.IsDebugEnabled())
+			NID_DebugPrint(string.Format("%1: CPR state replicated - now %2", 
+			                            GetNameStr(GetOwner()), m_bReceivingCPR));
 	}
 }
