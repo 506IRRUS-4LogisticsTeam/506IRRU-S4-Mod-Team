@@ -1,43 +1,142 @@
 // ============================================================================
-//  NoInstantDeath_Settings.c   (hot-patch v2 — no ternary operator)
+//  NoInstantDeath_Settings.c   
+//  506th IRRU Medical Mod v2.0.5
+//  Standalone settings configuration
 // ============================================================================
 
-[BaseContainerProps()]
-class NoInstantDeath_Settings : ACE_ModSettings
+[BaseContainerProps(configRoot: true)]
+class NoInstantDeath_Settings
 {
-	// ─── Tunables ─────────────────────────────────────────────────────────
-	[Attribute(defvalue: "360",
-	           desc:      "Time (in seconds) before the unconscious player dies.",
-	           category:  "No Instant Death")]
+	// Version constant
+	static const string MOD_VERSION = "2.0.5";
+	
+	// ─── Configurable Settings ─────────────────────────────────────────
+	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
 	float m_fBleedoutTime;
-
-	[Attribute(defvalue: "1",
-	           desc:      "Enable verbose debug output to the RPT log.",
-	           category:  "No Instant Death",
-	           uiwidget:  UIWidgets.CheckBox)]
+	
+	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bDebugEnabled;
-
-	// ─── Lightweight singleton so other scripts can query us ─────────────
-	static autoptr NoInstantDeath_Settings s_Instance;
-
-	void NoInstantDeath_Settings()        // constructor (runs once)
+	
+	// ─── Static singleton instance ─────────────────────────────────────
+	protected static ref NoInstantDeath_Settings s_Instance;
+	protected static bool s_Initialized = false;
+	
+	//------------------------------------------------------------------------------------------------
+	//! Constructor
+	void NoInstantDeath_Settings()
 	{
-		s_Instance = this;
+		// Set defaults if not specified
+		if (m_fBleedoutTime <= 0)
+			m_fBleedoutTime = 360.0;
 	}
-
+	
+	//------------------------------------------------------------------------------------------------
+	//! Get the singleton instance
+	static NoInstantDeath_Settings GetInstance()
+	{
+		if (!s_Instance)
+		{
+			// Try to load from config file
+			Resource holder = BaseContainerTools.LoadContainer("{0FA779A2B56A1711}Configs/NoInstantDeath_Settings.conf");
+			if (holder)
+			{
+				BaseContainer container = holder.GetResource().ToBaseContainer();
+				s_Instance = NoInstantDeath_Settings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
+			}
+			
+			// Create default if config not found
+			if (!s_Instance)
+			{
+				Print(string.Format("[NoInstantDeath] Config settings not found! :O"));
+				s_Instance = new NoInstantDeath_Settings();
+				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
+				s_Instance.m_bDebugEnabled = true;   // Default debug on
+			}
+			
+			// Log initialization once
+			if (!s_Initialized)
+			{
+				s_Initialized = true;
+				Print(string.Format("[NoInstantDeath] Medical Mod v%1 initialized", MOD_VERSION));
+				Print(string.Format("[NoInstantDeath] Bleedout timer: %1 seconds", s_Instance.m_fBleedoutTime));
+				Print(string.Format("[NoInstantDeath] Debug mode: %1", s_Instance.m_bDebugEnabled));
+			}
+		}
+		
+		return s_Instance;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//! Check if debug mode is enabled
 	static bool IsDebugEnabled()
 	{
-		// EnforceScript has no ternary operator, so use an explicit check
-		if (s_Instance)
-			return s_Instance.m_bDebugEnabled;
-
-		// Default to verbose logging until the settings asset exists
-		return true;
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+			return settings.m_bDebugEnabled;
+		return true; // Default to debug on
 	}
-}
-
-// Quick compile-time ping
-static void TestPrint()
-{
-	Print("[NoInstantDeath_Settings] ✅ Hot-patch v2 compiled and loaded");
+	
+	//------------------------------------------------------------------------------------------------
+	//! Get the configured bleedout time in seconds
+	static float GetBleedoutTime()
+	{
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+		{
+			float time = settings.m_fBleedoutTime;
+			
+			// Validate and clamp
+			if (time < 60.0)
+			{
+				static bool s_warnedLow = false;
+				if (!s_warnedLow && IsDebugEnabled())
+				{
+					Print(string.Format("[NoInstantDeath] Bleedout time %1s too low, clamping to 60s", time));
+					s_warnedLow = true;
+				}
+				return 60.0;  // Minimum 1 minute
+			}
+			
+			if (time > 3600.0)
+			{
+				static bool s_warnedHigh = false;
+				if (!s_warnedHigh && IsDebugEnabled())
+				{
+					Print(string.Format("[NoInstantDeath] Bleedout time %1s too high, clamping to 3600s", time));
+					s_warnedHigh = true;
+				}
+				return 3600.0;  // Maximum 1 hour
+			}
+			
+			return time;
+		}
+		
+		// Fallback default
+		return 360.0;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//! Runtime configuration (for testing)
+	static void SetBleedoutTime(float seconds)
+	{
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+		{
+			settings.m_fBleedoutTime = seconds;
+			if (IsDebugEnabled())
+				Print(string.Format("[NoInstantDeath] Bleedout timer changed to %1 seconds", seconds));
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//! Runtime debug toggle
+	static void SetDebugEnabled(bool enabled)
+	{
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+		{
+			settings.m_bDebugEnabled = enabled;
+			Print(string.Format("[NoInstantDeath] Debug mode set to %1", enabled));
+		}
+	}
 }

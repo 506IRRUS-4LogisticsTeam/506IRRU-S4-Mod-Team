@@ -1,5 +1,7 @@
 // ============================================================================
-//  DamageHandler.c – intercepts player damage (debug‑safe)
+//  DamageHandler.c
+//  506th IRRU Medical Mod v2.0.5
+//  Intercepts player damage (debug‑safe)
 // ============================================================================
 
 [ComponentEditorProps(category: "Health",

@@ -1,6 +1,8 @@
 // ============================================================================
-//  SCR_InspectCasualtyWidget.c - Modified for 506thIRRUMedical
+//  SCR_InspectCasualtyWidget.c
+//  506th IRRU Medical Mod v2.0.5
 //  Shows exact health, blood, resilience percentages, and bleedout timer
+//  Dynamic timer values from settings configuration
 // ============================================================================
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
@@ -196,7 +198,12 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				string timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
 				
 				// Color code based on time remaining
-				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
+				// Get total time from the NoInstantDeathComponent
+				float totalBleedoutTime = NoInstantDeath_Settings.GetBleedoutTime();
+				NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+				if (nid)
+					totalBleedoutTime = nid.GetBleedoutTimeTotal();
+				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 				
 				if (percentRemaining > 66)
 				{
@@ -297,7 +304,12 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				
 				// Color based on time - matching the name display colors
 				Color timerColor;
-				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
+				// Get total time from the NoInstantDeathComponent
+				float totalBleedoutTime = NoInstantDeath_Settings.GetBleedoutTime();
+				NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+				if (nid)
+					totalBleedoutTime = nid.GetBleedoutTimeTotal();
+				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 				
 				if (percentRemaining > 66)
 					timerColor = Color.FromSRGBA(0, 255, 255, 255); // Cyan

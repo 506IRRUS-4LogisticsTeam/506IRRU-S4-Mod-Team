@@ -1,9 +1,10 @@
 // ============================================================================
-//  SCR_CharacterDamageManagerComponent.c  (No‑Instant‑Death patch, ACE‑compatible)  •  v7
+//  SCR_CharacterDamageManagerComponent.c  
+//  506th IRRU Medical Mod v2.0.5
 //  – Prevents any vital hit‑zone from falling below 1 HP
 //  – Restores OnCustomDamageTaken invoker
-//  – ADDED: Methods to return exact percentages for inspection
-//  – ADDED: Bleedout timer support
+//  – Methods to return exact percentages for inspection
+//  – Bleedout timer support with dynamic settings
 // ============================================================================
 
 modded class SCR_CharacterDamageManagerComponent
@@ -141,7 +142,7 @@ modded class SCR_CharacterDamageManagerComponent
 		{
 			isBleedingOut = false;
 			timeRemaining = -1.0;
-			totalTime = 360.0; // Default total time
+			totalTime = NoInstantDeath_Settings.GetBleedoutTime(); // Get from settings
 		}
 	}
 
