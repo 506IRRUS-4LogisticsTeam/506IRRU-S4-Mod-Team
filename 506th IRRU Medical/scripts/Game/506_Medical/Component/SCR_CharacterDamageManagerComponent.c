@@ -123,6 +123,12 @@ modded class SCR_CharacterDamageManagerComponent
 		// Return raw bleeding rate value
 		return bloodHZ.GetTotalBleedingAmount() * GetBleedingScale(); 
 	}
+	
+	//! Override bleeding scale to use medical mod settings
+	override float GetBleedingScale()
+	{
+		return NoInstantDeath_Settings.GetBleedingScale();
+	}
 
 	//! Get bleedout timer info
 	void GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
