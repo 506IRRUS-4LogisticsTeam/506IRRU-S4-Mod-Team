@@ -20,6 +20,9 @@ class NoInstantDeath_Settings
 	[Attribute(defvalue: "1.0", desc: "Bleeding rate multiplier (0.5 = half speed, 2.0 = double speed)", category: "No Instant Death", params: "0.01 5.0 0.01")]
 	float m_fBleedingScale;
 	
+	[Attribute(defvalue: "1", desc: "Use descriptive text instead of exact timer (e.g. 'critical condition' instead of '1:23')", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
+	bool m_bUseDescriptiveTimer;
+	
 	// ─── Static singleton instance ─────────────────────────────────────
 	protected static ref NoInstantDeath_Settings s_Instance;
 	protected static bool s_Initialized = false;
@@ -34,6 +37,10 @@ class NoInstantDeath_Settings
 		
 		if (m_fBleedingScale <= 0)
 			m_fBleedingScale = 1.0;
+		
+		// Default to descriptive timer if not set
+		if (!m_bUseDescriptiveTimer)
+			m_bUseDescriptiveTimer = true;
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -58,6 +65,7 @@ class NoInstantDeath_Settings
 				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
 				s_Instance.m_bDebugEnabled = true;   // Default debug on
 				s_Instance.m_fBleedingScale = 1.0;  // Default normal bleeding rate
+				s_Instance.m_bUseDescriptiveTimer = true;  // Default to descriptive text
 			}
 			
 			// Log initialization once
@@ -197,6 +205,29 @@ class NoInstantDeath_Settings
 			settings.m_fBleedingScale = scale;
 			if (IsDebugEnabled())
 				Print(string.Format("[NoInstantDeath] Bleeding scale changed to %1x", scale));
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//! Check if descriptive timer mode is enabled
+	static bool IsDescriptiveTimerEnabled()
+	{
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+			return settings.m_bUseDescriptiveTimer;
+		return true; // Default to descriptive
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	//! Toggle descriptive timer mode
+	static void SetDescriptiveTimerEnabled(bool enabled)
+	{
+		NoInstantDeath_Settings settings = GetInstance();
+		if (settings)
+		{
+			settings.m_bUseDescriptiveTimer = enabled;
+			if (IsDebugEnabled())
+				Print(string.Format("[NoInstantDeath] Descriptive timer mode set to %1", enabled));
 		}
 	}
 }
