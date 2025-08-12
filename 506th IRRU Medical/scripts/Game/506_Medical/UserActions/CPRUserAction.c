@@ -39,7 +39,7 @@ class CPRUserAction : ScriptedUserAction
 		super.Init(pOwnerEntity, pManagerComponent);
 		
 		if (NoInstantDeath_Settings.IsDebugEnabled())
-			Print(string.Format("[CPR] Action initialized with duration: %1s", m_fCPRCycleDuration));
+			Print(string.Format("[NoInstantDeath][CPR] Action initialized with duration: %1s", m_fCPRCycleDuration));
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ class CPRUserAction : ScriptedUserAction
 	override void OnActionStart(IEntity pUserEntity)
 	{
 		if (NoInstantDeath_Settings.IsDebugEnabled())
-			Print("[CPR] Action started by: " + pUserEntity.GetName());
+			Print("[NoInstantDeath][CPR] Action started by: " + pUserEntity.GetName());
 		
 		m_fActionStartTime = GetGame().GetWorld().GetWorldTime() * 0.001; // Convert to seconds
 		
@@ -176,7 +176,7 @@ class CPRUserAction : ScriptedUserAction
 				nid.SetReceivingCPR(true);
 				
 				if (NoInstantDeath_Settings.IsDebugEnabled())
-					Print("[CPR] Set receiving CPR flag on patient");
+					Print("[NoInstantDeath][CPR] Set receiving CPR flag on patient");
 			}
 		}
 	}
@@ -188,7 +188,7 @@ class CPRUserAction : ScriptedUserAction
 		float timePerformed = currentTime - m_fActionStartTime;
 		
 		if (NoInstantDeath_Settings.IsDebugEnabled())
-			Print(string.Format("[CPR] Action canceled after %1 seconds", timePerformed));
+			Print(string.Format("[NoInstantDeath][CPR] Action canceled after %1 seconds", timePerformed));
 		
 		// Clear CPR flag on patient - timer resumes
 		NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(NoInstantDeathComponent));
@@ -197,7 +197,7 @@ class CPRUserAction : ScriptedUserAction
 			nid.SetReceivingCPR(false);
 			
 			if (NoInstantDeath_Settings.IsDebugEnabled())
-				Print("[CPR] Cleared receiving CPR flag on patient");
+				Print("[NoInstantDeath][CPR] Cleared receiving CPR flag on patient");
 		}
 		
 		// Apply fatigue based on time performed
@@ -260,7 +260,7 @@ class CPRUserAction : ScriptedUserAction
 			// nid.AddBonusTime(30.0);
 			
 			if (NoInstantDeath_Settings.IsDebugEnabled())
-				Print("[CPR] Full CPR cycle completed - patient stabilized temporarily");
+				Print("[NoInstantDeath][CPR] Full CPR cycle completed - patient stabilized temporarily");
 		}
 		
 		// Apply reduced fatigue for completing full cycle (reward for doing it properly)
@@ -361,6 +361,6 @@ class CPRUserAction : ScriptedUserAction
 		s_mFatigueTimestamps.Set(playerId, currentTime);
 		
 		if (NoInstantDeath_Settings.IsDebugEnabled())
-			Print(string.Format("[CPR] Applied %1s fatigue to player %2", duration, playerId));
+			Print(string.Format("[NoInstantDeath][CPR] Applied %1s fatigue to player %2", duration, playerId));
 	}
 }

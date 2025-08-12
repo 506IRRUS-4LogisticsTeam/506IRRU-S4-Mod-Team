@@ -18,7 +18,7 @@ class NoInstantDeathComponent : ScriptComponent
 	static void NID_DebugPrint(string msg)
 	{
 		if (NoInstantDeath_Settings.IsDebugEnabled())
-			Print("[NoInstantDeath] " + msg);
+			Print("[NoInstantDeath][NID] " + msg);
 	}
 
 	// ─── state ───────────────────────────────────────────────────────────
@@ -66,7 +66,7 @@ class NoInstantDeathComponent : ScriptComponent
 		static bool s_versionLogged = false;
 		if (!s_versionLogged && NoInstantDeath_Settings.IsDebugEnabled())
 		{
-			Print(string.Format("[NoInstantDeath] Medical Mod v%1 loaded successfully", 
+			Print(string.Format("[NoInstantDeath][NID] Medical Mod v%1 loaded successfully", 
 			                   NoInstantDeath_Settings.MOD_VERSION));
 			s_versionLogged = true;
 		}

@@ -59,7 +59,7 @@ class NoInstantDeath_Settings
 			// Create default if config not found
 			if (!s_Instance)
 			{
-				Print(string.Format("[NoInstantDeath] Config settings not found! :O"));
+				Print(string.Format("[NoInstantDeath][CFG] Config settings not found! :O"));
 				s_Instance = new NoInstantDeath_Settings();
 				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
 				s_Instance.m_bDebugEnabled = true;   // Default debug on
@@ -71,10 +71,10 @@ class NoInstantDeath_Settings
 			if (!s_Initialized)
 			{
 				s_Initialized = true;
-				Print(string.Format("[NoInstantDeath] Medical Mod v%1 initialized", MOD_VERSION));
-				Print(string.Format("[NoInstantDeath] Bleedout timer: %1 seconds", s_Instance.m_fBleedoutTime));
-				Print(string.Format("[NoInstantDeath] Debug mode: %1", s_Instance.m_bDebugEnabled));
-				Print(string.Format("[NoInstantDeath] Bleeding scale: %1x", s_Instance.m_fBleedingScale));
+				Print(string.Format("[NoInstantDeath][CFG] Medical Mod v%1 initialized", MOD_VERSION));
+				Print(string.Format("[NoInstantDeath][CFG] Bleedout timer: %1 seconds", s_Instance.m_fBleedoutTime));
+				Print(string.Format("[NoInstantDeath][CFG] Debug mode: %1", s_Instance.m_bDebugEnabled));
+				Print(string.Format("[NoInstantDeath][CFG] Bleeding scale: %1x", s_Instance.m_fBleedingScale));
 			}
 		}
 		
@@ -106,7 +106,7 @@ class NoInstantDeath_Settings
 				static bool s_warnedLow = false;
 				if (!s_warnedLow && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath] Bleedout time %1s too low, clamping to 60s", time));
+					Print(string.Format("[NoInstantDeath][CFG] Bleedout time %1s too low, clamping to 60s", time));
 					s_warnedLow = true;
 				}
 				return 60.0;  // Minimum 1 minute
@@ -117,7 +117,7 @@ class NoInstantDeath_Settings
 				static bool s_warnedHigh = false;
 				if (!s_warnedHigh && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath] Bleedout time %1s too high, clamping to 3600s", time));
+					Print(string.Format("[NoInstantDeath][CFG] Bleedout time %1s too high, clamping to 3600s", time));
 					s_warnedHigh = true;
 				}
 				return 3600.0;  // Maximum 1 hour
@@ -139,7 +139,7 @@ class NoInstantDeath_Settings
 		{
 			settings.m_fBleedoutTime = seconds;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath] Bleedout timer changed to %1 seconds", seconds));
+				Print(string.Format("[NoInstantDeath][CFG] Bleedout timer changed to %1 seconds", seconds));
 		}
 	}
 	
@@ -151,7 +151,7 @@ class NoInstantDeath_Settings
 		if (settings)
 		{
 			settings.m_bDebugEnabled = enabled;
-			Print(string.Format("[NoInstantDeath] Debug mode set to %1", enabled));
+			Print(string.Format("[NoInstantDeath][CFG] Debug mode set to %1", enabled));
 		}
 	}
 	
@@ -170,7 +170,7 @@ class NoInstantDeath_Settings
 				static bool s_warnedLow = false;
 				if (!s_warnedLow && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath] Bleeding scale %1 too low, clamping to 0.01", scale));
+					Print(string.Format("[NoInstantDeath][CFG] Bleeding scale %1 too low, clamping to 0.01", scale));
 					s_warnedLow = true;
 				}
 				return 0.01;  // Minimum 1% bleeding
@@ -181,7 +181,7 @@ class NoInstantDeath_Settings
 				static bool s_warnedHigh = false;
 				if (!s_warnedHigh && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath] Bleeding scale %1 too high, clamping to 5.0", scale));
+					Print(string.Format("[NoInstantDeath][CFG] Bleeding scale %1 too high, clamping to 5.0", scale));
 					s_warnedHigh = true;
 				}
 				return 5.0;  // Maximum 5x bleeding
@@ -203,7 +203,7 @@ class NoInstantDeath_Settings
 		{
 			settings.m_fBleedingScale = scale;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath] Bleeding scale changed to %1x", scale));
+				Print(string.Format("[NoInstantDeath][CFG] Bleeding scale changed to %1x", scale));
 		}
 	}
 	
@@ -226,7 +226,7 @@ class NoInstantDeath_Settings
 		{
 			settings.m_bUseDescriptiveTimer = enabled;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath] Descriptive timer mode set to %1", enabled));
+				Print(string.Format("[NoInstantDeath][CFG] Descriptive timer mode set to %1", enabled));
 		}
 	}
 }
