@@ -1,8 +1,9 @@
 // ============================================================================
 //  SCR_InspectCasualtyWidget.c
-//  506th IRRU Medical Mod v2.0.5
+//  506th IRRU Medical Mod v2.0.6
 //  Shows exact health, blood, resilience percentages, and bleedout timer
 //  Dynamic timer values from settings configuration
+//  v2.0.6: Added CPR status display with purple/grey color coding
 // ============================================================================
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended

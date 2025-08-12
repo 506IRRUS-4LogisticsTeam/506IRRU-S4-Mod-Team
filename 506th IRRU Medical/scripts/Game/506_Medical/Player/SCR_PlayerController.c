@@ -1,6 +1,6 @@
 // ============================================================================
 //  NoInstantDeath_PlayerController.c
-//  506th IRRU Medical Mod v2.0.5
+//  506th IRRU Medical Mod v2.0.6
 //  Mirrors ACE-Medical's pattern: only the server-side player controller
 //  flags the character as eligible for No-Instant-Death logic.
 // ============================================================================

@@ -20,6 +20,7 @@ SCR_ChimeraCharacter {
      }
      VisibilityRange 1.5
      Duration 18
+     m_fFatigueDuration 18
      m_fFatigueDecayRate 2
     }
    }

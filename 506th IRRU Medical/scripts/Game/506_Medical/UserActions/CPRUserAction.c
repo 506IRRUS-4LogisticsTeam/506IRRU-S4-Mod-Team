@@ -1,6 +1,6 @@
 // ============================================================================
 //  CPRUserAction.c
-//  506th IRRU Medical Mod
+//  506th IRRU Medical Mod v2.0.6
 //  CPR stabilization mechanic - pauses bleedout timer while performing CPR
 // ============================================================================
 

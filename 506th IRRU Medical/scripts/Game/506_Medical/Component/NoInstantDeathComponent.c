@@ -1,10 +1,11 @@
 // ============================================================================
 //  NoInstantDeathComponent.c   
-//  506th IRRU Medical Mod v2.0.5
+//  506th IRRU Medical Mod v2.0.6
 //  • InitiatingKill flag reset delayed to ensure kill when timer expires
 //  • Methods to expose bleedout timer for UI display
 //  • Fix for bleeding-to-unconscious without timer
 //  • Dynamic timer from settings configuration
+//  • v2.0.6: Added CPR flag to pause bleedout timer during CPR
 // ============================================================================
 
 [ComponentEditorProps(category: "Health",

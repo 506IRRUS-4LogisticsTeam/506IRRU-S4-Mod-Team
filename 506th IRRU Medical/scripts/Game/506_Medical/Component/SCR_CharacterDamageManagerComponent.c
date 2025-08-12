@@ -1,10 +1,11 @@
 // ============================================================================
 //  SCR_CharacterDamageManagerComponent.c  
-//  506th IRRU Medical Mod v2.0.5
+//  506th IRRU Medical Mod v2.0.6
 //  – Prevents any vital hit‑zone from falling below 1 HP
 //  – Restores OnCustomDamageTaken invoker
 //  – Methods to return exact percentages for inspection
 //  – Bleedout timer support with dynamic settings
+//  – v2.0.6: Fixed bleeding scale override from base game settings
 // ============================================================================
 
 modded class SCR_CharacterDamageManagerComponent

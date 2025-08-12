@@ -1,14 +1,15 @@
 // ============================================================================
 //  NoInstantDeath_Settings.c   
-//  506th IRRU Medical Mod v2.0.5
+//  506th IRRU Medical Mod v2.0.6
 //  Standalone settings configuration
+//  v2.0.6: Fixed descriptive timer toggle override bug
 // ============================================================================
 
 [BaseContainerProps(configRoot: true)]
 class NoInstantDeath_Settings
 {
 	// Version constant
-	static const string MOD_VERSION = "2.0.5";
+	static const string MOD_VERSION = "2.0.6";
 	
 	// ─── Configurable Settings ─────────────────────────────────────────
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
