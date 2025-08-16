@@ -1,12 +1,8 @@
-// ============================================================================
-//  NoInstantDeath_Settings.c   
-//  506th IRRU Medical Mod v2.0.6
-//  Standalone settings configuration
-//  v2.0.6: Fixed descriptive timer toggle override bug
-// ============================================================================
+//! Settings configuration for medical system
 
 [BaseContainerProps(configRoot: true)]
-class NoInstantDeath_Settings
+//! Configuration settings for the medical system
+class IRRU_NoInstantDeathSettings
 {
 	// Version constant
 	static const string MOD_VERSION = "2.0.6";
@@ -25,12 +21,12 @@ class NoInstantDeath_Settings
 	bool m_bUseDescriptiveTimer;
 	
 	// ─── Static singleton instance ─────────────────────────────────────
-	protected static ref NoInstantDeath_Settings s_Instance;
+	protected static ref IRRU_NoInstantDeathSettings s_Instance;
 	protected static bool s_Initialized = false;
 	
 	//------------------------------------------------------------------------------------------------
 	//! Constructor
-	void NoInstantDeath_Settings()
+	void IRRU_NoInstantDeathSettings()
 	{
 		// Set defaults if not specified
 		if (m_fBleedoutTime <= 0)
@@ -44,7 +40,7 @@ class NoInstantDeath_Settings
 	
 	//------------------------------------------------------------------------------------------------
 	//! Get the singleton instance
-	static NoInstantDeath_Settings GetInstance()
+	static IRRU_NoInstantDeathSettings GetInstance()
 	{
 		if (!s_Instance)
 		{
@@ -53,14 +49,14 @@ class NoInstantDeath_Settings
 			if (holder)
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
-				s_Instance = NoInstantDeath_Settings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
+				s_Instance = IRRU_NoInstantDeathSettings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
 			}
 			
 			// Create default if config not found
 			if (!s_Instance)
 			{
 				Print(string.Format("[NoInstantDeath][CFG] Config settings not found! :O"));
-				s_Instance = new NoInstantDeath_Settings();
+				s_Instance = new IRRU_NoInstantDeathSettings();
 				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
 				s_Instance.m_bDebugEnabled = true;   // Default debug on
 				s_Instance.m_fBleedingScale = 1.0;  // Default normal bleeding rate
@@ -85,7 +81,7 @@ class NoInstantDeath_Settings
 	//! Check if debug mode is enabled
 	static bool IsDebugEnabled()
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 			return settings.m_bDebugEnabled;
 		return true; // Default to debug on
@@ -95,7 +91,7 @@ class NoInstantDeath_Settings
 	//! Get the configured bleedout time in seconds
 	static float GetBleedoutTime()
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			float time = settings.m_fBleedoutTime;
@@ -134,7 +130,7 @@ class NoInstantDeath_Settings
 	//! Runtime configuration (for testing)
 	static void SetBleedoutTime(float seconds)
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			settings.m_fBleedoutTime = seconds;
@@ -147,7 +143,7 @@ class NoInstantDeath_Settings
 	//! Runtime debug toggle
 	static void SetDebugEnabled(bool enabled)
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			settings.m_bDebugEnabled = enabled;
@@ -159,7 +155,7 @@ class NoInstantDeath_Settings
 	//! Get the configured bleeding scale
 	static float GetBleedingScale()
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			float scale = settings.m_fBleedingScale;
@@ -198,7 +194,7 @@ class NoInstantDeath_Settings
 	//! Runtime bleeding scale configuration (for testing)
 	static void SetBleedingScale(float scale)
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			settings.m_fBleedingScale = scale;
@@ -211,7 +207,7 @@ class NoInstantDeath_Settings
 	//! Check if descriptive timer mode is enabled
 	static bool IsDescriptiveTimerEnabled()
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 			return settings.m_bUseDescriptiveTimer;
 		return true; // Default to descriptive
@@ -221,7 +217,7 @@ class NoInstantDeath_Settings
 	//! Toggle descriptive timer mode
 	static void SetDescriptiveTimerEnabled(bool enabled)
 	{
-		NoInstantDeath_Settings settings = GetInstance();
+		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			settings.m_bUseDescriptiveTimer = enabled;

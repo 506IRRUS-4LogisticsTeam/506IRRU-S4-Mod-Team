@@ -1,10 +1,7 @@
-// ============================================================================
-//  CPRUserAction.c
-//  506th IRRU Medical Mod v2.0.6
-//  CPR stabilization mechanic - pauses bleedout timer while performing CPR
-// ============================================================================
+//! CPR user action for stabilizing unconscious players
 
-class CPRUserAction : ScriptedUserAction
+//! Performs CPR to stabilize unconscious patients
+class IRRU_CPRUserAction : ScriptedUserAction
 {
 	// Configurable attributes
 	[Attribute(defvalue: "18", desc: "Duration of CPR cycle in seconds", params: "5 60 1", category: "CPR Settings")]
@@ -38,7 +35,7 @@ class CPRUserAction : ScriptedUserAction
 	{
 		super.Init(pOwnerEntity, pManagerComponent);
 		
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath][CPR] Action initialized with duration: %1s", m_fCPRCycleDuration));
 	}
 	
@@ -58,7 +55,7 @@ class CPRUserAction : ScriptedUserAction
 			return false;
 		
 		// Check if character has NoInstantDeath component and is unconscious
-		NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (!nid || !nid.IsUnconscious())
 			return false;
 		
@@ -105,7 +102,7 @@ class CPRUserAction : ScriptedUserAction
 		}
 		
 		// Check if someone else is already doing CPR (but not us!)
-		NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid && nid.IsReceivingCPR())
 		{
 			// Check if WE are the ones performing CPR
@@ -156,7 +153,7 @@ class CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	override void OnActionStart(IEntity pUserEntity)
 	{
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print("[NoInstantDeath][CPR] Action started by: " + pUserEntity.GetName());
 		
 		m_fActionStartTime = GetGame().GetWorld().GetWorldTime() * 0.001; // Convert to seconds
@@ -170,12 +167,12 @@ class CPRUserAction : ScriptedUserAction
 		IEntity owner = GetOwner();
 		if (owner)
 		{
-			NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 			if (nid)
 			{
 				nid.SetReceivingCPR(true);
 				
-				if (NoInstantDeath_Settings.IsDebugEnabled())
+				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 					Print("[NoInstantDeath][CPR] Set receiving CPR flag on patient");
 			}
 		}
@@ -187,16 +184,16 @@ class CPRUserAction : ScriptedUserAction
 		float currentTime = GetGame().GetWorld().GetWorldTime() * 0.001;
 		float timePerformed = currentTime - m_fActionStartTime;
 		
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath][CPR] Action canceled after %1 seconds", timePerformed));
 		
 		// Clear CPR flag on patient - timer resumes
-		NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid)
 		{
 			nid.SetReceivingCPR(false);
 			
-			if (NoInstantDeath_Settings.IsDebugEnabled())
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 				Print("[NoInstantDeath][CPR] Cleared receiving CPR flag on patient");
 		}
 		
@@ -247,11 +244,11 @@ class CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print("[CPR] Full cycle completed");
 		
 		// Clear CPR flag temporarily (will restart if player keeps holding)
-		NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid)
 		{
 			nid.SetReceivingCPR(false);
@@ -259,7 +256,7 @@ class CPRUserAction : ScriptedUserAction
 			// Optional: Add bonus time for completing full cycle
 			// nid.AddBonusTime(30.0);
 			
-			if (NoInstantDeath_Settings.IsDebugEnabled())
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 				Print("[NoInstantDeath][CPR] Full CPR cycle completed - patient stabilized temporarily");
 		}
 		
@@ -360,7 +357,7 @@ class CPRUserAction : ScriptedUserAction
 		s_mPlayerFatigue.Set(playerId, duration);
 		s_mFatigueTimestamps.Set(playerId, currentTime);
 		
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath][CPR] Applied %1s fatigue to player %2", duration, playerId));
 	}
 }

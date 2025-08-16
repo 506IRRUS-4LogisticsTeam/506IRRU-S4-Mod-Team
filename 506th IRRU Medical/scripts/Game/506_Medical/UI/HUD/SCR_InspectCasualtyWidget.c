@@ -1,10 +1,4 @@
-// ============================================================================
-//  SCR_InspectCasualtyWidget.c
-//  506th IRRU Medical Mod v2.0.6
-//  Shows exact health, blood, resilience percentages, and bleedout timer
-//  Dynamic timer values from settings configuration
-//  v2.0.6: Added CPR status display with purple/grey color coding
-// ============================================================================
+//! Enhanced casualty inspection widget with detailed medical status
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 {
@@ -198,14 +192,14 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				string timeText;
 				
 				// Get total time for percentage calculation
-				float totalBleedoutTime = NoInstantDeath_Settings.GetBleedoutTime();
-				NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+				float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
 				if (nid)
 					totalBleedoutTime = nid.GetBleedoutTimeTotal();
 				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 				
 				// Check if we should use descriptive or exact timer
-				if (NoInstantDeath_Settings.IsDescriptiveTimerEnabled())
+				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 				{
 					// Generate descriptive text based on time remaining
 					if (percentRemaining > 80)
@@ -352,14 +346,14 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				string timeText;
 				
 				// Get total time for percentage calculation
-				float totalBleedoutTime = NoInstantDeath_Settings.GetBleedoutTime();
-				NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+				float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
 				if (nid)
 					totalBleedoutTime = nid.GetBleedoutTimeTotal();
 				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 				
 				// Check if we should use descriptive or exact timer
-				if (NoInstantDeath_Settings.IsDescriptiveTimerEnabled())
+				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 				{
 					// Generate descriptive text based on time remaining
 					if (percentRemaining > 80)
@@ -437,7 +431,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		// NEW: Show CPR status
 		if (m_wCPRStatusText)
 		{
-			NoInstantDeathComponent nid = NoInstantDeathComponent.Cast(character.FindComponent(NoInstantDeathComponent));
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
 			if (nid && nid.IsReceivingCPR())
 			{
 				m_wCPRStatusText.SetText("CPR IN PROGRESS");

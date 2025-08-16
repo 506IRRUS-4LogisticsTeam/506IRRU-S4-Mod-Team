@@ -1,53 +1,52 @@
-// ============================================================================
-//  DamageHandler.c
-//  506th IRRU Medical Mod v2.0.6
-//  Intercepts player damage (debug‑safe)
-// ============================================================================
+//! Damage interception component for no-instant-death system
 
-[ComponentEditorProps(category: "Health",
-    description: "Intercepts player damage to prevent instant death")]
-class DamageInterceptorComponentClass : ScriptComponentClass {}
-
-class DamageInterceptorComponent : ScriptComponent
+[ComponentEditorProps(category: "Health", description: "Intercepts player damage to prevent instant death")]
+class IRRU_DamageInterceptorComponentClass : ScriptComponentClass
 {
-	protected SCR_CharacterDamageManagerComponent m_DmgMgr;
-	protected NoInstantDeathComponent             m_DeathLogic;
+}
 
-	protected bool m_bListenerBound  = false;
-	protected bool m_bAnnouncedReady = false;   // replaces static bool
+//! Intercepts damage to prevent instant death in medical system
+class IRRU_DamageInterceptorComponent : ScriptComponent
+{
+	protected SCR_CharacterDamageManagerComponent m_DamageManager;
+	protected IRRU_NoInstantDeathComponent m_DeathLogic;
+	protected bool m_bListenerBound = false;
+	protected bool m_bAnnouncedReady = false;
 
+	//------------------------------------------------------------------------------------------------
 	protected void DebugPrint(string msg)
 	{
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print("[NoInstantDeath][INT] " + msg);
 	}
+
+	//------------------------------------------------------------------------------------------------
 
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
 
-		m_DmgMgr     = SCR_CharacterDamageManagerComponent.Cast(
+		m_DamageManager = SCR_CharacterDamageManagerComponent.Cast(
 			owner.FindComponent(SCR_CharacterDamageManagerComponent));
-		m_DeathLogic = NoInstantDeathComponent.Cast(
-			owner.FindComponent(NoInstantDeathComponent));
+		m_DeathLogic = IRRU_NoInstantDeathComponent.Cast(
+			owner.FindComponent(IRRU_NoInstantDeathComponent));
 
-		if (!m_DmgMgr || !m_DeathLogic)
+		if (!m_DamageManager || !m_DeathLogic)
 			return;
 
-		m_DmgMgr.OnCustomDamageTaken.Insert(OnEntityDamaged);
+		m_DamageManager.OnCustomDamageTaken.Insert(OnEntityDamaged);
 		m_bListenerBound = true;
 
-		if (m_DeathLogic.NID_IsInitialized())
+		if (m_DeathLogic.IsInitialized())
 			DebugPrint("Interceptor active for player.");
 		else
-			DebugPrint("Interceptor dormant (AI / un‑init).");
+			DebugPrint("Interceptor dormant (AI or not initialized).");
 	}
 
-	void OnEntityDamaged(IEntity owner, float damage,
-	                     notnull Instigator instigator, vector dir, HitZone hitZone)
+	void OnEntityDamaged(IEntity owner, float damage, notnull Instigator instigator, vector dir, HitZone hitZone)
 	{
-		if (!m_DeathLogic || !m_DeathLogic.NID_IsInitialized())
-			return;   // AI or not yet a player
+		if (!m_DeathLogic || !m_DeathLogic.IsInitialized())
+			return;
 
 		if (!m_bAnnouncedReady)
 		{
@@ -55,7 +54,7 @@ class DamageInterceptorComponent : ScriptComponent
 			m_bAnnouncedReady = true;
 		}
 
-		if ((m_DmgMgr.GetHealth() - damage) <= 0.1 && !m_DeathLogic.IsUnconscious())
+		if ((m_DamageManager.GetHealth() - damage) <= 0.1 && !m_DeathLogic.IsUnconscious())
 		{
 			DebugPrint("Intercepted lethal damage, forcing unconscious.");
 			m_DeathLogic.MakeUnconscious(owner);
