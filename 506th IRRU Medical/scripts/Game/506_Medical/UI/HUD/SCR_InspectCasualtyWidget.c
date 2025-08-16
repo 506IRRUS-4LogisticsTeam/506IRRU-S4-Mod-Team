@@ -1,7 +1,4 @@
-// ============================================================================
-//  SCR_InspectCasualtyWidget.c - Modified for 506thIRRUMedical
-//  Shows exact health, blood, resilience percentages, and bleedout timer
-// ============================================================================
+//! Enhanced casualty inspection widget with detailed medical status
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 {
@@ -24,6 +21,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	protected TextWidget m_wResilienceText;
 	protected RichTextWidget m_wDetailedStatus;
 	protected TextWidget m_wBleedoutTimerText;
+	protected TextWidget m_wCPRStatusText;
 
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
@@ -36,6 +34,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
 			m_wDetailedStatus = RichTextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DetailedStatus"));
 			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
+			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
 		}
 		
 		DisableWidget();
@@ -190,28 +189,81 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			if (isBleedingOut && bleedoutTimeRemaining > 0)
 			{
-				// Format time as MM:SS
-				int minutes = Math.Floor(bleedoutTimeRemaining / 60);
-				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
-				string timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
+				string timeText;
 				
-				// Color code based on time remaining
-				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
+				// Get total time for percentage calculation
+				float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
+				if (nid)
+					totalBleedoutTime = nid.GetBleedoutTimeTotal();
+				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 				
-				if (percentRemaining > 66)
+				// Check if we should use descriptive or exact timer
+				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 				{
-					// Cyan/Light Blue for > 66% (good time remaining)
-					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='0,255,255,255'>%2</color>]", sName, timeText);
-				}
-				else if (percentRemaining > 33)
-				{
-					// Yellow for 33-66% (caution)
-					sName = string.Format("%1 [UNCONSCIOUS - <color rgba='255,255,0,255'>%2</color>]", sName, timeText);
+					// Generate descriptive text based on time remaining
+					if (percentRemaining > 80)
+						timeText = "STABLE";
+					else if (percentRemaining > 66)
+						timeText = "SERIOUS";
+					else if (percentRemaining > 50)
+						timeText = "DETERIORATING";
+					else if (percentRemaining > 33)
+						timeText = "URGENT";
+					else if (percentRemaining > 20)
+						timeText = "CRITICAL";
+					else if (percentRemaining > 10)
+						timeText = "VERY CRITICAL";
+					else
+						timeText = "IMMEDIATE";
+					
+					// Add CPR indicator if receiving CPR
+					if (nid && nid.IsReceivingCPR())
+						timeText = timeText + " - CPR";
 				}
 				else
 				{
-					// Red for < 33% (critical) - Make entire line red
-					sName = string.Format("<color rgba='255,0,0,255'>%1 [CRITICAL! - %2]</color>", sName, timeText);
+					// Use exact timer format MM:SS
+					int minutes = Math.Floor(bleedoutTimeRemaining / 60);
+					int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
+					timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
+				}
+				
+				// Color code based on time remaining
+				if (percentRemaining <= 10)
+				{
+					// Below 10% - Make entire line red for maximum urgency
+					sName = string.Format("<color rgba='255,0,0,255'>%1 [%2]</color>", sName, timeText);
+				}
+				else if (percentRemaining > 80)
+				{
+					// Blue for STABLE (>80%)
+					sName = string.Format("%1 [<color rgba='0,150,255,255'>%2</color>]", sName, timeText);
+				}
+				else if (percentRemaining > 66)
+				{
+					// Green for SERIOUS (66-80%)
+					sName = string.Format("%1 [<color rgba='0,255,100,255'>%2</color>]", sName, timeText);
+				}
+				else if (percentRemaining > 50)
+				{
+					// Yellow-green for DETERIORATING (50-66%)
+					sName = string.Format("%1 [<color rgba='200,255,0,255'>%2</color>]", sName, timeText);
+				}
+				else if (percentRemaining > 33)
+				{
+					// Yellow-orange for URGENT (33-50%)
+					sName = string.Format("%1 [<color rgba='255,200,0,255'>%2</color>]", sName, timeText);
+				}
+				else if (percentRemaining > 20)
+				{
+					// Orange for CRITICAL (20-33%)
+					sName = string.Format("%1 [<color rgba='255,150,0,255'>%2</color>]", sName, timeText);
+				}
+				else
+				{
+					// Red for VERY CRITICAL (10-20%)
+					sName = string.Format("%1 [<color rgba='255,0,0,255'>%2</color>]", sName, timeText);
 				}
 			}
 			else
@@ -291,20 +343,58 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			if (isBleedingOut && bleedoutTimeRemaining > 0)
 			{
-				int minutes = Math.Floor(bleedoutTimeRemaining / 60);
-				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
-				string timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
+				string timeText;
+				
+				// Get total time for percentage calculation
+				float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
+				if (nid)
+					totalBleedoutTime = nid.GetBleedoutTimeTotal();
+				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
+				
+				// Check if we should use descriptive or exact timer
+				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
+				{
+					// Generate descriptive text based on time remaining
+					if (percentRemaining > 80)
+						timeText = "Condition: STABLE";
+					else if (percentRemaining > 66)
+						timeText = "Condition: SERIOUS";
+					else if (percentRemaining > 50)
+						timeText = "Condition: DETERIORATING";
+					else if (percentRemaining > 33)
+						timeText = "Condition: URGENT";
+					else if (percentRemaining > 20)
+						timeText = "Condition: CRITICAL";
+					else if (percentRemaining > 10)
+						timeText = "Condition: VERY CRITICAL";
+					else
+						timeText = "Condition: IMMEDIATE";
+				}
+				else
+				{
+					// Use exact timer format
+					int minutes = Math.Floor(bleedoutTimeRemaining / 60);
+					int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
+					timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
+				}
 				
 				// Color based on time - matching the name display colors
 				Color timerColor;
-				float percentRemaining = (bleedoutTimeRemaining / 360.0) * 100.0;
-				
-				if (percentRemaining > 66)
-					timerColor = Color.FromSRGBA(0, 255, 255, 255); // Cyan
+				if (percentRemaining > 80)
+					timerColor = Color.FromSRGBA(0, 150, 255, 255); // Blue
+				else if (percentRemaining > 66)
+					timerColor = Color.FromSRGBA(0, 255, 100, 255); // Green
+				else if (percentRemaining > 50)
+					timerColor = Color.FromSRGBA(200, 255, 0, 255); // Yellow-green
 				else if (percentRemaining > 33)
-					timerColor = Color.FromSRGBA(255, 255, 0, 255); // Yellow
-				else
+					timerColor = Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange
+				else if (percentRemaining > 20)
+					timerColor = Color.FromSRGBA(255, 150, 0, 255); // Orange
+				else if (percentRemaining > 10)
 					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red
+				else
+					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Deep red (could make darker if needed)
 					
 				m_wBleedoutTimerText.SetText(timeText);
 				m_wBleedoutTimerText.SetColor(timerColor);
@@ -336,6 +426,28 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		else if (m_wDetailedStatus)
 		{
 			m_wDetailedStatus.SetVisible(false);
+		}
+		
+		// NEW: Show CPR status
+		if (m_wCPRStatusText)
+		{
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
+			if (nid && nid.IsReceivingCPR())
+			{
+				m_wCPRStatusText.SetText("CPR IN PROGRESS");
+				m_wCPRStatusText.SetColor(Color.FromSRGBA(200, 100, 255, 255)); // Purple
+				m_wCPRStatusText.SetVisible(true);
+			}
+			else if (nid && nid.IsUnconscious())
+			{
+				m_wCPRStatusText.SetText("No CPR");
+				m_wCPRStatusText.SetColor(Color.FromSRGBA(128, 128, 128, 255)); // Gray
+				m_wCPRStatusText.SetVisible(true);
+			}
+			else
+			{
+				m_wCPRStatusText.SetVisible(false);
+			}
 		}
 	}
 

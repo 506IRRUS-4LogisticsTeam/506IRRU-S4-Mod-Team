@@ -1,10 +1,4 @@
-// ============================================================================
-//  SCR_CharacterDamageManagerComponent.c  (No‑Instant‑Death patch, ACE‑compatible)  •  v7
-//  – Prevents any vital hit‑zone from falling below 1 HP
-//  – Restores OnCustomDamageTaken invoker
-//  – ADDED: Methods to return exact percentages for inspection
-//  – ADDED: Bleedout timer support
-// ============================================================================
+//! Extended damage manager with percentage display and no-instant-death
 
 modded class SCR_CharacterDamageManagerComponent
     : SCR_CharacterDamageManagerComponent
@@ -12,10 +6,10 @@ modded class SCR_CharacterDamageManagerComponent
 	// Public invoker for other scripts
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 
-	// ─── debug ───────────────────────────────────────────────────────────
-	protected void NID_DebugPrint(string msg)
+	//------------------------------------------------------------------------------------------------
+	protected void DebugPrint(string msg)
 	{
-		if (NoInstantDeath_Settings.IsDebugEnabled())
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print("[NoInstantDeath][DMG] " + msg);
 	}
 
@@ -53,9 +47,9 @@ modded class SCR_CharacterDamageManagerComponent
 		
 		// For No-Instant-Death compatibility, check if unconscious
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		
 		// If unconscious and NID is active, show very low health but not 0
 		if (nid && nid.IsUnconscious())
@@ -122,14 +116,20 @@ modded class SCR_CharacterDamageManagerComponent
 		// Return raw bleeding rate value
 		return bloodHZ.GetTotalBleedingAmount() * GetBleedingScale(); 
 	}
+	
+	//! Override bleeding scale to use medical mod settings
+	override float GetBleedingScale()
+	{
+		return IRRU_NoInstantDeathSettings.GetBleedingScale();
+	}
 
 	//! Get bleedout timer info
 	void GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
 	{
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 			
 		if (nid && nid.IsUnconscious())
 		{
@@ -141,7 +141,7 @@ modded class SCR_CharacterDamageManagerComponent
 		{
 			isBleedingOut = false;
 			timeRemaining = -1.0;
-			totalTime = 360.0; // Default total time
+			totalTime = IRRU_NoInstantDeathSettings.GetBleedoutTime(); // Get from settings
 		}
 	}
 
@@ -159,9 +159,9 @@ modded class SCR_CharacterDamageManagerComponent
 		
 		// Check unconscious state using your NID system
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 			
 		isUnconscious = (nid && nid.IsUnconscious());
 		
@@ -210,13 +210,13 @@ modded class SCR_CharacterDamageManagerComponent
 	override void OnDamage(notnull BaseDamageContext damageContext)
 	{
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(
-				owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(
+				owner.FindComponent(IRRU_NoInstantDeathComponent));
 
 		// —— 1) AI or un‑initialised pawn → vanilla path ——
-		if (!nid || !nid.NID_IsInitialized())
+		if (!nid || !nid.IsInitialized())
 		{
 			super.OnDamage(damageContext);
 			vector zv = vector.Zero;
@@ -239,7 +239,7 @@ modded class SCR_CharacterDamageManagerComponent
 				EnforceMinHealth(GetHitZoneByName("Head"),5.0);
 				EnforceMinHealth(GetHitZoneByName("Torso"),5.0);
 
-				NID_DebugPrint(string.Format(
+				DebugPrint(string.Format(
 					"%1 – lethal hit intercepted (knock‑out)",
 					GetPlayerOrEntityNameStr(owner)));
 				return;
@@ -276,11 +276,11 @@ modded class SCR_CharacterDamageManagerComponent
 	override void OnDamageStateChanged(EDamageState state)
 	{
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 
-		if (!nid || !nid.NID_IsInitialized())
+		if (!nid || !nid.IsInitialized())
 		{
 			super.OnDamageStateChanged(state);
 			return;
@@ -289,7 +289,7 @@ modded class SCR_CharacterDamageManagerComponent
 		if (nid.IsUnconscious() && !nid.IsInitiatingKill()
 		    && state == EDamageState.DESTROYED)
 		{
-			NID_DebugPrint(string.Format(
+			DebugPrint(string.Format(
 				"%1 – DESTROYED state intercepted", GetPlayerOrEntityNameStr(owner)));
 			return;
 		}
@@ -300,11 +300,11 @@ modded class SCR_CharacterDamageManagerComponent
 	override void Kill(notnull Instigator instigator)
 	{
 		IEntity owner = GetOwner();
-		NoInstantDeathComponent nid = null;
+		IRRU_NoInstantDeathComponent nid = null;
 		if (owner)
-			nid = NoInstantDeathComponent.Cast(owner.FindComponent(NoInstantDeathComponent));
+			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 
-		if (!nid || !nid.NID_IsInitialized())
+		if (!nid || !nid.IsInitialized())
 		{
 			super.Kill(instigator);
 			return;
@@ -319,7 +319,7 @@ modded class SCR_CharacterDamageManagerComponent
 
 		if (nid.IsUnconscious())
 		{
-			NID_DebugPrint(string.Format(
+			DebugPrint(string.Format(
 				"%1 – Kill() ignored while unconscious",
 				GetPlayerOrEntityNameStr(owner)));
 			return;
@@ -328,7 +328,7 @@ modded class SCR_CharacterDamageManagerComponent
 		nid.MakeUnconscious(owner);
 		EnforceMinHealth(GetDefaultHitZone(), 1.0);
 
-		NID_DebugPrint(string.Format(
+		DebugPrint(string.Format(
 			"%1 – Kill() intercepted, converted to knock‑out",
 			GetPlayerOrEntityNameStr(owner)));
 	}

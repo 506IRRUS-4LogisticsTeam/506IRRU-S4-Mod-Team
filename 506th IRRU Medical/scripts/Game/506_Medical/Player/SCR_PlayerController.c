@@ -1,9 +1,4 @@
-// ============================================================================
-//  NoInstantDeath_PlayerController.c
-//
-//  Mirrors ACE-Medical’s pattern: only the server-side player controller
-//  flags the character as eligible for No-Instant-Death logic.
-// ============================================================================
+//! Player controller extension for medical system initialization
 
 modded class SCR_PlayerController : SCR_PlayerController
 {
@@ -11,17 +6,15 @@ modded class SCR_PlayerController : SCR_PlayerController
 	{
 		super.OnControlledEntityChanged(from, to);
 
-		// ── run ONLY on the server (same safeguard ACE uses)
 		if (Replication.IsRunning() && !Replication.IsServer())
 			return;
 
-		//! Skip when the controller is “possessing” an AI (e.g. GM mode)
 		if (!to || IsPossessing())
 			return;
 
-		NoInstantDeathComponent nid =
-			NoInstantDeathComponent.Cast(to.FindComponent(NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+			to.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid)
-			nid.NID_Initialize();   // flips the init flag & hooks callbacks
+			nid.Initialize();
 	}
 }
