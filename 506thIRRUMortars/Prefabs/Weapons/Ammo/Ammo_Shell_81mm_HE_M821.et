@@ -23,11 +23,10 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
    Object "{299588829D57B4DD}Assets/Weapons/Ammo/Shells/81mm_Mortar_M252/Shell_81mm_HE_M821.xob"
   }
   RigidBody "{60AC9440016FD3D4}" {
-   Mass 0.5
+   Mass 1
   }
   SCR_MortarShellGadgetComponent "{60AC94402A1A228B}" {
-   m_aChargeRingConfig {
-    0 1 0 1 1.531 0 2 2.085 0 3 2.541 0 4 2.977 1
+   m_aChargeRingConfig +{
    }
   }
   SCR_VisibleInventoryItemComponent "{52627A115A9FDADB}" {
@@ -37,7 +36,7 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
      Description "#AR-Magazine_M821_Description"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{60AC94417B58CB7F}" {
-     Weight 0.5
+     Weight 1
      ItemDimensions 8 8 18
      ItemVolume 2000
     }
