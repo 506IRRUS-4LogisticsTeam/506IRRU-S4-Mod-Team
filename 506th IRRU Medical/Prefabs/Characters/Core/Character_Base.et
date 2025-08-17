@@ -9,5 +9,20 @@ SCR_ChimeraCharacter {
    m_fUnconsciousRegenerationScale 0.6
    m_fMovementDamageMultiplier 1.5
   }
+  ActionsManagerComponent "{520EA1D2F659CE02}" {
+   additionalActions {
+    IRRU_CPRUserAction "{6620DD67EAFEEFB7}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{6620DD67F28B6FCA}" {
+      Name "Perform CPR"
+     }
+     VisibilityRange 1.5
+     Duration 30
+     m_fCPRCycleDuration 30
+    }
+   }
+  }
  }
 }
