@@ -1,13 +1,20 @@
-// Mortar Ballistic Tables for 81mm mortars
-// Data structure for ballistic calculations
+//! Mortar ballistic tables for 81mm mortars
+//! Data structure for ballistic calculations
 
+//! Ballistic entry for mortar firing calculations
 class MortarBallisticEntry
 {
-    int range;              // Range in meters
-    int elevation;          // Elevation in mils
-    float timeOfFlight;     // Time of flight in seconds
-    int elevationCorrection; // D ELEV PER 100M - altitude correction factor in mils per 100m elevation difference
+    int range;              
+    int elevation;          
+    float timeOfFlight;     
+    int elevationCorrection;
     
+    //------------------------------------------------------------------------------------------------
+    //! Constructor for ballistic entry
+    //! \param r Range in meters
+    //! \param e Elevation in mils
+    //! \param t Time of flight in seconds
+    //! \param ec D ELEV PER 100M - altitude correction factor in mils per 100m elevation difference
     void MortarBallisticEntry(int r, int e, float t, int ec)
     {
         range = r;
@@ -17,25 +24,34 @@ class MortarBallisticEntry
     }
 }
 
+//! Static class managing mortar ballistic calculations
 class MortarBallisticTables
 {
     protected static ref map<string, ref array<ref MortarBallisticEntry>> s_Tables;
     
+    protected const float MAX_ELEVATION_MILS = 1515.0;
+    protected const float MIN_ELEVATION_MILS = 800.0;
+    protected const int MAX_CHARGE = 4;
+    
     //------------------------------------------------------------------------------------------------
+    //! Initialize all ballistic tables
     static void Initialize()
     {
         if (s_Tables)
-            return; // Already initialized
+            return;
             
         s_Tables = new map<string, ref array<ref MortarBallisticEntry>>();
         
-        // Initialize all tables
         InitializeHETables();
         InitializeSmokeTables();
         InitializeIlluminationTables();
     }
     
     //------------------------------------------------------------------------------------------------
+    //! Get ballistic table for specific ammo type and charge
+    //! \param ammoType Type of ammunition
+    //! \param charge Charge level (0-4)
+    //! \return Array of ballistic entries or null
     static array<ref MortarBallisticEntry> GetTable(string ammoType, int charge)
     {
         if (!s_Tables)
@@ -50,15 +66,18 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
-    // Calculates the best firing solution for a given range
-    // Returns elevation in mils, time of flight, best charge, and D_ELEV correction factor
+    //! Calculate best firing solution for given range
+    //! \param ammoType Type of ammunition
+    //! \param range Target range in meters
+    //! \param elevationMils Output elevation in mils
+    //! \param timeOfFlight Output time of flight in seconds
+    //! \param bestCharge Output best charge level
+    //! \param dElevCorrection Output D_ELEV correction factor
+    //! \return True if solution found
     static bool CalculateSolution(string ammoType, float range, out float elevationMils, out float timeOfFlight, out int bestCharge, out int dElevCorrection)
     {
         if (!s_Tables)
             Initialize();
-            
-        const float MAX_ELEVATION_MILS = 1515.0; // Physical mortar elevation limit
-        const float MIN_ELEVATION_MILS = 800.0;  // Physical mortar minimum elevation
         
         float bestTimeOfFlight = 9999.0;
         float bestElevation = 0;
@@ -66,28 +85,23 @@ class MortarBallisticTables
         int bestDElev = 0;
         bool solutionFound = false;
         
-        // Check all charges and find the one with shortest flight time that respects elevation limit
-        for (int charge = 0; charge <= 4; charge++)
+        for (int charge = 0; charge <= MAX_CHARGE; charge++)
         {
             array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
             if (!table || table.Count() == 0)
                 continue;
                 
-            // Check if this charge can reach the target
             MortarBallisticEntry firstEntry = table.Get(0);
             MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
             
             if (range >= firstEntry.range && range <= lastEntry.range)
             {
-                // Calculate the elevation and time for this charge
                 float testElevation, testTimeOfFlight;
                 int testDElev;
                 InterpolateElevation(table, range, testElevation, testTimeOfFlight, testDElev);
                 
-                // Check if elevation is within physical limits
                 if (testElevation <= MAX_ELEVATION_MILS && testElevation >= MIN_ELEVATION_MILS)
                 {
-                    // This is a valid solution - check if it's better (shorter flight time)
                     if (testTimeOfFlight < bestTimeOfFlight)
                     {
                         bestTimeOfFlight = testTimeOfFlight;
@@ -109,7 +123,6 @@ class MortarBallisticTables
             return true;
         }
         
-        // No valid solution found within elevation limits
         bestCharge = -1;
         elevationMils = 0;
         timeOfFlight = 0;
@@ -118,6 +131,13 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    //! Get firing solution for specific charge
+    //! \param ammoType Type of ammunition
+    //! \param range Target range in meters
+    //! \param charge Charge level
+    //! \param elevationMils Output elevation in mils
+    //! \param timeOfFlight Output time of flight in seconds
+    //! \return True if solution found
     static bool GetSolutionForCharge(string ammoType, float range, int charge, out float elevationMils, out float timeOfFlight)
     {
         if (!s_Tables)
@@ -127,25 +147,26 @@ class MortarBallisticTables
         if (!table || table.Count() == 0)
             return false;
             
-        // Check if range is within this charge's capabilities
         MortarBallisticEntry firstEntry = table.Get(0);
         MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
         
         if (range < firstEntry.range || range > lastEntry.range)
             return false;
             
-        // Calculate elevation for this specific charge
         int dElev;
         InterpolateElevation(table, range, elevationMils, timeOfFlight, dElev);
         return true;
     }
     
     //------------------------------------------------------------------------------------------------
-    // Interpolates elevation between table entries using linear interpolation
-    // Returns base elevation, time of flight, and D_ELEV correction factor
-    static void InterpolateElevation(array<ref MortarBallisticEntry> table, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection)
+    //! Interpolate elevation between table entries
+    //! \param table Ballistic table
+    //! \param range Target range
+    //! \param elevationMils Output elevation in mils
+    //! \param timeOfFlight Output time of flight
+    //! \param dElevCorrection Output D_ELEV correction factor
+    protected static void InterpolateElevation(array<ref MortarBallisticEntry> table, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection)
     {
-        // Find the two entries to interpolate between
         for (int i = 0; i < table.Count() - 1; i++)
         {
             MortarBallisticEntry entry1 = table.Get(i);
@@ -153,24 +174,17 @@ class MortarBallisticTables
             
             if (range >= entry1.range && range <= entry2.range)
             {
-                // Calculate using linear interpolation
                 float rangeDifference = range - entry1.range;
                 float ratio = rangeDifference / (entry2.range - entry1.range);
                 
-                // Always use linear interpolation for base elevation
                 elevationMils = entry1.elevation - (entry1.elevation - entry2.elevation) * ratio;
-                
-                // Linear interpolation for time of flight
                 timeOfFlight = entry1.timeOfFlight + (entry2.timeOfFlight - entry1.timeOfFlight) * ratio;
-                
-                // Return the D_ELEV value for altitude corrections
                 dElevCorrection = entry1.elevationCorrection;
                 
                 return;
             }
         }
         
-        // Edge case - exact match with last entry
         MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
         elevationMils = lastEntry.elevation;
         timeOfFlight = lastEntry.timeOfFlight;
@@ -178,9 +192,39 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    //! Get minimum and maximum range for ammo type
+    //! \param ammoType Type of ammunition
+    //! \param minRange Output minimum range
+    //! \param maxRange Output maximum range
+    static void GetMinMaxRange(string ammoType, out float minRange, out float maxRange)
+    {
+        if (!s_Tables)
+            Initialize();
+            
+        minRange = 9999;
+        maxRange = 0;
+        
+        for (int charge = 0; charge <= MAX_CHARGE; charge++)
+        {
+            array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
+            if (!table || table.Count() == 0)
+                continue;
+                
+            MortarBallisticEntry firstEntry = table.Get(0);
+            MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+            
+            if (firstEntry.range < minRange)
+                minRange = firstEntry.range;
+                
+            if (lastEntry.range > maxRange)
+                maxRange = lastEntry.range;
+        }
+    }
+    
+    //------------------------------------------------------------------------------------------------
+    //! Initialize HE ammunition tables
     protected static void InitializeHETables()
     {
-        // HE Charge 4 (4 rings) - Range 400-2900m
         array<ref MortarBallisticEntry> heCharge4 = new array<ref MortarBallisticEntry>();
         heCharge4.Insert(new MortarBallisticEntry(400, 1531, 36.3, 9));
         heCharge4.Insert(new MortarBallisticEntry(500, 1514, 36.2, 9));
@@ -210,7 +254,6 @@ class MortarBallisticTables
         heCharge4.Insert(new MortarBallisticEntry(2900, 870, 27.7, 31));
         s_Tables.Insert("HE_4", heCharge4);
         
-        // HE Charge 3 (3 rings) - Range 300-2300m
         array<ref MortarBallisticEntry> heCharge3 = new array<ref MortarBallisticEntry>();
         heCharge3.Insert(new MortarBallisticEntry(300, 1534, 31.7, 12));
         heCharge3.Insert(new MortarBallisticEntry(400, 1511, 31.6, 11));
@@ -235,7 +278,6 @@ class MortarBallisticTables
         heCharge3.Insert(new MortarBallisticEntry(2300, 801, 22.7, 0));
         s_Tables.Insert("HE_3", heCharge3);
         
-        // HE Charge 2 (2 rings) - Range 200-1600m
         array<ref MortarBallisticEntry> heCharge2 = new array<ref MortarBallisticEntry>();
         heCharge2.Insert(new MortarBallisticEntry(200, 1538, 26.6, 15));
         heCharge2.Insert(new MortarBallisticEntry(300, 1507, 26.5, 15));
@@ -254,7 +296,6 @@ class MortarBallisticTables
         heCharge2.Insert(new MortarBallisticEntry(1600, 912, 20.9, 109));
         s_Tables.Insert("HE_2", heCharge2);
         
-        // HE Charge 1 (1 ring) - Range 100-900m
         array<ref MortarBallisticEntry> heCharge1 = new array<ref MortarBallisticEntry>();
         heCharge1.Insert(new MortarBallisticEntry(100, 1547, 20.0, 28));
         heCharge1.Insert(new MortarBallisticEntry(200, 1492, 19.9, 28));
@@ -267,7 +308,6 @@ class MortarBallisticTables
         heCharge1.Insert(new MortarBallisticEntry(900, 954, 16.1, 148));
         s_Tables.Insert("HE_1", heCharge1);
         
-        // HE Charge 0 (0 rings) - Range 50-400m
         array<ref MortarBallisticEntry> heCharge0 = new array<ref MortarBallisticEntry>();
         heCharge0.Insert(new MortarBallisticEntry(50, 1540, 13.2, 61));
         heCharge0.Insert(new MortarBallisticEntry(100, 1479, 13.2, 63));
@@ -281,9 +321,9 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    //! Initialize smoke ammunition tables
     protected static void InitializeSmokeTables()
     {
-        // SMOKE Charge 4
         array<ref MortarBallisticEntry> smokeCharge4 = new array<ref MortarBallisticEntry>();
         smokeCharge4.Insert(new MortarBallisticEntry(400, 1517, 33.6, 11));
         smokeCharge4.Insert(new MortarBallisticEntry(500, 1495, 33.5, 10));
@@ -308,7 +348,6 @@ class MortarBallisticTables
         smokeCharge4.Insert(new MortarBallisticEntry(2400, 871, 25.8, 67));
         s_Tables.Insert("Smoke_4", smokeCharge4);
 
-        // SMOKE Charge 3
         array<ref MortarBallisticEntry> smokeCharge3 = new array<ref MortarBallisticEntry>();
         smokeCharge3.Insert(new MortarBallisticEntry(300, 1522, 29.6, 14));
         smokeCharge3.Insert(new MortarBallisticEntry(400, 1495, 29.6, 14));
@@ -329,7 +368,6 @@ class MortarBallisticTables
         smokeCharge3.Insert(new MortarBallisticEntry(1900, 892, 23.0, 84));
         s_Tables.Insert("Smoke_3", smokeCharge3);
 
-        // SMOKE Charge 2
         array<ref MortarBallisticEntry> smokeCharge2 = new array<ref MortarBallisticEntry>();
         smokeCharge2.Insert(new MortarBallisticEntry(200, 1528, 24.8, 19));
         smokeCharge2.Insert(new MortarBallisticEntry(300, 1491, 24.7, 19));
@@ -346,7 +384,6 @@ class MortarBallisticTables
         smokeCharge2.Insert(new MortarBallisticEntry(1400, 818, 18.0, 0));
         s_Tables.Insert("Smoke_2", smokeCharge2);
 
-        // SMOKE Charge 1
         array<ref MortarBallisticEntry> smokeCharge1 = new array<ref MortarBallisticEntry>();
         smokeCharge1.Insert(new MortarBallisticEntry(200, 1463, 17.7, 36));
         smokeCharge1.Insert(new MortarBallisticEntry(250, 1427, 17.6, 36));
@@ -362,12 +399,11 @@ class MortarBallisticTables
         smokeCharge1.Insert(new MortarBallisticEntry(750, 822, 13.0, 0));
         s_Tables.Insert("Smoke_1", smokeCharge1);
     }
-
     
     //------------------------------------------------------------------------------------------------
+    //! Initialize illumination ammunition tables
     protected static void InitializeIlluminationTables()
     {
-        // ILLUMINATION Charge 4
         array<ref MortarBallisticEntry> illumCharge4 = new array<ref MortarBallisticEntry>();
         illumCharge4.Insert(new MortarBallisticEntry(400, 1515, 35.7, 11));
         illumCharge4.Insert(new MortarBallisticEntry(500, 1493, 35.7, 11));
@@ -392,7 +428,6 @@ class MortarBallisticTables
         illumCharge4.Insert(new MortarBallisticEntry(2400, 855, 27.4, 52));
         s_Tables.Insert("Illumination_4", illumCharge4);
 
-        // ILLUMINATION Charge 3
         array<ref MortarBallisticEntry> illumCharge3 = new array<ref MortarBallisticEntry>();
         illumCharge3.Insert(new MortarBallisticEntry(300, 1521, 31.1, 14));
         illumCharge3.Insert(new MortarBallisticEntry(400, 1494, 31.1, 14));
@@ -413,7 +448,6 @@ class MortarBallisticTables
         illumCharge3.Insert(new MortarBallisticEntry(1900, 875, 24.1, 67));
         s_Tables.Insert("Illumination_3", illumCharge3);
 
-        // ILLUMINATION Charge 2
         array<ref MortarBallisticEntry> illumCharge2 = new array<ref MortarBallisticEntry>();
         illumCharge2.Insert(new MortarBallisticEntry(200, 1529, 26.2, 17));
         illumCharge2.Insert(new MortarBallisticEntry(300, 1493, 26.1, 18));
@@ -430,7 +464,6 @@ class MortarBallisticTables
         illumCharge2.Insert(new MortarBallisticEntry(1400, 900, 20.5, 98));
         s_Tables.Insert("Illumination_2", illumCharge2);
 
-        // ILLUMINATION Charge 1
         array<ref MortarBallisticEntry> illumCharge1 = new array<ref MortarBallisticEntry>();
         illumCharge1.Insert(new MortarBallisticEntry(200, 1463, 18.1, 35));
         illumCharge1.Insert(new MortarBallisticEntry(250, 1428, 18.0, 37));
@@ -445,33 +478,5 @@ class MortarBallisticTables
         illumCharge1.Insert(new MortarBallisticEntry(700, 974, 15.0, 151));
         illumCharge1.Insert(new MortarBallisticEntry(750, 823, 13.3, 0));
         s_Tables.Insert("Illumination_1", illumCharge1);
-    }
-
-    
-    //------------------------------------------------------------------------------------------------
-    static void GetMinMaxRange(string ammoType, out float minRange, out float maxRange)
-    {
-        if (!s_Tables)
-            Initialize();
-            
-        minRange = 9999;
-        maxRange = 0;
-        
-        // Check all charges for this ammo type
-        for (int charge = 0; charge <= 4; charge++)
-        {
-            array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
-            if (!table || table.Count() == 0)
-                continue;
-                
-            MortarBallisticEntry firstEntry = table.Get(0);
-            MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
-            
-            if (firstEntry.range < minRange)
-                minRange = firstEntry.range;
-                
-            if (lastEntry.range > maxRange)
-                maxRange = lastEntry.range;
-        }
     }
 }

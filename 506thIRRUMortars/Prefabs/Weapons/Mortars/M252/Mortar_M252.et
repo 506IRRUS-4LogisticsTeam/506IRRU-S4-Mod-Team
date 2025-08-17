@@ -397,13 +397,14 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
    additionalActions {
     IRRU_MortarComputerUserAction "{65D2E1AB2E168BAE}" {
      ParentContextList {
-      "artillery_computer"
+      "sight"
      }
      UIInfo SCR_ActionUIInfo "{65F2F5952835C28E}" {
       Name "Mortar Computer"
      }
      ActionTitle "Mortar Computer"
      VisibilityRange 1
+     "Sort Priority" 100
     }
    }
   }
