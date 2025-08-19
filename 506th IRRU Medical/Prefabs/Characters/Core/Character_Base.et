@@ -19,8 +19,7 @@ SCR_ChimeraCharacter {
       Name "Perform CPR"
      }
      VisibilityRange 1.5
-     Duration 30
-     m_fCPRCycleDuration 30
+     Duration 1
     }
    }
   }

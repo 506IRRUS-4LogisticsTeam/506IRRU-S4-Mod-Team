@@ -3,32 +3,20 @@
 //! Performs CPR to stabilize unconscious patients
 class IRRU_CPRUserAction : ScriptedUserAction
 {
+	// Animation positioning constants
+	protected static const ref array<float> CPR_PERFORMER_ANGLES = {90, -90};
+	protected static const ref array<vector> CPR_PERFORMER_OFFSETS = {{-0.3, 0, -0.8}, {0.3, 0, -0.8}};
+	protected static const vector CPR_PERFORMER_BB_OFFSET = {0, 0.45, 0};
+	protected static const vector CPR_PERFORMER_BB_HALF_EXTENDS = {0.15, 0.15, 0.15};
+	
 	// Configurable attributes
-	[Attribute(defvalue: "18", desc: "Duration of CPR cycle in seconds", params: "5 60 1", category: "CPR Settings")]
-	protected float m_fCPRCycleDuration;
-	
-	[Attribute(defvalue: "15", desc: "Duration of fatigue after completing full CPR cycle in seconds", params: "5 60 1", category: "CPR Settings")]
-	protected float m_fFatigueDuration;
-	
-	[Attribute(defvalue: "3", desc: "Rate at which fatigue decays (3 = three times as fast as it builds)", params: "0.5 5 0.1", category: "CPR Settings")]
-	protected float m_fFatigueDecayRate;
-	
-	[Attribute(defvalue: "3", desc: "Minimum CPR duration to cause fatigue in seconds", params: "1 30 1", category: "CPR Settings")]
-	protected float m_fMinimumCPRForFatigue;
-	
-	[Attribute(defvalue: "5", desc: "Extra fatigue penalty for spam (multiplier for short bursts)", params: "1 10 0.5", category: "CPR Settings")]
-	protected float m_fSpamPenaltyMultiplier;
-	
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
 	
-	// Static fatigue tracking per player
-	protected static ref map<int, float> s_mPlayerFatigue = new map<int, float>();
-	protected static ref map<int, float> s_mFatigueTimestamps = new map<int, float>();
-	
 	// Instance tracking
-	protected float m_fActionStartTime;
 	protected int m_iPerformingPlayerId = -1;
+	protected IRRU_CPRHelperCompartment m_pActiveHelper;
+	protected bool m_bCPRActive = false;
 	
 	//------------------------------------------------------------------------------------------------
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
@@ -36,7 +24,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		super.Init(pOwnerEntity, pManagerComponent);
 		
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath][CPR] Action initialized with duration: %1s", m_fCPRCycleDuration));
+			Print("[NoInstantDeath][CPR] CPR action initialized");
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -57,6 +45,20 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		// Check if character has NoInstantDeath component and is unconscious
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (!nid || !nid.IsUnconscious())
+			return false;
+		
+		// Check if patient is in a vehicle (can't perform CPR in vehicles)
+		CompartmentAccessComponent compartment = CompartmentAccessComponent.Cast(character.FindComponent(CompartmentAccessComponent));
+		if (compartment && compartment.IsInCompartment())
+			return false;
+		
+		// Check if animation positions are blocked
+		if (!CheckAnimationPositionClear(owner, user))
+			return false;
+		
+		// Check if patient is on their back (required for CPR)
+		SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(character.GetCharacterController());
+		if (controller && controller.ACE_Medical_GetUnconsciousPose() != ACE_Medical_EUnconsciousPose.BACK)
 			return false;
 		
 		// Check distance (must be close)
@@ -80,35 +82,22 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (!owner)
 			return false;
 		
-		// Get player ID
+		// Get player ID for tracking who's performing
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (!playerManager)
 			return false;
 			
 		int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
 		
-		// Check if this player is fatigued
-		if (IsPlayerFatigued(playerId))
-		{
-			float remaining = GetFatigueTimeRemaining(playerId);
-			if (remaining > 30)
-				SetCannotPerformReason(string.Format("Exhausted from CPR! Rest for %1s", Math.Round(remaining)));
-			else if (remaining > 10)
-				SetCannotPerformReason(string.Format("Catching breath... %1s", Math.Round(remaining)));
-			else
-				SetCannotPerformReason(string.Format("Almost ready... %1s", Math.Round(remaining)));
-			
-			return false;
-		}
-		
-		// Check if someone else is already doing CPR (but not us!)
+		// Check if someone else is already doing CPR
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid && nid.IsReceivingCPR())
 		{
-			// Check if WE are the ones performing CPR
-			if (m_iPerformingPlayerId == playerId)
+			// Check if WE are the ones performing CPR - if so, this action will STOP CPR
+			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
 			{
-				// We're the ones doing CPR, so allow it to continue
+				// We're doing CPR - allow action to stop it
+				return true;
 			}
 			else
 			{
@@ -124,68 +113,87 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return false;
 		}
 		
+		// Check if we're already in animation
+		if (IRRU_AnimationTools.GetHelperCompartment(user))
+			return true; // Already animating, allow continuation
+		
+		// Check if patient is in a vehicle (can't perform CPR in vehicles)
+		SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(owner);
+		if (character)
+		{
+			CompartmentAccessComponent compartment = CompartmentAccessComponent.Cast(character.FindComponent(CompartmentAccessComponent));
+			if (compartment && compartment.IsInCompartment())
+			{
+				SetCannotPerformReason("Cannot perform CPR in vehicle");
+				return false;
+			}
+			
+			// Check if patient is on their back (required for CPR)
+			SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(character.GetCharacterController());
+			if (controller && controller.ACE_Medical_GetUnconsciousPose() != ACE_Medical_EUnconsciousPose.BACK)
+			{
+				SetCannotPerformReason("Patient must be on their back for CPR");
+				return false;
+			}
+			
+			// Check animation position is clear
+			if (!CheckAnimationPositionClear(owner, user))
+			{
+				SetCannotPerformReason("Position obstructed");
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	override bool GetActionNameScript(out string outName)
 	{
-		IEntity user = GetGame().GetPlayerController().GetControlledEntity();
-		if (user)
+		// Check if we're currently performing CPR
+		if (m_bCPRActive)
 		{
-			PlayerManager playerManager = GetGame().GetPlayerManager();
-			if (playerManager)
-			{
-				int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
-				if (IsPlayerFatigued(playerId))
-				{
-					float remaining = GetFatigueTimeRemaining(playerId);
-					outName = string.Format("Perform CPR (Fatigued: %1s)", Math.Round(remaining));
-					return true;
-				}
-			}
+			outName = "Stop CPR";
 		}
-		
-		outName = "Perform CPR";
+		else
+		{
+			outName = "Start CPR";
+		}
 		return true;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	override void OnActionStart(IEntity pUserEntity)
+	// OnActionStart is not needed for instant actions - PerformAction is called directly
+	
+	//------------------------------------------------------------------------------------------------
+	protected void OnAnimationTerminated()
 	{
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath][CPR] Action started by: " + pUserEntity.GetName());
-		
-		m_fActionStartTime = GetGame().GetWorld().GetWorldTime() * 0.001; // Convert to seconds
-		
-		// Store who's performing CPR
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (playerManager)
-			m_iPerformingPlayerId = playerManager.GetPlayerIdFromControlledEntity(pUserEntity);
-		
-		// Set CPR flag on patient - this pauses their bleedout timer
-		IEntity owner = GetOwner();
-		if (owner)
+		// Animation ended externally (e.g., performer died, disconnected, etc.)
+		if (m_pActiveHelper)
 		{
-			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-			if (nid)
-			{
-				nid.SetReceivingCPR(true);
-				
-				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-					Print("[NoInstantDeath][CPR] Set receiving CPR flag on patient");
-			}
+			IEntity patient = m_pActiveHelper.GetPatient();
+			IEntity performer = m_pActiveHelper.GetPerformer();
+			
+			if (patient && performer)
+				StopCPR(patient, performer);
+			
+			m_pActiveHelper = null;
 		}
+		
+		m_bCPRActive = false;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	override void OnActionCanceled(IEntity pOwnerEntity, IEntity pUserEntity)
+	// Stop CPR manually
+	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		float currentTime = GetGame().GetWorld().GetWorldTime() * 0.001;
-		float timePerformed = currentTime - m_fActionStartTime;
-		
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath][CPR] Action canceled after %1 seconds", timePerformed));
+		// Terminate animation if active
+		if (m_pActiveHelper)
+		{
+			m_pActiveHelper.GetOnTerminated().Remove(OnAnimationTerminated);
+			m_pActiveHelper.Terminate(EGetOutType.ANIMATED);
+			m_pActiveHelper = null;
+		}
 		
 		// Clear CPR flag on patient - timer resumes
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
@@ -197,88 +205,61 @@ class IRRU_CPRUserAction : ScriptedUserAction
 				Print("[NoInstantDeath][CPR] Cleared receiving CPR flag on patient");
 		}
 		
-		// Apply fatigue based on time performed
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (playerManager)
-		{
-			int playerId = playerManager.GetPlayerIdFromControlledEntity(pUserEntity);
-			
-			// Calculate base fatigue
-			float completionPercent = Math.Min(timePerformed / m_fCPRCycleDuration, 1.0);
-			float fatigueDuration = m_fFatigueDuration * completionPercent;
-			
-			// Apply spam penalty for very short bursts (under minimum time)
-			if (timePerformed < m_fMinimumCPRForFatigue && timePerformed > 0.5)
-			{
-				// Heavy penalty for spam - multiply fatigue
-				fatigueDuration = m_fMinimumCPRForFatigue * m_fSpamPenaltyMultiplier;
-				
-				// Show warning about spamming (account for decay rate)
-				float effectiveFatigueTime = fatigueDuration / m_fFatigueDecayRate;
-				SCR_HintManagerComponent.ShowCustomHint(
-					string.Format("Ineffective CPR! Rest for %1 seconds", Math.Round(effectiveFatigueTime)),
-					"Medical",
-					3.0
-				);
-			}
-			else if (timePerformed >= m_fMinimumCPRForFatigue)
-			{
-				// Normal proportional fatigue for legitimate attempts
-				// Show feedback to player (account for decay rate)
-				float effectiveFatigueTime = fatigueDuration / m_fFatigueDecayRate;
-				SCR_HintManagerComponent.ShowCustomHint(
-					string.Format("CPR interrupted. Rest for %1 seconds", Math.Round(effectiveFatigueTime)),
-					"Medical",
-					3.0
-				);
-			}
-			// else: Very short accidental presses (< 0.5s) don't cause fatigue
-			
-			if (fatigueDuration > 0)
-				ApplyFatigueToPlayer(playerId, fatigueDuration);
-		}
-		
+		m_bCPRActive = false;
 		m_iPerformingPlayerId = -1;
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[CPR] Full cycle completed");
-		
-		// Clear CPR flag temporarily (will restart if player keeps holding)
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
-		if (nid)
-		{
-			nid.SetReceivingCPR(false);
-			
-			// Optional: Add bonus time for completing full cycle
-			// nid.AddBonusTime(30.0);
-			
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print("[NoInstantDeath][CPR] Full CPR cycle completed - patient stabilized temporarily");
-		}
-		
-		// Apply reduced fatigue for completing full cycle (reward for doing it properly)
+		// Store who's performing
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (playerManager)
 		{
 			int playerId = playerManager.GetPlayerIdFromControlledEntity(pUserEntity);
-			// Give a small bonus for completing the full cycle - only 80% of max fatigue
-			float reducedFatigue = m_fFatigueDuration * 0.8;
-			ApplyFatigueToPlayer(playerId, reducedFatigue);
 			
-			// Show feedback (account for decay rate for actual rest time)
-			float effectiveRestTime = reducedFatigue / m_fFatigueDecayRate;
-			SCR_HintManagerComponent.ShowCustomHint(
-				string.Format("CPR cycle complete. Rest for %1 seconds", Math.Round(effectiveRestTime)),
-				"Medical",
-				3.0
-			);
+			// Check if this is the same player stopping their CPR
+			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
+			{
+				StopCPR(pOwnerEntity, pUserEntity);
+				return;
+			}
+			
+			m_iPerformingPlayerId = playerId;
 		}
 		
-		m_iPerformingPlayerId = -1;
+		// Check if patient has component
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+		if (!nid)
+		{
+			return;
+		}
+		
+		vector transform[4];
+		GetEntryTransform(transform, pOwnerEntity, pUserEntity);
+		
+		// Spawn animation helper and start CPR animation
+		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
+		if (!userChar)
+		{
+			return;
+		}
+		
+		m_pActiveHelper = IRRU_CPRHelperCompartment.Cast(
+			IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform)
+		);
+		
+		if (m_pActiveHelper)
+		{
+			m_pActiveHelper.SetPatient(SCR_ChimeraCharacter.Cast(pOwnerEntity));
+			
+			// Subscribe to termination event
+			m_pActiveHelper.GetOnTerminated().Insert(OnAnimationTerminated);
+			
+			// NOW set the CPR flag after animation is successfully started
+			nid.SetReceivingCPR(true);
+			m_bCPRActive = true;
+		}
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -288,10 +269,16 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	}
 	
 	//------------------------------------------------------------------------------------------------
+	override bool CanBroadcastScript()
+	{
+		return false; // Clients should not run the action
+	}
+	
+	//------------------------------------------------------------------------------------------------
 	override bool OnSaveActionData(ScriptBitWriter writer)
 	{
 		writer.WriteInt(m_iPerformingPlayerId);
-		writer.WriteFloat(m_fActionStartTime);
+		writer.WriteBool(m_bCPRActive);
 		return true;
 	}
 	
@@ -299,65 +286,77 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	override bool OnLoadActionData(ScriptBitReader reader)
 	{
 		reader.ReadInt(m_iPerformingPlayerId);
-		reader.ReadFloat(m_fActionStartTime);
+		reader.ReadBool(m_bCPRActive);
 		return true;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	// FATIGUE SYSTEM HELPERS
-	//------------------------------------------------------------------------------------------------
-	
-	protected bool IsPlayerFatigued(int playerId)
+	protected bool IsLocalPlayer(IEntity entity)
 	{
-		if (!s_mPlayerFatigue || !s_mPlayerFatigue.Contains(playerId))
+		if (!entity)
 			return false;
 			
-		float fatigueTime = s_mPlayerFatigue.Get(playerId);
-		float timestamp = s_mFatigueTimestamps.Get(playerId);
-		float currentTime = GetGame().GetWorld().GetWorldTime() * 0.001;
-		float elapsed = currentTime - timestamp;
-		
-		// Fatigue decays over time (faster than it accumulates)
-		float remainingFatigue = fatigueTime - (elapsed * m_fFatigueDecayRate);
-		
-		if (remainingFatigue <= 0)
-		{
-			s_mPlayerFatigue.Remove(playerId);
-			s_mFatigueTimestamps.Remove(playerId);
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
 			return false;
+			
+		return pc.GetControlledEntity() == entity;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Check if animation position is clear
+	protected bool CheckAnimationPositionClear(IEntity owner, IEntity user)
+	{
+		TraceOBB trace = new TraceOBB();
+		trace.Exclude = user;
+		vector transform[4];
+		GetEntryTransform(transform, owner, user);
+		
+		for (int i = 0; i < 3; i++)
+		{
+			trace.Mat[i] = transform[i];
 		}
 		
-		return true;
+		trace.Maxs = CPR_PERFORMER_BB_HALF_EXTENDS;
+		trace.Mins = -CPR_PERFORMER_BB_HALF_EXTENDS;
+		trace.Start = transform[3] + CPR_PERFORMER_BB_OFFSET;
+		
+		return GetGame().GetWorld().TracePosition(trace, TraceObstructionCallback) >= 0;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected float GetFatigueTimeRemaining(int playerId)
+	// Return the transform for where the user will do CPR from
+	protected void GetEntryTransform(out vector transform[4], IEntity owner, IEntity user)
 	{
-		if (!s_mPlayerFatigue || !s_mPlayerFatigue.Contains(playerId))
-			return 0;
+		vector userPos = user.GetOrigin();
+		vector bestTransform[4];
+		float bestDistance = float.MAX;
+		
+		// Get best orientation to perform CPR
+		for (int i = 0; i < CPR_PERFORMER_ANGLES.Count(); i++)
+		{
+			owner.GetWorldTransform(transform);
+			vector angles = Math3D.MatrixToAngles(transform);
+			angles[0] = angles[0] + CPR_PERFORMER_ANGLES[i];
+			Math3D.AnglesToMatrix(angles, transform);
+			transform[3] = transform[3] + CPR_PERFORMER_OFFSETS[i].Multiply3(transform);
 			
-		float fatigueTime = s_mPlayerFatigue.Get(playerId);
-		float timestamp = s_mFatigueTimestamps.Get(playerId);
-		float currentTime = GetGame().GetWorld().GetWorldTime() * 0.001;
-		float elapsed = currentTime - timestamp;
+			float distance = vector.DistanceSqXZ(userPos, transform[3]);
+			if (distance < bestDistance)
+			{
+				bestTransform = transform;
+				bestDistance = distance;
+			}
+		}
 		
-		float remainingFatigue = fatigueTime - (elapsed * m_fFatigueDecayRate);
-		return Math.Max(0, remainingFatigue);
+		transform = bestTransform;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected void ApplyFatigueToPlayer(int playerId, float duration)
+	// Ignore inventory items for collision check
+	protected bool TraceObstructionCallback(IEntity entity)
 	{
-		if (!s_mPlayerFatigue)
-			s_mPlayerFatigue = new map<int, float>();
-		if (!s_mFatigueTimestamps)
-			s_mFatigueTimestamps = new map<int, float>();
-		
-		float currentTime = GetGame().GetWorld().GetWorldTime() * 0.001;
-		s_mPlayerFatigue.Set(playerId, duration);
-		s_mFatigueTimestamps.Set(playerId, currentTime);
-		
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath][CPR] Applied %1s fatigue to player %2", duration, playerId));
+		return !InventoryItemComponent.Cast(entity.FindComponent(InventoryItemComponent));
 	}
+	
 }
