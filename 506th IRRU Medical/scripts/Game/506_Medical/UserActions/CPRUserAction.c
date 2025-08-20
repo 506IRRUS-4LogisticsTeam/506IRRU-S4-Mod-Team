@@ -9,6 +9,11 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const vector CPR_PERFORMER_BB_OFFSET = {0, 0.45, 0};
 	protected static const vector CPR_PERFORMER_BB_HALF_EXTENDS = {0.15, 0.15, 0.15};
 	
+	// Fatigue system constants
+	protected static const float CPR_MAX_DURATION = 30.0;  // 30 seconds max CPR before fatigue
+	protected static const float CPR_BASE_COOLDOWN = 12.0; // 12 seconds base cooldown
+	protected static const float CPR_COOLDOWN_RATIO = 0.4; // 40% of time spent = cooldown (12s/30s)
+	
 	// Configurable attributes
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
@@ -17,6 +22,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected int m_iPerformingPlayerId = -1;
 	protected IRRU_CPRHelperCompartment m_pActiveHelper;
 	protected bool m_bCPRActive = false;
+	
+	// Fatigue tracking
+	protected float m_fCPRStartTime = 0;
+	protected ref map<int, float> m_mPlayerCooldowns = new map<int, float>();  // PlayerId -> cooldown end time
 	
 	//------------------------------------------------------------------------------------------------
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
@@ -89,6 +98,25 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			
 		int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
 		
+		// Check if player is on cooldown
+		if (m_mPlayerCooldowns.Contains(playerId))
+		{
+			float currentTime = GetGame().GetWorld().GetWorldTime();
+			float cooldownEndTime = m_mPlayerCooldowns.Get(playerId);
+			
+			if (currentTime < cooldownEndTime)
+			{
+				float remainingCooldown = (cooldownEndTime - currentTime) / 1000.0;
+				SetCannotPerformReason(string.Format("Resting - %1s remaining", Math.Ceil(remainingCooldown)));
+				return false;
+			}
+			else
+			{
+				// Cooldown expired, remove from map
+				m_mPlayerCooldowns.Remove(playerId);
+			}
+		}
+		
 		// Check if someone else is already doing CPR
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid && nid.IsReceivingCPR())
@@ -150,10 +178,42 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	override bool GetActionNameScript(out string outName)
 	{
-		// Check if we're currently performing CPR
-		if (m_bCPRActive)
+		// Get current user for cooldown check
+		IEntity user = GetGame().GetPlayerController().GetControlledEntity();
+		if (user)
 		{
-			outName = "Stop CPR";
+			PlayerManager playerManager = GetGame().GetPlayerManager();
+			if (playerManager)
+			{
+				int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
+				
+				// Check if player is on cooldown
+				if (m_mPlayerCooldowns.Contains(playerId))
+				{
+					float currentTime = GetGame().GetWorld().GetWorldTime();
+					float cooldownEndTime = m_mPlayerCooldowns.Get(playerId);
+					
+					if (currentTime < cooldownEndTime)
+					{
+						float remainingCooldown = (cooldownEndTime - currentTime) / 1000.0;
+						outName = string.Format("CPR Cooldown (%1s)", Math.Ceil(remainingCooldown));
+						return true;
+					}
+				}
+			}
+		}
+		
+		// Check if we're currently performing CPR
+		if (m_bCPRActive && m_fCPRStartTime > 0)
+		{
+			float currentTime = GetGame().GetWorld().GetWorldTime();
+			float elapsedTime = (currentTime - m_fCPRStartTime) / 1000.0;
+			float remainingTime = CPR_MAX_DURATION - elapsedTime;
+			
+			if (remainingTime > 0)
+				outName = string.Format("Stop CPR (%1s)", Math.Ceil(remainingTime));
+			else
+				outName = "Stop CPR";
 		}
 		else
 		{
@@ -184,9 +244,65 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	// Stop CPR manually
-	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity)
+	// Auto-stop CPR when fatigue limit reached
+	protected void AutoStopCPRDueToFatigue()
 	{
+		if (!m_bCPRActive || !m_pActiveHelper)
+			return;
+			
+		IEntity patient = m_pActiveHelper.GetPatient();
+		IEntity performer = m_pActiveHelper.GetPerformer();
+		
+		if (patient && performer)
+		{
+			StopCPR(patient, performer, true);
+			
+			// Show feedback to performer
+			if (IsLocalPlayer(performer))
+			{
+				SCR_HintManagerComponent hintManager = SCR_HintManagerComponent.GetInstance();
+				if (hintManager)
+					hintManager.ShowCustom("CPR stopped - Fatigue limit reached", "Medical", 3.0);
+			}
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Stop CPR manually
+	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity, bool wasForcedByFatigue = false)
+	{
+		// Calculate cooldown based on time spent doing CPR
+		if (m_iPerformingPlayerId != -1 && m_fCPRStartTime > 0)
+		{
+			float currentTime = GetGame().GetWorld().GetWorldTime();
+			float cprDuration = (currentTime - m_fCPRStartTime) / 1000.0; // Convert to seconds
+			
+			// Calculate proportional cooldown
+			float cooldownTime;
+			if (wasForcedByFatigue)
+			{
+				// Full cooldown if forced stop due to fatigue
+				cooldownTime = CPR_BASE_COOLDOWN;
+			}
+			else
+			{
+				// Proportional cooldown: 40% of time spent
+				cooldownTime = cprDuration * CPR_COOLDOWN_RATIO;
+				// Minimum 2 seconds, maximum base cooldown
+				cooldownTime = Math.Clamp(cooldownTime, 2.0, CPR_BASE_COOLDOWN);
+			}
+			
+			// Set cooldown end time for this player
+			float cooldownEndTime = currentTime + (cooldownTime * 1000.0);
+			m_mPlayerCooldowns.Set(m_iPerformingPlayerId, cooldownEndTime);
+			
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print(string.Format("[CPR] Applied %1s cooldown after %2s of CPR", cooldownTime, cprDuration));
+		}
+		
+		// Cancel scheduled auto-stop if exists
+		GetGame().GetCallqueue().Remove(AutoStopCPRDueToFatigue);
+		
 		// Terminate animation if active
 		if (m_pActiveHelper)
 		{
@@ -206,6 +322,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		}
 		
 		m_bCPRActive = false;
+		m_fCPRStartTime = 0;
 		m_iPerformingPlayerId = -1;
 	}
 	
@@ -259,6 +376,15 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			// NOW set the CPR flag after animation is successfully started
 			nid.SetReceivingCPR(true);
 			m_bCPRActive = true;
+			
+			// Track start time for fatigue system
+			m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
+			
+			// Schedule auto-stop after max duration
+			GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000); // Convert to milliseconds
+			
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print(string.Format("[CPR] Started CPR session, will auto-stop in %1 seconds", CPR_MAX_DURATION));
 		}
 	}
 	
@@ -279,6 +405,15 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	{
 		writer.WriteInt(m_iPerformingPlayerId);
 		writer.WriteBool(m_bCPRActive);
+		writer.WriteFloat(m_fCPRStartTime);
+		
+		// Save cooldown map
+		writer.WriteInt(m_mPlayerCooldowns.Count());
+		foreach (int playerId, float cooldownTime : m_mPlayerCooldowns)
+		{
+			writer.WriteInt(playerId);
+			writer.WriteFloat(cooldownTime);
+		}
 		return true;
 	}
 	
@@ -287,6 +422,20 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	{
 		reader.ReadInt(m_iPerformingPlayerId);
 		reader.ReadBool(m_bCPRActive);
+		reader.ReadFloat(m_fCPRStartTime);
+		
+		// Load cooldown map
+		int cooldownCount;
+		reader.ReadInt(cooldownCount);
+		m_mPlayerCooldowns.Clear();
+		for (int i = 0; i < cooldownCount; i++)
+		{
+			int playerId;
+			float cooldownTime;
+			reader.ReadInt(playerId);
+			reader.ReadFloat(cooldownTime);
+			m_mPlayerCooldowns.Set(playerId, cooldownTime);
+		}
 		return true;
 	}
 	
