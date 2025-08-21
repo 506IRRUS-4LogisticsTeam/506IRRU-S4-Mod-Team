@@ -227,12 +227,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			
 			StopCPR(patient, performer, true);
 			
-			if (IsLocalPlayer(performer))
-			{
-				SCR_HintManagerComponent hintManager = SCR_HintManagerComponent.GetInstance();
-				if (hintManager)
-					hintManager.ShowCustom("CPR completed - Fatigue limit reached", "Medical", 3.0);
-			}
 		}
 	}
 	
