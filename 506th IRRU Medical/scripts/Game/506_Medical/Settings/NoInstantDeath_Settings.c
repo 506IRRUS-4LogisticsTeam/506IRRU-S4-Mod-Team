@@ -5,7 +5,7 @@
 class IRRU_NoInstantDeathSettings
 {
 	// Version constant
-	static const string MOD_VERSION = "2.0.8";
+	static const string MOD_VERSION = "2.0.9";
 	
 	// ─── Configurable Settings ─────────────────────────────────────────
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
