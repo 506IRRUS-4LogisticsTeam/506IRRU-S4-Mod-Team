@@ -24,6 +24,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected bool m_bIsInitiatingKill = false;
 	[RplProp(onRplName: "OnCPRStateChanged")]
 	protected bool m_bReceivingCPR     = false;  // CPR flag to pause timer
+	[RplProp()]
+	protected float m_fCPRCooldownEnd  = 0.0;   // World time when CPR cooldown expires
 
 	protected bool m_bDeadBlockPrinted = false;  // one-shot info
 	protected bool m_bDeadWarned       = false;  // one-shot warn
@@ -403,5 +405,40 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			DebugPrint(string.Format("%1: CPR state replicated - now %2", 
 			                            GetNameStr(GetOwner()), m_bReceivingCPR));
+	}
+	
+	//! Set CPR cooldown end time
+	void SetCPRCooldownEnd(float cooldownEndTime)
+	{
+		m_fCPRCooldownEnd = cooldownEndTime;
+		
+		if (m_Rpl)
+			Replication.BumpMe();
+	}
+	
+	//! Get CPR cooldown end time
+	float GetCPRCooldownEnd()
+	{
+		return m_fCPRCooldownEnd;
+	}
+	
+	//! Check if currently on CPR cooldown
+	bool IsOnCPRCooldown()
+	{
+		if (m_fCPRCooldownEnd <= 0)
+			return false;
+			
+		float currentTime = GetGame().GetWorld().GetWorldTime();
+		return currentTime < m_fCPRCooldownEnd;
+	}
+	
+	//! Get remaining CPR cooldown in seconds
+	float GetCPRCooldownRemaining()
+	{
+		if (!IsOnCPRCooldown())
+			return 0.0;
+			
+		float currentTime = GetGame().GetWorld().GetWorldTime();
+		return (m_fCPRCooldownEnd - currentTime) / 1000.0;
 	}
 }

@@ -18,7 +18,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected bool m_bCPRActive = false;
 	
 	protected float m_fCPRStartTime = 0;
-	protected ref map<int, float> m_mPlayerCooldowns = new map<int, float>();
 	
 	//------------------------------------------------------------------------------------------------
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
@@ -84,20 +83,15 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			
 		int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
 		
-		if (m_mPlayerCooldowns.Contains(playerId))
+		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(user);
+		if (userChar)
 		{
-			float currentTime = GetGame().GetWorld().GetWorldTime();
-			float cooldownEndTime = m_mPlayerCooldowns.Get(playerId);
-			
-			if (currentTime < cooldownEndTime)
+			IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
+			if (userNid && userNid.IsOnCPRCooldown())
 			{
-				float remainingCooldown = (cooldownEndTime - currentTime) / 1000.0;
+				float remainingCooldown = userNid.GetCPRCooldownRemaining();
 				SetCannotPerformReason(string.Format("Resting - %1s remaining", Math.Ceil(remainingCooldown)));
 				return false;
-			}
-			else
-			{
-				m_mPlayerCooldowns.Remove(playerId);
 			}
 		}
 		
@@ -157,22 +151,15 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		IEntity user = GetGame().GetPlayerController().GetControlledEntity();
 		if (user)
 		{
-			PlayerManager playerManager = GetGame().GetPlayerManager();
-			if (playerManager)
+			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(user);
+			if (userChar)
 			{
-				int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
-				
-				if (m_mPlayerCooldowns.Contains(playerId))
+				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
+				if (userNid && userNid.IsOnCPRCooldown())
 				{
-					float currentTime = GetGame().GetWorld().GetWorldTime();
-					float cooldownEndTime = m_mPlayerCooldowns.Get(playerId);
-					
-					if (currentTime < cooldownEndTime)
-					{
-						float remainingCooldown = (cooldownEndTime - currentTime) / 1000.0;
-						outName = string.Format("CPR Cooldown (%1s)", Math.Ceil(remainingCooldown));
-						return true;
-					}
+					float remainingCooldown = userNid.GetCPRCooldownRemaining();
+					outName = string.Format("CPR Cooldown (%1s)", Math.Ceil(remainingCooldown));
+					return true;
 				}
 			}
 		}
@@ -258,7 +245,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity, bool wasForcedByFatigue = false)
 	{
-		if (m_iPerformingPlayerId != -1 && m_fCPRStartTime > 0)
+		if (m_iPerformingPlayerId != -1 && m_fCPRStartTime > 0 && Replication.IsServer())
 		{
 			float currentTime = GetGame().GetWorld().GetWorldTime();
 			float cprDuration = (currentTime - m_fCPRStartTime) / 1000.0;
@@ -275,10 +262,19 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			}
 			
 			float cooldownEndTime = currentTime + (cooldownTime * 1000.0);
-			m_mPlayerCooldowns.Set(m_iPerformingPlayerId, cooldownEndTime);
 			
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CPR] Applied %1s cooldown after %2s of CPR", cooldownTime, cprDuration));
+			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
+			if (userChar)
+			{
+				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
+				if (userNid)
+				{
+					userNid.SetCPRCooldownEnd(cooldownEndTime);
+					
+					if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+						Print(string.Format("[NoInstantDeath][CPR] Applied %1s cooldown after %2s of CPR", cooldownTime, cprDuration));
+				}
+			}
 		}
 		
 		GetGame().GetCallqueue().Remove(AutoStopCPRDueToFatigue);
@@ -376,13 +372,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		writer.WriteInt(m_iPerformingPlayerId);
 		writer.WriteBool(m_bCPRActive);
 		writer.WriteFloat(m_fCPRStartTime);
-		
-		writer.WriteInt(m_mPlayerCooldowns.Count());
-		foreach (int playerId, float cooldownTime : m_mPlayerCooldowns)
-		{
-			writer.WriteInt(playerId);
-			writer.WriteFloat(cooldownTime);
-		}
 		return true;
 	}
 	
@@ -392,18 +381,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		reader.ReadInt(m_iPerformingPlayerId);
 		reader.ReadBool(m_bCPRActive);
 		reader.ReadFloat(m_fCPRStartTime);
-		
-		int cooldownCount;
-		reader.ReadInt(cooldownCount);
-		m_mPlayerCooldowns.Clear();
-		for (int i = 0; i < cooldownCount; i++)
-		{
-			int playerId;
-			float cooldownTime;
-			reader.ReadInt(playerId);
-			reader.ReadFloat(cooldownTime);
-			m_mPlayerCooldowns.Set(playerId, cooldownTime);
-		}
 		return true;
 	}
 	
