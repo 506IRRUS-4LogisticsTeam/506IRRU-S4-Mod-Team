@@ -45,7 +45,7 @@ class IRRU_NoInstantDeathSettings
 		if (!s_Instance)
 		{
 			// Try to load from config file
-			Resource holder = BaseContainerTools.LoadContainer("{0FA779A2B56A1711}Configs/NoInstantDeath_Settings.conf");
+			Resource holder = BaseContainerTools.LoadContainer("{7E9D8A65E020E49C}Configs/NoInstantDeath_Settings.conf");
 			if (holder)
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
