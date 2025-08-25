@@ -13,10 +13,13 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
 	
+	[RplProp()]
 	protected int m_iPerformingPlayerId = -1;
 	protected IRRU_CPRHelperCompartment m_pActiveHelper;
+	[RplProp()]
 	protected bool m_bCPRActive = false;
 	
+	[RplProp()]
 	protected float m_fCPRStartTime = 0;
 	
 	//------------------------------------------------------------------------------------------------
@@ -245,10 +248,23 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity, bool wasForcedByFatigue = false)
 	{
-		if (m_iPerformingPlayerId != -1 && m_fCPRStartTime > 0 && Replication.IsServer())
+		if (m_iPerformingPlayerId != -1 && Replication.IsServer())
 		{
 			float currentTime = GetGame().GetWorld().GetWorldTime();
-			float cprDuration = (currentTime - m_fCPRStartTime) / 1000.0;
+			float cprDuration = 0;
+			
+			// Calculate actual CPR duration if we have a valid start time
+			if (m_fCPRStartTime > 0)
+			{
+				cprDuration = (currentTime - m_fCPRStartTime) / 1000.0;
+			}
+			else
+			{
+				// Fallback if start time wasn't properly set
+				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+					Print("[NoInstantDeath][CPR] Warning: CPR start time was 0, using default duration");
+				cprDuration = 5.0; // Default to 5 seconds if we don't have proper timing
+			}
 			
 			float cooldownTime;
 			if (wasForcedByFatigue)
@@ -272,7 +288,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 					userNid.SetCPRCooldownEnd(cooldownEndTime);
 					
 					if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-						Print(string.Format("[NoInstantDeath][CPR] Applied %1s cooldown after %2s of CPR", cooldownTime, cprDuration));
+					{
+						Print(string.Format("[NoInstantDeath][CPR] StopCPR Debug:"));
+						Print(string.Format("  - Current time: %1ms", currentTime));
+						Print(string.Format("  - CPR start time: %1ms", m_fCPRStartTime));
+						Print(string.Format("  - CPR duration: %1s", cprDuration));
+						Print(string.Format("  - Cooldown time: %1s", cooldownTime));
+						Print(string.Format("  - Cooldown end time: %1ms", cooldownEndTime));
+					}
 				}
 			}
 		}
@@ -345,12 +368,13 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			nid.SetReceivingCPR(true);
 			m_bCPRActive = true;
 			
+			// Set CPR start time (will be replicated automatically via RplProp)
 			m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
 			
 			GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000);
 			
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CPR] Started CPR session, will auto-stop in %1 seconds", CPR_MAX_DURATION));
+				Print(string.Format("[NoInstantDeath][CPR] Started CPR session at %1ms, will auto-stop in %2 seconds", m_fCPRStartTime, CPR_MAX_DURATION));
 		}
 	}
 	
