@@ -25,7 +25,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	[RplProp(onRplName: "OnCPRStateChanged")]
 	protected bool m_bReceivingCPR     = false;  // CPR flag to pause timer
 	[RplProp()]
-	protected float m_fCPRCooldownEnd  = 0.0;   // World time when CPR cooldown expires
+	protected float m_fCPRCooldownTimer = 0.0;   // CPR cooldown timer (counts down to 0)
 
 	protected bool m_bDeadBlockPrinted = false;  // one-shot info
 	protected bool m_bDeadWarned       = false;  // one-shot warn
@@ -407,38 +407,52 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			                            GetNameStr(GetOwner()), m_bReceivingCPR));
 	}
 	
-	//! Set CPR cooldown end time
-	void SetCPRCooldownEnd(float cooldownEndTime)
+	//! Set CPR cooldown duration
+	void SetCPRCooldown(float cooldownDuration)
 	{
-		m_fCPRCooldownEnd = cooldownEndTime;
+		m_fCPRCooldownTimer = cooldownDuration;
+		
+		if (m_Rpl)
+			Replication.BumpMe();
+			
+		// Start updating the cooldown timer
+		if (cooldownDuration > 0 && Replication.IsServer())
+		{
+			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
+			GetGame().GetCallqueue().CallLater(UpdateCPRCooldownTimer, 1000, true); // Update every second
+		}
+	}
+	
+	//! Update CPR cooldown timer (called every second on server)
+	protected void UpdateCPRCooldownTimer()
+	{
+		if (m_fCPRCooldownTimer <= 0)
+		{
+			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
+			return;
+		}
+		
+		m_fCPRCooldownTimer -= 1.0; // Decrease by 1 second
+		
+		if (m_fCPRCooldownTimer <= 0)
+		{
+			m_fCPRCooldownTimer = 0;
+			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
+		}
 		
 		if (m_Rpl)
 			Replication.BumpMe();
 	}
 	
-	//! Get CPR cooldown end time
-	float GetCPRCooldownEnd()
-	{
-		return m_fCPRCooldownEnd;
-	}
-	
 	//! Check if currently on CPR cooldown
 	bool IsOnCPRCooldown()
 	{
-		if (m_fCPRCooldownEnd <= 0)
-			return false;
-			
-		float currentTime = GetGame().GetWorld().GetWorldTime();
-		return currentTime < m_fCPRCooldownEnd;
+		return m_fCPRCooldownTimer > 0;
 	}
 	
 	//! Get remaining CPR cooldown in seconds
 	float GetCPRCooldownRemaining()
 	{
-		if (!IsOnCPRCooldown())
-			return 0.0;
-			
-		float currentTime = GetGame().GetWorld().GetWorldTime();
-		return (m_fCPRCooldownEnd - currentTime) / 1000.0;
+		return m_fCPRCooldownTimer;
 	}
 }

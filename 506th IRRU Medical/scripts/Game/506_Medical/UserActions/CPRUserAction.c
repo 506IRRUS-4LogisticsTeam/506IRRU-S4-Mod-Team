@@ -277,15 +277,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 				cooldownTime = Math.Clamp(cooldownTime, 2.0, CPR_BASE_COOLDOWN);
 			}
 			
-			float cooldownEndTime = currentTime + (cooldownTime * 1000.0);
-			
 			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
 			if (userChar)
 			{
 				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
 				if (userNid)
 				{
-					userNid.SetCPRCooldownEnd(cooldownEndTime);
+					// Set cooldown duration (in seconds) - this will count down like the death timer
+					userNid.SetCPRCooldown(cooldownTime);
 					
 					if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 					{
@@ -293,8 +292,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 						Print(string.Format("  - Current time: %1ms", currentTime));
 						Print(string.Format("  - CPR start time: %1ms", m_fCPRStartTime));
 						Print(string.Format("  - CPR duration: %1s", cprDuration));
-						Print(string.Format("  - Cooldown time: %1s", cooldownTime));
-						Print(string.Format("  - Cooldown end time: %1ms", cooldownEndTime));
+						Print(string.Format("  - Cooldown time: %1s (will count down from this)", cooldownTime));
 					}
 				}
 			}
