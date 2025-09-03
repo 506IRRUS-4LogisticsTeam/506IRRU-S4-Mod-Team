@@ -1,0 +1,8 @@
+GameProject {
+ ID "506thIRRUCustomNameTags"
+ GUID "6647107B7ED20990"
+ TITLE "506thIRRUCustomNameTags"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
