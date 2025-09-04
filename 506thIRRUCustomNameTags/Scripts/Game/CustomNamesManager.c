@@ -1,14 +1,14 @@
 //------------------------------------------------------------------------------------------------
 class CustomNameEntry
 {
-	string m_sCustomName;       // The custom name
-	int m_iLastUpdated;         // Unix timestamp of last update
-	string m_sLastPlayerName;   // Last known player name for reference
+	string m_sCustomName;
+	int m_iLastUpdated;
+	string m_sLastPlayerName;
 }
 
 class CustomNamesManager
 {
-	protected ref map<string, ref CustomNameEntry> m_CustomNames = new map<string, ref CustomNameEntry>(); // UID -> CustomNameEntry
+	protected ref map<string, ref CustomNameEntry> m_CustomNames = new map<string, ref CustomNameEntry>();
 	protected string m_SaveFilePath = "$profile:custom_names.json";
 	
 	protected static ref CustomNamesManager s_Instance;
@@ -28,10 +28,79 @@ class CustomNamesManager
 		if (GetGame().InPlayMode() && Replication.IsServer())
 		{
 			LoadCustomNames();
+			
+			SCR_BaseGameMode gameMode = SCR_BaseGameMode.Cast(GetGame().GetGameMode());
+			if (gameMode)
+			{
+				gameMode.GetOnPlayerConnected().Insert(OnPlayerConnected);
+				gameMode.GetOnPlayerDisconnected().Insert(OnPlayerDisconnected);
+				Print("CustomNamesManager: Hooked into player connection events");
+			}
+			
 			Print("CustomNamesManager: Server-side initialization complete");
 		}
 		
-		Print("CustomNamesManager: Initialized with UID-based persistence");
+		Print("CustomNamesManager: Initialized with Game Identity persistence");
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	protected void OnPlayerConnected(int playerId)
+	{
+		string identityId = GetPlayerUID(playerId);
+		PlayerManager playerManager = GetGame().GetPlayerManager();
+		string playerName = "";
+		if (playerManager)
+			playerName = playerManager.GetPlayerName(playerId);
+		
+		Print(string.Format("[CustomNames] ==== PLAYER CONNECTED ===="), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] Player ID: %1", playerId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] Player Name: %1", playerName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] Identity ID: %1", identityId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] ========================"), LogLevel.NORMAL);
+		
+		if (!identityId.IsEmpty())
+		{
+			CustomNameEntry entry;
+			if (m_CustomNames.Find(identityId, entry))
+			{
+				if (!entry.m_sCustomName.IsEmpty())
+				{
+					Print(string.Format("[CustomNames] AUTO-RESTORING custom name '%1' for player %2", 
+						entry.m_sCustomName, playerId), LogLevel.NORMAL);
+					
+					entry.m_sLastPlayerName = playerName;
+					entry.m_iLastUpdated = System.GetUnixTime();
+					
+					GetGame().GetCallqueue().CallLater(BroadcastRestoredName, 1000, false, playerId.ToString(), entry.m_sCustomName);
+				}
+			}
+			else
+			{
+				Print(string.Format("[CustomNames] No saved custom name for identity %1", identityId), LogLevel.NORMAL);
+			}
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	protected void OnPlayerDisconnected(int playerId)
+	{
+		string identityId = GetPlayerUID(playerId);
+		Print(string.Format("[CustomNames] Player %1 disconnected (Identity: %2)", playerId, identityId), LogLevel.NORMAL);
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	protected void BroadcastRestoredName(string playerId, string customName)
+	{
+		PlayerController pc = GetGame().GetPlayerController();
+		if (pc)
+		{
+			SCR_ChatComponent chatComp = SCR_ChatComponent.Cast(pc.FindComponent(SCR_ChatComponent));
+			if (chatComp)
+			{
+				chatComp.RpcAll_UpdateCustomName(playerId, customName);
+				Print(string.Format("[CustomNames] Broadcasted restored name '%1' for player %2", customName, playerId), LogLevel.NORMAL);
+			}
+		}
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -110,17 +179,44 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	protected string GetPlayerUID(int playerId)
 	{
+		string identityId = "";
+		
+		// Try to get Game Identity if BackendApi is available
+		if (GetGame().InPlayMode() && Replication.IsServer())
+		{
+			BackendApi backendApi = GetGame().GetBackendApi();
+			if (backendApi)
+			{
+				identityId = backendApi.GetPlayerIdentityId(playerId);
+			}
+		}
+		
+		Print(string.Format("[CustomNames] GetPlayerUID called for player %1", playerId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] - Raw Identity ID: '%1'", identityId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] - Identity IsEmpty: %1", identityId.IsEmpty()), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] - Identity Length: %1", identityId.Length()), LogLevel.NORMAL);
+		
+		if (!identityId.IsEmpty())
+		{
+			Print(string.Format("[CustomNames] Using Game Identity ID: %1 for player %2", identityId, playerId), LogLevel.NORMAL);
+			return identityId;
+		}
+		
+		Print(string.Format("[CustomNames] WARNING: Identity ID not available for player %1, using fallback", playerId), LogLevel.WARNING);
+		
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (!playerManager)
+		{
+			Print("[CustomNames] ERROR: No PlayerManager available for fallback", LogLevel.ERROR);
 			return "";
-		PlayerController playerController = playerManager.GetPlayerController(playerId);
-		if (!playerController)
-			return "";
-		string playerId_str = playerId.ToString();
+		}
+		
 		string playerName = playerManager.GetPlayerName(playerId);
 		if (playerName.IsEmpty())
 			playerName = "Unknown";
-		string pseudoUID = string.Format("ARMA_%1_%2", playerId, playerName.Hash());
+		
+		string pseudoUID = string.Format("FALLBACK_%1_%2", playerId, playerName.Hash());
+		Print(string.Format("[CustomNames] Using fallback pseudo-UID: %1", pseudoUID), LogLevel.WARNING);
 		
 		return pseudoUID;
 	}
