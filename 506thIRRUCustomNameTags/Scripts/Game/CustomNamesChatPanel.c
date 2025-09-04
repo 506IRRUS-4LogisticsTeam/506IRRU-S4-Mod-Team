@@ -1,24 +1,13 @@
-//! CUSTOM NAMES CHAT PANEL - Override chat display to show custom names
-//! This intercepts the actual chat rendering to display custom names
-
-//------------------------------------------------------------------------------------------------
-// Modded SCR_ChatPanel - Override message display
 //------------------------------------------------------------------------------------------------
 modded class SCR_ChatPanel
 {
 	//------------------------------------------------------------------------------------------------
-	//! Override OnUpdateChat to inject custom names periodically
-	//------------------------------------------------------------------------------------------------
 	override void OnUpdateChat(float timeSlice)
 	{
 		super.OnUpdateChat(timeSlice);
-		
-		// Periodically update displayed names with custom ones
 		UpdateChatNamesDisplay();
 	}
 	
-	//------------------------------------------------------------------------------------------------
-	//! Helper to update chat message display with custom names
 	//------------------------------------------------------------------------------------------------
 	protected void UpdateChatNamesDisplay()
 	{
@@ -29,8 +18,6 @@ modded class SCR_ChatPanel
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (!playerManager)
 			return;
-		
-		// Find all message widgets and update player names
 		array<ref Widget> messageWidgets = {};
 		SCR_WidgetHelper.GetAllChildren(m_wRoot, messageWidgets);
 		
@@ -43,8 +30,6 @@ modded class SCR_ChatPanel
 			string currentText = textWidget.GetText();
 			if (currentText.IsEmpty())
 				continue;
-			
-			// Check if text contains any player names and replace with custom names
 			array<int> players = {};
 			playerManager.GetPlayers(players);
 			bool textModified = false;

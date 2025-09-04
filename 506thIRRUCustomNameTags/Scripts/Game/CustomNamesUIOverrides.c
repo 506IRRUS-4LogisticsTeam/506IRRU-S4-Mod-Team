@@ -78,7 +78,6 @@ modded class SCR_VonDisplay
 			if (nameText)
 			{
 				string currentText = nameText.GetText();
-				// Check if this is a player name and replace with custom name
 				PlayerManager playerManager = GetGame().GetPlayerManager();
 				if (playerManager)
 				{

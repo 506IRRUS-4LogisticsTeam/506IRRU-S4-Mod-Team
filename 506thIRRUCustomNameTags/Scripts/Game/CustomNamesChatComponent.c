@@ -164,7 +164,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 		{
 			array<int> players = {};
 			playerManager.GetPlayers(players);
-			Print(string.Format("%1 🔢 SERVER: %2 players connected when processing command", 
+			Print(string.Format("%1 SERVER: %2 players connected when processing command", 
 				LOG_PREFIX_CUSTOM_NAMES, players.Count()), LogLevel.NORMAL);
 		}
 		
