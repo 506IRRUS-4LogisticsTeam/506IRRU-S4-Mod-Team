@@ -6,17 +6,31 @@ modded class SCR_ChatComponent : BaseChatComponent
 	//------------------------------------------------------------------------------------------------
 	override void OnNewMessage(string msg, int channelId, int senderId)
 	{
+		Print(string.Format("%1 [DEBUG] OnNewMessage triggered - Channel: %2, Sender: %3, Message: '%4'", 
+			LOG_PREFIX_CUSTOM_NAMES, channelId, senderId, msg), LogLevel.NORMAL);
+		
 		PlayerController localPlayerController = GetGame().GetPlayerController();
 		if (localPlayerController)
 		{
 			int localPlayerId = localPlayerController.GetPlayerId();
+			Print(string.Format("%1 [DEBUG] Local player ID: %2, Checking for command...", 
+				LOG_PREFIX_CUSTOM_NAMES, localPlayerId), LogLevel.NORMAL);
 			
 			if (localPlayerId == senderId && senderId > 0 && msg && !msg.IsEmpty())
 			{
 				if (IsCustomNameCommand(msg))
 				{
+					Print(string.Format("%1 [DEBUG] Custom name command detected: '%2'", 
+						LOG_PREFIX_CUSTOM_NAMES, msg), LogLevel.NORMAL);
+					
 					ProcessCustomNameCommand(msg, senderId);
+					
+					Print(string.Format("%1 [DEBUG] Sending RPC to server - RpcSrv_ProcessCustomNameCommand", 
+						LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 					Rpc(RpcSrv_ProcessCustomNameCommand, msg, senderId);
+					
+					Print(string.Format("%1 [DEBUG] RPC sent, returning from OnNewMessage", 
+						LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 					return;
 				}
 			}
@@ -120,8 +134,11 @@ modded class SCR_ChatComponent : BaseChatComponent
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	protected void RpcSrv_ProcessCustomNameCommand(string msg, int senderId)
 	{
-		Print(string.Format("%1 SERVER RPC: Processing command from sender %2: '%3'", 
-			LOG_PREFIX_CUSTOM_NAMES, senderId, msg), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] ========= SERVER RPC RECEIVED ==========", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Command: '%2'", LOG_PREFIX_CUSTOM_NAMES, msg), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Sender ID: %2", LOG_PREFIX_CUSTOM_NAMES, senderId), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Is Server: %2", LOG_PREFIX_CUSTOM_NAMES, Replication.IsServer()), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] =======================================", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		
 		if (!Replication.IsServer()) 
 		{
@@ -134,8 +151,15 @@ modded class SCR_ChatComponent : BaseChatComponent
 		{
 			array<int> players = {};
 			playerManager.GetPlayers(players);
-			Print(string.Format("%1 SERVER: %2 players connected when processing command", 
+			Print(string.Format("%1 [DEBUG] Connected players count: %2", 
 				LOG_PREFIX_CUSTOM_NAMES, players.Count()), LogLevel.NORMAL);
+			
+			Print(string.Format("%1 [DEBUG] Connected player IDs:", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+			foreach (int pid : players)
+			{
+				string pname = playerManager.GetPlayerName(pid);
+				Print(string.Format("%1 [DEBUG]   - Player %2: %3", LOG_PREFIX_CUSTOM_NAMES, pid, pname), LogLevel.NORMAL);
+			}
 		}
 		
 		ProcessCustomNameCommand(msg, senderId);
@@ -150,12 +174,12 @@ modded class SCR_ChatComponent : BaseChatComponent
 			string newName = trimmedMsg.Substring(8, trimmedMsg.Length() - 8);
 			newName.Trim();
 			
-			Print(string.Format("%1 SERVER: Broadcasting name change: Player %2 -> '%3'", 
-				LOG_PREFIX_CUSTOM_NAMES, senderId, newName), LogLevel.NORMAL);
+			Print(string.Format("%1 [DEBUG] *** BROADCASTING NAME CHANGE ***", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+			Print(string.Format("%1 [DEBUG] Player %2 -> '%3'", LOG_PREFIX_CUSTOM_NAMES, senderId, newName), LogLevel.NORMAL);
+			
 			BroadcastNameUpdateToAllClients(senderId.ToString(), newName);
 			
-			Print(string.Format("%1 SERVER: Broadcast complete for Player %2 -> '%3'", 
-				LOG_PREFIX_CUSTOM_NAMES, senderId, newName), LogLevel.NORMAL);
+			Print(string.Format("%1 [DEBUG] *** BROADCAST COMPLETE ***", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		}
 		else if (lowerMsg == "resetname")
 		{
@@ -171,16 +195,24 @@ modded class SCR_ChatComponent : BaseChatComponent
 	//------------------------------------------------------------------------------------------------
 	protected void BroadcastNameUpdateToAllClients(string playerId, string customName)
 	{
-		Print(string.Format("%1 Broadcasting name update", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
-		RpcAll_UpdateCustomName(playerId, customName);
-		Print(string.Format("%1 RPC sent for Player %2 -> '%3'", 
+		Print(string.Format("%1 [DEBUG] BroadcastNameUpdateToAllClients called", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] About to call RpcAll_UpdateCustomName", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Parameters - PlayerId: %2, CustomName: '%3'", 
 			LOG_PREFIX_CUSTOM_NAMES, playerId, customName), LogLevel.NORMAL);
+		
+		RpcAll_UpdateCustomName(playerId, customName);
+		
+		Print(string.Format("%1 [DEBUG] RpcAll_UpdateCustomName has been called", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Broadcast RPC should now be propagating to all clients", 
+			LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
 	void RpcAll_UpdateCustomName(string playerId, string customName)
 	{
+		Print(string.Format("%1 [DEBUG] ######### BROADCAST RPC RECEIVED #########", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		
 		PlayerController localPC = GetGame().GetPlayerController();
 		int localPlayerId = -1;
 		if (localPC)
@@ -189,19 +221,28 @@ modded class SCR_ChatComponent : BaseChatComponent
 		bool isServer = Replication.IsServer();
 		bool isHost = (isServer && localPlayerId > 0);
 		
-		Print(string.Format("%1 RPC RECEIVED: Player %2 -> '%3' | LocalID: %4, IsServer: %5, IsHost: %6", 
-			LOG_PREFIX_CUSTOM_NAMES, playerId, customName, localPlayerId, isServer, isHost), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Received update for Player: %2", LOG_PREFIX_CUSTOM_NAMES, playerId), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] New custom name: '%2'", LOG_PREFIX_CUSTOM_NAMES, customName), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Local player ID: %2", LOG_PREFIX_CUSTOM_NAMES, localPlayerId), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Is this a server: %2", LOG_PREFIX_CUSTOM_NAMES, isServer), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] Is this a host: %2", LOG_PREFIX_CUSTOM_NAMES, isHost), LogLevel.NORMAL);
+		Print(string.Format("%1 [DEBUG] #########################################", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (manager)
 		{
+			Print(string.Format("%1 [DEBUG] CustomNamesManager found, updating local cache", 
+				LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+			
 			manager.UpdateCustomNameLocal(playerId, customName);
-			Print(string.Format("%1 CLIENT: Updated Player %2 -> '%3'", 
+			
+			Print(string.Format("%1 [DEBUG] Local cache updated successfully", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+			Print(string.Format("%1 [DEBUG] Player %2 custom name is now: '%3'", 
 				LOG_PREFIX_CUSTOM_NAMES, playerId, customName), LogLevel.NORMAL);
 		}
 		else
 		{
-			Print(string.Format("%1 CLIENT: No CustomNamesManager available!", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
+			Print(string.Format("%1 [ERROR] CustomNamesManager is NULL - cannot update!", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
 		}
 	}
 	
