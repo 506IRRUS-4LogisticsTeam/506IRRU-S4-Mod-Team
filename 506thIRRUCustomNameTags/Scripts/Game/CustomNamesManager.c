@@ -181,50 +181,66 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	void UpdateCustomNameLocal(int playerId, string customName)
 	{
-		Print(string.Format("[CustomNames][LOCAL] Updating local cache for player %1", playerId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL] New name: '%1'", customName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] ============ LOCAL UPDATE STARTING ============"), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] Player ID: %1", playerId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] New custom name: '%1'", customName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] Is Server: %1", Replication.IsServer()), LogLevel.NORMAL);
 		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
 		{
-			Print(string.Format("[CustomNames][LOCAL] ERROR: Could not get UID, aborting update"), LogLevel.ERROR);
+			Print(string.Format("[CustomNames][LOCAL-UPDATE] ERROR: Could not get UID, aborting update"), LogLevel.ERROR);
 			return;
 		}
 		
-		Print(string.Format("[CustomNames][LOCAL] Got UID: %1", playerUID), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] Got UID: %1", playerUID), LogLevel.NORMAL);
 		
 		CustomNameEntry entry;
 		if (!m_CustomNames.Find(playerUID, entry))
 		{
-			Print(string.Format("[CustomNames][LOCAL] Creating new cache entry for UID %1", playerUID), LogLevel.NORMAL);
+			Print(string.Format("[CustomNames][LOCAL-UPDATE] Creating NEW cache entry for UID %1", playerUID), LogLevel.NORMAL);
 			entry = new CustomNameEntry();
 			m_CustomNames[playerUID] = entry;
 		}
 		else
 		{
-			Print(string.Format("[CustomNames][LOCAL] Updating existing cache entry"), LogLevel.NORMAL);
-			Print(string.Format("[CustomNames][LOCAL] Previous cached name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
+			Print(string.Format("[CustomNames][LOCAL-UPDATE] Updating EXISTING cache entry"), LogLevel.NORMAL);
+			Print(string.Format("[CustomNames][LOCAL-UPDATE] Previous cached name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
 		}
 		
 		entry.m_sCustomName = customName;
 		entry.m_iLastUpdated = System.GetUnixTime();
 		entry.m_sLastPlayerName = GetPlayerName(playerId);
 		
-		Print(string.Format("[CustomNames][LOCAL] Local cache updated successfully"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL] Cached: UID %1 => '%2'", playerUID, customName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] ✅✅✅ SUCCESS! LOCAL CACHE UPDATED ✅✅✅"), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] Player %1 (%2) => '%3'", playerId, playerUID, customName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] Cache now has %1 entries", m_CustomNames.Count()), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] ============================================"), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	string GetCustomName(int playerId)
 	{
+		Print(string.Format("[CustomNames][GET] === GETTING CUSTOM NAME ==="), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][GET] For Player ID: %1", playerId), LogLevel.NORMAL);
+		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
+		{
+			Print(string.Format("[CustomNames][GET] No UID available - returning empty"), LogLevel.NORMAL);
 			return "";
+		}
+		
+		Print(string.Format("[CustomNames][GET] Player UID: %1", playerUID), LogLevel.NORMAL);
 		
 		CustomNameEntry entry;
 		if (m_CustomNames.Find(playerUID, entry))
+		{
+			Print(string.Format("[CustomNames][GET] FOUND! Custom name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
 			return entry.m_sCustomName;
+		}
 		
+		Print(string.Format("[CustomNames][GET] No custom name found for this player"), LogLevel.NORMAL);
 		return "";
 	}
 	

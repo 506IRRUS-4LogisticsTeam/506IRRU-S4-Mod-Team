@@ -34,8 +34,15 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
 	void RpcSrv_ProcessCustomNameCommand(string msg, int senderId)
 	{
+		Print(string.Format("[CustomNames][Network] [SERVER-NET] ======= NETWORK ENTITY PROCESSING =======", senderId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][Network] [SERVER-NET] Msg: '%1', Sender: %2", msg, senderId), LogLevel.NORMAL);
+		
 		CustomNamesManager mgr = CustomNamesManager.GetInstance();
-		if (!mgr) return;
+		if (!mgr) 
+		{
+			Print("[CustomNames][Network] [SERVER-NET] ERROR: Manager not available!", LogLevel.ERROR);
+			return;
+		}
 
 		// Normalize
 		string trimmed = msg; trimmed.Trim();
@@ -52,8 +59,14 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 			{
 				if (mgr.SetCustomName(senderId, newName))
 				{
-					Print(string.Format("[CustomNames][Network] Set '%1' for player %2", newName, senderId), LogLevel.NORMAL);
+					Print(string.Format("[CustomNames][Network] [SERVER-NET] Name validated and set: '%1' for player %2", newName, senderId), LogLevel.NORMAL);
+					Print(string.Format("[CustomNames][Network] [SERVER-BROADCAST] >>> BROADCASTING TO ALL CLIENTS <<<", newName), LogLevel.NORMAL);
 					Rpc(RpcAll_UpdateCustomName, senderId, newName);
+					Print(string.Format("[CustomNames][Network] [SERVER-BROADCAST] Broadcast complete for name '%1'", newName), LogLevel.NORMAL);
+				}
+				else
+				{
+					Print(string.Format("[CustomNames][Network] [SERVER-NET] Failed to set name '%1'", newName), LogLevel.ERROR);
 				}
 			}
 			else
@@ -83,9 +96,37 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
 	void RpcAll_UpdateCustomName(int playerId, string customName)
 	{
+		PlayerController localPC = GetGame().GetPlayerController();
+		int localPlayerId = -1;
+		if (localPC)
+			localPlayerId = localPC.GetPlayerId();
+		
+		Print(string.Format("[CustomNames][Network] [CLIENT-RECEIVE] ##### BROADCAST RECEIVED #####"), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][Network] [CLIENT-RECEIVE] Player %1 -> '%2'", playerId, customName), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][Network] [CLIENT-RECEIVE] Local Player ID: %1", localPlayerId), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames][Network] [CLIENT-RECEIVE] Is this update for me? %1", (localPlayerId == playerId)), LogLevel.NORMAL);
+		
 		CustomNamesManager mgr = CustomNamesManager.GetInstance();
 		if (mgr)
+		{
 			mgr.UpdateCustomNameLocal(playerId, customName);
+			Print(string.Format("[CustomNames][Network] [CLIENT-RECEIVE] Local cache updated for player %1", playerId), LogLevel.NORMAL);
+			
+			// Verify the update worked
+			string verifyName = mgr.GetCustomName(playerId);
+			if (verifyName == customName)
+			{
+				Print(string.Format("[CustomNames][Network] [VERIFY] ✅ VERIFICATION SUCCESS! Name correctly stored as '%1'", verifyName), LogLevel.NORMAL);
+			}
+			else
+			{
+				Print(string.Format("[CustomNames][Network] [VERIFY] ❌ VERIFICATION FAILED! Expected '%1' but got '%2'", customName, verifyName), LogLevel.ERROR);
+			}
+		}
+		else
+		{
+			Print("[CustomNames][Network] [CLIENT-RECEIVE] ERROR: Manager not available!", LogLevel.ERROR);
+		}
 	}
 
 	//--------------------------------------------------------------------------------------------
@@ -93,7 +134,7 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	// Note: Broadcasting to all is simpler and more reliable than unicast in current Arma
 	//--------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
-	void RpcCl_ReceiveAllCustomNames(array<int> playerIds, array<string> names)
+	void RpcAll_ReceiveAllCustomNames(array<int> playerIds, array<string> names)
 	{
 		if (!playerIds || !names) return;
 
@@ -150,7 +191,7 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 				if (playerIds.Count() >= MAX_SYNC_ENTRIES_PER_RPC)
 				{
 					// Broadcast to all - simpler and more reliable
-					Rpc(RpcCl_ReceiveAllCustomNames, playerIds, names);
+					Rpc(RpcAll_ReceiveAllCustomNames, playerIds, names);
 					playerIds.Clear();
 					names.Clear();
 				}
@@ -162,7 +203,7 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		{
 			// For now, broadcast to all clients - they'll filter locally
 			// TODO: Implement proper unicast when Arma supports it better
-			Rpc(RpcCl_ReceiveAllCustomNames, playerIds, names);
+			Rpc(RpcAll_ReceiveAllCustomNames, playerIds, names);
 		}
 	}
 	
