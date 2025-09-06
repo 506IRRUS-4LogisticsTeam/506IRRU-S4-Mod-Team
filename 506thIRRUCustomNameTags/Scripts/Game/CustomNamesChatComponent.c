@@ -27,7 +27,9 @@ modded class SCR_ChatComponent : BaseChatComponent
 					
 					Print(string.Format("%1 [DEBUG] Sending RPC to server - RpcSrv_ProcessCustomNameCommand", 
 						LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
-					Rpc(RpcSrv_ProcessCustomNameCommand, msg, senderId);
+					CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
+					if (net)
+					    net.Rpc(net.RpcSrv_ProcessCustomNameCommand, msg, senderId);
 					
 					Print(string.Format("%1 [DEBUG] RPC sent, returning from OnNewMessage", 
 						LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);

@@ -55,6 +55,11 @@ class CustomNamesManager
 		if (playerManager)
 			playerName = playerManager.GetPlayerName(playerId);
 		
+		CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
+		if (net)
+			net.SendAllCustomNamesToClient(playerId);
+
+		
 		Print(string.Format("[CustomNames][CONNECT] Player Name: %1", playerName), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][CONNECT] Identity ID retrieved: %1", identityId), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][CONNECT] Is Identity Empty: %1", identityId.IsEmpty()), LogLevel.NORMAL);
@@ -130,7 +135,10 @@ class CustomNamesManager
 			if (chatComp)
 			{
 				Print(string.Format("[CustomNames][RESTORE] ChatComponent found, calling RpcAll_UpdateCustomName"), LogLevel.NORMAL);
-				chatComp.RpcAll_UpdateCustomName(playerId, customName);
+				CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
+				if (net)
+				    net.Rpc(net.RpcAll_UpdateCustomName, playerId, customName);
+
 				Print(string.Format("[CustomNames][RESTORE] Broadcast complete for restored name '%1'", customName), LogLevel.NORMAL);
 			}
 			else
