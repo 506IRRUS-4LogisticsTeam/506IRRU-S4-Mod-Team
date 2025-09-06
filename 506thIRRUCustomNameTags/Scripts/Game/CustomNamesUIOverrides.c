@@ -48,8 +48,8 @@ modded class SCR_PlayerListMenu
 			if (!entry || !entry.m_wName)
 				continue;
 			
+			string customName = manager.GetCustomName(entry.m_iID);
 			string playerIdStr = entry.m_iID.ToString();
-			string customName = manager.GetCustomName(playerIdStr);
 			if (!customName.IsEmpty())
 			{
 				entry.m_wName.SetText(customName);
@@ -100,8 +100,7 @@ modded class SCR_VonDisplay
 						string originalName = playerManager.GetPlayerName(playerId);
 						if (currentText == originalName)
 						{
-							string playerIdStr = playerId.ToString();
-							string customName = manager.GetCustomName(playerIdStr);
+							string customName = manager.GetCustomName(playerId);
 							if (!customName.IsEmpty())
 							{
 								nameText.SetText(customName);
@@ -173,8 +172,7 @@ modded class SCR_HUDGroupUIComponent
 				string originalName = playerManager.GetPlayerName(playerId);
 				if (currentText == originalName)
 				{
-					string playerIdStr = playerId.ToString();
-					string customName = manager.GetCustomName(playerIdStr);
+					string customName = manager.GetCustomName(playerId);
 					if (!customName.IsEmpty())
 					{
 						nameWidget.SetText(customName);
@@ -202,8 +200,7 @@ class IRRU_PlayerNameHelper
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (manager)
 		{
-			string playerIdStr = playerId.ToString();
-			string customName = manager.GetCustomName(playerIdStr);
+			string customName = manager.GetCustomName(playerId);
 			
 			Print(string.Format("[CustomNames][HELPER] Custom name lookup: '%1'", customName), LogLevel.NORMAL);
 			
@@ -240,8 +237,7 @@ class IRRU_PlayerNameHelper
 		if (!manager)
 			return false;
 		
-		string playerIdStr = playerId.ToString();
-		string customName = manager.GetCustomName(playerIdStr);
+		string customName = manager.GetCustomName(playerId);
 		return !customName.IsEmpty();
 	}
 }

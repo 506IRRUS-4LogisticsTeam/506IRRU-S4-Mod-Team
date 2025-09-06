@@ -49,50 +49,23 @@ class CustomNamesManager
 		Print(string.Format("[CustomNames][CONNECT] ============ PLAYER CONNECTED ============"), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][CONNECT] Player ID: %1", playerId), LogLevel.NORMAL);
 		
-		string identityId = GetPlayerUID(playerId);
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		string playerName = "";
 		if (playerManager)
 			playerName = playerManager.GetPlayerName(playerId);
 		
+		Print(string.Format("[CustomNames][CONNECT] Player Name: %1", playerName), LogLevel.NORMAL);
+		
+		// Use network entity to handle connection with retry
 		CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
 		if (net)
-			net.SendAllCustomNamesToClient(playerId);
-
-		
-		Print(string.Format("[CustomNames][CONNECT] Player Name: %1", playerName), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][CONNECT] Identity ID retrieved: %1", identityId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][CONNECT] Is Identity Empty: %1", identityId.IsEmpty()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][CONNECT] Identity Length: %1", identityId.Length()), LogLevel.NORMAL);
-		
-		if (!identityId.IsEmpty())
 		{
-			CustomNameEntry entry;
-			if (m_CustomNames.Find(identityId, entry))
-			{
-				if (!entry.m_sCustomName.IsEmpty())
-				{
-					Print(string.Format("[CustomNames][CONNECT] ***** AUTO-RESTORE TRIGGERED *****"), LogLevel.NORMAL);
-					Print(string.Format("[CustomNames][CONNECT] Restoring custom name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
-					Print(string.Format("[CustomNames][CONNECT] For player ID: %1", playerId), LogLevel.NORMAL);
-					Print(string.Format("[CustomNames][CONNECT] Previous player name was: '%1'", entry.m_sLastPlayerName), LogLevel.NORMAL);
-					
-					entry.m_sLastPlayerName = playerName;
-					entry.m_iLastUpdated = System.GetUnixTime();
-					
-					Print(string.Format("[CustomNames][CONNECT] Scheduling broadcast in 1000ms"), LogLevel.NORMAL);
-					GetGame().GetCallqueue().CallLater(BroadcastRestoredName, 1000, false, playerId.ToString(), entry.m_sCustomName);
-					Print(string.Format("[CustomNames][CONNECT] **********************************"), LogLevel.NORMAL);
-				}
-			}
-			else
-			{
-				Print(string.Format("[CustomNames][CONNECT] No saved custom name found for identity %1", identityId), LogLevel.NORMAL);
-			}
+			Print(string.Format("[CustomNames][CONNECT] Delegating to NetworkEntity for identity retry"), LogLevel.NORMAL);
+			net.OnPlayerConnectedWithRetry(playerId, 0);
 		}
 		else
 		{
-			Print(string.Format("[CustomNames][CONNECT] WARNING: Identity ID is empty for player %1", playerId), LogLevel.WARNING);
+			Print(string.Format("[CustomNames][CONNECT] ERROR: NetworkEntity not available"), LogLevel.ERROR);
 		}
 		
 		Print(string.Format("[CustomNames][CONNECT] =========================================="), LogLevel.NORMAL);
@@ -121,7 +94,7 @@ class CustomNamesManager
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected void BroadcastRestoredName(string playerId, string customName)
+	protected void BroadcastRestoredName(int playerId, string customName)
 	{
 		Print(string.Format("[CustomNames][RESTORE] Broadcasting restored name..."), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][RESTORE] Player ID: %1, Custom Name: '%2'", playerId, customName), LogLevel.NORMAL);
@@ -137,8 +110,10 @@ class CustomNamesManager
 				Print(string.Format("[CustomNames][RESTORE] ChatComponent found, calling RpcAll_UpdateCustomName"), LogLevel.NORMAL);
 				CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
 				if (net)
-				    net.Rpc(net.RpcAll_UpdateCustomName, playerId, customName);
-
+				{
+					// Call the broadcast through the network entity
+					net.BroadcastNameDelayed(playerId, customName);
+				}
 				Print(string.Format("[CustomNames][RESTORE] Broadcast complete for restored name '%1'", customName), LogLevel.NORMAL);
 			}
 			else
@@ -153,12 +128,12 @@ class CustomNamesManager
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	bool SetCustomName(string playerId, string customName)
+	bool SetCustomName(int playerId, string customName)
 	{
 		Print(string.Format("[CustomNames][SET] Setting custom name for player %1", playerId), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][SET] New name: '%1'", customName), LogLevel.NORMAL);
 		
-		string playerUID = GetPlayerUID(playerId.ToInt());
+		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
 		{
 			Print(string.Format("[CustomNames][SET] ERROR: Could not get UID for player %1", playerId), LogLevel.ERROR);
@@ -167,7 +142,7 @@ class CustomNamesManager
 		
 		Print(string.Format("[CustomNames][SET] Got UID: %1", playerUID), LogLevel.NORMAL);
 		
-		if (!ValidateCustomName(customName))
+		if (!customName.IsEmpty() && !ValidateCustomName(customName))
 		{
 			Print(string.Format("[CustomNames][SET] Validation failed for name: '%1'", customName), LogLevel.WARNING);
 			return false;
@@ -188,7 +163,7 @@ class CustomNamesManager
 		
 		entry.m_sCustomName = customName;
 		entry.m_iLastUpdated = System.GetUnixTime();
-		entry.m_sLastPlayerName = GetPlayerName(playerId.ToInt());
+		entry.m_sLastPlayerName = GetPlayerName(playerId);
 		
 		Print(string.Format("[CustomNames][SET] SUCCESS: Name set to '%1' for UID %2", customName, playerUID), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][SET] Player name: %1, Timestamp: %2", 
@@ -204,12 +179,12 @@ class CustomNamesManager
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	void UpdateCustomNameLocal(string playerId, string customName)
+	void UpdateCustomNameLocal(int playerId, string customName)
 	{
 		Print(string.Format("[CustomNames][LOCAL] Updating local cache for player %1", playerId), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][LOCAL] New name: '%1'", customName), LogLevel.NORMAL);
 		
-		string playerUID = GetPlayerUID(playerId.ToInt());
+		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
 		{
 			Print(string.Format("[CustomNames][LOCAL] ERROR: Could not get UID, aborting update"), LogLevel.ERROR);
@@ -233,16 +208,16 @@ class CustomNamesManager
 		
 		entry.m_sCustomName = customName;
 		entry.m_iLastUpdated = System.GetUnixTime();
-		entry.m_sLastPlayerName = GetPlayerName(playerId.ToInt());
+		entry.m_sLastPlayerName = GetPlayerName(playerId);
 		
 		Print(string.Format("[CustomNames][LOCAL] Local cache updated successfully"), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][LOCAL] Cached: UID %1 => '%2'", playerUID, customName), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	string GetCustomName(string playerId)
+	string GetCustomName(int playerId)
 	{
-		string playerUID = GetPlayerUID(playerId.ToInt());
+		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
 			return "";
 		
@@ -403,9 +378,9 @@ class CustomNamesManager
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	bool RemoveCustomName(string playerId)
+	bool RemoveCustomName(int playerId)
 	{
-		string playerUID = GetPlayerUID(playerId.ToInt());
+		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
 			return false;
 		

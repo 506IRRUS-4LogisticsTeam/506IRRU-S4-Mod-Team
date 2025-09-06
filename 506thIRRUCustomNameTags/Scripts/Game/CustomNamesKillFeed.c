@@ -7,8 +7,7 @@ modded class SCR_NotificationOnKillfeedChanged : SCR_NotificationPlayer
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (manager)
 		{
-			string playerIdStr = playerID.ToString();
-			string customName = manager.GetCustomName(playerIdStr);
+			string customName = manager.GetCustomName(playerID);
 			if (!customName.IsEmpty())
 			{
 				playerName = customName;

@@ -85,11 +85,9 @@ modded class SCR_ChatComponent : BaseChatComponent
 				return;
 			}
 			
-			string playerIdStr = playerId.ToString();
-			
 			if (manager.ValidateCustomName(newName))
 			{
-				if (manager.SetCustomName(playerIdStr, newName))
+				if (manager.SetCustomName(playerId, newName))
 				{
 					SendChatFeedback(string.Format("Name set to: %1", newName));
 					Print(string.Format("%1 Name set to: %2 for player %3", 
@@ -107,8 +105,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 		}
 		else if (lowerMsg == "resetname")
 		{
-			string playerIdStr = playerId.ToString();
-			if (manager.SetCustomName(playerIdStr, ""))
+			if (manager.SetCustomName(playerId, ""))
 			{
 				SendChatFeedback("Name reset to default");
 			}
@@ -119,8 +116,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 		}
 		else if (lowerMsg == "myname")
 		{
-			string playerIdStr = playerId.ToString();
-			string currentName = manager.GetCustomName(playerIdStr);
+			string currentName = manager.GetCustomName(playerId);
 			if (currentName.IsEmpty())
 			{
 				SendChatFeedback("You have no custom name set");
@@ -202,7 +198,8 @@ modded class SCR_ChatComponent : BaseChatComponent
 		Print(string.Format("%1 [DEBUG] Parameters - PlayerId: %2, CustomName: '%3'", 
 			LOG_PREFIX_CUSTOM_NAMES, playerId, customName), LogLevel.NORMAL);
 		
-		RpcAll_UpdateCustomName(playerId, customName);
+		int playerIdInt = playerId.ToInt();
+		RpcAll_UpdateCustomName(playerIdInt, customName);
 		
 		Print(string.Format("%1 [DEBUG] RpcAll_UpdateCustomName has been called", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		Print(string.Format("%1 [DEBUG] Broadcast RPC should now be propagating to all clients", 
@@ -211,7 +208,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 	
 	//------------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
-	void RpcAll_UpdateCustomName(string playerId, string customName)
+	void RpcAll_UpdateCustomName(int playerId, string customName)
 	{
 		Print(string.Format("%1 [DEBUG] ######### BROADCAST RPC RECEIVED #########", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		
@@ -270,6 +267,97 @@ modded class SCR_ChatComponent : BaseChatComponent
 		if (chatComp)
 		{
 			chatComp.ShowMessage(message);
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Send all custom names to a specific client (called when they join)
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	void RpcDo_SyncAllCustomNames(array<int> playerIds, array<string> customNames)
+	{
+		Print(string.Format("%1 [SYNC] ========= RECEIVING ALL CUSTOM NAMES ==========", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [SYNC] Received %2 custom name entries", LOG_PREFIX_CUSTOM_NAMES, playerIds.Count()), LogLevel.NORMAL);
+		
+		CustomNamesManager manager = CustomNamesManager.GetInstance();
+		if (!manager)
+		{
+			Print(string.Format("%1 [SYNC] ERROR: CustomNamesManager not available", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
+			return;
+		}
+		
+		for (int i = 0; i < playerIds.Count(); i++)
+		{
+			int playerId = playerIds[i];
+			string customName = customNames[i];
+			
+			Print(string.Format("%1 [SYNC] Syncing: Player %2 => '%3'", 
+				LOG_PREFIX_CUSTOM_NAMES, playerId, customName), LogLevel.NORMAL);
+			
+			manager.UpdateCustomNameLocal(playerId, customName);
+		}
+		
+		Print(string.Format("%1 [SYNC] All custom names synchronized", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+		Print(string.Format("%1 [SYNC] ================================================", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Server method to send all custom names to a specific player
+	void SendAllCustomNamesToPlayer(int targetPlayerId)
+	{
+		if (!Replication.IsServer())
+		{
+			Print(string.Format("%1 [SYNC] ERROR: SendAllCustomNamesToPlayer called on client", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
+			return;
+		}
+		
+		Print(string.Format("%1 [SYNC] Preparing to send all custom names to player %2", 
+			LOG_PREFIX_CUSTOM_NAMES, targetPlayerId), LogLevel.NORMAL);
+		
+		CustomNamesManager manager = CustomNamesManager.GetInstance();
+		if (!manager)
+		{
+			Print(string.Format("%1 [SYNC] ERROR: CustomNamesManager not available", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
+			return;
+		}
+		
+		// Get all currently connected players and their custom names
+		PlayerManager playerManager = GetGame().GetPlayerManager();
+		if (!playerManager)
+		{
+			Print(string.Format("%1 [SYNC] ERROR: PlayerManager not available", LOG_PREFIX_CUSTOM_NAMES), LogLevel.ERROR);
+			return;
+		}
+		
+		array<int> playerIds = {};
+		array<string> customNames = {};
+		
+		array<int> allPlayers = {};
+		playerManager.GetPlayers(allPlayers);
+		
+		foreach (int playerId : allPlayers)
+		{
+			string customName = manager.GetCustomName(playerId);
+			if (!customName.IsEmpty())
+			{
+				playerIds.Insert(playerId);
+				customNames.Insert(customName);
+				Print(string.Format("%1 [SYNC] Adding to sync: Player %2 => '%3'", 
+					LOG_PREFIX_CUSTOM_NAMES, playerId, customName), LogLevel.NORMAL);
+			}
+		}
+		
+		if (playerIds.Count() > 0)
+		{
+			Print(string.Format("%1 [SYNC] Sending %2 custom names to player %3", 
+				LOG_PREFIX_CUSTOM_NAMES, playerIds.Count(), targetPlayerId), LogLevel.NORMAL);
+			
+			// Send to the specific player - we'll use broadcast for now
+			// TODO: Implement proper unicast when Arma supports it better
+			Rpc(RpcDo_SyncAllCustomNames, playerIds, customNames);
+		}
+		else
+		{
+			Print(string.Format("%1 [SYNC] No custom names to sync", LOG_PREFIX_CUSTOM_NAMES), LogLevel.NORMAL);
 		}
 	}
 

@@ -13,8 +13,7 @@ modded class SCR_NameTagData : Managed
 			CustomNamesManager manager = CustomNamesManager.GetInstance();
 			if (manager)
 			{
-				string playerIdStr = m_iPlayerID.ToString();
-				string customName = manager.GetCustomName(playerIdStr);
+				string customName = manager.GetCustomName(m_iPlayerID);
 				
 				Print(string.Format("[CustomNames][NAMETAG] Custom name lookup result: '%1'", customName), LogLevel.NORMAL);
 				
@@ -53,8 +52,7 @@ modded class SCR_PlayerNamesFilterCache
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (manager)
 		{
-			string playerIdStr = playerId.ToString();
-			string customName = manager.GetCustomName(playerIdStr);
+			string customName = manager.GetCustomName(playerId);
 			
 			Print(string.Format("[CustomNames][FILTER] Custom name lookup: '%1'", customName), LogLevel.NORMAL);
 			

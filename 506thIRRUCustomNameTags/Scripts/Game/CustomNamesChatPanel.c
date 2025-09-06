@@ -40,8 +40,7 @@ modded class SCR_ChatPanel
 				string originalName = playerManager.GetPlayerName(playerId);
 				if (!originalName.IsEmpty() && modifiedText.Contains(originalName))
 				{
-					string playerIdStr = playerId.ToString();
-					string customName = manager.GetCustomName(playerIdStr);
+					string customName = manager.GetCustomName(playerId);
 					if (!customName.IsEmpty())
 					{
 						modifiedText.Replace(originalName, customName);

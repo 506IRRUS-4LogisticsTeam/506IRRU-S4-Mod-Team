@@ -50,10 +50,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 
 			if (mgr.ValidateCustomName(newName))
 			{
-				if (mgr.SetCustomName(senderId.ToString(), newName))
+				if (mgr.SetCustomName(senderId, newName))
 				{
 					Print(string.Format("[CustomNames][Network] Set '%1' for player %2", newName, senderId), LogLevel.NORMAL);
-					Rpc(RpcAll_UpdateCustomName, senderId.ToString(), newName);
+					Rpc(RpcAll_UpdateCustomName, senderId, newName);
 				}
 			}
 			else
@@ -64,10 +64,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		// resetname
 		else if (lower == "resetname")
 		{
-			if (mgr.SetCustomName(senderId.ToString(), ""))
+			if (mgr.SetCustomName(senderId, ""))
 			{
 				Print(string.Format("[CustomNames][Network] Reset name for player %1", senderId), LogLevel.NORMAL);
-				Rpc(RpcAll_UpdateCustomName, senderId.ToString(), "");
+				Rpc(RpcAll_UpdateCustomName, senderId, "");
 			}
 		}
 		// myname (handled locally by your chat code; no broadcast needed)
@@ -81,7 +81,7 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	// SERVER -> ALL: broadcast one player’s name update
 	//--------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
-	void RpcAll_UpdateCustomName(string playerId, string customName)
+	void RpcAll_UpdateCustomName(int playerId, string customName)
 	{
 		CustomNamesManager mgr = CustomNamesManager.GetInstance();
 		if (mgr)
@@ -89,17 +89,18 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	}
 
 	//--------------------------------------------------------------------------------------------
-	// SERVER -> ONE CLIENT: send *all* custom names (arrays to avoid map replication)
+	// SERVER -> ALL CLIENTS: send custom names (arrays to avoid map replication)
+	// Note: Broadcasting to all is simpler and more reliable than unicast in current Arma
 	//--------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
-	void RpcCl_ReceiveAllCustomNames(array<string> ids, array<string> names)
+	void RpcCl_ReceiveAllCustomNames(array<int> playerIds, array<string> names)
 	{
-		if (!ids || !names) return;
+		if (!playerIds || !names) return;
 
 		CustomNamesManager mgr = CustomNamesManager.GetInstance();
 		if (!mgr) return;
 
-		int count = ids.Count();
+		int count = playerIds.Count();
 		int n = names.Count();
 		int limit;
 		if (count < n)
@@ -110,10 +111,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 
 		for (int i = 0; i < limit; i++)
 		{
-			string id = ids[i];
+			int playerId = playerIds[i];
 			string nm = names[i];
-			if (!id.IsEmpty() && !nm.IsEmpty())
-				mgr.UpdateCustomNameLocal(id, nm);
+			if (playerId > 0 && !nm.IsEmpty())
+				mgr.UpdateCustomNameLocal(playerId, nm);
 		}
 	}
 
@@ -127,35 +128,106 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		CustomNamesManager mgr = CustomNamesManager.GetInstance();
 		if (!mgr) return;
 
-		// Get the server-side map (internal; we won't RPC it directly)
-		map<string, string> allMap = mgr.GetAllCustomNames();
-		if (!allMap || allMap.IsEmpty())
-			return;
-
-		array<string> ids = {};
+		// Get all currently connected players and their custom names
+		PlayerManager playerManager = GetGame().GetPlayerManager();
+		if (!playerManager) return;
+		
+		array<int> playerIds = {};
 		array<string> names = {};
-		ids.Reserve(allMap.Count());
-		names.Reserve(allMap.Count());
-
-		// Flatten map -> parallel arrays
-		foreach (string k, string v : allMap)
+		
+		array<int> allPlayers = {};
+		playerManager.GetPlayers(allPlayers);
+		
+		foreach (int pId : allPlayers)
 		{
-			if (v.IsEmpty()) continue; // skip empty (means reset / default)
-			ids.Insert(k);
-			names.Insert(v);
-
-			// Chunk if necessary
-			if (ids.Count() >= MAX_SYNC_ENTRIES_PER_RPC)
+			string customName = mgr.GetCustomName(pId);
+			if (!customName.IsEmpty())
 			{
-				Rpc(RpcCl_ReceiveAllCustomNames, ids, names, playerId); // unicast via playerId
-				ids.Clear();
-				names.Clear();
+				playerIds.Insert(pId);
+				names.Insert(customName);
+				
+				// Chunk if necessary
+				if (playerIds.Count() >= MAX_SYNC_ENTRIES_PER_RPC)
+				{
+					// Broadcast to all - simpler and more reliable
+					Rpc(RpcCl_ReceiveAllCustomNames, playerIds, names);
+					playerIds.Clear();
+					names.Clear();
+				}
 			}
 		}
 
 		// Send any remainder
-		if (ids.Count() > 0)
-			Rpc(RpcCl_ReceiveAllCustomNames, ids, names, playerId);
+		if (playerIds.Count() > 0)
+		{
+			// For now, broadcast to all clients - they'll filter locally
+			// TODO: Implement proper unicast when Arma supports it better
+			Rpc(RpcCl_ReceiveAllCustomNames, playerIds, names);
+		}
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	// Handle player connection with identity retry
+	//--------------------------------------------------------------------------------------------
+	void OnPlayerConnectedWithRetry(int playerId, int attemptNumber = 0)
+	{
+		Print(string.Format("[CustomNames][Network] Attempt %1 to handle player %2 connection", attemptNumber + 1, playerId), LogLevel.NORMAL);
+		
+		if (!Replication.IsServer()) return;
+		
+		CustomNamesManager mgr = CustomNamesManager.GetInstance();
+		if (!mgr) return;
+		
+		// Try to get the real identity ID (not fallback)
+		string identityId = "";
+		BackendApi backendApi = GetGame().GetBackendApi();
+		if (backendApi)
+		{
+			identityId = backendApi.GetPlayerIdentityId(playerId);
+			Print(string.Format("[CustomNames][Network] GetPlayerIdentityId returned: '%1'", identityId), LogLevel.NORMAL);
+		}
+		
+		if (!identityId.IsEmpty())
+		{
+			// Success - we got the real identity
+			Print(string.Format("[CustomNames][Network] SUCCESS: Got identity '%1' for player %2", identityId, playerId), LogLevel.NORMAL);
+			
+			// First send all existing custom names to the new player
+			GetGame().GetCallqueue().CallLater(SendAllCustomNamesToClient, 500, false, playerId);
+			
+			// Then check if this player has their own custom name to restore
+			string customName = mgr.GetCustomNameByUID(identityId);
+			if (!customName.IsEmpty())
+			{
+				Print(string.Format("[CustomNames][Network] Restoring custom name '%1' for player %2", customName, playerId), LogLevel.NORMAL);
+				// Broadcast their restored name to all clients
+				GetGame().GetCallqueue().CallLater(BroadcastNameDelayed, 1000, false, playerId, customName);
+			}
+		}
+		else if (attemptNumber < 4)
+		{
+			// Identity not ready yet, schedule retry
+			int delays[5] = {0, 100, 250, 500, 1000};
+			int nextDelay = delays[attemptNumber + 1];
+			
+			Print(string.Format("[CustomNames][Network] Identity not ready, scheduling retry %1 in %2ms", 
+				attemptNumber + 2, nextDelay), LogLevel.NORMAL);
+			
+			GetGame().GetCallqueue().CallLater(OnPlayerConnectedWithRetry, nextDelay, false, 
+				playerId, attemptNumber + 1);
+		}
+		else
+		{
+			// All retries exhausted - just send existing names without restore
+			Print(string.Format("[CustomNames][Network] Failed to get identity after %1 attempts, sending names anyway", 
+				attemptNumber + 1), LogLevel.WARNING);
+			SendAllCustomNamesToClient(playerId);
+		}
+	}
+	
+	void BroadcastNameDelayed(int playerId, string customName)
+	{
+		Rpc(RpcAll_UpdateCustomName, playerId, customName);
 	}
 }
 
