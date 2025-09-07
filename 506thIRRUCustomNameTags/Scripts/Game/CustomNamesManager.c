@@ -10,6 +10,7 @@ class CustomNamesManager
 {
 	protected ref map<string, ref CustomNameEntry> m_CustomNames = new map<string, ref CustomNameEntry>();
 	protected string m_SaveFilePath = "$profile:custom_names.json";
+	protected bool m_bInitialized = false;
 	
 	protected static ref CustomNamesManager s_Instance;
 	
@@ -17,7 +18,10 @@ class CustomNamesManager
 	static CustomNamesManager GetInstance()
 	{
 		if (!s_Instance)
+		{
+			Print("[CustomNamesManager] Creating singleton instance", LogLevel.NORMAL);
 			s_Instance = new CustomNamesManager();
+		}
 		
 		return s_Instance;
 	}
@@ -25,8 +29,19 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	void CustomNamesManager()
 	{
+		Print(string.Format("[CustomNamesManager] Constructor called, m_bInitialized = %1", m_bInitialized), LogLevel.NORMAL);
+		
+		if (m_bInitialized)
+		{
+			Print("[CustomNamesManager] Already initialized, skipping", LogLevel.NORMAL);
+			return;
+		}
+		
+		m_bInitialized = true;
+		
 		if (GetGame().InPlayMode() && Replication.IsServer())
 		{
+			Print("[CustomNamesManager] Server-side initialization starting", LogLevel.NORMAL);
 			LoadCustomNames();
 			
 			SCR_BaseGameMode gameMode = SCR_BaseGameMode.Cast(GetGame().GetGameMode());
@@ -34,13 +49,13 @@ class CustomNamesManager
 			{
 				gameMode.GetOnPlayerConnected().Insert(OnPlayerConnected);
 				gameMode.GetOnPlayerDisconnected().Insert(OnPlayerDisconnected);
-				Print("CustomNamesManager: Hooked into player connection events");
+				Print("[CustomNamesManager] Hooked into player connection events", LogLevel.NORMAL);
 			}
 			
-			Print("CustomNamesManager: Server-side initialization complete");
+			Print("[CustomNamesManager] Server-side initialization complete", LogLevel.NORMAL);
 		}
 		
-		Print("CustomNamesManager: Initialized with Game Identity persistence");
+		Print("[CustomNamesManager] Initialized with Game Identity persistence", LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -212,7 +227,10 @@ class CustomNamesManager
 		entry.m_iLastUpdated = System.GetUnixTime();
 		entry.m_sLastPlayerName = GetPlayerName(playerId);
 		
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] ✅✅✅ SUCCESS! LOCAL CACHE UPDATED ✅✅✅"), LogLevel.NORMAL);
+		// Do NOT save to file on local updates - only when explicitly setting names
+		// This prevents clients from overwriting the server's persistence file
+		
+		Print(string.Format("[CustomNames][LOCAL-UPDATE] SUCCESS! LOCAL CACHE UPDATED"), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][LOCAL-UPDATE] Player %1 (%2) => '%3'", playerId, playerUID, customName), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][LOCAL-UPDATE] Cache now has %1 entries", m_CustomNames.Count()), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][LOCAL-UPDATE] ============================================"), LogLevel.NORMAL);
@@ -463,7 +481,7 @@ class CustomNamesManager
 		int lineCount = 0;
 		while (file.ReadLine(line) != -1)
 		{
-			jsonContent += line;
+			jsonContent += line + "\n";  // PRESERVE NEWLINES!
 			lineCount++;
 		}
 		file.Close();
@@ -491,12 +509,29 @@ class CustomNamesManager
 		Print(string.Format("[CustomNames][JSON] File path: %1", m_SaveFilePath), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][JSON] Number of entries to save: %1", m_CustomNames.Count()), LogLevel.NORMAL);
 		
+		// First try to open for writing
 		FileHandle file = FileIO.OpenFile(m_SaveFilePath, FileMode.WRITE);
 		if (!file)
 		{
-			Print(string.Format("[CustomNames][JSON] ERROR: Failed to open save file for writing at %1", m_SaveFilePath), LogLevel.ERROR);
-			Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
-			return;
+			Print(string.Format("[CustomNames][JSON] File doesn't exist, trying to create it with APPEND mode"), LogLevel.NORMAL);
+			// Try APPEND mode which might create the file
+			file = FileIO.OpenFile(m_SaveFilePath, FileMode.APPEND);
+			if (!file)
+			{
+				Print(string.Format("[CustomNames][JSON] ERROR: Failed to create/open save file at %1", m_SaveFilePath), LogLevel.ERROR);
+				Print(string.Format("[CustomNames][JSON] Server admin may need to manually create an empty file at:"), LogLevel.ERROR);
+				Print(string.Format("[CustomNames][JSON] <profile_dir>/custom_names.json"), LogLevel.ERROR);
+				Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
+				return;
+			}
+			// Close and reopen in WRITE mode to overwrite
+			file.Close();
+			file = FileIO.OpenFile(m_SaveFilePath, FileMode.WRITE);
+			if (!file)
+			{
+				Print(string.Format("[CustomNames][JSON] ERROR: Could not reopen file in WRITE mode"), LogLevel.ERROR);
+				return;
+			}
 		}
 		
 		Print(string.Format("[CustomNames][JSON] File opened for writing"), LogLevel.NORMAL);
@@ -543,8 +578,11 @@ class CustomNamesManager
 	{
 		Print(string.Format("[CustomNames][JSON] Starting JSON parse"), LogLevel.NORMAL);
 		
-		jsonContent.Replace("{\n", "");
-		jsonContent.Replace("\n}", "");
+		// Remove outer braces and clean up
+		jsonContent.Replace("{", "");
+		jsonContent.Replace("}", "");
+		
+		// Split by newlines
 		array<string> lines = {};
 		jsonContent.Split("\n", lines, false);
 		
@@ -552,52 +590,69 @@ class CustomNamesManager
 		
 		string currentUID = "";
 		CustomNameEntry currentEntry = null;
+		int entriesFound = 0;
 		
 		foreach (string line : lines)
 		{
 			line.Trim();
-			if (line.IsEmpty() || line == "," || line == "{" || line == "}")
+			
+			// Skip empty lines and single commas
+			if (line.IsEmpty() || line == ",")
 				continue;
-			if (line.Contains("\": {"))
+				
+			// Check if this line starts a new entry (contains ": {" but not inside quotes)
+			if (line.Contains("\": ") && !line.Contains("customName") && !line.Contains("lastUpdated") && !line.Contains("lastPlayerName"))
 			{
-				int startQuote = line.IndexOf("\"");
-				if (startQuote >= 0)
+				// Extract UID from line like:  "26834eaa-1a2a-4751-bea1-f826a19fdb36": {
+				int firstQuote = line.IndexOf("\"");
+				if (firstQuote >= 0)
 				{
-					string afterFirstQuote = line.Substring(startQuote + 1, line.Length() - startQuote - 1);
-					int endQuote = afterFirstQuote.IndexOf("\"");
-					if (endQuote >= 0)
+					string afterFirstQuote = line.Substring(firstQuote + 1, line.Length() - firstQuote - 1);
+					int secondQuote = afterFirstQuote.IndexOf("\"");
+					if (secondQuote >= 0)
 					{
-						currentUID = afterFirstQuote.Substring(0, endQuote);
+						currentUID = afterFirstQuote.Substring(0, secondQuote);
 						currentEntry = new CustomNameEntry();
 						m_CustomNames[currentUID] = currentEntry;
-						Print(string.Format("[CustomNames][JSON] Found entry for UID: %1", currentUID), LogLevel.NORMAL);
+						entriesFound++;
+						Print(string.Format("[CustomNames][JSON] Found entry #%1 for UID: %2", entriesFound, currentUID), LogLevel.NORMAL);
 					}
 				}
 			}
-			else if (currentEntry && line.Contains("customName"))
+			else if (currentEntry)
 			{
-				string name = ExtractJsonStringValue(line);
-				currentEntry.m_sCustomName = name;
-			}
-			else if (currentEntry && line.Contains("lastUpdated"))
-			{
-				string timeStr = ExtractJsonNumberValue(line);
-				currentEntry.m_iLastUpdated = timeStr.ToInt();
-			}
-			else if (currentEntry && line.Contains("lastPlayerName"))
-			{
-				string playerName = ExtractJsonStringValue(line);
-				currentEntry.m_sLastPlayerName = playerName;
+				// Parse the properties of current entry
+				if (line.Contains("\"customName\""))
+				{
+					string name = ExtractJsonStringValue(line);
+					currentEntry.m_sCustomName = name;
+					Print(string.Format("[CustomNames][JSON]   - customName: '%1'", name), LogLevel.NORMAL);
+				}
+				else if (line.Contains("\"lastUpdated\""))
+				{
+					string timeStr = ExtractJsonNumberValue(line);
+					currentEntry.m_iLastUpdated = timeStr.ToInt();
+					Print(string.Format("[CustomNames][JSON]   - lastUpdated: %1", timeStr), LogLevel.NORMAL);
+				}
+				else if (line.Contains("\"lastPlayerName\""))
+				{
+					string playerName = ExtractJsonStringValue(line);
+					currentEntry.m_sLastPlayerName = playerName;
+					Print(string.Format("[CustomNames][JSON]   - lastPlayerName: '%1'", playerName), LogLevel.NORMAL);
+				}
 			}
 		}
 		
 		Print(string.Format("[CustomNames][JSON] JSON parsing complete - parsed %1 entries", m_CustomNames.Count()), LogLevel.NORMAL);
 		
+		// Log all parsed entries
+		Print(string.Format("[CustomNames][JSON] === All Loaded Entries ==="), LogLevel.NORMAL);
 		foreach (string uid, CustomNameEntry entry : m_CustomNames)
 		{
-			Print(string.Format("[CustomNames][JSON]   - UID: %1 => Name: '%2', LastPlayer: '%3'", 
+			Print(string.Format("[CustomNames][JSON]   UID: %1 => Name: '%2', LastPlayer: '%3'", 
 				uid, entry.m_sCustomName, entry.m_sLastPlayerName), LogLevel.NORMAL);
 		}
+		Print(string.Format("[CustomNames][JSON] =========================="), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------

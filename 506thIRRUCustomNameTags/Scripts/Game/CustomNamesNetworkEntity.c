@@ -11,6 +11,7 @@ class CustomNamesNetworkEntityClass : SCR_BaseGameModeComponentClass
 class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 {
 	protected static CustomNamesNetworkEntity s_Instance;
+	protected ref CustomNamesManager m_CustomNamesManager;
 
 	// Optional: tune if you expect many entries (prevents oversized RPCs)
 	protected const int MAX_SYNC_ENTRIES_PER_RPC = 200;
@@ -20,6 +21,15 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	{
 		super.OnGameModeStart();
 		s_Instance = this;
+		
+		// Initialize the CustomNamesManager once and keep it
+		if (Replication.IsServer())
+		{
+			Print("[CustomNames][Network] Server initializing CustomNamesManager", LogLevel.NORMAL);
+			m_CustomNamesManager = CustomNamesManager.GetInstance();
+			Print(string.Format("[CustomNames][Network] CustomNamesManager instance: %1", m_CustomNamesManager), LogLevel.NORMAL);
+		}
+		
 		Print("[CustomNames][Network] Initialized (OnGameModeStart)", LogLevel.NORMAL);
 	}
 
@@ -37,7 +47,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		Print(string.Format("[CustomNames][Network] [SERVER-NET] ======= NETWORK ENTITY PROCESSING =======", senderId), LogLevel.NORMAL);
 		Print(string.Format("[CustomNames][Network] [SERVER-NET] Msg: '%1', Sender: %2", msg, senderId), LogLevel.NORMAL);
 		
-		CustomNamesManager mgr = CustomNamesManager.GetInstance();
+		// Use the stored manager instance
+		CustomNamesManager mgr = m_CustomNamesManager;
+		if (!mgr)
+			mgr = CustomNamesManager.GetInstance();
 		if (!mgr) 
 		{
 			Print("[CustomNames][Network] [SERVER-NET] ERROR: Manager not available!", LogLevel.ERROR);
@@ -166,7 +179,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	{
 		if (!Replication.IsServer()) return;
 
-		CustomNamesManager mgr = CustomNamesManager.GetInstance();
+		// Use the stored manager instance
+		CustomNamesManager mgr = m_CustomNamesManager;
+		if (!mgr)
+			mgr = CustomNamesManager.GetInstance();
 		if (!mgr) return;
 
 		// Get all currently connected players and their custom names
@@ -216,7 +232,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		
 		if (!Replication.IsServer()) return;
 		
-		CustomNamesManager mgr = CustomNamesManager.GetInstance();
+		// Use the stored manager instance
+		CustomNamesManager mgr = m_CustomNamesManager;
+		if (!mgr)
+			mgr = CustomNamesManager.GetInstance();
 		if (!mgr) return;
 		
 		// Try to get the real identity ID (not fallback)
@@ -240,9 +259,25 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 			string customName = mgr.GetCustomNameByUID(identityId);
 			if (!customName.IsEmpty())
 			{
-				Print(string.Format("[CustomNames][Network] Restoring custom name '%1' for player %2", customName, playerId), LogLevel.NORMAL);
+				Print(string.Format("[CustomNames][Network] *** RESTORING PERSISTED NAME ***", customName), LogLevel.NORMAL);
+				Print(string.Format("[CustomNames][Network] Player %1 had custom name '%2' in persistence file", playerId, customName), LogLevel.NORMAL);
+				
+				// Update the manager's local cache with the restored name
+				mgr.UpdateCustomNameLocal(playerId, customName);
+				
 				// Broadcast their restored name to all clients
+				Print(string.Format("[CustomNames][Network] Broadcasting restored name to all clients", customName), LogLevel.NORMAL);
 				GetGame().GetCallqueue().CallLater(BroadcastNameDelayed, 1000, false, playerId, customName);
+				
+				// Send chat notification to the player
+				SendNameRestorationNotification(playerId, customName);
+			}
+			else
+			{
+				Print(string.Format("[CustomNames][Network] No persisted custom name found for identity %1", identityId), LogLevel.NORMAL);
+				
+				// Send chat notification that no name was found
+				SendNameRestorationNotification(playerId, "");
 			}
 		}
 		else if (attemptNumber < 4)
@@ -269,6 +304,53 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 	void BroadcastNameDelayed(int playerId, string customName)
 	{
 		Rpc(RpcAll_UpdateCustomName, playerId, customName);
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	// Send chat notification to a specific player about their custom name status
+	//--------------------------------------------------------------------------------------------
+	void SendNameRestorationNotification(int playerId, string customName)
+	{
+		if (!customName.IsEmpty())
+		{
+			// Name was restored
+			string message = string.Format("Your custom name '%1' has been restored", customName);
+			GetGame().GetCallqueue().CallLater(SendDelayedChatNotification, 5000, false, playerId, message);
+		}
+		else
+		{
+			// No custom name found
+			string message = "No custom name found. Use 'setname <YourName>' to set one";
+			GetGame().GetCallqueue().CallLater(SendDelayedChatNotification, 5000, false, playerId, message);
+		}
+	}
+	
+	void SendDelayedChatNotification(int playerId, string message)
+	{
+		// Send to specific player
+		Rpc(RpcDo_ShowChatNotification, message, playerId);
+	}
+	
+	//--------------------------------------------------------------------------------------------
+	// CLIENT: Receive and show chat notification
+	//--------------------------------------------------------------------------------------------
+	[RplRpc(RplChannel.Reliable, RplRcver.Owner)]
+	void RpcDo_ShowChatNotification(string message, int targetPlayerId)
+	{
+		PlayerController localPC = GetGame().GetPlayerController();
+		if (!localPC) return;
+		
+		int localPlayerId = localPC.GetPlayerId();
+		if (localPlayerId != targetPlayerId) return;
+		
+		// Show the message to the player
+		SCR_ChatComponent chatComp = SCR_ChatComponent.Cast(localPC.FindComponent(SCR_ChatComponent));
+		if (chatComp)
+		{
+			chatComp.ShowMessage(message);
+		}
+		
+		Print(string.Format("[CustomNames][Network] Chat notification shown: %1", message), LogLevel.NORMAL);
 	}
 }
 
