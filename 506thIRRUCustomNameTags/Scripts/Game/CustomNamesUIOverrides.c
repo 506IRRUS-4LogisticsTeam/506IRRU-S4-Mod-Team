@@ -35,10 +35,7 @@ modded class SCR_PlayerListMenu
 	{
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (!manager)
-		{
-			Print("[CustomNames][SCOREBOARD] Manager not available for scoreboard update", LogLevel.WARNING);
 			return;
-		}
 		
 		int updateCount = 0;
 		
@@ -49,19 +46,13 @@ modded class SCR_PlayerListMenu
 				continue;
 			
 			string customName = manager.GetCustomName(entry.m_iID);
-			string playerIdStr = entry.m_iID.ToString();
 			if (!customName.IsEmpty())
 			{
 				entry.m_wName.SetText(customName);
 				updateCount++;
-				Print(string.Format("[CustomNames][SCOREBOARD] Updated player %1 to '%2'", playerIdStr, customName), LogLevel.NORMAL);
 			}
 		}
 		
-		if (updateCount > 0)
-		{
-			Print(string.Format("[CustomNames][SCOREBOARD] Updated %1 entries on scoreboard", updateCount), LogLevel.NORMAL);
-		}
 	}
 }
 
@@ -194,37 +185,20 @@ class IRRU_PlayerNameHelper
 	//------------------------------------------------------------------------------------------------
 	static string GetPlayerDisplayName(int playerId)
 	{
-		Print(string.Format("[CustomNames][HELPER] GetPlayerDisplayName called for player %1", playerId), LogLevel.NORMAL);
-		
 		// First check for custom name
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (manager)
 		{
 			string customName = manager.GetCustomName(playerId);
-			
-			Print(string.Format("[CustomNames][HELPER] Custom name lookup: '%1'", customName), LogLevel.NORMAL);
-			
 			if (!customName.IsEmpty())
-			{
-				Print(string.Format("[CustomNames][HELPER] Returning custom name: '%1'", customName), LogLevel.NORMAL);
 				return customName;
-			}
-		}
-		else
-		{
-			Print("[CustomNames][HELPER] Manager not available", LogLevel.WARNING);
 		}
 		
 		// Fall back to platform name
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (playerManager)
-		{
-			string platformName = playerManager.GetPlayerName(playerId);
-			Print(string.Format("[CustomNames][HELPER] Returning platform name: '%1'", platformName), LogLevel.NORMAL);
-			return platformName;
-		}
+			return playerManager.GetPlayerName(playerId);
 		
-		Print("[CustomNames][HELPER] No name found, returning empty", LogLevel.WARNING);
 		return "";
 	}
 	

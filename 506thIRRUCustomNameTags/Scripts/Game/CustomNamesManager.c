@@ -18,10 +18,7 @@ class CustomNamesManager
 	static CustomNamesManager GetInstance()
 	{
 		if (!s_Instance)
-		{
-			Print("[CustomNamesManager] Creating singleton instance", LogLevel.NORMAL);
 			s_Instance = new CustomNamesManager();
-		}
 		
 		return s_Instance;
 	}
@@ -29,19 +26,15 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	void CustomNamesManager()
 	{
-		Print(string.Format("[CustomNamesManager] Constructor called, m_bInitialized = %1", m_bInitialized), LogLevel.NORMAL);
-		
 		if (m_bInitialized)
-		{
-			Print("[CustomNamesManager] Already initialized, skipping", LogLevel.NORMAL);
 			return;
-		}
 		
 		m_bInitialized = true;
+		Print("[CustomNames] CustomNamesManager initialized", LogLevel.NORMAL);
 		
 		if (GetGame().InPlayMode() && Replication.IsServer())
 		{
-			Print("[CustomNamesManager] Server-side initialization starting", LogLevel.NORMAL);
+			Print("[CustomNames] Server-side initialization: Loading persistence and setting up player events", LogLevel.NORMAL);
 			LoadCustomNames();
 			
 			SCR_BaseGameMode gameMode = SCR_BaseGameMode.Cast(GetGame().GetGameMode());
@@ -49,146 +42,69 @@ class CustomNamesManager
 			{
 				gameMode.GetOnPlayerConnected().Insert(OnPlayerConnected);
 				gameMode.GetOnPlayerDisconnected().Insert(OnPlayerDisconnected);
-				Print("[CustomNamesManager] Hooked into player connection events", LogLevel.NORMAL);
 			}
-			
-			Print("[CustomNamesManager] Server-side initialization complete", LogLevel.NORMAL);
+			else
+			{
+				Print("[CustomNames] GameMode not available during initialization", LogLevel.WARNING);
+			}
 		}
-		
-		Print("[CustomNamesManager] Initialized with Game Identity persistence", LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	protected void OnPlayerConnected(int playerId)
 	{
-		Print(string.Format("[CustomNames][CONNECT] ============ PLAYER CONNECTED ============"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][CONNECT] Player ID: %1", playerId), LogLevel.NORMAL);
-		
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		string playerName = "";
-		if (playerManager)
-			playerName = playerManager.GetPlayerName(playerId);
-		
-		Print(string.Format("[CustomNames][CONNECT] Player Name: %1", playerName), LogLevel.NORMAL);
-		
-		// Use network entity to handle connection with retry
 		CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
 		if (net)
-		{
-			Print(string.Format("[CustomNames][CONNECT] Delegating to NetworkEntity for identity retry"), LogLevel.NORMAL);
 			net.OnPlayerConnectedWithRetry(playerId, 0);
-		}
-		else
-		{
-			Print(string.Format("[CustomNames][CONNECT] ERROR: NetworkEntity not available"), LogLevel.ERROR);
-		}
-		
-		Print(string.Format("[CustomNames][CONNECT] =========================================="), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	protected void OnPlayerDisconnected(int playerId)
 	{
-		Print(string.Format("[CustomNames][DISCONNECT] ========= PLAYER DISCONNECTED ========="), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][DISCONNECT] Player ID: %1", playerId), LogLevel.NORMAL);
-		
-		string identityId = GetPlayerUID(playerId);
-		Print(string.Format("[CustomNames][DISCONNECT] Identity ID: %1", identityId), LogLevel.NORMAL);
-		
-		if (!identityId.IsEmpty())
-		{
-			CustomNameEntry entry;
-			if (m_CustomNames.Find(identityId, entry) && !entry.m_sCustomName.IsEmpty())
-			{
-				Print(string.Format("[CustomNames][DISCONNECT] Player had custom name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
-				Print(string.Format("[CustomNames][DISCONNECT] Custom name preserved for next connection"), LogLevel.NORMAL);
-			}
-		}
-		
-		Print(string.Format("[CustomNames][DISCONNECT] ======================================="), LogLevel.NORMAL);
+		// Custom names are already persisted in the file, nothing to do here
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	protected void BroadcastRestoredName(int playerId, string customName)
 	{
-		Print(string.Format("[CustomNames][RESTORE] Broadcasting restored name..."), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][RESTORE] Player ID: %1, Custom Name: '%2'", playerId, customName), LogLevel.NORMAL);
-		
 		PlayerController pc = GetGame().GetPlayerController();
 		if (pc)
 		{
-			Print(string.Format("[CustomNames][RESTORE] PlayerController found"), LogLevel.NORMAL);
-			
 			SCR_ChatComponent chatComp = SCR_ChatComponent.Cast(pc.FindComponent(SCR_ChatComponent));
 			if (chatComp)
 			{
-				Print(string.Format("[CustomNames][RESTORE] ChatComponent found, calling RpcAll_UpdateCustomName"), LogLevel.NORMAL);
 				CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
 				if (net)
 				{
-					// Call the broadcast through the network entity
 					net.BroadcastNameDelayed(playerId, customName);
 				}
-				Print(string.Format("[CustomNames][RESTORE] Broadcast complete for restored name '%1'", customName), LogLevel.NORMAL);
 			}
-			else
-			{
-				Print(string.Format("[CustomNames][RESTORE] ERROR: No ChatComponent found"), LogLevel.ERROR);
-			}
-		}
-		else
-		{
-			Print(string.Format("[CustomNames][RESTORE] ERROR: No PlayerController found"), LogLevel.ERROR);
 		}
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	bool SetCustomName(int playerId, string customName)
 	{
-		Print(string.Format("[CustomNames][SET] Setting custom name for player %1", playerId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][SET] New name: '%1'", customName), LogLevel.NORMAL);
-		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
-		{
-			Print(string.Format("[CustomNames][SET] ERROR: Could not get UID for player %1", playerId), LogLevel.ERROR);
 			return false;
-		}
-		
-		Print(string.Format("[CustomNames][SET] Got UID: %1", playerUID), LogLevel.NORMAL);
 		
 		if (!customName.IsEmpty() && !ValidateCustomName(customName))
-		{
-			Print(string.Format("[CustomNames][SET] Validation failed for name: '%1'", customName), LogLevel.WARNING);
 			return false;
-		}
 		
 		CustomNameEntry entry;
 		if (!m_CustomNames.Find(playerUID, entry))
 		{
-			Print(string.Format("[CustomNames][SET] Creating new entry for UID %1", playerUID), LogLevel.NORMAL);
 			entry = new CustomNameEntry();
 			m_CustomNames[playerUID] = entry;
-		}
-		else
-		{
-			Print(string.Format("[CustomNames][SET] Updating existing entry for UID %1", playerUID), LogLevel.NORMAL);
-			Print(string.Format("[CustomNames][SET] Previous name was: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
 		}
 		
 		entry.m_sCustomName = customName;
 		entry.m_iLastUpdated = System.GetUnixTime();
 		entry.m_sLastPlayerName = GetPlayerName(playerId);
 		
-		Print(string.Format("[CustomNames][SET] SUCCESS: Name set to '%1' for UID %2", customName, playerUID), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][SET] Player name: %1, Timestamp: %2", 
-			entry.m_sLastPlayerName, entry.m_iLastUpdated), LogLevel.NORMAL);
-		
 		if (GetGame().InPlayMode() && Replication.IsServer())
-		{
-			Print(string.Format("[CustomNames][SET] Triggering save to persistence file"), LogLevel.NORMAL);
 			SaveCustomNames();
-		}
 		
 		return true;
 	}
@@ -196,69 +112,33 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	void UpdateCustomNameLocal(int playerId, string customName)
 	{
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] ============ LOCAL UPDATE STARTING ============"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] Player ID: %1", playerId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] New custom name: '%1'", customName), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] Is Server: %1", Replication.IsServer()), LogLevel.NORMAL);
-		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
-		{
-			Print(string.Format("[CustomNames][LOCAL-UPDATE] ERROR: Could not get UID, aborting update"), LogLevel.ERROR);
 			return;
-		}
-		
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] Got UID: %1", playerUID), LogLevel.NORMAL);
 		
 		CustomNameEntry entry;
 		if (!m_CustomNames.Find(playerUID, entry))
 		{
-			Print(string.Format("[CustomNames][LOCAL-UPDATE] Creating NEW cache entry for UID %1", playerUID), LogLevel.NORMAL);
 			entry = new CustomNameEntry();
 			m_CustomNames[playerUID] = entry;
-		}
-		else
-		{
-			Print(string.Format("[CustomNames][LOCAL-UPDATE] Updating EXISTING cache entry"), LogLevel.NORMAL);
-			Print(string.Format("[CustomNames][LOCAL-UPDATE] Previous cached name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
 		}
 		
 		entry.m_sCustomName = customName;
 		entry.m_iLastUpdated = System.GetUnixTime();
 		entry.m_sLastPlayerName = GetPlayerName(playerId);
-		
-		// Do NOT save to file on local updates - only when explicitly setting names
-		// This prevents clients from overwriting the server's persistence file
-		
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] SUCCESS! LOCAL CACHE UPDATED"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] Player %1 (%2) => '%3'", playerId, playerUID, customName), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] Cache now has %1 entries", m_CustomNames.Count()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][LOCAL-UPDATE] ============================================"), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	string GetCustomName(int playerId)
 	{
-		Print(string.Format("[CustomNames][GET] === GETTING CUSTOM NAME ==="), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][GET] For Player ID: %1", playerId), LogLevel.NORMAL);
-		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
-		{
-			Print(string.Format("[CustomNames][GET] No UID available - returning empty"), LogLevel.NORMAL);
 			return "";
-		}
-		
-		Print(string.Format("[CustomNames][GET] Player UID: %1", playerUID), LogLevel.NORMAL);
 		
 		CustomNameEntry entry;
 		if (m_CustomNames.Find(playerUID, entry))
-		{
-			Print(string.Format("[CustomNames][GET] FOUND! Custom name: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
 			return entry.m_sCustomName;
-		}
 		
-		Print(string.Format("[CustomNames][GET] No custom name found for this player"), LogLevel.NORMAL);
 		return "";
 	}
 	
@@ -275,72 +155,28 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	protected string GetPlayerUID(int playerId)
 	{
-		Print(string.Format("[CustomNames][UID] +++++ GETTING PLAYER UID +++++"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID] Player ID: %1", playerId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID] InPlayMode: %1", GetGame().InPlayMode()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID] IsServer: %1", Replication.IsServer()), LogLevel.NORMAL);
-		
 		string identityId = "";
 		
-		// Try to get Game Identity if BackendApi is available
 		if (GetGame().InPlayMode() && Replication.IsServer())
 		{
-			Print(string.Format("[CustomNames][UID] Attempting to get BackendApi"), LogLevel.NORMAL);
-			
 			BackendApi backendApi = GetGame().GetBackendApi();
 			if (backendApi)
-			{
-				Print(string.Format("[CustomNames][UID] BackendApi available, calling GetPlayerIdentityId"), LogLevel.NORMAL);
 				identityId = backendApi.GetPlayerIdentityId(playerId);
-				Print(string.Format("[CustomNames][UID] GetPlayerIdentityId returned: '%1'", identityId), LogLevel.NORMAL);
-			}
-			else
-			{
-				Print(string.Format("[CustomNames][UID] WARNING: BackendApi is NULL"), LogLevel.WARNING);
-			}
 		}
-		else
-		{
-			Print(string.Format("[CustomNames][UID] Not in server play mode, cannot get identity"), LogLevel.NORMAL);
-		}
-		
-		Print(string.Format("[CustomNames][UID] Identity ID result:"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID]   - Raw value: '%1'", identityId), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID]   - IsEmpty: %1", identityId.IsEmpty()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][UID]   - Length: %1", identityId.Length()), LogLevel.NORMAL);
 		
 		if (!identityId.IsEmpty())
-		{
-			Print(string.Format("[CustomNames][UID] SUCCESS: Using Game Identity ID"), LogLevel.NORMAL);
-			Print(string.Format("[CustomNames][UID] Identity: %1", identityId), LogLevel.NORMAL);
-			Print(string.Format("[CustomNames][UID] ++++++++++++++++++++++++++++++"), LogLevel.NORMAL);
 			return identityId;
-		}
 		
-		Print(string.Format("[CustomNames][UID] WARNING: Identity ID not available, using fallback"), LogLevel.WARNING);
-		
+		// Fallback to pseudo-UID
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (!playerManager)
-		{
-			Print(string.Format("[CustomNames][UID] ERROR: No PlayerManager available for fallback"), LogLevel.ERROR);
-			Print(string.Format("[CustomNames][UID] ++++++++++++++++++++++++++++++"), LogLevel.NORMAL);
 			return "";
-		}
 		
 		string playerName = playerManager.GetPlayerName(playerId);
-		Print(string.Format("[CustomNames][UID] Player name for fallback: '%1'", playerName), LogLevel.NORMAL);
-		
 		if (playerName.IsEmpty())
-		{
 			playerName = "Unknown";
-			Print(string.Format("[CustomNames][UID] Player name was empty, using 'Unknown'"), LogLevel.WARNING);
-		}
 		
-		string pseudoUID = string.Format("FALLBACK_%1_%2", playerId, playerName.Hash());
-		Print(string.Format("[CustomNames][UID] FALLBACK: Using pseudo-UID: %1", pseudoUID), LogLevel.WARNING);
-		Print(string.Format("[CustomNames][UID] ++++++++++++++++++++++++++++++"), LogLevel.NORMAL);
-		
-		return pseudoUID;
+		return string.Format("FALLBACK_%1_%2", playerId, playerName.Hash());
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -356,47 +192,21 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	void CheckAndRestoreCustomName(int playerId)
 	{
-		Print(string.Format("[CustomNames][CHECK] Checking for existing custom name for player %1", playerId), LogLevel.NORMAL);
-		
 		string playerUID = GetPlayerUID(playerId);
 		if (playerUID.IsEmpty())
-		{
-			Print(string.Format("[CustomNames][CHECK] No UID available, cannot check"), LogLevel.WARNING);
 			return;
-		}
-		
-		Print(string.Format("[CustomNames][CHECK] Checking UID: %1", playerUID), LogLevel.NORMAL);
 		
 		CustomNameEntry entry;
 		if (m_CustomNames.Find(playerUID, entry))
 		{
-			Print(string.Format("[CustomNames][CHECK] Found entry for UID %1", playerUID), LogLevel.NORMAL);
-			
 			if (!entry.m_sCustomName.IsEmpty())
 			{
-				Print(string.Format("[CustomNames][CHECK] Existing custom name found: '%1'", entry.m_sCustomName), LogLevel.NORMAL);
-				Print(string.Format("[CustomNames][CHECK] Updating metadata"), LogLevel.NORMAL);
-				
 				entry.m_sLastPlayerName = GetPlayerName(playerId);
 				entry.m_iLastUpdated = System.GetUnixTime();
 				
 				if (GetGame().InPlayMode() && Replication.IsServer())
-				{
-					Print(string.Format("[CustomNames][CHECK] Saving updated metadata to file"), LogLevel.NORMAL);
 					SaveCustomNames();
-				}
-				
-				Print(string.Format("[CustomNames][CHECK] Custom name '%1' ready for player %2", 
-					entry.m_sCustomName, playerId), LogLevel.NORMAL);
 			}
-			else
-			{
-				Print(string.Format("[CustomNames][CHECK] Entry exists but custom name is empty"), LogLevel.NORMAL);
-			}
-		}
-		else
-		{
-			Print(string.Format("[CustomNames][CHECK] No entry found for UID %1", playerUID), LogLevel.NORMAL);
 		}
 	}
 	
@@ -463,89 +273,53 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	protected void LoadCustomNames()
 	{
-		Print(string.Format("[CustomNames][JSON] ========== LOADING PERSISTENCE FILE =========="), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] File path: %1", m_SaveFilePath), LogLevel.NORMAL);
-		
+		Print(string.Format("[CustomNames] Loading custom names from %1", m_SaveFilePath), LogLevel.NORMAL);
 		FileHandle file = FileIO.OpenFile(m_SaveFilePath, FileMode.READ);
 		if (!file)
 		{
-			Print(string.Format("[CustomNames][JSON] No existing save file found at %1, starting fresh", m_SaveFilePath), LogLevel.WARNING);
-			Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
+			Print("[CustomNames] No existing custom names file found - starting with empty database", LogLevel.NORMAL);
 			return;
 		}
-		
-		Print(string.Format("[CustomNames][JSON] File opened successfully"), LogLevel.NORMAL);
 		
 		string jsonContent;
 		string line;
-		int lineCount = 0;
 		while (file.ReadLine(line) != -1)
 		{
-			jsonContent += line + "\n";  // PRESERVE NEWLINES!
-			lineCount++;
+			jsonContent += line + "\n";
 		}
 		file.Close();
 		
-		Print(string.Format("[CustomNames][JSON] Read %1 lines from file", lineCount), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] Total content length: %1 characters", jsonContent.Length()), LogLevel.NORMAL);
-		
 		if (jsonContent.IsEmpty())
 		{
-			Print(string.Format("[CustomNames][JSON] File was empty, no data to load"), LogLevel.WARNING);
+			Print("[CustomNames] Custom names file is empty", LogLevel.NORMAL);
 			return;
 		}
 		
-		Print(string.Format("[CustomNames][JSON] Parsing JSON content..."), LogLevel.NORMAL);
+		Print(string.Format("[CustomNames] Loaded %1 bytes of JSON data, parsing...", jsonContent.Length()), LogLevel.NORMAL);
 		ParseCustomNamesJson(jsonContent);
-		
-		Print(string.Format("[CustomNames][JSON] Successfully loaded %1 custom names from persistence file", m_CustomNames.Count()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
 	protected void SaveCustomNames()
 	{
-		Print(string.Format("[CustomNames][JSON] ========== SAVING PERSISTENCE FILE =========="), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] File path: %1", m_SaveFilePath), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] Number of entries to save: %1", m_CustomNames.Count()), LogLevel.NORMAL);
-		
-		// First try to open for writing
 		FileHandle file = FileIO.OpenFile(m_SaveFilePath, FileMode.WRITE);
 		if (!file)
 		{
-			Print(string.Format("[CustomNames][JSON] File doesn't exist, trying to create it with APPEND mode"), LogLevel.NORMAL);
 			// Try APPEND mode which might create the file
 			file = FileIO.OpenFile(m_SaveFilePath, FileMode.APPEND);
 			if (!file)
-			{
-				Print(string.Format("[CustomNames][JSON] ERROR: Failed to create/open save file at %1", m_SaveFilePath), LogLevel.ERROR);
-				Print(string.Format("[CustomNames][JSON] Server admin may need to manually create an empty file at:"), LogLevel.ERROR);
-				Print(string.Format("[CustomNames][JSON] <profile_dir>/custom_names.json"), LogLevel.ERROR);
-				Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
 				return;
-			}
+			
 			// Close and reopen in WRITE mode to overwrite
 			file.Close();
 			file = FileIO.OpenFile(m_SaveFilePath, FileMode.WRITE);
 			if (!file)
-			{
-				Print(string.Format("[CustomNames][JSON] ERROR: Could not reopen file in WRITE mode"), LogLevel.ERROR);
 				return;
-			}
 		}
 		
-		Print(string.Format("[CustomNames][JSON] File opened for writing"), LogLevel.NORMAL);
-		
 		string jsonContent = CreateCustomNamesJson();
-		
-		Print(string.Format("[CustomNames][JSON] JSON content created, length: %1 characters", jsonContent.Length()), LogLevel.NORMAL);
-		
 		file.WriteLine(jsonContent);
 		file.Close();
-		
-		Print(string.Format("[CustomNames][JSON] Successfully saved %1 custom names to file", m_CustomNames.Count()), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] File write complete and closed"), LogLevel.NORMAL);
-		Print(string.Format("[CustomNames][JSON] ================================================="), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -576,7 +350,7 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	protected void ParseCustomNamesJson(string jsonContent)
 	{
-		Print(string.Format("[CustomNames][JSON] Starting JSON parse"), LogLevel.NORMAL);
+		int initialCount = m_CustomNames.Count();
 		
 		// Remove outer braces and clean up
 		jsonContent.Replace("{", "");
@@ -586,24 +360,20 @@ class CustomNamesManager
 		array<string> lines = {};
 		jsonContent.Split("\n", lines, false);
 		
-		Print(string.Format("[CustomNames][JSON] Split into %1 lines for parsing", lines.Count()), LogLevel.NORMAL);
-		
 		string currentUID = "";
 		CustomNameEntry currentEntry = null;
-		int entriesFound = 0;
+		int parsedEntries = 0;
 		
 		foreach (string line : lines)
 		{
 			line.Trim();
 			
-			// Skip empty lines and single commas
 			if (line.IsEmpty() || line == ",")
 				continue;
 				
-			// Check if this line starts a new entry (contains ": {" but not inside quotes)
+			// Check if this line starts a new entry
 			if (line.Contains("\": ") && !line.Contains("customName") && !line.Contains("lastUpdated") && !line.Contains("lastPlayerName"))
 			{
-				// Extract UID from line like:  "26834eaa-1a2a-4751-bea1-f826a19fdb36": {
 				int firstQuote = line.IndexOf("\"");
 				if (firstQuote >= 0)
 				{
@@ -614,45 +384,41 @@ class CustomNamesManager
 						currentUID = afterFirstQuote.Substring(0, secondQuote);
 						currentEntry = new CustomNameEntry();
 						m_CustomNames[currentUID] = currentEntry;
-						entriesFound++;
-						Print(string.Format("[CustomNames][JSON] Found entry #%1 for UID: %2", entriesFound, currentUID), LogLevel.NORMAL);
+						parsedEntries++;
 					}
 				}
 			}
 			else if (currentEntry)
 			{
-				// Parse the properties of current entry
 				if (line.Contains("\"customName\""))
 				{
-					string name = ExtractJsonStringValue(line);
-					currentEntry.m_sCustomName = name;
-					Print(string.Format("[CustomNames][JSON]   - customName: '%1'", name), LogLevel.NORMAL);
+					currentEntry.m_sCustomName = ExtractJsonStringValue(line);
 				}
 				else if (line.Contains("\"lastUpdated\""))
 				{
 					string timeStr = ExtractJsonNumberValue(line);
 					currentEntry.m_iLastUpdated = timeStr.ToInt();
-					Print(string.Format("[CustomNames][JSON]   - lastUpdated: %1", timeStr), LogLevel.NORMAL);
 				}
 				else if (line.Contains("\"lastPlayerName\""))
 				{
-					string playerName = ExtractJsonStringValue(line);
-					currentEntry.m_sLastPlayerName = playerName;
-					Print(string.Format("[CustomNames][JSON]   - lastPlayerName: '%1'", playerName), LogLevel.NORMAL);
+					currentEntry.m_sLastPlayerName = ExtractJsonStringValue(line);
 				}
 			}
 		}
 		
-		Print(string.Format("[CustomNames][JSON] JSON parsing complete - parsed %1 entries", m_CustomNames.Count()), LogLevel.NORMAL);
-		
-		// Log all parsed entries
-		Print(string.Format("[CustomNames][JSON] === All Loaded Entries ==="), LogLevel.NORMAL);
+		int finalCount = m_CustomNames.Count();
+		Print(string.Format("[CustomNames] JSON parsing complete: %1 entries parsed, %2 total custom names loaded", 
+			parsedEntries, finalCount), LogLevel.NORMAL);
+			
+		// Log each parsed entry for debugging
 		foreach (string uid, CustomNameEntry entry : m_CustomNames)
 		{
-			Print(string.Format("[CustomNames][JSON]   UID: %1 => Name: '%2', LastPlayer: '%3'", 
-				uid, entry.m_sCustomName, entry.m_sLastPlayerName), LogLevel.NORMAL);
+			if (!entry.m_sCustomName.IsEmpty())
+			{
+				Print(string.Format("[CustomNames] Loaded: UID='%1' -> Name='%2' (Last: %3)", 
+					uid, entry.m_sCustomName, entry.m_sLastPlayerName), LogLevel.NORMAL);
+			}
 		}
-		Print(string.Format("[CustomNames][JSON] =========================="), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
