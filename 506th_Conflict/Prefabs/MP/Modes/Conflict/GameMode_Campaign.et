@@ -3,10 +3,10 @@ SCR_GameModeCampaign : "{0F307326459A1395}Prefabs/MP/Modes/GameMode_Base.et" {
  components {
   SCR_AdditionalGameModeSettingsComponent "{6170E11C3C452ACC}" {
    m_bEnableTeamKillPunishment 0
-   m_bPerceivedFactionChangesAffectsAI 0
   }
   SCR_ArsenalManagerComponent "{6120A34EB1E9BBEF}" {
    m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
+   m_bRankLockedItems 0
   }
   SCR_PerceivedFactionManagerComponent "{61AA7E6E0C6A76F9}" {
    m_ePunishmentKillingWhileDisguised 0
