@@ -21,7 +21,7 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 			m_CustomNamesManager = CustomNamesManager.GetInstance();
 			if (!m_CustomNamesManager)
 			{
-				Print("[CustomNames] Failed to initialize CustomNamesManager", LogLevel.WARNING);
+				Print("[CustomNames] Failed to initialize CustomNamesManager", LogLevel.ERROR);
 			}
 		}
 	}
