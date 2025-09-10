@@ -4,51 +4,49 @@ modded class SCR_NameTagData : Managed
 	//------------------------------------------------------------------------------------------------
 	override void GetName(out string name, out notnull array<string> nameParams)
 	{
-		Print(string.Format("[CustomNames-NameTag] GetName() called - EntityType: %1, PlayerID: %2", m_eType, m_iPlayerID), LogLevel.NORMAL);
-		
-		// For non-player entities, use default behavior
-		if (m_eType != ENameTagEntityType.PLAYER)
+		// For player entities with custom names, we completely take over
+		if (m_eType == ENameTagEntityType.PLAYER && m_iPlayerID > 0)
 		{
-			Print("[CustomNames-NameTag] Non-player entity, using default behavior", LogLevel.NORMAL);
-			super.GetName(name, nameParams);
-			return;
+			CustomNamesManager manager = CustomNamesManager.GetInstance();
+			if (manager)
+			{
+				string customName = manager.GetCustomName(m_iPlayerID);
+				if (!customName.IsEmpty())
+				{
+					// AGGRESSIVE OVERRIDE - We win, CSI loses
+					m_sName = customName;
+					name = customName;
+					nameParams.Clear();
+					m_aNameParams.Clear();
+					
+					Print(string.Format("[CustomNames] OVERRIDE: Player %1 -> '%2' (CSI formatting ignored)", m_iPlayerID, customName), LogLevel.NORMAL);
+					return;  // Don't call super - we're done here
+				}
+			}
 		}
 		
-		// For player entities, check for custom name first
-		if (m_iPlayerID <= 0)
-		{
-			Print(string.Format("[CustomNames-NameTag] Invalid player ID %1, using default behavior", m_iPlayerID), LogLevel.WARNING);
-			super.GetName(name, nameParams);
-			return;
-		}
-		
-		CustomNamesManager manager = CustomNamesManager.GetInstance();
-		if (!manager)
-		{
-			Print("[CustomNames-NameTag] Manager not available, using default behavior", LogLevel.WARNING);
-			super.GetName(name, nameParams);
-			return;
-		}
-		
-		string customName = manager.GetCustomName(m_iPlayerID);
-		Print(string.Format("[CustomNames-NameTag] Retrieved custom name for player %1: '%2'", m_iPlayerID, customName), LogLevel.NORMAL);
-		
-		if (!customName.IsEmpty())
-		{
-			// Set the custom name
-			m_sName = customName;
-			name = customName;
-			nameParams.Clear();
-			Print(string.Format("[CustomNames-NameTag] Applied custom name '%1' to nametag (m_sName and output)", customName), LogLevel.NORMAL);
-			return;
-		}
-		
-		// Fall back to default behavior if no custom name
-		Print("[CustomNames-NameTag] No custom name found, using default behavior", LogLevel.NORMAL);
+		// Only call super if we don't have a custom name
 		super.GetName(name, nameParams);
-		
-		// Log what the default behavior returned
-		Print(string.Format("[CustomNames-NameTag] Default name returned: '%1'", name), LogLevel.NORMAL);
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	// Force our name to stick by also overriding any getter
+	string GetName()
+	{
+		if (m_eType == ENameTagEntityType.PLAYER && m_iPlayerID > 0)
+		{
+			CustomNamesManager manager = CustomNamesManager.GetInstance();
+			if (manager)
+			{
+				string customName = manager.GetCustomName(m_iPlayerID);
+				if (!customName.IsEmpty())
+				{
+					m_sName = customName;
+					return customName;
+				}
+			}
+		}
+		return m_sName;
 	}
 }
 
