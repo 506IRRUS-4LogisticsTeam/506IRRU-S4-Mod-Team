@@ -45,17 +45,19 @@ class CustomNamesManager
 			}
 			else
 			{
-				Print("[CustomNames] GameMode not available during initialization", LogLevel.WARNING);
+				Print("[CustomNames] GameMode not available during initialization", LogLevel.ERROR);
 			}
 		}
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	protected void OnPlayerConnected(int playerId)
 	{
 		CustomNamesNetworkEntity net = CustomNamesNetworkEntity.Get();
 		if (net)
 			net.OnPlayerConnectedWithRetry(playerId, 0);
+		else
+			Print("[CustomNames] Network entity not available during player connection", LogLevel.ERROR);
 	}
 	
 	//------------------------------------------------------------------------------------------------
