@@ -1,0 +1,472 @@
+$grp GenericEntity : "{1391CE8C0E255636}Prefabs/Systems/MilitaryBase/ConflictMilitaryBase.et" {
+ CP_BASE_Tjeska {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 250
+    m_bIsControlPoint 1
+    m_sBaseName "Tjeska"
+    m_sBaseNameUpper "Tjeska"
+    m_sMapLocationName "Tjeska"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 100
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 2144.25 74.788 931.713
+  angleX -14.983
+  angleY -178.464
+  angleZ 3.922
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_KowertTown {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Korwert Town"
+    m_sBaseNameUpper "Korwert Town"
+    m_sMapLocationName "Korwert Town"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 1353.274 226.247 2432.175
+  angleX -0.988
+  angleY -72.839
+  angleZ -0.151
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_RadarFields {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 150
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Radar Fields"
+    m_sBaseNameUpper "Radar Fields"
+    m_sMapLocationName "Radar Fields"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 270.604 69.394 2489.809
+  angleX -0.01
+  angleY -134.881
+  angleZ 5.051
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_Ovaka {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 250
+    m_bIsControlPoint 1
+    m_sBaseName "Ovaka"
+    m_sBaseNameUpper "Ovaka"
+    m_sMapLocationName "Ovaka"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 250
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 363.465 91 1764.084
+  angleY 38.562
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_TKInternationalPort {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "TK International Port"
+    m_sBaseNameUpper "TK International Port"
+    m_sMapLocationName "TK International Port"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 983.705 4.375 1477.48
+  angleY 134.851
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_HallDam {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "Hall Dam Station"
+    m_sBaseNameUpper "Hall Dam Station"
+    m_sMapLocationName "Hall Dam Station"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 100
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 1708.546 66.89 1384.522
+  angleY 1.352
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_Ireska {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 250
+    m_bIsControlPoint 1
+    m_sBaseName "Husca"
+    m_sBaseNameUpper "Husca"
+    m_sMapLocationName "Husca"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 100
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 2518.179 90.636 1621.707
+  angleX -3.27
+  angleY -113.903
+  angleZ 1.448
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_KasnysHarbor {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Kasnys Harbor"
+    m_sBaseNameUpper "Kasnys Harbor"
+    m_sMapLocationName "Kasnys Harbor"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 1265.937 1.839 263.784
+  angleY 4.093
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_AgafonovaIsland {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Agafonova Island"
+    m_sBaseNameUpper "Agafonova Island"
+    m_sMapLocationName "Agafonova Island"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 561.265 6.771 972.787
+  angleY 0.205
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_Sawmill {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Sawmill"
+    m_sBaseNameUpper "Sawmill"
+    m_sMapLocationName "Sawmill"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 1119.906 69.281 2014.295
+  angleY 121.852
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_KeywoodRelayStation {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_iRadius 200
+    m_bIsControlPoint 1
+    m_sBaseName "Keywood Relay Station"
+    m_sBaseNameUpper "Keywood Relay Station"
+    m_sMapLocationName "Keywood Relay Station"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 200
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 2659.958 468.687 2580.715
+  angleY 143.759
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+ CP_BASE_RussianOutpost {
+  components {
+   SCR_CampaignBuildingProviderComponent "{5CA897160F09AA9F}" {
+    m_fBuildingRadius 100
+   }
+   SCR_CampaignMilitaryBaseComponent "{5AFC974A70234D1C}" {
+    m_bIsControlPoint 1
+    m_sBaseName "Russian Outpost"
+    m_sBaseNameUpper "Russian Outpost"
+    m_sMapLocationName "Russian Outpost"
+   }
+   SCR_CampaignSeizingComponent "{5C66967235FBEEA3}" {
+    m_iRadius 100
+    m_fMaximumSeizingTime 240
+    m_fMinimumSeizingTime 240
+   }
+  }
+  coords 1738.777 160.48 2225.741
+  angleX -0.097
+  angleY -143.739
+  angleZ 7.655
+  {
+   GenericEntity {
+    ID "5CCED514A5908822"
+    coords -54.229 -2.25 -0.678
+   }
+   SCR_CampaignSpawnPointGroup {
+    ID "5C6696731466AF36"
+    coords 0 -0.001 0
+   }
+  }
+ }
+}
+$grp GenericEntity : "{522DCD528AE27052}Prefabs/Systems/MilitaryBase/ConflictRelayRadio.et" {
+ CP_Relay_FrozenCargo {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Frozen Cargo"
+    m_sBaseNameUpper "Frozen Cargo"
+    m_sMapLocationName "Frozen Cargo"
+   }
+  }
+  coords 409.912 6.042 523.574
+  angleY -167.373
+ }
+ CP_Relay_MavikaRelay {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Mavika Tower"
+    m_sBaseNameUpper "Mavika Tower"
+    m_sMapLocationName "Mavika Tower"
+   }
+  }
+  coords 1569.081 174.077 1411.547
+  angleY 7.719
+ }
+ CP_Relay_KeywoodBunker {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Keywood Bunker"
+    m_sBaseNameUpper "Keywood Bunker"
+    m_sMapLocationName "Keywood Bunker"
+   }
+  }
+  coords 2759.385 469.713 2506.454
+  angleY -134.348
+ }
+ CP_Relay_BryPeaks {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Bry Peaks Relay"
+    m_sBaseNameUpper "Bry Peaks Relay"
+    m_sMapLocationName "Bry Peaks Relay"
+   }
+  }
+  coords 2199.288 136.107 1049.155
+  angleY -86.942
+ }
+ CP_Relay_BauersBelt {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Bauers Belt Relay"
+    m_sBaseNameUpper "Bauers Belt Relay"
+    m_sMapLocationName "Bauers Belt Relay"
+   }
+  }
+  coords 820.672 189.461 2127.104
+  angleY 110.488
+ }
+ CP_Relay_NorthernChurch {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Northern Church Relay"
+    m_sBaseNameUpper "Northern Church Relay"
+    m_sMapLocationName "Northern Church Relaye"
+   }
+  }
+  coords 1440.99 143.128 2058.308
+  angleY -44.869
+ }
+ CP_Relay_Little {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Little Relay"
+    m_sBaseNameUpper "Little Relay"
+    m_sMapLocationName "Little Relay"
+   }
+  }
+  coords 1529.036 104.406 679.034
+  angleY -97.741
+ }
+ CP_Relay_Lighthouse {
+  components {
+   SCR_CampaignMilitaryBaseComponent "{5C727AD73024FB00}" {
+    m_sBaseName "Lighthouse"
+    m_sBaseNameUpper "Lighthouse"
+    m_sMapLocationName "Lighthouse"
+   }
+  }
+  coords 986.609 37.675 205.528
+  angleY -119.894
+ }
+}

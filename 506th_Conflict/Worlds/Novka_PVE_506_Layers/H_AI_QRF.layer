@@ -1,0 +1,352 @@
+$grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+ QRF_Base {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 682.558 92.319 2386.61
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords 80.506 46.162 370.63
+    angleX -0.92
+    angleY -54.207
+    angleZ -8.005
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Port {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 801.423 41.228 1609.272
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -164.236 -82.804 -169.555
+    angleX 0.507
+    angleY -54.486
+    angleZ -11.066
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Key {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 2401.602 429.259 2645.069
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -82.707 -27.641 -287.235
+    angleX 2.482
+    angleY -44.283
+    angleZ -10.799
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Ovaka {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 163.719 41.546 1616.528
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords 180.364 31.82 -229.092
+    angleX 0.911
+    angleY -54.795
+    angleZ -6.625
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Aga {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 237.193 2.02 996.031
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -22.649 -54.414 -343.398
+    angleX 1.712
+    angleY -54.729
+    angleZ -11.372
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_KayHarbor {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 1174.178 13.215 529.965
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -233.258 -49.406 -82.461
+    angleX 1.871
+    angleY -54.766
+    angleZ -13.366
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+    CompletionRadius 200
+   }
+  }
+ }
+ QRF_Tjeska {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 2026.657 5.539 559.094
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords 326.643 81.009 -137.322
+    angleX -1.375
+    angleY -53.938
+    angleZ -16.438
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+    CompletionRadius 200
+   }
+  }
+ }
+ QRF_Sawmill {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 864.524 46.614 1718.157
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords 269.931 4.144 -302.197
+    angleX 0.507
+    angleY -54.486
+    angleZ -11.066
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Dam {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 1915.531 72.389 1670.11
+  angleX -7.112
+  angleY -93.734
+  angleZ 15.144
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -257.437 -44.885 212.759
+    angleX -13.394
+    angleY -55.294
+    angleZ -10.296
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Ireska {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 2244.927 42.36 1415.114
+  angleX -16.279
+  angleY -96.364
+  angleZ 12.419
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords 205.287 15.029 -269.183
+    angleX 1.877
+    angleY -54.432
+    angleZ -11.829
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Outpost {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 2071.859 216.353 2355.007
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -96.101 -10.543 344.258
+    angleX 0.319
+    angleY -54.473
+    angleZ -3.888
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+ QRF_Base2 {
+  components {
+   SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+    m_eGroupType TEAM_COUNTER_USSR
+    m_iRespawnPeriod 15
+    m_fAILimitThreshold 0.95
+    m_iRespawnWaves 2
+    m_bIsCounterGroup 1
+    m_iGroupMultiplier 4
+   }
+  }
+  coords 955.85 134.858 2539.846
+  angleX -9.281
+  angleY -94.807
+  angleZ 6.074
+  {
+   SCR_DefendWaypoint : "{2A81753527971941}Prefabs/AI/Waypoints/AIWaypoint_Defend_CP.et" {
+    components {
+     Hierarchy "{5CD0765889102122}" {
+     }
+    }
+    coords -143.756 8.007 -340.132
+    angleX 2.222
+    angleY -56.124
+    angleZ -10.964
+    AIBehaviorTreeMoveTo "{A3755C1F88DED8D6}AI/BehaviorTrees/Waypoints/WP_Move.bt"
+   }
+  }
+ }
+}

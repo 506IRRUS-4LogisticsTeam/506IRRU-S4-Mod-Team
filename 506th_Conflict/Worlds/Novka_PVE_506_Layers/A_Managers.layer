@@ -1,0 +1,1751 @@
+RadioManagerEntity {
+ coords 4963.783 113.923 9876.028
+}
+PerceptionManager PerceptionManager1 : "{028DAEAD63E056BE}Prefabs/World/Game/PerceptionManager.et" {
+ coords 7005.517 56.278 14300.119
+}
+SCR_GameModeCampaign GameMode_Campaign1 : "{3B230AAC5252108F}Prefabs/MP/Modes/Conflict/GameMode_Campaign.et" {
+ components {
+  SCR_AdditionalGameModeSettingsComponent "{6170E11C3C452ACC}" {
+   m_bAdditionalArtilleryOrderDistancePenalty 1
+  }
+  SCR_ArsenalManagerComponent "{6120A34EB1E9BBEF}" {
+   m_fLoadoutSpawnSupplyCostMultiplier 1
+   m_eArsenalGameModeType CAMPAIGN
+  }
+  SCR_CampaignBuildingManagerComponent "{5C6878C4C62529D2}" {
+   m_sFreeRoamBuildingClientTrigger "{5E191CEAF4B95816}Prefabs/MP/FreeRoamBuildingClientTrigger.et"
+   m_BudgetType CAMPAIGN
+   m_iCompositionRefundPercentage 100
+   m_OutlineManager SCR_CampaignBuildingCompositionOutlineManager "{5D7A73031D9A11E1}" : "{96A8B496A076F1C0}scripts/Game/Building/CampaignBuildingCompositionOutline.conf" {
+   }
+   m_sPrefabsToBuildResource "{D2527D9AA5B4A33E}Configs/Editor/PlaceableEntities/Compositions/Compositions_FreeRoamBuilding.conf"
+   m_sPrefabToHoldSupplyOnRefund "{4BBE0A784C01900E}Prefabs/Props/Military/SupplyBox/SupplyCrate/SupplyCrate_01/SupplyCrate_01_FreeRoamBuilding.et"
+  }
+  SCR_CommandingManagerComponent "{5D16783AFAE684F8}" {
+   m_iMaxAIPerGroup 3
+  }
+  SCR_DataCollectorComponent "{5ADE83EE64329989}" {
+   m_bOptionalKicking 1
+  }
+  SCR_DebriefingScreenComponent "{5D349E302A88E42C}" {
+   m_sHeaderTitle "#AR-Campaign_ScenarioName_Everon"
+   m_sHeaderSubtitle "(Gramps' PVE Remix)"
+  }
+  SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
+   m_bPermitUnconsciousVON 1
+  }
+  SCR_GameOverScreenManagerComponent "{56DEC646298AD219}" {
+   m_GameOverScreenConfig SCR_GameOverScreenConfig "{56DEC6462FFDD82D}" {
+    m_aGameOverScreens {
+     SCR_FactionGameOverScreenInfo "{568E79DBAC19013D}" {
+      m_OptionalParams SCR_BaseGameOverScreenInfoOptional "{568E79DBB3E97D11}" {
+       m_sDebriefing "#AR-Campaign_MatchResult_DefeatDetail_Score"
+      }
+     }
+    }
+   }
+  }
+  SCR_IdentityManagerComponent "{5AEEA80681EA61AF}" {
+   m_bGenerateValuableIntel 1
+  }
+  SCR_MapConfigComponent "{5C669498E250A34B}" {
+   m_sSpawnMapConfigPath "{901F9ED2088BBCA4}Configs/Map/MapSpawnConflict.conf"
+  }
+  SCR_NametagConfigComponent "{571AA9E54FC9210D}" {
+   m_sConfigPath "{09F7AAA14A642683}Configs/NameTags/NametagFriendlies.conf"
+  }
+  SCR_NotificationSenderComponent "{56FA84B04BE7D4C0}" {
+   m_iKillFeedType FULL
+   m_iReceiveKillFeedType ALL
+  }
+  SCR_PerceivedFactionManagerComponent "{61AA7E6E0C6A76F9}" {
+   m_eCharacterPerceivedFactionOutfitType DISABLED
+  }
+  SCR_PlayerSpawnPointManagerComponent "{5CDABA98894199D0}" {
+   m_bEnablePlayerSpawnPoints 1
+   m_bRadioVehicleSpawningEnabled 1
+   m_eDeployableSpawnPointBudgetType NONE
+  }
+  SCR_RespawnBriefingComponent "{5B2A94A3CF791D6F}" {
+   m_sJournalConfigPath "{FFB1A12A7BFC4957}Configs/Journal/JournalConflict.conf"
+   m_Info SCR_UIInfo "{5B2A94A66BB56FB3}" {
+    Description "#AR-Campaign_GamemodeTutorial"
+   }
+   m_aGameModeHints {
+    SCR_UIInfo "{5B2A94A72CAF0E18}" {
+     Name "#AR-BriefingCampaign_Hint_Name_01"
+     Description "#AR-BriefingCampaign_Hint_Description_01"
+     Icon "{324E923535DCACF8}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_1_UI.edds"
+    }
+    SCR_UIInfo "{5B2A94A72AB20D65}" {
+     Name "#AR-BriefingCampaign_Hint_Name_02"
+     Description "#AR-BriefingCampaign_Hint_Description_02"
+     Icon "{3C50D67D082BA322}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_2_UI.edds"
+    }
+    SCR_UIInfo "{5B2A94A729D6B272}" {
+     Name "#AR-BriefingCampaign_Hint_Name_03"
+     Description "#AR-BriefingCampaign_Hint_Description_03"
+     Icon "{39A515BAE3795994}UI/Textures/DeployMenu/Briefing/conflict_HintBanner_3_UI.edds"
+    }
+   }
+   m_aWinConditions {
+    SCR_BriefingVictoryCondition "{5B2A94A7531ADD24}" {
+     victoryCondition SEIZE
+     name "Condition_01"
+     description "#AR-BriefingCampaign_VictoryCondition_01"
+    }
+    SCR_BriefingVictoryCondition "{5B2A94A752415E44}" {
+     victoryCondition GUARD
+     name "Condition_02"
+     description "#AR-BriefingCampaign_VictoryCondition_02"
+    }
+    SCR_BriefingVictoryCondition "{5B2A94A75295460F}" {
+     victoryCondition SEIZE_RELAY
+     name "Condition_03"
+     description "#AR-BriefingCampaign_VictoryCondition_03"
+    }
+   }
+  }
+  SCR_RespawnSystemComponent "{56B2B4793051E7C9}" {
+   m_SpawnLogic SCR_MenuSpawnLogic "{5CEAA65B714D5CFF}" {
+   }
+  }
+  SCR_SaveLoadComponent "{58FA739CBE3E9FC5}" {
+   m_Struct SCR_MissionStruct "{5C6E86B1D6F0EC89}" {
+    m_Struct0 SCR_CampaignStruct "{5C6E86B1D41E4E2F}" {
+    }
+    m_Struct1 SCR_EditorStruct "{5E2C9BB6F87D9794}" {
+     m_AttributeList SCR_EditorAttributeList "{5E2C9BB656E63FCF}" : "{F3D6C6D25642352C}Configs/Editor/AttributeLists/Edit.conf" {
+     }
+     m_bSaveFactions 0
+     m_bSaveMissionAttributes 0
+     m_eRequiredEntityFlags LINKED_CHILDREN
+    }
+    m_Struct2 SCR_EditorStruct "{604AE588166D0165}" {
+     m_AttributeList SCR_EditorAttributeList "{604AFD87084A5DB6}" {
+     }
+     m_bSaveFactions 0
+     m_bSaveMissionAttributes 0
+     m_eRequiredEntityFlags FREE_ROAM_BUILDING_AI
+    }
+   }
+   m_iAutosavePeriod 120
+  }
+  SCR_SpawnProtectionComponent "{5D167A246026C95B}" {
+   m_bAllowPlayerSpawnpoints 1
+  }
+  SCR_TimeAndWeatherHandlerComponent "{5CC49B5A1313B84E}" {
+   m_bRandomStartingDaytime 1
+   m_fDayTimeAcceleration 8
+   m_fNightTimeAcceleration 12
+   m_bRandomStartingWeather 1
+   m_bRandomWeatherChanges 1
+   m_bAllowHeaderSettings 1
+  }
+  SCR_VotingManagerComponent "{5650BB6B6089393A}" {
+   m_aVotingTemplates {
+    SCR_VotingKick "{58EA836E8F9304A4}" {
+     m_fThreshold 0.5
+     m_iMinParticipation 0.5
+    }
+   }
+  }
+  SCR_WelcomeScreenComponent "{5D349E3E9CC39991}" {
+   m_sHeaderTitle "#AR-Campaign_ScenarioName_Everon"
+  }
+  SCR_XPHandlerComponent "{5CAAA397E5408ABF}" {
+   m_sXPRewardsConfig "{8227B4636C73C5B5}Configs/Campaign/CampaignXPRewards.conf"
+  }
+ }
+ coords 2105.542 21.999 3593.737
+ m_iControlPointsThreshold 12
+ m_iSuppliesArrivalInterval 25
+ m_iRegularSuppliesIncome 15
+ m_iRegularSuppliesIncomeBase 25
+ m_iRegularSuppliesIncomeExtra 15
+ m_iMinStartingSupplies 300
+ m_iMaxStartingSupplies 300
+ m_iSuicideRespawnDelay 60
+}
+ScriptedChatEntity : "{536D80EB494DDC43}Prefabs/MP/Campaign/CampaignMPChatEntity.et" {
+ coords 2099.106 21.999 3588.612
+}
+SCR_CampaignFactionManager CampaignFactionManager1 : "{F1AC26310BAE3788}Prefabs/MP/Campaign/CampaignFactionManager.et" {
+ coords 2099.106 21.999 3588.612
+ Factions {
+  SCR_CampaignFaction "{50B30C3AF4BFD934}" {
+   m_bIsPlayable 0
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0E9BD5E5DD9}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C548ABBCDDD71F8}" {
+       m_bEnabled 0
+      }
+     }
+    }
+   }
+  }
+  SCR_CampaignFaction "{50B30C3ADB052C80}" {
+   m_aRanks {
+    SCR_CharacterRank "{632072CA87B3EB70}" {
+     m_iRank COLONEL
+     m_sRankName "Colonel"
+     m_sRankNameUpper "COLONEL"
+     m_sRankNameShort "Col"
+     m_sInsignia "AR_Rank_OF-4"
+    }
+    SCR_CharacterRank "{632072CA87ECDF12}" {
+     m_iRank GENERAL
+     m_sRankName "General"
+     m_sRankNameUpper "GENERAL"
+     m_sRankNameShort "Gen"
+     m_sInsignia "AR_Rank_OF-5"
+    }
+   }
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0EE815FA292}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{61525016C5D39DE4}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D7554060BDCF32}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D7554063868D6C}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{61525016C7EB221F}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D755405380083E}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D755405449A903}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{61525016C83673F2}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D755405D399B89}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D755405F5C1A21}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{61525016C94C7FDD}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D7554047D5766A}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D755404937AD81}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{615250168265195D}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D755403394EC7B}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D7554035D34BD4}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{61525016835C7225}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D755403C87E583}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D755403EA357DB}" {
+         m_fSpawnSupplyCost 100
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{62061C939063BC8E}" {
+       m_sEntityPrefab "{E3BDF4CDFB758ABA}Prefabs/Characters/Campaign/Final/CPR_US_Player_MG.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D7554060BDCF32}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D7554063868D6C}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{62061C93928D2ED2}" {
+       m_sEntityPrefab "{737B9AB32C3156E3}Prefabs/Characters/Campaign/Final/CPR_US_Player_Pilot.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D7554060BDCF32}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D7554063868D6C}" {
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{62061C9393DA7142}" {
+       m_sEntityPrefab "{6B2BBEF75627CDAE}Prefabs/Characters/Campaign/Final/CPR_US_Player_SquadLead.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{61D7554060BDCF32}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+        SCR_EntityCatalogLoadoutData "{61D7554063868D6C}" {
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C9E82F29B327997}" {
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{60569780DE4EE17A}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{605098A545E912FC}" {
+         m_bEnabled 0
+        }
+        SCR_EntityCatalogEntry "{5D23482664F150D9}" {
+         m_bEnabled 0
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6052BB10DE50FA41}" {
+           m_eValidEditorModes EDIT
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{6064E51C196084B2}" {
+         m_sEntityPrefab "{9CB496688A3BCC3E}Prefabs/MP/Campaign/Assets/CampaignMobileAssemblyWest.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogEditorData "{6064E51C31106C57}" {
+           m_eValidEditorModes 33
+          }
+          SCR_EntityCatalogSpawnerData "{6064E51C30E92A0B}" {
+           m_eSlotTypes VEHICLE_MEDIUM
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{60569780DC27DDBC}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5D23482661E39833}" {
+        }
+        SCR_EntityCatalogEntry "{60C3186FC18A1A22}" {
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C9AD18D0588C053}" {
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EEB3F124F9}" {
+    }
+   }
+  }
+  SCR_CampaignFaction "{56F0C3A6336375DC}" {
+   FactionColor 0.561 0.071 0.071 1
+   UIInfo SCR_FactionUIInfo "{5570936866E0AD08}" {
+    Name "USSR"
+    Icon "{40B12B0DF911B856}UI/Textures/Editor/EditableEntities/Factions/EditableEntity_Faction_USSR.edds"
+    m_sNameUpper "USSR"
+   }
+   m_OutlineFactionColor 0.502 0 0 1
+   m_NotificationFactionColor 0.561 0.071 0.071 1
+   m_NotificationTextFactionColor 0.502 0 0 1
+   m_sFactionFlag "{50824EB9F2C215AB}UI/Textures/Flags/USSR-flag-base-3it.edds"
+   m_FactionFlagMaterial "{B47B52D9DA68905D}Assets/Props/Fabric/Flags/Data/Flag_1_2_SovietArmy.emat"
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0EABE8B7B2A}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54C23B82FF632E}" {
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EABB80080C}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54F92F4674F967}" {
+       m_sEntityPrefab "{A5647958579A4149}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_repair.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F466216D7}" {
+       m_sEntityPrefab "{1BABF6B33DA0AEB6}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_command.et"
+      }
+      SCR_EntityCatalogEntry "{5C54F92F54200650}" {
+       m_sEntityPrefab "{C012BB3488BEA0C2}Prefabs/Vehicles/Wheeled/BTR70/BTR70.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{5D2473278EB8D9E7}" {
+         m_eSlotTypes 24
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{5D247327A7DF9711}" {
+       m_sEntityPrefab "{16A674FE31B0921C}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469_uncovered.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F5446F5E6}" {
+       m_sEntityPrefab "{259EE7B78C51B624}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F540A16D3}" {
+       m_sEntityPrefab "{16C1F16C9B053801}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_transport.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F54E036C8}" {
+       m_sEntityPrefab "{D9B91FAB817A6033}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_transport_covered.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5D2473274C0136C7}" {
+       m_sEntityPrefab "{32E77EC32ED2B6D1}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_Arsenal.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5C54F92F5416B33D}" {
+       m_sEntityPrefab "{4C81D7ED8F8C0D87}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_tanker.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{5D2473274EC4AE03}" {
+       m_sEntityPrefab "{6E9142CD2471741C}Prefabs/Vehicles/Wheeled/Ural4320/Ural4320_engineer.et"
+       m_bEnabled 1
+      }
+      SCR_EntityCatalogEntry "{623B6BA8D3273EA2}" {
+       m_sEntityPrefab "{43C4AF1EEBD001CE}Prefabs/Vehicles/Wheeled/UAZ452/UAZ452_ambulance.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogSpawnerData "{623B6BA8AB198070}" {
+         m_eSlotTypes 24
+        }
+       }
+      }
+     }
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{60569783D4C68630}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5D247327A7DF9711}" {
+         m_sEntityPrefab "{16A674FE31B0921C}Prefabs/Vehicles/Wheeled/UAZ469/UAZ469_uncovered.et"
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68A0EAB887A0C4}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{5C54F92C5A81DFA5}" {
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{6052F82B06AA6BAB}" {
+        }
+       }
+      }
+     }
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{6056978561718DDB}" {
+       m_aEntities {
+        SCR_EntityCatalogEntry "{5CCEA181947C4060}" {
+         m_sEntityPrefab "{EC8BAC199BAF3740}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_FireGroup_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E8F32CAFC}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA181928A4CA5}" {
+         m_sEntityPrefab "{06D32ED260762934}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_MachineGunTeam_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E45A29187}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA181914326A2}" {
+         m_sEntityPrefab "{C54B99330F4C59F8}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_SentryTeam_NotSpawned.et"
+        }
+        SCR_EntityCatalogEntry "{5CCEA181901D0475}" {
+         m_sEntityPrefab "{7159E20D1B547A4E}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_RifleSquad_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E19E61A30}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{5CCEA18190D50A71}" {
+         m_sEntityPrefab "{96FD5857FC75F022}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_Team_AT_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E7B73E73F}" {
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61A664A98D33201D}" {
+         m_sEntityPrefab "{0F6969D367AE3EFB}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_BTRGroup_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61A664A86F888437}" {
+           m_eGroupType TEAM_BTR
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61A67E6C496D4B42}" {
+         m_sEntityPrefab "{99B031538DE0E057}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_Civs_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61A67E6C335FFA40}" {
+           m_eGroupType TEAM_CIV
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61A82117652096A7}" {
+         m_sEntityPrefab "{BB8BE99417154D4D}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_Civs_Medium_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61A8211754833F6B}" {
+           m_eGroupType TEAM_CIV_MEDIUM
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61A821176754D4B2}" {
+         m_sEntityPrefab "{40758A77F7C8BDED}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_Civs_Small_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61A8211746E4604B}" {
+           m_eGroupType TEAM_CIV_SMALL
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61AE31CFA25FD514}" {
+         m_sEntityPrefab "{2F7EA760D3639E2C}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_ArmedUAZGroup_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61AE31CFAE03F0E9}" {
+           m_eGroupType TEAM_UAZ_ARMED
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{61AE31CFA42C6A28}" {
+         m_sEntityPrefab "{6D1F685C9D18A9C6}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_TruckGroup_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{61AE31CF9C546EE0}" {
+           m_eGroupType TEAM_TRUCK
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{633C353DB310D0E7}" {
+         m_sEntityPrefab "{CB08A3832252F5B9}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_MortarTeam_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E19E61A30}" {
+           m_eGroupType TEAM_MORTAR_USSR
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{65682AC28EB2DB32}" {
+         m_sEntityPrefab "{DDA958F796ADCDAC}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_FireGroupLarge_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E8F32CAFC}" {
+           m_eGroupType TEAM_COUNTER_USSR
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{656A43FFBD4A3550}" {
+         m_sEntityPrefab "{1029155279718EC2}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_RifleSquadLarge_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E8F32CAFC}" {
+           m_eGroupType TEAM_COUNTER_KLMK
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+        SCR_EntityCatalogEntry "{656A43FF9B81524C}" {
+         m_sEntityPrefab "{EFFBE69CE4AE7DFD}Prefabs/Groups/OPFOR/AmbientPatrols/Group_USSR_SentryTeamLarge_NotSpawned.et"
+         m_aEntityDataList {
+          SCR_EntityCatalogAmbientPatrolData "{5CCEA92E8F32CAFC}" {
+           m_eGroupType TEAM_COUNTER_SPETZ
+           m_fProbabilityOfPresence 1
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    SCR_EntityCatalogMultiList "{5C68C44CB0CFC935}" {
+     m_aMultiLists {
+      SCR_EntityCatalogMultiListEntry "{5C630E453CE20F8F}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5C62F7DFBADBD917}" {
+         m_sEntityPrefab "{BFEA719491610A45}Prefabs/Weapons/Rifles/AKS74U/Rifle_AKS74U.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6114C2A1831C6476}" {
+           m_eItemMode WEAPON
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB903EF26}" {
+         m_sEntityPrefab "{FA0E25CE35EE945F}Prefabs/Weapons/Rifles/AKS74U/Rifle_AKS74UN.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6114C2A1F2D42E9E}" {
+           m_eItemMode WEAPON_VARIANTS
+           m_iSupplyCost 25
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFA7B8DEAB}" {
+         m_sEntityPrefab "{80CBC9A8D95A8A7B}Prefabs/Weapons/MachineGuns/PKM/MG_PKMN.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{64769D67144F90DA}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode WEAPON_VARIANTS
+           m_iSupplyCost 90
+           m_eRequiredRank LIEUTENANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E62B6BD203}" {
+         m_sEntityPrefab "{FA5C25BF66A53DCF}Prefabs/Weapons/Rifles/AK74/Rifle_AK74.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE862BD2B2}" {
+           m_eItemMode WEAPON
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E546CB4EA9}" {
+             m_vItemOffset 0 0 -0.2
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E62D20D8F1}" {
+         m_sEntityPrefab "{96DFD2E7E63B3386}Prefabs/Weapons/Rifles/AK74/Rifle_AK74N.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{609C981AA122D96F}" {
+           m_eItemMode WEAPON_VARIANTS
+           m_iSupplyCost 25
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E62FA9CEEB}" {
+         m_sEntityPrefab "{A7AF84C6C58BA3E8}Prefabs/Weapons/MachineGuns/RPK74/MG_RPK74.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE8D4765BD}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode WEAPON
+           m_iSupplyCost 25
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E57FBC7CD5}" {
+             m_vItemOffset 0 0.04 -0.25
+             m_vItemRotation -2 0 0
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E6101D49F8}" {
+         m_sEntityPrefab "{5F365605E36597FB}Prefabs/Weapons/MachineGuns/RPK74/MG_RPK74N.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{605ECB2CF95CBC2B}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode WEAPON_VARIANTS
+           m_iSupplyCost 60
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E6129EC14B}" {
+         m_sEntityPrefab "{A89BC9D55FFB4CD8}Prefabs/Weapons/MachineGuns/PKM/MG_PKM.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE89845D54}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode WEAPON
+           m_iSupplyCost 50
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E566C3E172}" {
+             m_vItemOffset 0 0.06 -0.15
+             m_vItemRotation -8 0 0
+            }
+           }
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C630E4538D3163D}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5CB89957DB0C454B}" {
+         m_sEntityPrefab "{BBB50A815A2F916B}Prefabs/Weapons/Magazines/Magazine_545x39_AK_30rnd_Ball.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5CB89941BF5D7A73}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB84B5DE2}" {
+         m_sEntityPrefab "{0A84AA5A3884176F}Prefabs/Weapons/Magazines/Magazine_545x39_AK_30rnd_Last_5Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE83B0AB3B}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB8874CB5}" {
+         m_sEntityPrefab "{E5912E45754CD421}Prefabs/Weapons/Magazines/Magazine_545x39_AK_30rnd_Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE80DC8D4B}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6062A42C61EC34D8}" {
+         m_sEntityPrefab "{BC74DAC891D48540}Prefabs/Weapons/Magazines/Magazine_545x39_RPK_45rnd_Ball.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5CB8994183A463E6}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 3
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6062A42C225B8B63}" {
+         m_sEntityPrefab "{D78C667F59829717}Prefabs/Weapons/Magazines/Magazine_545x39_RPK_45rnd_4Ball_1Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE8CA9F176}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6062A42C247AB62D}" {
+         m_sEntityPrefab "{5897D01F41DB5D2D}Prefabs/Weapons/Magazines/Magazine_545x39_RPK_45rnd_Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE8A49ED7D}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5CB8995760D29B36}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5CB89941DED00526}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFA61CD52D}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DEB7247E08}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4833E5034}" {
+             m_vItemOffset -0.07 0.06 0
+             m_vItemRotation 0 0 270
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFA57260EB}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DEB6985D2F}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E48903A4CC}" {
+             m_vItemOffset -0.07 0.06 0
+             m_vItemRotation 0 0 270
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6112B10ED427FBD6}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5CB899413DA31DAC}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{607EC071EDF38F46}" {
+         m_sEntityPrefab "{AFC7F529E6293E2A}Prefabs/Weapons/Magazines/Box_762x54_PK_250rnd_2Ball_1Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{615C97564BA2A952}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{607EC071EE63208F}" {
+         m_sEntityPrefab "{D8421F6E70B2FB4F}Prefabs/Weapons/Magazines/Box_762x54_PK_250rnd_4Ball_1Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DEA31337A1}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4BE18EBCF}" {
+             m_vItemOffset 0.02 0 0
+             m_vItemRotation 0 0 270
+            }
+           }
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{62D8BA85AEAE96E5}" {
+         m_sEntityPrefab "{EA806763FE4EDDDF}Prefabs/Weapons/Magazines/Box_145x114_KPVT_50rnd_APIT.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62D8BA85CA0DF6A5}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 1
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{607EC071EF4E64B8}" {
+         m_sEntityPrefab "{B909BD4BF4048A2A}Prefabs/Weapons/Magazines/Box_145x114_KPVT_50rnd_IAI.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62DE9B733C9BA366}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 20
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{62D8BA858A73DC54}" {
+         m_sEntityPrefab "{9CCB46C6EE632C1A}Prefabs/Weapons/Magazines/Magazine_762x54_SVD_10rnd_Sniper.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DEB3871A5B}" {
+           m_eItemType SNIPER_RIFLE
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 4
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFA4F1C54D}" {
+         m_sEntityPrefab "{77595CB9F596E6AC}Prefabs/Weapons/Magazines/Magazine_762x54_SVD_10rnd_LPS.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61A481A334E78212}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61A481A3444B359F}" {
+         m_sEntityPrefab "{4A3649DFF8A3F0E3}Prefabs/Weapons/Magazines/Magazine_762x54_SVD_10rnd_Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61A481A3211EAD33}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61A481A34699493D}" {
+         m_sEntityPrefab "{19600CCA33279D20}Prefabs/Weapons/Magazines/Magazine_762x54_SVD_10rnd_7BZ3API.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61A481A32D44E86A}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 4
+           m_eRequiredRank LIEUTENANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E762CBF101}" {
+         m_sEntityPrefab "{B386EEE8AED8E386}Prefabs/Weapons/Magazines/Box_762x54_PK_250rnd_Tracer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DEA28B4362}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4A2B2D76C}" {
+             m_vItemOffset 0.02 0 0
+             m_vItemRotation 0 0 270
+            }
+           }
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E737FDB05F}" {
+         m_sEntityPrefab "{843D9B182BCD2765}Prefabs/Weapons/Magazines/NSV/Box_127x108_NSV_50rnd_4AP_1APIT.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{605ECB3A2A1B5316}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 20
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E7384EEB4A}" {
+         m_sEntityPrefab "{4CD3159446EC131B}Prefabs/Weapons/Magazines/NSV/Box_127x108_NSV_50rnd_APIT.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{605ECB3A2C1AB3D9}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 20
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E73B701D48}" {
+         m_sEntityPrefab "{BFD6872B1C069136}Prefabs/Weapons/Magazines/Box_145x114_KPVT_50rnd_API.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62D8BA85E3B935D0}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 1
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E73AF72D93}" {
+         m_sEntityPrefab "{8257B5AFDE7AE5CB}Prefabs/Weapons/Magazines/Box_145x114_KPVT_50rnd_4API_1APIT.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{607EC07163C30A1C}" {
+           m_eItemType MACHINE_GUN
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 1
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E7DD5D50C6}" {
+         m_sEntityPrefab "{262F0D09C4130826}Prefabs/Weapons/Ammo/Ammo_Grenade_HE_VOG25.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE9B814D24}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E7DFBEC3B0}" {
+         m_sEntityPrefab "{906F07BD0366E08F}Prefabs/Weapons/Ammo/Ammo_Flare_40mm_VG40OP_White.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60DC8852C5BBE8DF}" {
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 3
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C630E453CA0B981}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{60F4CBE290AB29C1}" {
+         m_sEntityPrefab "{ACDF49FACD0701A8}Prefabs/Weapons/Attachments/Optics/Optic_1P29/Optic_1P29.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{605ECB2AE1BFBE86}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_iSupplyCost 35
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{62BE99B5390B0D95}" {
+         m_sEntityPrefab "{E5E9DBBF3BFB88C6}Prefabs/Weapons/Attachments/Optics/Optic_PGO7/Optic_PGO7V3.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{605ECB2E789DEFEA}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_iSupplyCost 35
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E79A80AC11}" {
+         m_sEntityPrefab "{1ABABE3551512B0A}Prefabs/Weapons/Attachments/Underbarrel/UGL_GP25.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{609C981C61EE4D7D}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_iSupplyCost 35
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E79BF5AB44}" {
+         m_sEntityPrefab "{98C79F5FAE12F9B6}Prefabs/Weapons/Attachments/Bayonets/Bayonet_6Kh4.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60A8A269E0102C53}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E789C4B603}" {
+         m_sEntityPrefab "{4A815EB8B824974A}Prefabs/Weapons/Attachments/Muzzle/FlashHider_AK74/FlashHider_AK74.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{619AC1D98F8DF4A6}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E79C0D2A6A}" {
+         m_sEntityPrefab "{06D4C36A6D585275}Prefabs/Weapons/Attachments/Muzzle/FlashHider_AKS74u/FlashHider_AKS74u.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{619AC1D9FC32711D}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E07801712A}" {
+         m_sEntityPrefab "{3B96FAC169E27037}Prefabs/Weapons/Attachments/Muzzle/Suppressor_PBS4/Suppressor_PBS4.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{619AC1D9EBD32B2B}" {
+           m_eItemType WEAPON_ATTACHMENT
+           m_eItemMode ATTACHMENT
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C68AD58703CABF4}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{64A863E05D6295B0}" {
+         m_sEntityPrefab "{98EC9C526AFBA282}Prefabs/Weapons/Ammo/Ammo_Shell_82mm_HE_O832DU.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_eItemType MORTARS
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 50
+           m_eRequiredRank CAPTAIN
+          }
+          SCR_EntityCatalogSupportStationResupplyData "{615CB5405B37EF7C}" {
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E05FEB8BC6}" {
+         m_sEntityPrefab "{C8A906FB198D1A33}Prefabs/Weapons/Ammo/Ammo_Shell_82mm_Illum_S832S.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_eItemType MORTARS
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E0407D6767}" {
+         m_sEntityPrefab "{A544A2C131DE2C64}Prefabs/Weapons/Ammo/Ammo_Shell_82mm_Smoke_D832DU.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_eItemType MORTARS
+           m_eItemMode AMMUNITION
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C630E453BCB39DC}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5C62F7DF887CFE79}" {
+         m_sEntityPrefab "{6FD6C96121905202}Prefabs/Items/Equipment/Watches/Watch_Vostok.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C68B79BAD4820EF}" {
+           m_eItemType EQUIPMENT
+           m_iSupplyCost 0
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C630E453B60C320}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB69708C8}" {
+         m_sEntityPrefab "{54C68E438DD34265}Prefabs/Items/Equipment/Radios/Radio_R107M.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF7EE3634D}" {
+           m_eItemType RADIO_BACKPACK
+           m_iSupplyCost 200
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB0DF836B}" {
+         m_sEntityPrefab "{9713FE6DDCC9510D}Prefabs/Characters/Vests/Vest_Lifchik/Vest_Lifchik.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF6115074F}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFBF37B904}" {
+         m_sEntityPrefab "{C8516078375CBE45}Prefabs/Characters/Vests/Vest_Lifchik/Vest_Lifchik_GL.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF6F7C1820}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFBF83FB7C}" {
+         m_sEntityPrefab "{4711A4CAF64C4CEE}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_AR.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF6E8A1177}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859F62433C2F}" {
+         m_sEntityPrefab "{15067AD09803580D}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_MG.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF6CFFBD28}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 4
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFBEDAC984}" {
+         m_sEntityPrefab "{08155E701A949620}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_rifleman.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF6A7E4581}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859E900FD51E}" {
+         m_sEntityPrefab "{12C8933903D18885}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_sharpshooter.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF690D0917}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859E8C868FF5}" {
+         m_sEntityPrefab "{6726C63F4F56F12F}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_medic.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE973BE380}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB12C92FC}" {
+         m_sEntityPrefab "{F2D03ED36FAC87FF}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_officer.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6114C2A163FC1140}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E0AD9F6FEE}" {
+         m_sEntityPrefab "{D8DDD4941197A929}Prefabs/Characters/Vests/Vest_SovietHarness/Variants/Vest_SovietHarness_Commander.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6114E3DC7EFFB838}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E098F1B4A9}" {
+         m_sEntityPrefab "{3DE0155EC9767B98}Prefabs/Items/Equipment/Backpacks/Backpack_Veshmeshok.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE969EEE08}" {
+           m_eItemType BACKPACK
+           m_iSupplyCost 4
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4F41DEF05}" {
+             m_vItemOffset 0 -0.175 0.125
+             m_vItemRotation 150 0 -90
+            }
+           }
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E08557FB41}" {
+         m_sEntityPrefab "{41A9C55B61F375F0}Prefabs/Items/Equipment/Backpacks/Backpack_Kolobok.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE94436996}" {
+           m_eItemType BACKPACK
+           m_iSupplyCost 5
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4FA597E8F}" {
+             m_vItemOffset 0 -0.175 0.125
+             m_vItemRotation 150 0 -90
+            }
+           }
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E0993BCC4B}" {
+         m_sEntityPrefab "{0D39750E5695B9D8}Prefabs/Items/Equipment/Backpacks/Backpack_RPG_Gunner.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE93A12ABC}" {
+           m_eItemType BACKPACK
+           m_iSupplyCost 3
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4E1324A63}" {
+             m_vItemOffset 0 -0.175 0.125
+             m_vItemRotation 150 0 -90
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E09B975D10}" {
+         m_sEntityPrefab "{6A39B5843B3F36DA}Prefabs/Items/Equipment/Backpacks/Backpack_RPG_Assistant.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE91432AE2}" {
+           m_eItemType BACKPACK
+           m_iSupplyCost 3
+           m_aArsenalDisplayData {
+            SCR_ArsenalItemDisplayData "{5CA0A9E4E84CD490}" {
+             m_vItemOffset 0 -0.175 0.125
+             m_vItemRotation 150 0 -90
+            }
+           }
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E09CCF767A}" {
+         m_sEntityPrefab "{7AC107CA7AFC9B59}Prefabs/Items/Equipment/Backpacks/Backpack_Medical_Soviet.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DE9097C402}" {
+           m_eItemType BACKPACK
+           m_iSupplyCost 3
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E161FA00ED}" {
+         m_sEntityPrefab "{4CBDC206FEF9897C}Prefabs/Characters/Vests/Vest_6B3/Vest_6B3.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D7ED94F6A6E4A95}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 50
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E163F56BD5}" {
+         m_sEntityPrefab "{506EF3B2F0A69D34}Prefabs/Characters/Vests/Vest_NAZ/Vest_NAZ.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6112B109E479C8FE}" {
+           m_eItemType VEST_AND_WAIST
+           m_iSupplyCost 2
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{5C630E453B27FB86}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB267DB97}" {
+         m_sEntityPrefab "{A7E6D7ECD5F684D7}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF78E2ABCF}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 1
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB2CD733A}" {
+         m_sEntityPrefab "{66196D85AB93D2BE}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_camo.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF679B4DBA}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5D728AAF0D0B5BD1}" {
+         m_sEntityPrefab "{D4028ED16DEE99EE}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_camonet.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D7297F7081DD1C9}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 2
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{62D8F15CCB16FF5F}" {
+         m_sEntityPrefab "{22963D69CA50EB9E}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_net.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D7297F77EA4FD28}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 1
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61988599AA518395}" {
+         m_sEntityPrefab "{DD35D5EBA6364E77}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_cover_KLMK.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6064F385AFB47197}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61988599AB46B666}" {
+         m_sEntityPrefab "{12035A212B2BE371}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_cover_KLMK_net.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6064F38596F3EA8C}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 2
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61988599AD091443}" {
+         m_sEntityPrefab "{5F8928B41FB86990}Prefabs/Characters/HeadGear/Helmet_SSh68_01/Helmet_SSh68_01_cover_KZS.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6064F38592AE0440}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{61988599C8830811}" {
+         m_sEntityPrefab "{E49D9EE7E2B3016C}Prefabs/Characters/HeadGear/Helmet_ZSh5_01/Helmet_ZSh5_01.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5E6CD7DDC384AF04}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 1
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB3399643}" {
+         m_sEntityPrefab "{EB2F05A3751B905A}Prefabs/Characters/HeadGear/Helmet_TSh4_01/Helmet_TSh4_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62D8F15C8E975453}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 0
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB4036286}" {
+         m_sEntityPrefab "{793EEE2C133176F9}Prefabs/Characters/HeadGear/Hat_Panama_Soviet/Hat_Panama_Soviet_01_v1.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF645DE5A2}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 0
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6062A42CFD86CCB3}" {
+         m_sEntityPrefab "{2B29B7E1C6BD1048}Prefabs/Characters/HeadGear/Hat_M88_01/Hat_M88_01_v1.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF626CE7ED}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6062A42CFEE1EAF6}" {
+         m_sEntityPrefab "{3523CB7D5961246B}Prefabs/Characters/HeadGear/Hat_PeakedCap_USSR_01/Hat_PeakedCap_USSR_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60E6ED128C491BFC}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 20
+           m_eRequiredRank CAPTAIN
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859A61C366E3}" {
+         m_sEntityPrefab "{A22C976003AA5BA3}Prefabs/Characters/HeadGear/Hat_Ushanka_01/Hat_Ushanka_01_folded.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{612068A18E6BE21B}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 0
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859A6235ECC8}" {
+         m_sEntityPrefab "{323641C91965842E}Prefabs/Characters/HeadGear/Hat_Ushanka_01/Hat_Ushanka_01_unfolded.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{612068A1F63B416A}" {
+           m_eItemType HEADWEAR
+           m_iSupplyCost 0
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{619885985A155A6B}" {
+         m_sEntityPrefab "{9F546CCA2582D16F}Prefabs/Characters/Uniforms/Jacket_M88.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF797954B1}" {
+           m_eItemType TORSO
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6198859E27EE4D6B}" {
+         m_sEntityPrefab "{D262D2102B9931C6}Prefabs/Characters/Uniforms/Jacket_M88_rolledup.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5D7297FB3DF9CE73}" {
+           m_eItemType TORSO
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{619885995195B900}" {
+         m_sEntityPrefab "{DCF980831E880F6A}Prefabs/Characters/Uniforms/Pants_M88.et"
+         m_bEnabled 1
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF7B0CFA83}" {
+           m_eItemType LEGS
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6116A76BF3F469C0}" {
+         m_sEntityPrefab "{F1E29085C62F0D55}Prefabs/Characters/Uniforms/Jacket_KZS/Jacket_KZS.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6060849A71812099}" {
+           m_eItemType TORSO
+           m_iSupplyCost 1
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{5C62F7DFB5E3F608}" {
+         m_sEntityPrefab "{5E17C1AE66A6FF00}Prefabs/Characters/Uniforms/Pants_KZS/Pants_KZS.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6060849A5001FC40}" {
+           m_eItemType LEGS
+           m_iSupplyCost 1
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1C65637FF}" {
+         m_sEntityPrefab "{6835DAF42A09E23C}Prefabs/Characters/Uniforms/Jacket_Pilot_USSR_01/Jacket_Pilot_USSR_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5E6CD7DD43B0BCCC}" {
+           m_eItemType TORSO
+           m_iSupplyCost 1
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1C8D73305}" {
+         m_sEntityPrefab "{83DFA8F68CA40B10}Prefabs/Characters/Uniforms/Pants_Pilot_USSR_01/Pants_Pilot_USSR_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5E6CD7DD4BDA4C4F}" {
+           m_eItemType LEGS
+           m_iSupplyCost 1
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1CAD37A32}" {
+         m_sEntityPrefab "{CF221A167DE87E57}Prefabs/Characters/Uniforms/Suit_KLMK/Suit_KLMK.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60608499A2C40BFD}" {
+           m_eItemType TORSO
+           m_iSupplyCost 2
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1CB242037}" {
+         m_sEntityPrefab "{78C9B02C0CBD594C}Prefabs/Characters/Uniforms/Jacket_Tanker_USSR_01/Jacket_Tanker_USSR_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62D8F15CE8B843C6}" {
+           m_eItemType TORSO
+           m_iSupplyCost 0
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1CDBBB517}" {
+         m_sEntityPrefab "{27494A16F172A97B}Prefabs/Characters/Uniforms/Pants_Tanker_USSR_01/Pants_Tanker_USSR_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{62D8F15CD5514622}" {
+           m_eItemType LEGS
+           m_iSupplyCost 0
+           m_eRequiredRank SERGEANT
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1CE113817}" {
+         m_sEntityPrefab "{50F8B1F928F93ABD}Prefabs/Characters/Uniforms/Shirt_Turtleneck_01/Shirt_Turtleneck_01_beige.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61209441CF8DDC9B}" {
+           m_eItemType TORSO
+           m_iSupplyCost 0
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1CF2A0537}" {
+         m_sEntityPrefab "{8266820FFDE17477}Prefabs/Characters/Handwear/Gloves_Wool_01/Gloves_Wool_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6116A76A507D7154}" {
+           m_eItemType HANDWEAR
+           m_iSupplyCost 0
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E1B06CA8CB}" {
+         m_sEntityPrefab "{C7923961D7235D70}Prefabs/Characters/Footwear/CombatBoots_Soviet_01.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{5C62F7DF7D8B5AAE}" {
+           m_eItemType FOOTWEAR
+           m_iSupplyCost 0
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{6186DB28F614BF29}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{6186DB280E620DA7}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_iSupplyCost 50
+           m_eRequiredRank CAPTAIN
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6186DB28047A4DDC}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_iSupplyCost 5
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{6186DB28051739ED}" {
+         m_aEntityDataList {
+          SCR_ArsenalItem "{60AAE47ADF734B45}" {
+           m_iSupplyCost 10
+           m_eRequiredRank CORPORAL
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{6134C3327686E717}" {
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{6134C3327B7B1F02}" {
+         m_sEntityPrefab "{E096C6BD45C87B63}Prefabs/Items/PersonalBelongings/PersonalBelongings_USSR.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{6134C3323E6021F8}" {
+           m_eItemType EQUIPMENT
+           m_iSupplyCost 0
+          }
+          SCR_EntityCatalogIdentityItemData "{621AA6323BDEC5DB}" {
+          }
+         }
+        }
+       }
+      }
+      SCR_EntityCatalogMultiListEntry "{64A863E2422F6720}" {
+       m_sIdentifier "Helicopter"
+       m_aEntities {
+        SCR_EntityCatalogInventoryItem "{64A863E24A68BA76}" {
+         m_sEntityPrefab "{FA8556A46D3A6FDA}Prefabs/Weapons/AircraftWeapons/RocketPods/Pod_UB1657.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61B2A217A4D08975}" {
+           m_eItemType HELICOPTER
+           m_eItemMode PYLON
+           m_iSupplyCost 80
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E24DBEE93E}" {
+         m_sEntityPrefab "{38FB8EE4CCACB7EC}Prefabs/Weapons/AircraftWeapons/RocketPods/Pod_UB1657_Loaded_HEDP_S5KO.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61B2A217A4D08975}" {
+           m_eItemType HELICOPTER
+           m_eItemMode PYLON
+           m_iSupplyCost 80
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E24E1A3CE5}" {
+         m_sEntityPrefab "{0D920C0DF31DC4D4}Prefabs/Weapons/AircraftWeapons/RocketPods/Pod_UB1657_Loaded_FRAG_S5MO.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61B2A217A4D08975}" {
+           m_eItemType HELICOPTER
+           m_eItemMode PYLON
+           m_iSupplyCost 80
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E24F519D05}" {
+         m_sEntityPrefab "{EF17BED6DCEE4DE4}Prefabs/Weapons/Ammo/Ammo_Rocket_S5_FRAG_S5MO.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61B2A376C439919C}" {
+           m_eItemType HELICOPTER
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+          }
+         }
+        }
+        SCR_EntityCatalogInventoryItem "{64A863E23077655A}" {
+         m_sEntityPrefab "{EE65544BA845C458}Prefabs/Weapons/Ammo/Ammo_Rocket_S5_HEDP_S5KO.et"
+         m_aEntityDataList {
+          SCR_ArsenalItem "{61B2A376C84F2BCE}" {
+           m_eItemType HELICOPTER
+           m_eItemMode AMMUNITION
+           m_iSupplyCost 5
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+   m_BaseBuildingHQ "{847605BB95F1F066}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/E_Headquarters_S_USSR_01.et"
+  }
+ }
+ m_aRanks {
+  SCR_RankIDCampaign "{5CB0777E83631136}" {
+   m_iRequestCD -1
+   m_iRadioRespawnCooldown 600
+   m_iFastTravelCooldown 3600
+   m_eRadioMsg DEMOTION_RENEGADE
+  }
+  SCR_RankIDCampaign "{5CB0777E828E61F3}" {
+   m_iRequestCD 105
+   m_iRadioRespawnCooldown 45
+   m_iFastTravelCooldown 600
+   m_eRadioMsg PROMOTION_PRIVATE
+  }
+  SCR_RankIDCampaign "{5CB0777E803B7EA2}" {
+   m_iRequestCD 75
+   m_iRadioRespawnCooldown 42
+   m_iFastTravelCooldown 540
+   m_eRadioMsg PROMOTION_CORPORAL
+  }
+  SCR_RankIDCampaign "{5CB0777E8F0E82AF}" {
+   m_iRequestCD 50
+   m_iRadioRespawnCooldown 39
+   m_iFastTravelCooldown 480
+   m_eRadioMsg PROMOTION_SERGEANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8BE66EC2}" {
+   m_iRequestCD 30
+   m_iRadioRespawnCooldown 36
+   m_iFastTravelCooldown 420
+   m_eRadioMsg PROMOTION_LIEUTENANT
+  }
+  SCR_RankIDCampaign "{5CB0777E8AD658D6}" {
+   m_iRequestCD 900
+  }
+  SCR_RankIDCampaign "{5CB0777E88380770}" {
+   m_iRequestCD 900
+  }
+  SCR_RankIDCampaign "{632072CABEC6A838}" {
+   m_iRank COLONEL
+   m_iRequiredXP 3600
+   m_iRequestCD 900
+  }
+  SCR_RankIDCampaign "{632072CABF5C9810}" {
+   m_iRank GENERAL
+   m_iRequiredXP 5000
+   m_iRequestCD 900
+  }
+ }
+}
+ItemPreviewManagerEntity ItemPreviewManagerEntity1 {
+ coords 2078.797 21.999 3582.852
+ PreviewWorld "{4391FE7994EE6FE2}Prefabs/World/Game/InventoryPreviewWorld.et"
+ DefaultRenderAttributes PreviewRenderAttributes "{52EF3E2AF2E07544}" {
+ }
+}
+SCR_MapLocator {
+ coords 12513.596 21.999 4725.464
+ m_WorldDirections SCR_MapLocationQuadHint "{5AAA8B37D1168EEB}" : "{ABA21F381437DFE8}Configs/Map/MapLocatorHints/LocationHintsEveron.conf" {
+ }
+}
+SCR_BaseTaskManager : "{17E3EF2CF455460F}Prefabs/MP/Campaign/CampaignTaskManager.et" {
+ components {
+  SCR_UITaskManagerComponent "{50F6E6982BA1CE0F}" {
+   m_AssignedTaskColor 0.071 0.192 0.561 1
+  }
+ }
+ coords 2099.54 21.999 3590.711
+}
+BasePreloadManager PreloadManager_Campaign1 : "{32BFDCDE99092FCE}Prefabs/World/Game/PreloadManager_Campaign.et" {
+ coords 2106.024 21.999 3593.693
+ PrefabsToPreload {
+  PreloadEntry "{618E8EE22425A91B}" {
+   Prefab "{790EC18FB168E920}Prefabs/Characters/Campaign/Final/CPR_US_Player.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{618E8EE22679BB33}" {
+   Prefab "{69024316ECB38005}Prefabs/Characters/Campaign/Final/CPR_US_Player_AT.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{618E8EE2034BC7C4}" {
+   Prefab "{DCCE76ECB95F5025}Prefabs/Characters/Campaign/Final/CPR_US_Player_Grenadier.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{618E8EE204BD0B42}" {
+   Prefab "{35F704771552BAF1}Prefabs/Characters/Campaign/Final/CPR_US_Player_Medic.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{618E8EE20437CE2F}" {
+   Prefab "{828B0DD9661E1456}Prefabs/Characters/Campaign/Final/CPR_US_Player_Sniper.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{62061C93D9C177AF}" {
+   Prefab "{E3BDF4CDFB758ABA}Prefabs/Characters/Campaign/Final/CPR_US_Player_MG.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{62061C93D9778F4D}" {
+   Prefab "{737B9AB32C3156E3}Prefabs/Characters/Campaign/Final/CPR_US_Player_Pilot.et"
+   FullyPreload 1
+  }
+  PreloadEntry "{62061C93DA8F2B64}" {
+   Prefab "{6B2BBEF75627CDAE}Prefabs/Characters/Campaign/Final/CPR_US_Player_SquadLead.et"
+   FullyPreload 1
+  }
+ }
+}
+SCR_LoadoutManager : "{58FBD035E53D95C1}Prefabs/MP/Campaign/CampaignLoadoutManager.et" {
+ coords 2078.815 21.999 3582.775
+ m_aPlayerLoadouts {
+  SCR_FactionPlayerLoadout "{5690D9DB9BA76597}" {
+   m_sLoadoutResource "{790EC18FB168E920}Prefabs/Characters/Campaign/Final/CPR_US_Player.et"
+  }
+  SCR_FactionPlayerLoadout "{5690D9DB9400735C}" {
+   m_sLoadoutResource "{305087F7627D5B0B}Prefabs/Characters/Campaign/Final/CPR_USSR_Player.et"
+  }
+ }
+}

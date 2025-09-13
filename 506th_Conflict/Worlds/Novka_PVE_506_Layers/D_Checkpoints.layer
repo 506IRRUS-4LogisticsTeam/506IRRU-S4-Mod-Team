@@ -1,0 +1,1122 @@
+$grp GenericEntity : "{25861AD07CEE719B}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_MG_USSR_01_PKM.et" {
+ Medium_Checkpoint {
+  coords 1309.814 27.313 1385.282
+  angleY -34.41
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint13 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint2 {
+  coords 1406.68 27.063 1075.809
+  angleY -173.959
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint2 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint3 {
+  coords 1700.301 66.73 1401.101
+  angleY 90.363
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint3 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint4 {
+  coords 283.077 66.076 2097.722
+  angleX 5.982
+  angleY 152.121
+  angleZ -0.137
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint4 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint5 {
+  coords 464.472 79.063 2292.708
+  angleX 6.292
+  angleY 78.194
+  angleZ -0.403
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint5 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint6 {
+  coords 2497.813 294.625 2225.274
+  angleY 147.321
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint6 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint7 {
+  coords 2367.478 294.622 2373.6
+  angleX -4.554
+  angleY -79.965
+  angleZ 0.101
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint7 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint8 {
+  coords 1668.473 151.915 2218.535
+  angleX -0.895
+  angleY 179.718
+  angleZ 0.004
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint8 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint9 {
+  coords 1671.099 157.167 2301.675
+  angleX 9.186
+  angleY 11.445
+  angleZ -1.201
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint9 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint10 {
+  coords 1498.295 48.809 1737.755
+  angleX 0.273
+  angleY -169.724
+  angleZ -0.4
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint10 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+ Medium_Checkpoint11 {
+  coords 1085.699 66.496 2051.913
+  angleY -19.667
+  {
+   GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+    coords -2.328 -0.008 -5.218
+    angleY 88.452
+   }
+   GenericEntity : "{3CD490132ECE6645}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_03.et" {
+    coords 8.863 -0.007 -5.864
+    angleY -168.835
+   }
+   StaticModelEntity : "{830C68F808E00B67}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_04.et" {
+    coords 6.837 -0.007 -5.856
+    angleY 0.345
+   }
+   GenericEntity AI_checkpoint11 : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    coords 2.99 -0.008 -4.146
+    angleY -89.289
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+      CompletionRadius 10
+     }
+    }
+   }
+   GenericEntity : "{9C29AB1512EB4F65}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Sign_USSR_01.et" {
+    coords 6.789 -0.008 -6.827
+    angleY -173.422
+   }
+   GenericEntity : "{B51CE80A9EEF7E00}Prefabs/Compositions/Misc/SubCompositions/Sandbag_Barricade_USSR_01.et" {
+    coords 9.053 0.157 -1.801
+    angleY 92.031
+   }
+   GenericEntity : "{B7C23E31A53C10D4}Prefabs/Structures/Signs/Military/Signpost_01/Signpost_01_base.et" {
+    coords 1.03 -0.037 -3.18
+    angleY 137.169
+    scale 0.58
+   }
+   GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+    coords 8.807 -0.007 -2.876
+    angleY -88.715
+   }
+   $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+    {
+     coords 1.475 -0.007 1.26
+     angleY 22.964
+    }
+    {
+     coords 5.227 0.012 -7.486
+     angleY -150.938
+    }
+   }
+   $grp GenericEntity : "{F3DE8994BAE6915A}Prefabs/Compositions/Misc/FreeRoamBuilding/CzechHedgehogPainted_S_01.et" {
+    {
+     coords 8.093 0 0.921
+     angleY 137.169
+    }
+    {
+     coords 1.593 0 0.745
+     angleY 109.387
+    }
+    {
+     coords -1.82 0 0.985
+     angleY 57.35
+    }
+    {
+     coords 11.142 0 -0.378
+     angleY -32.787
+    }
+   }
+   GenericEntity : "{FFCC4633E6D7A40F}Prefabs/Structures/Military/CamoNets/FIA/CamoNet_AmmoCache_FIA_01.et" {
+    coords 0.086 1.144 -1.988
+    angleY -80.824
+    scale 2.22
+   }
+  }
+ }
+}
+GenericEntity Large_Checkpoint : "{B547CF929FCC6BB7}Prefabs/Props/Military/Sandbags/Sandbag_01_end_high_burlap.et" {
+ coords 334.104 64.776 2304.268
+ angleX -5.289
+ angleY 170.908
+ angleZ 0.845
+ {
+  $grp GenericEntity : "{21D83950DF36F250}Prefabs/Props/Military/Sandbags/Sandbag_01_long_burlap.et" {
+   {
+    coords 9.174 2.501 -1.734
+    angleY 88.381
+   }
+   {
+    coords 6.302 2.501 -1.814
+    angleY 88.381
+   }
+  }
+  $grp StaticModelEntity : "{2AD330CAD22BE0AC}Prefabs/Compositions/Misc/CustomEntities/DestructionEntities/CzechHedgehog_01_painted_CompositionDestruction.et" {
+   {
+    coords 5.201 0.072 0.941
+    angleY 133.542
+   }
+   {
+    coords -0.064 0.072 0.963
+    angleY 51.532
+   }
+   {
+    coords 9.025 0.072 1.17
+    angleY -7.381
+   }
+  }
+  $grp StaticModelEntity : "{39F7EE885940DC8F}Prefabs/Structures/Military/Fortifications/DirtCover_01/DirtCover_01_long_v1.et" {
+   {
+    coords -0.687 0.16 0.301
+    angleY 178.539
+    scale 0.83
+   }
+   {
+    coords 5.697 -0.055 -1.971
+    angleY 91.457
+   }
+  }
+  $grp StaticModelEntity : "{55A3DA68E58453A1}Prefabs/Structures/Military/Fortifications/DirtCover_01/DirtCover_01_long_v2.et" {
+   {
+    coords 8.141 0.16 0.297
+    angleY -177.28
+   }
+   {
+    coords 6.095 0.16 0.379
+    angleY -177.28
+   }
+   {
+    coords 9.802 0.16 -1.25
+    angleY 88.255
+   }
+   {
+    coords 9.958 0.16 -4.57
+    angleY 88.255
+   }
+   {
+    coords 10.162 0.013 -10.751
+    angleY 88.255
+   }
+   {
+    coords 8.875 0.041 -12.768
+    angleY 178.182
+   }
+   {
+    coords 10.134 0.013 -7.748
+    angleY 90.179
+   }
+   {
+    coords -0.944 0.079 -13.49
+    angleY 85.214
+   }
+   {
+    coords -1.219 0.079 -10.189
+    angleY 85.214
+   }
+   {
+    coords -1.39 0.079 -7.171
+    angleY 85.214
+   }
+   {
+    coords -1.56 0.079 -3.992
+    angleY 85.214
+   }
+   {
+    coords -1.666 0.079 -1.197
+    angleY 85.214
+   }
+  }
+  StaticModelEntity : "{6690240104059C0C}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_05.et" {
+   coords 8.629 0.134 -6.076
+   angleY -90.922
+  }
+  GenericEntity : "{6ECA676DAF20F6B3}PrefabLibrary/Props/Military/ObstacleBridge_01_start.et" {
+   coords 8.731 0.034 -7.371
+   angleY 178.386
+   scale 1.07
+  }
+  GenericEntity : "{8C73F42FBAB6D9D7}Prefabs/Compositions/Misc/SubCompositions/Sandbag_MG_USSR_02.et" {
+   coords 7.583 2.449 -0.631
+   angleY -91.896
+  }
+  GenericEntity AI_checkpoint : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+   coords 3.927 1.067 -6.956
+   angleY 133.542
+   {
+    SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+     coords 0 0 0
+     CompletionRadius 10
+    }
+   }
+  }
+  $grp GenericEntity : "{9C9C4BED9E19C374}Prefabs/Props/Military/Sandbags/Sandbag_01_wall_solid_burlap.et" {
+   {
+    coords 9.612 0.777 -4.032
+    angleY 89.787
+   }
+   {
+    coords 9.604 0.777 -1.766
+    angleY 89.787
+   }
+   {
+    coords 9.621 0.777 -6.45
+    angleY 89.787
+   }
+   {
+    coords 6.101 0.777 -3.994
+    angleY 89.787
+   }
+  }
+  GenericEntity : "{B547CF929FCC6BB7}Prefabs/Props/Military/Sandbags/Sandbag_01_end_high_burlap.et" {
+   coords 5.133 -0.025 0.109
+   angleY 179.349
+  }
+  $grp GenericEntity : "{BE16EE8FAA315FE2}Prefabs/Props/Military/Sandbags/Sandbag_01_long_high_burlap.et" {
+   {
+    coords 9.627 0.04 -7.922
+    angleY -89.377
+   }
+   {
+    coords 9.633 0.04 -5.035
+    angleY 89.822
+   }
+   {
+    coords -1.332 -0.001 -1.104
+    angleY 86.17
+   }
+   {
+    coords -1.123 -0.001 -4.231
+    angleY 86.17
+   }
+   {
+    coords -0.91 -0.001 -7.397
+    angleY 86.17
+   }
+   {
+    coords 9.563 0.04 -10.732
+    angleY -92.309
+   }
+   {
+    coords 8.565 0.04 -12.722
+    angleY -2.796
+   }
+   {
+    coords -0.702 -0.001 -10.498
+    angleY 86.17
+   }
+   {
+    coords -0.493 -0.001 -13.625
+    angleY 86.17
+   }
+   {
+    coords 9.625 0.04 -2.006
+    angleY 89.822
+   }
+   {
+    coords 6.123 0.04 -4.997
+    angleY 89.822
+   }
+  }
+  GenericEntity : "{BE384DC07D8C8250}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_USSR_03.et" {
+   coords 7.926 0.159 -11.791
+   angleY -2.331
+  }
+  $grp GenericEntity : "{C1977A326F2AA011}Prefabs/Structures/Signs/Military/SignCheckpoint_01_stop.et" {
+   {
+    coords 4.307 0.16 1.097
+    angleY -15.735
+   }
+   {
+    coords 0.45 0.16 1.422
+    angleY 26.913
+   }
+  }
+  $grp GenericEntity : "{CC5453CCC311603B}Prefabs/Props/Military/Sandbags/Sandbag_01_end_burlap.et" {
+   {
+    coords 8.66 2.463 -0.207
+    angleY 0.312
+   }
+   {
+    coords 6.959 2.463 -0.167
+    angleY -179.75
+   }
+  }
+  $grp GenericEntity : "{CC66836BF4E211F9}Prefabs/Props/Military/Camps/Duckboard_01.et" {
+   {
+    coords 7.744 2.713 -1.829
+    angleY 89.989
+   }
+   {
+    coords 7.75 2.713 -2.922
+    angleY 89.989
+   }
+   {
+    coords 7.75 2.713 -4.088
+    angleY 89.989
+   }
+  }
+  GenericEntity : "{F0EC223F2A1094C0}Prefabs/Props/Military/Sandbags/Sandbag_01_bunker_burlap.et" {
+   coords 7.749 0.16 -1.594
+   angleY -0.332
+  }
+  $grp StaticModelEntity : "{F43FAE9F755C5655}PrefabLibrary/Props/Military/CzechHedgehog_01_painted.et" {
+   {
+    coords -2.53 0.053 -1.702
+    angleY -111.845
+   }
+   {
+    coords -2.358 0.053 -5.002
+    angleY -166.175
+   }
+  }
+  GenericEntity : "{FEA6D4F59C34A6C4}PrefabLibrary/Props/Military/PalletFuel_01.et" {
+   coords -0.099 0.034 -1.568
+   angleY 179.396
+  }
+  $grp SCR_DestructibleBuildingEntity : "{FFDC9C8026E15E29}Prefabs/Structures/Industrial/Repair/RampVehicle_01/RampVehicle_01_concrete.et" {
+   {
+    coords 2.803 0.16 -8.225
+    angleY -1.593
+   }
+   {
+    coords 2.837 0.16 -8.351
+    angleY 178.703
+   }
+  }
+ }
+}

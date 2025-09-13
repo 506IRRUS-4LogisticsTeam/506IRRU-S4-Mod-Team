@@ -1,0 +1,149 @@
+$grp GenericEntity : "{27941CDF3E7E1A5F}Prefabs/MP/Campaign/CampaignRemnantsSupplyDepot.et" {
+ SupplyDepo {
+  coords 465.907 98.097 1909.046
+  angleX 7.058
+  angleY 107.74
+  angleZ 1.319
+  {
+   GenericEntity : "{22D2EFA80AC9DBD0}Prefabs/Compositions/Slotted/SlotFlatSmall/SupplyCache_S_FIA_03.et" {
+    coords 4.65 0 0.979
+    angleY -91.538
+   }
+   GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    components {
+     SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+      m_eGroupType SQUAD_RIFLE
+      m_iGroupMultiplier 2
+     }
+    }
+    coords -1.221 0 -2.301
+    angleY -90.797
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+     }
+    }
+   }
+   GenericEntity : "{C63BFEEA9DE1CF26}Prefabs/MP/Campaign/SupplyDepots/SupplyCache_S_FIA_05_Campaign.et" {
+    coords -7.997 -0.001 -0.168
+    angleY -89.26
+   }
+  }
+ }
+ SupplyDepo2 {
+  coords 2453.135 97.835 1185.571
+  angleX 10.423
+  angleY -31.9
+  angleZ -3.337
+  {
+   GenericEntity : "{22D2EFA80AC9DBD0}Prefabs/Compositions/Slotted/SlotFlatSmall/SupplyCache_S_FIA_03.et" {
+    coords 4.65 0 0.979
+    angleY -91.538
+   }
+   GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    components {
+     SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+      m_eGroupType SQUAD_RIFLE
+      m_iGroupMultiplier 2
+     }
+    }
+    coords -1.221 0 -2.301
+    angleY -90.797
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+     }
+    }
+   }
+   GenericEntity : "{C63BFEEA9DE1CF26}Prefabs/MP/Campaign/SupplyDepots/SupplyCache_S_FIA_05_Campaign.et" {
+    coords -7.997 -0.001 -0.168
+    angleY -89.26
+   }
+  }
+ }
+ SupplyDepo3 {
+  coords 2258.885 109.88 1640.803
+  angleX -3.613
+  angleY 44.738
+  angleZ 0.016
+  {
+   GenericEntity : "{22D2EFA80AC9DBD0}Prefabs/Compositions/Slotted/SlotFlatSmall/SupplyCache_S_FIA_03.et" {
+    coords 4.65 0 0.979
+    angleY -91.538
+   }
+   GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    components {
+     SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+      m_eGroupType SQUAD_RIFLE
+      m_iGroupMultiplier 2
+     }
+    }
+    coords -1.221 0 -2.301
+    angleY -90.797
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+     }
+    }
+   }
+   GenericEntity : "{C63BFEEA9DE1CF26}Prefabs/MP/Campaign/SupplyDepots/SupplyCache_S_FIA_05_Campaign.et" {
+    coords -7.997 -0.001 -0.168
+    angleY -89.26
+   }
+  }
+ }
+ SupplyDepo4 {
+  coords 2283.681 298.777 2208.638
+  angleX -1.708
+  angleY 106.818
+  angleZ -3.184
+  {
+   GenericEntity : "{22D2EFA80AC9DBD0}Prefabs/Compositions/Slotted/SlotFlatSmall/SupplyCache_S_FIA_03.et" {
+    coords 4.65 0 0.979
+    angleY -91.538
+   }
+   GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    components {
+     SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+      m_eGroupType SQUAD_RIFLE
+      m_iGroupMultiplier 2
+     }
+    }
+    coords -1.221 0 -2.301
+    angleY -90.797
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+     }
+    }
+   }
+  }
+ }
+ SupplyDepo5 {
+  coords 1049.853 15.023 751.523
+  angleX -3.47
+  angleY 61.184
+  angleZ -1.007
+  {
+   GenericEntity : "{22D2EFA80AC9DBD0}Prefabs/Compositions/Slotted/SlotFlatSmall/SupplyCache_S_FIA_03.et" {
+    coords 4.65 0 0.979
+    angleY -91.538
+   }
+   GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+    components {
+     SCR_AmbientPatrolSpawnPointComponent "{5CCEC6036BBF3EDD}" {
+      m_eGroupType SQUAD_RIFLE
+      m_iGroupMultiplier 2
+     }
+    }
+    coords -1.221 0 -2.301
+    angleY -90.797
+    {
+     SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+      coords 0 0 0
+     }
+    }
+   }
+  }
+ }
+}

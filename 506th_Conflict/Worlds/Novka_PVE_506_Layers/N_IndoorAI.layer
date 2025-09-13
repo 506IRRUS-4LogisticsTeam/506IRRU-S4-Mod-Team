@@ -1,0 +1,429 @@
+GenericEntity Bunker : "{C72F956E4AC6A6E7}Prefabs/Systems/ScenarioFramework/Components/Area.et" {
+ components {
+  SCR_ScenarioFrameworkArea "{59E8CDC50969206E}" {
+   m_bShowDebugShapesInWorkbench 1
+   m_iDynamicDespawnRange 10
+   m_sTriggerResource "{9DB5EBFFEC1A54B4}Prefabs/Systems/ScenarioFramework/Triggers/TriggerAnyPlayerSlow.et"
+   m_fAreaRadius 100
+   m_aTriggerActions {
+    SCR_ScenarioFrameworkActionSpawnObjects "{65A6D895367C89F8}" {
+     m_aNameOfObjectsToSpawnOnActivation {
+      "Layer251"
+     }
+    }
+   }
+  }
+ }
+ coords 2700.988 468.386 2541.108
+ {
+  GenericEntity Layer251 : "{5F9FFF4BF027B3A3}Prefabs/Systems/ScenarioFramework/Components/Layer.et" {
+   components {
+    SCR_ScenarioFrameworkLayerBase "{5A2283EA2A0B4B14}" {
+     m_SpawnChildren RANDOM_MULTIPLE
+     m_eActivationType ON_TRIGGER_ACTIVATION
+    }
+   }
+   coords 0 0 0
+   {
+    $grp GenericEntity : "{8D43830F02C3F114}Prefabs/Systems/ScenarioFramework/Components/SlotAI.et" {
+     SlotAI1 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 9.109 0.108 -6.806
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI3 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 13.35 0.44 -15.1
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI4 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 27.558 0.439 -19.682
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI5 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 34.136 0.441 -14.519
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI6 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 27.195 0.441 -30.125
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI7 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 34.977 0.438 -35.843
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI8 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 39.54 0.44 -36.796
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI9 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 38.011 0.441 -38.404
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI10 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 46.652 0.441 -30.867
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI11 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 48.034 0.44 -19.456
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI12 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 52.761 0.428 -15.791
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI13 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 60.903 0.436 -23.713
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI14 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 58.596 0.441 -20.839
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI15 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 60.048 0.439 -32.262
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI16 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 67.245 0.441 -37.873
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI17 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 62.329 0.659 -44.411
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI18 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 66.243 0.428 -49.653
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI19 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 57.168 0.672 -45.341
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI20 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 47.883 0.672 -38.048
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI21 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 45.96 0.672 -45.329
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI22 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 52.646 0.672 -49.929
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI23 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 50.583 0.672 -52.648
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI24 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 52.529 0.672 -34.059
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI25 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 56.803 0.672 -36.193
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI26 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 57.374 0.672 -38.148
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI27 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 56.34 0.672 -35.76
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI28 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 69.178 0.433 -46.837
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI29 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 41.521 0.433 -26.711
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI30 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 38.76 0.441 -24.194
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI31 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 37.055 0.44 -20.882
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI32 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords -1.909 -0.004 -1.69
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI33 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 1.282 -0.004 1.86
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+     SlotAI34 {
+      components {
+       SCR_ScenarioFrameworkSlotAI "{5A26B3E02AC77BA0}" {
+        m_sFactionKey "FIA"
+        m_sObjectToSpawn "{84B40583F4D1B7A3}Prefabs/Characters/Factions/INDFOR/FIA/Character_FIA_Rifleman.et"
+       }
+      }
+      coords 40.578 0.438 -11.515
+      angleX -0.756
+      angleY 6.154
+      angleZ -0.369
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,570 @@
+$grp GenericEntity : "{9273AB931008C271}Prefabs/Systems/AmbientPatrol/AmbientPatrolSpawnpoint_FIA.et" {
+ AI_Afgan {
+  coords 599.451 6.084 1000.281
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Afgan2 {
+  coords 553.114 5.988 954.506
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Dam {
+  coords 1737.453 78.717 1424.831
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kas {
+  coords 1300.954 2.338 313.526
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Key {
+  coords 2651.353 479.507 2457.413
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Key2 {
+  coords 2664.208 469.097 2575.547
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kow {
+  coords 1347.263 226.119 2432.359
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ova {
+  coords 430.854 94 1776.554
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Radar {
+  coords 293.568 66.016 2339.484
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_RussianOut {
+  coords 1722.025 160.806 2272.799
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_RussianOut2 {
+  coords 1695.699 155.405 2227.286
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_RussianOut3 {
+  coords 1724.137 159.245 2215.907
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_RussianOut4 {
+  coords 1756.912 165.054 2187.641
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Saw {
+  coords 1175.014 69.557 1983.298
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Saw2 {
+  coords 1116.298 69.131 2017.206
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Tja {
+  coords 2050.873 81.37 869.072
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_TKInter {
+  coords 945.661 4.463 1357.077
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Bre {
+  coords 2197.054 134.41 1047.973
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Ma {
+  coords 1569.71 137.141 1415.292
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Ma2 {
+  coords 1570.472 137.142 1415.128
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Ma3 {
+  coords 1569.396 137.138 1415.916
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Church {
+  coords 1433.38 124.833 2061.047
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Church2 {
+  coords 1456.239 125.02 2059.579
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Church3 {
+  coords 1452.843 125.02 2060.191
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Church4 {
+  coords 1501.224 134.567 2048.815
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo {
+  coords 414.124 6.979 512.518
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo2 {
+  coords 377.977 7.601 522.07
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo3 {
+  coords 434.415 5.999 551.768
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo4 {
+  coords 461.538 5.759 523.776
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo5 {
+  coords 432.932 6.102 475.208
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo6 {
+  coords 378.323 7.987 483.88
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Cargo7 {
+  coords 463.628 5.493 490.906
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little {
+  coords 1552.443 58.843 705.238
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little2 {
+  coords 1561.422 57.344 675.101
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little3 {
+  coords 1493.197 60.263 632.841
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little4 {
+  coords 1535.217 54.005 626.705
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little5 {
+  coords 1479.236 67.365 687.849
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Lighthouse {
+  coords 1002.687 12.987 213.64
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ireska {
+  coords 2383.011 94.54 1663.551
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ova2 {
+  coords 332.548 103.389 1784.246
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ova3 {
+  coords 338.01 95.788 1793.826
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ova4 {
+  coords 380.254 92.684 1778.979
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Radar2 {
+  coords 350.994 71.189 2446.565
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Radar3 {
+  coords 258.024 66.932 2415.185
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Radar4 {
+  coords 311.816 69.133 2404.983
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Radar5 {
+  coords 291.812 63.525 2293.716
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kow2 {
+  coords 1301.601 211.568 2396.13
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kow3 {
+  coords 1294.064 212.083 2433.619
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kow4 {
+  coords 1299.119 212.592 2425.665
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Saw3 {
+  coords 1140.527 70.078 1994.7
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_TKInter2 {
+  coords 948.45 4.463 1410.055
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_TKInter3 {
+  coords 1067.011 4.463 1480.85
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_TKInter4 {
+  coords 1170.64 16.522 1433.576
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_TKInter5 {
+  coords 1167.722 4.527 1434.804
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ireska2 {
+  coords 2476.961 87.368 1660.757
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ireska3 {
+  coords 2534.599 112.158 1667.959
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Ireska4 {
+  coords 2430.195 76.633 1580.4
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Kas2 {
+  coords 1204.448 12.194 283.442
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Lighthouse2 {
+  coords 1050.199 10.781 237.88
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Lighthouse3 {
+  coords 986.577 14.505 313.165
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Lighthouse4 {
+  coords 1033.882 12.115 343.024
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Key3 {
+  coords 2700.089 492.156 2508.387
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Key4 {
+  coords 2708.029 491.868 2466.262
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Key5 {
+  coords 2672.474 487.617 2487.444
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Dam5 {
+  coords 1739.901 66.613 1384.41
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Dam4 {
+  coords 1735.689 66.713 1421.471
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Dam3 {
+  coords 1776.004 67.69 1417.889
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Dam2 {
+  coords 1776.546 75.288 1417.026
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Relay_Little6 {
+  coords 1511.604 64.084 729.668
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Tja2 {
+  coords 2320.248 80.401 894.514
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+ AI_Tja3 {
+  coords 2301.287 75.698 877.774
+  {
+   SCR_DefendWaypoint : "{93291E72AC23930F}Prefabs/AI/Waypoints/AIWaypoint_Defend.et" {
+    coords 0 0 0
+   }
+  }
+ }
+}
