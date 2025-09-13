@@ -5,6 +5,9 @@ modded class SCR_CharacterDamageManagerComponent
 {
 	// Public invoker for other scripts
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
+	
+	// Reference to ACE Medical pain hitzone
+	protected ACE_Medical_PainHitZone m_pPainHitZone;
 
 	//------------------------------------------------------------------------------------------------
 	protected void DebugPrint(string msg)
@@ -142,6 +145,49 @@ modded class SCR_CharacterDamageManagerComponent
 			isBleedingOut = false;
 			timeRemaining = -1.0;
 			totalTime = IRRU_NoInstantDeathSettings.GetBleedoutTime(); // Get from settings
+		}
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	void ACE_Medical_SetPainHitZone(ACE_Medical_PainHitZone hz)
+	{
+		m_pPainHitZone = hz;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	override ACE_Medical_PainHitZone ACE_Medical_GetPainHitZone()
+	{
+		return m_pPainHitZone;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	override bool ACE_Medical_IsInPain()
+	{
+		if (!m_pPainHitZone)
+			return false;
+		
+		return m_pPainHitZone.GetDamageState() != EDamageState.UNDAMAGED;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	override float ACE_Medical_GetPainIntensity()
+	{
+		if (!m_pPainHitZone)
+			return 0.0;
+		
+		float painHealth = m_pPainHitZone.GetHealthScaled();
+		return 1.0 - painHealth;
+	}
+	
+	//------------------------------------------------------------------------------------------------
+	override void ArmorHitEventDamage(EDamageType type, float damage, IEntity instigator)
+	{
+		super.ArmorHitEventDamage(type, damage, instigator);
+		
+		if (m_pPainHitZone)
+		{
+			float painScale = 1.5;
+			m_pPainHitZone.HandleDamage(damage * painScale, type, instigator);
 		}
 	}
 
