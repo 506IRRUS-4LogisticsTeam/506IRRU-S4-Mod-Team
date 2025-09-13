@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{A242612865F2A48F}Prefabs/MP/Managers/Factions/FactionManager_Base.et"
+ Name "{9DB5EBFFEC1A54B4}Prefabs/Systems/ScenarioFramework/Triggers/TriggerAnyPlayerSlow.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
