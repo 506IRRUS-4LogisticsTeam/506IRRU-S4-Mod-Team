@@ -44,18 +44,37 @@ class IRRU_NoInstantDeathSettings
 	{
 		if (!s_Instance)
 		{
-			// Try to load from config file
-			Resource holder = BaseContainerTools.LoadContainer("{7E9D8A65E020E49C}Configs/NoInstantDeath_Settings.conf");
-			if (holder)
+			// Try to load from config file with proper null checks
+			Resource holder = BaseContainerTools.LoadContainer("{7E9D8A65E020E49C}Configs/IRRU_NoInstantDeathSettings.conf");
+			if (!holder)
+			{
+				Print("[NoInstantDeath][CFG] WARNING: Config file not found at Configs/IRRU_NoInstantDeathSettings.conf");
+			}
+			else if (!holder.GetResource())
+			{
+				Print("[NoInstantDeath][CFG] WARNING: Config file found but resource is null");
+			}
+			else
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
-				s_Instance = IRRU_NoInstantDeathSettings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
+				if (!container)
+				{
+					Print("[NoInstantDeath][CFG] WARNING: Failed to convert resource to BaseContainer");
+				}
+				else
+				{
+					s_Instance = IRRU_NoInstantDeathSettings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
+					if (!s_Instance)
+					{
+						Print("[NoInstantDeath][CFG] WARNING: Failed to create instance from container - class name mismatch?");
+					}
+				}
 			}
-			
-			// Create default if config not found
+
+			// Create default if config not found or failed to load
 			if (!s_Instance)
 			{
-				Print(string.Format("[NoInstantDeath][CFG] Config settings not found! :O"));
+				Print("[NoInstantDeath][CFG] Creating default configuration");
 				s_Instance = new IRRU_NoInstantDeathSettings();
 				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
 				s_Instance.m_bDebugEnabled = true;   // Default debug on

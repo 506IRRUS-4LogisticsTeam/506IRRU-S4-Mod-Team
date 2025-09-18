@@ -7,8 +7,10 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 {
 	protected static CustomNamesNetworkEntity s_Instance;
 	protected ref CustomNamesManager m_CustomNamesManager;
+	protected bool m_bPeriodicSyncActive = false;
 
 	protected const int MAX_SYNC_ENTRIES_PER_RPC = 200;
+	protected const int PERIODIC_SYNC_INTERVAL_MS = 10000; // Sync every 10 seconds
 
 	//------------------------------------------------------------------------------------------------
 	override void OnGameModeStart()
@@ -22,6 +24,11 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 			if (!m_CustomNamesManager)
 			{
 				Print("[CustomNames] Failed to initialize CustomNamesManager", LogLevel.ERROR);
+			}
+			else
+			{
+				// Start periodic synchronization for all connected players
+				StartPeriodicSync();
 			}
 		}
 	}
@@ -179,8 +186,91 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		{
 			Rpc(RpcAll_ReceiveAllCustomNames, playerIds, names);
 		}
+
+		// Schedule periodic sync to ensure all names stay updated
+		GetGame().GetCallqueue().CallLater(SendPeriodicSync, 5000, false, playerId);
 	}
-	
+
+	//------------------------------------------------------------------------------------------------
+	void StartPeriodicSync()
+	{
+		if (!Replication.IsServer() || m_bPeriodicSyncActive) return;
+
+		m_bPeriodicSyncActive = true;
+		GetGame().GetCallqueue().CallLater(PeriodicSyncAllNames, PERIODIC_SYNC_INTERVAL_MS, true);
+		Print("[CustomNames] Started periodic synchronization system", LogLevel.NORMAL);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	void PeriodicSyncAllNames()
+	{
+		if (!Replication.IsServer()) return;
+
+		CustomNamesManager mgr = m_CustomNamesManager;
+		if (!mgr)
+			mgr = CustomNamesManager.GetInstance();
+		if (!mgr) return;
+
+		PlayerManager playerManager = GetGame().GetPlayerManager();
+		if (!playerManager) return;
+
+		array<int> allPlayers = {};
+		playerManager.GetPlayers(allPlayers);
+
+		// Build list of all custom names to broadcast
+		array<int> playerIds = {};
+		array<string> names = {};
+
+		foreach (int pId : allPlayers)
+		{
+			string customName = mgr.GetCustomName(pId);
+			if (!customName.IsEmpty())
+			{
+				playerIds.Insert(pId);
+				names.Insert(customName);
+
+				if (playerIds.Count() >= MAX_SYNC_ENTRIES_PER_RPC)
+				{
+					Rpc(RpcAll_ReceiveAllCustomNames, playerIds, names);
+					playerIds.Clear();
+					names.Clear();
+				}
+			}
+		}
+
+		if (playerIds.Count() > 0)
+		{
+			Rpc(RpcAll_ReceiveAllCustomNames, playerIds, names);
+		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	void SendPeriodicSync(int targetPlayerId)
+	{
+		if (!Replication.IsServer()) return;
+
+		CustomNamesManager mgr = m_CustomNamesManager;
+		if (!mgr)
+			mgr = CustomNamesManager.GetInstance();
+		if (!mgr) return;
+
+		PlayerManager playerManager = GetGame().GetPlayerManager();
+		if (!playerManager) return;
+
+		array<int> allPlayers = {};
+		playerManager.GetPlayers(allPlayers);
+
+		// Broadcast all active custom names to ensure sync
+		foreach (int pId : allPlayers)
+		{
+			string customName = mgr.GetCustomName(pId);
+			if (!customName.IsEmpty())
+			{
+				Rpc(RpcAll_UpdateCustomName, pId, customName);
+			}
+		}
+	}
+
 	//------------------------------------------------------------------------------------------------
 	void OnPlayerConnectedWithRetry(int playerId, int attemptNumber = 0)
 	{
@@ -208,13 +298,18 @@ class CustomNamesNetworkEntity : SCR_BaseGameModeComponent
 		
 		if (!identityId.IsEmpty())
 		{
+			// First, send all existing custom names to the newly connected player
 			GetGame().GetCallqueue().CallLater(SendAllCustomNamesToClient, 500, false, playerId);
-			
+
 			string customName = mgr.GetCustomNameByUID(identityId);
 			if (!customName.IsEmpty())
 			{
+				// Restore the player's custom name locally on server
 				mgr.UpdateCustomNameLocal(playerId, customName);
+				// Broadcast this player's custom name to ALL connected players
 				GetGame().GetCallqueue().CallLater(BroadcastNameDelayed, 1000, false, playerId, customName);
+				// Send additional broadcast after a delay to ensure all clients receive it
+				GetGame().GetCallqueue().CallLater(BroadcastNameDelayed, 3000, false, playerId, customName);
 				SendNameRestorationNotification(playerId, customName);
 			}
 			else
