@@ -107,6 +107,34 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	}
 
 	//------------------------------------------------------------------------------------------------
+	//! Helper method to get health status color based on percentage
+	protected Color GetHealthStatusColor(float healthPercent)
+	{
+		if (healthPercent >= 75)
+			return Color.FromSRGBA(255, 255, 0, 255); // Yellow
+		else if (healthPercent >= 50)
+			return Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange
+		else if (healthPercent >= 34)
+			return Color.FromSRGBA(255, 150, 0, 255); // Orange
+		else
+			return Color.FromSRGBA(255, 0, 0, 255); // Red
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Helper method to get blood status color based on percentage
+	protected Color GetBloodStatusColor(float bloodPercent)
+	{
+		if (bloodPercent >= 60)
+			return Color.FromSRGBA(255, 255, 0, 255); // Yellow
+		else if (bloodPercent >= 40)
+			return Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange
+		else if (bloodPercent >= 34)
+			return Color.FromSRGBA(255, 150, 0, 255); // Orange
+		else
+			return Color.FromSRGBA(255, 0, 0, 255); // Red
+	}
+
+	//------------------------------------------------------------------------------------------------
 	//! Gather and update data of target character into widget - MODIFIED FOR PERCENTAGES AND TIMER
 	override protected void UpdateWidgetData()
 	{
@@ -144,44 +172,73 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		                                   hasResilience, bleedingRateMLs, isUnconscious,
 		                                   bleedoutTimeRemaining, isBleedingOut);
 		
-		// Format the display texts with exact percentages
-		string damageIntensityText = string.Format("Health: %1%%", Math.Round(healthPercent));
+		// Format the display texts with descriptive health status
+		string damageIntensityText;
 		string damageIntensity = ""; // Icon name
-		
-		// Determine icon based on health
+
+		// Determine health status description and icon (5 levels)
 		int damageIntensityLevel = 0;
-		if (healthPercent < 10)
+		if (healthPercent >= 100)
 		{
-			damageIntensityLevel = 4;
-			damageIntensity = "Wound_4_UI";
+			damageIntensityText = "Healthy";
+			damageIntensityLevel = 0;
+			// No icon for healthy state
 		}
-		else if (healthPercent < 25)
+		else if (healthPercent >= 75)
 		{
-			damageIntensityLevel = 3;
-			damageIntensity = "Wound_3_UI";
-		}
-		else if (healthPercent < 50)
-		{
-			damageIntensityLevel = 2;
-			damageIntensity = "Wound_2_UI";
-		}
-		else if (healthPercent < 75)
-		{
+			damageIntensityText = "Minor injuries";
 			damageIntensityLevel = 1;
 			damageIntensity = "Wound_1_UI";
 		}
+		else if (healthPercent >= 50)
+		{
+			damageIntensityText = "Wounded";
+			damageIntensityLevel = 2;
+			damageIntensity = "Wound_2_UI";
+		}
+		else if (healthPercent >= 34)
+		{
+			damageIntensityText = "Badly wounded";
+			damageIntensityLevel = 3;
+			damageIntensity = "Wound_3_UI";
+		}
+		else
+		{
+			damageIntensityText = "Severely wounded";
+			damageIntensityLevel = 4;
+			damageIntensity = "Wound_4_UI";
+		}
 		
-		// Format bleeding text with exact percentages
+		// Format bleeding text with descriptive blood loss status (4 levels)
 		string bleedingIntensityText;
+		string bloodStatus;
+
+		if (bloodPercent >= 60)
+		{
+			bloodStatus = "Lost some blood";
+		}
+		else if (bloodPercent >= 40)
+		{
+			bloodStatus = "Lost a lot of blood";
+		}
+		else if (bloodPercent >= 34)
+		{
+			bloodStatus = "Massive blood loss";
+		}
+		else
+		{
+			bloodStatus = "Critical blood loss";
+		}
+
 		if (bleedingRateMLs > 0.1)
 		{
-			bleedingIntensityText = string.Format("Blood: %1%% (-%2 ml/s)", 
-			                                      Math.Round(bloodPercent), 
+			bleedingIntensityText = string.Format("%1 (-%2 ml/s)",
+			                                      bloodStatus,
 			                                      Math.Round(bleedingRateMLs * 10) / 10);
 		}
 		else
 		{
-			bleedingIntensityText = string.Format("Blood: %1%%", Math.Round(bloodPercent));
+			bleedingIntensityText = bloodStatus;
 		}
 		
 		// Add unconscious state and timer to name if applicable
@@ -201,22 +258,18 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				// Check if we should use descriptive or exact timer
 				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 				{
-					// Generate descriptive text based on time remaining
-					if (percentRemaining > 80)
-						timeText = "STABLE";
-					else if (percentRemaining > 66)
-						timeText = "SERIOUS";
+					// Generate descriptive text based on time remaining - 5 level system
+					if (percentRemaining > 70)
+						timeText = "DELAYED";
 					else if (percentRemaining > 50)
-						timeText = "DETERIORATING";
-					else if (percentRemaining > 33)
+						timeText = "PRIORITY";
+					else if (percentRemaining > 30)
 						timeText = "URGENT";
-					else if (percentRemaining > 20)
+					else if (percentRemaining > 15)
 						timeText = "CRITICAL";
-					else if (percentRemaining > 10)
-						timeText = "VERY CRITICAL";
 					else
 						timeText = "IMMEDIATE";
-					
+
 					// Add CPR indicator if receiving CPR
 					if (nid && nid.IsReceivingCPR())
 						timeText = timeText + " - CPR";
@@ -229,40 +282,30 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 					timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
 				}
 				
-				// Color code based on time remaining
-				if (percentRemaining <= 10)
+				// Color code based on time remaining - 5 level system
+				if (percentRemaining > 70)
 				{
-					// Below 10% - Make entire line red for maximum urgency
-					sName = string.Format("<color rgba='255,0,0,255'>%1 [%2]</color>", sName, timeText);
-				}
-				else if (percentRemaining > 80)
-				{
-					// Blue for STABLE (>80%)
-					sName = string.Format("%1 [<color rgba='0,150,255,255'>%2</color>]", sName, timeText);
-				}
-				else if (percentRemaining > 66)
-				{
-					// Green for SERIOUS (66-80%)
+					// Green for DELAYED (>70%)
 					sName = string.Format("%1 [<color rgba='0,255,100,255'>%2</color>]", sName, timeText);
 				}
 				else if (percentRemaining > 50)
 				{
-					// Yellow-green for DETERIORATING (50-66%)
-					sName = string.Format("%1 [<color rgba='200,255,0,255'>%2</color>]", sName, timeText);
+					// Yellow for PRIORITY (50-70%)
+					sName = string.Format("%1 [<color rgba='255,255,0,255'>%2</color>]", sName, timeText);
 				}
-				else if (percentRemaining > 33)
+				else if (percentRemaining > 30)
 				{
-					// Yellow-orange for URGENT (33-50%)
+					// Yellow-orange for URGENT (30-50%)
 					sName = string.Format("%1 [<color rgba='255,200,0,255'>%2</color>]", sName, timeText);
 				}
-				else if (percentRemaining > 20)
+				else if (percentRemaining > 15)
 				{
-					// Orange for CRITICAL (20-33%)
+					// Orange for CRITICAL (15-30%)
 					sName = string.Format("%1 [<color rgba='255,150,0,255'>%2</color>]", sName, timeText);
 				}
 				else
 				{
-					// Red for VERY CRITICAL (10-20%)
+					// Red for IMMEDIATE (<15%)
 					sName = string.Format("%1 [<color rgba='255,0,0,255'>%2</color>]", sName, timeText);
 				}
 			}
@@ -311,14 +354,56 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			damageInfoUI.SetSalineBagStateVisible(isSalineBagged);
 			damageInfoUI.SetMorphineStateVisible(isMorphined);
 			damageInfoUI.SetFractureStateVisible(0, 0);
+
+			// Apply colors directly to the text widgets
+			Widget damageTextWidget = m_wCasualtyInspectWidget.FindAnyWidget("DamageInfo_text");
+			if (damageTextWidget && healthPercent < 100)
+			{
+				TextWidget damageText = TextWidget.Cast(damageTextWidget);
+				if (damageText)
+				{
+					Color healthColor = GetHealthStatusColor(healthPercent);
+					damageText.SetColor(healthColor);
+				}
+			}
+
+			Widget bleedingTextWidget = m_wCasualtyInspectWidget.FindAnyWidget("BleedingInfo_text");
+			if (bleedingTextWidget && bloodPercent < 100)
+			{
+				TextWidget bleedingText = TextWidget.Cast(bleedingTextWidget);
+				if (bleedingText)
+				{
+					Color bloodColor = GetBloodStatusColor(bloodPercent);
+					bleedingText.SetColor(bloodColor);
+				}
+			}
 		}
 		
 		// NEW: Update resilience text widget if it exists
 		if (m_wResilienceText && hasResilience)
 		{
-			string resilienceText = string.Format("Resilience: %1%%", Math.Round(resiliencePercent));
+			string resilienceText;
+
+			// Determine resilience status description (4 levels)
+			if (resiliencePercent < 33)
+			{
+				resilienceText = "Unconscious";
+			}
+			else if (resiliencePercent <= 59)
+			{
+				resilienceText = "Fading";
+			}
+			else if (resiliencePercent <= 99)
+			{
+				resilienceText = "Dazed";
+			}
+			else
+			{
+				resilienceText = "Fully responsive";
+			}
+
 			m_wResilienceText.SetText(resilienceText);
-			
+
 			// Set color based on percentage
 			Color resilienceDisplayColor;
 			if (resiliencePercent >= 75)
@@ -329,7 +414,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				resilienceDisplayColor = Color.FromSRGBA(255, 165, 0, 255); // Orange
 			else
 				resilienceDisplayColor = Color.FromSRGBA(255, 0, 0, 255); // Red
-				
+
 			m_wResilienceText.SetColor(resilienceDisplayColor);
 			m_wResilienceText.SetVisible(true);
 		}
@@ -355,19 +440,15 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				// Check if we should use descriptive or exact timer
 				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 				{
-					// Generate descriptive text based on time remaining
-					if (percentRemaining > 80)
-						timeText = "Condition: STABLE";
-					else if (percentRemaining > 66)
-						timeText = "Condition: SERIOUS";
+					// Generate descriptive text based on time remaining - 5 level system
+					if (percentRemaining > 70)
+						timeText = "Condition: DELAYED";
 					else if (percentRemaining > 50)
-						timeText = "Condition: DETERIORATING";
-					else if (percentRemaining > 33)
+						timeText = "Condition: PRIORITY";
+					else if (percentRemaining > 30)
 						timeText = "Condition: URGENT";
-					else if (percentRemaining > 20)
+					else if (percentRemaining > 15)
 						timeText = "Condition: CRITICAL";
-					else if (percentRemaining > 10)
-						timeText = "Condition: VERY CRITICAL";
 					else
 						timeText = "Condition: IMMEDIATE";
 				}
@@ -379,22 +460,18 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 					timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
 				}
 				
-				// Color based on time - matching the name display colors
+				// Color based on time - 5 level system
 				Color timerColor;
-				if (percentRemaining > 80)
-					timerColor = Color.FromSRGBA(0, 150, 255, 255); // Blue
-				else if (percentRemaining > 66)
-					timerColor = Color.FromSRGBA(0, 255, 100, 255); // Green
+				if (percentRemaining > 70)
+					timerColor = Color.FromSRGBA(0, 255, 100, 255); // Green for DELAYED
 				else if (percentRemaining > 50)
-					timerColor = Color.FromSRGBA(200, 255, 0, 255); // Yellow-green
-				else if (percentRemaining > 33)
-					timerColor = Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange
-				else if (percentRemaining > 20)
-					timerColor = Color.FromSRGBA(255, 150, 0, 255); // Orange
-				else if (percentRemaining > 10)
-					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red
+					timerColor = Color.FromSRGBA(255, 255, 0, 255); // Yellow for PRIORITY
+				else if (percentRemaining > 30)
+					timerColor = Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange for URGENT
+				else if (percentRemaining > 15)
+					timerColor = Color.FromSRGBA(255, 150, 0, 255); // Orange for CRITICAL
 				else
-					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Deep red (could make darker if needed)
+					timerColor = Color.FromSRGBA(255, 0, 0, 255); // Red for IMMEDIATE
 					
 				m_wBleedoutTimerText.SetText(timeText);
 				m_wBleedoutTimerText.SetColor(timerColor);
