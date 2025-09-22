@@ -1,0 +1,15 @@
+SCR_AIWorld {
+ ID "50B2B8F35661FB44"
+ components {
+  SCR_AISettingsComponent "{512CCCD0856CB4B9}" {
+   m_EnableLeaderStop 1
+   m_fWeaponFiredReactionDistance 250
+   m_fSuppressedWeaponFiredAudibleDistance 50
+   m_iInvestigateRadius 100
+   m_fAimAccuracyErrorModifier 1.5
+   m_fGlobalWeaponFiredReactionDistance 200
+   m_fGlobalSuppressedWeaponFiredAudibleDistance 50
+   m_fGlobalAimAccuracyErrorModifier 1.2
+  }
+ }
+}
