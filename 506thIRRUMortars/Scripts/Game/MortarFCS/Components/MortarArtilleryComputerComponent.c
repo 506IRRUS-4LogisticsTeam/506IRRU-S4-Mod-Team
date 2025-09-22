@@ -181,6 +181,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         {
             inputManager.AddActionListener("MapMortarAim", EActionTrigger.DOWN, OnToggleAutoAimAction);
             inputManager.AddActionListener("MapMortarCharge", EActionTrigger.DOWN, OnCycleChargeAction);
+            inputManager.AddActionListener("MapMortarExit", EActionTrigger.DOWN, OnExitMapAction);
         }
     }
 
@@ -195,7 +196,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     {
         CycleChargeSelection();
     }
-    
+
+    //------------------------------------------------------------------------------------------------
+    protected void OnExitMapAction(float value, EActionTrigger reason)
+    {
+        CloseComputer();
+    }
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void OnMapSelection(vector selectedPos)
@@ -249,6 +256,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         {
             inputManager.RemoveActionListener("MapMortarAim", EActionTrigger.DOWN, OnToggleAutoAimAction);
             inputManager.RemoveActionListener("MapMortarCharge", EActionTrigger.DOWN, OnCycleChargeAction);
+            inputManager.RemoveActionListener("MapMortarExit", EActionTrigger.DOWN, OnExitMapAction);
         }
 
         m_MapEntity.GetOnMapOpen().Remove(OnMapOpen);
