@@ -159,6 +159,34 @@ class MortarBallisticTables
     }
     
     //------------------------------------------------------------------------------------------------
+    //! Calculate firing solution for specific charge
+    //! \param ammoType Type of ammunition
+    //! \param charge Specific charge level
+    //! \param range Target range in meters
+    //! \param elevationMils Output elevation in mils
+    //! \param timeOfFlight Output time of flight in seconds
+    //! \param dElevCorrection Output D_ELEV correction factor
+    //! \return True if solution found for this charge
+    static bool CalculateSolutionForCharge(string ammoType, int charge, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection)
+    {
+        if (!s_Tables)
+            Initialize();
+
+        array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
+        if (!table || table.Count() == 0)
+            return false;
+
+        MortarBallisticEntry firstEntry = table.Get(0);
+        MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+
+        if (range < firstEntry.range || range > lastEntry.range)
+            return false;
+
+        InterpolateElevation(table, range, elevationMils, timeOfFlight, dElevCorrection);
+        return true;
+    }
+
+    //------------------------------------------------------------------------------------------------
     //! Interpolate elevation between table entries
     //! \param table Ballistic table
     //! \param range Target range
