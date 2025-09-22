@@ -12,12 +12,32 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected string m_sSelectedAmmoType = "HE";
     protected ref array<string> m_aAvailableAmmoTypes = {"HE", "Smoke", "Illumination"};
     protected bool m_bHintShown = false;
+
+    // Turret control components
+    protected TurretControllerComponent m_TurretController;
+    protected TurretComponent m_TurretComponent;
+    protected bool m_bAutoAimEnabled = false;
+    protected vector m_vTargetAngles = vector.Zero; // [azimuth, elevation] in radians
+    protected vector m_vCurrentAngles = vector.Zero;
     
     protected const float MIN_ELEVATION_MILS = 800.0;
     protected const float MAX_ELEVATION_MILS = 1515.0;
     protected const float MILS_TO_DEGREES = 360.0 / 6400.0;
     protected const float DEGREES_TO_MILS = 6400.0 / 360.0;
     protected const float ALTITUDE_CORRECTION_FACTOR = 100.0;
+
+    // Configurable attributes for turret control
+    [Attribute(defvalue: "false", desc: "Keep map open after selecting target")]
+    protected bool m_bKeepMapOpen;
+
+    [Attribute(defvalue: "2.0", desc: "Delay before closing map after selection (seconds)")]
+    protected float m_fMapCloseDelay;
+
+    [Attribute(defvalue: "90.0", desc: "Horizontal rotation speed in degrees per second")]
+    protected float m_fHorizontalRotationSpeed;
+
+    [Attribute(defvalue: "45.0", desc: "Vertical rotation speed in degrees per second")]
+    protected float m_fVerticalRotationSpeed;
     
     //------------------------------------------------------------------------------------------------
     //! Initialize component and ballistic tables
@@ -73,10 +93,22 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     {
         if (!mapEntity)
             return;
-            
+
         if (m_bMapOpen)
             return;
-            
+
+        // Try to get turret component directly from the mortar entity
+        m_TurretComponent = TurretComponent.Cast(m_Owner.FindComponent(TurretComponent));
+
+        if (!m_TurretComponent)
+        {
+            Print("[MORTAR] ERROR: Could not find TurretComponent on mortar entity");
+        }
+        else
+        {
+            Print("[MORTAR] TurretComponent found successfully");
+        }
+
         m_MapEntity = mapEntity;
         
         m_MapEntity.GetOnMapOpen().Insert(OnMapOpen);
@@ -85,12 +117,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         
         GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.MapMenu);
         m_bMapOpen = true;
-        
-        GetGame().GetInputManager().AddActionListener("MenuBack", EActionTrigger.DOWN, CloseComputer);
-        
-        string controlHint = string.Format("Current Shell: %1\n\nClick map to calculate firing solution\nEscape to close", m_sSelectedAmmoType);
+
+        string controlHint = string.Format("Current Shell: %1\n\nClick map to auto-aim mortar", m_sSelectedAmmoType);
         SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 8.0, false);
         m_bHintShown = false;
+
+        // Enable frame updates for smooth rotation
+        SetEventMask(m_Owner, EntityEvent.POSTFRAME);
     }
     
     //------------------------------------------------------------------------------------------------
@@ -116,11 +149,17 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     //! \param selectedPos Selected position on map
     protected void OnMapSelection(vector selectedPos)
     {
+        Print("[MORTAR] OnMapSelection called");
+
         if (!m_MapEntity || !m_Owner)
+        {
+            Print("[MORTAR] ERROR: m_MapEntity or m_Owner is null");
             return;
-            
+        }
+
         float worldX, worldY;
         m_MapEntity.ScreenToWorld(selectedPos[0], selectedPos[2], worldX, worldY);
+        Print(string.Format("[MORTAR] Map clicked at world pos: %1, %2", worldX, worldY));
         
         float heightAtPos = m_MapEntity.GetWorld().GetSurfaceY(worldX, worldY);
         
@@ -138,20 +177,37 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         float minRange, maxRange;
         MortarBallisticTables.GetMinMaxRange(ammoType, minRange, maxRange);
         
+        Print(string.Format("[MORTAR] Distance: %1m, Min: %2m, Max: %3m", horizontalDistance, minRange, maxRange));
+
         if (horizontalDistance < minRange)
         {
+            Print("[MORTAR] Target too close");
             DisplayRangeError(true, minRange, maxRange, horizontalDistance);
         }
         else if (horizontalDistance > maxRange)
         {
+            Print("[MORTAR] Target too far");
             DisplayRangeError(false, minRange, maxRange, horizontalDistance);
         }
         else
         {
+            Print("[MORTAR] Calculating firing solution");
             CalculateAndDisplaySolution(ammoType, horizontalDistance, toTarget, targetPos, mortarPos, azimuth);
         }
-        
-        GetGame().GetMenuManager().CloseMenuByPreset(ChimeraMenuPreset.MapMenu);
+
+        if (!m_bKeepMapOpen)
+        {
+            if (m_fMapCloseDelay > 0)
+            {
+                // Close map after delay
+                GetGame().GetCallqueue().CallLater(CloseComputer, m_fMapCloseDelay * 1000, false);
+            }
+            else
+            {
+                // Close map immediately
+                CloseComputer();
+            }
+        }
     }
     
     //------------------------------------------------------------------------------------------------
@@ -165,8 +221,6 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         m_MapEntity.GetOnMapOpen().Remove(OnMapOpen);
         m_MapEntity.GetOnSelection().Remove(OnMapSelection);
         m_MapEntity.GetOnMapClose().Remove(OnMapClose);
-        
-        GetGame().GetInputManager().RemoveActionListener("MenuBack", EActionTrigger.DOWN, CloseComputer);
         
         m_bHintShown = false;
         m_bMapOpen = false;
@@ -200,6 +254,24 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         elevationMils = ClampElevation(elevationMils);
         
         DisplayFiringSolution(ammoType, horizontalDistance, toTarget, azimuth, elevationMils, elevationDifference, charge, timeOfFlight);
+
+        // Enable auto-aiming if turret is available
+        if (m_TurretComponent)
+        {
+            // Convert azimuth and elevation to radians for turret control
+            float azimuthRad = azimuth * Math.DEG2RAD;
+            float elevationRad = elevationMils * MILS_TO_DEGREES * Math.DEG2RAD;
+
+            m_vTargetAngles = Vector(azimuthRad, elevationRad, 0);
+            m_bAutoAimEnabled = true;
+
+            Print(string.Format("[MORTAR] Target angles set - Azimuth: %1 rad (%2 deg), Elevation: %3 rad (%4 deg)",
+                azimuthRad, azimuth, elevationRad, elevationMils * MILS_TO_DEGREES));
+        }
+        else
+        {
+            Print("[MORTAR] WARNING: TurretComponent not available, auto-aim disabled");
+        }
     }
     
     //------------------------------------------------------------------------------------------------
@@ -308,5 +380,80 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             distance.ToString(0)
         );
         SCR_HintManagerComponent.ShowCustomHint(hint, "Elevation Limit", 8.0, false);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Frame update for smooth turret rotation
+    //! \param owner Entity that owns this component
+    //! \param timeSlice Time since last frame
+    override void EOnPostFrame(IEntity owner, float timeSlice)
+    {
+        if (!m_bAutoAimEnabled)
+        {
+            return;
+        }
+
+        if (!m_TurretComponent)
+        {
+            Print("[MORTAR] EOnPostFrame: No TurretComponent");
+            m_bAutoAimEnabled = false;
+            return;
+        }
+
+        // Validate target angles are set
+        if (m_vTargetAngles == vector.Zero)
+        {
+            Print("[MORTAR] ERROR: Target angles not set");
+            m_bAutoAimEnabled = false;
+            return;
+        }
+
+        // Get current turret angles (returned in DEGREES)
+        m_vCurrentAngles = m_TurretComponent.GetAimingRotation();
+
+        // Convert current angles from degrees to radians for comparison
+        vector currentAnglesRad = Vector(m_vCurrentAngles[0] * Math.DEG2RAD, m_vCurrentAngles[1] * Math.DEG2RAD, 0);
+
+        // Calculate angle difference (both in radians)
+        vector angleDiff = m_vTargetAngles - currentAnglesRad;
+
+        // Normalize azimuth difference to shortest path
+        if (angleDiff[0] > Math.PI)
+            angleDiff[0] = angleDiff[0] - Math.PI2;
+        else if (angleDiff[0] < -Math.PI)
+            angleDiff[0] = angleDiff[0] + Math.PI2;
+
+        // Apply rotation speed limits (in radians)
+        float maxYaw = m_fHorizontalRotationSpeed * Math.DEG2RAD * timeSlice;
+        float maxPitch = m_fVerticalRotationSpeed * Math.DEG2RAD * timeSlice;
+
+        angleDiff[0] = Math.Clamp(angleDiff[0], -maxYaw, maxYaw);
+        angleDiff[1] = Math.Clamp(angleDiff[1], -maxPitch, maxPitch);
+
+        // Apply rotation (SetAimingRotation expects RADIANS)
+        vector newAnglesRad = currentAnglesRad + angleDiff;
+        m_TurretComponent.SetAimingRotation(newAnglesRad);
+
+        // Check if we've reached the target
+        float azimuthError = Math.AbsFloat(m_vTargetAngles[0] - newAnglesRad[0]);
+        float elevationError = Math.AbsFloat(m_vTargetAngles[1] - newAnglesRad[1]);
+
+        if (azimuthError < 0.002 && elevationError < 0.002) // Within ~0.1 degrees
+        {
+            m_bAutoAimEnabled = false;
+            Print("[MORTAR] Target angles reached, auto-aim disabled");
+
+            if (!m_bMapOpen)
+                ClearEventMask(owner, EntityEvent.POSTFRAME);
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Cleanup on deletion
+    //! \param owner Entity that owns this component
+    override void OnDelete(IEntity owner)
+    {
+        ClearEventMask(owner, EntityEvent.POSTFRAME);
+        super.OnDelete(owner);
     }
 }
