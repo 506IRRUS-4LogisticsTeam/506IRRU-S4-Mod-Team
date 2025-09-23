@@ -14,6 +14,11 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected bool m_bHintShown = false;
     protected int m_iSelectedCharge = -1;
 
+    // System error handling
+    protected bool m_bBSODActive = false;
+    protected float m_fBSODTimer = 0.0;
+    protected bool m_bBSODCooldown = false;
+
     // Turret control components
     protected TurretControllerComponent m_TurretController;
     protected TurretComponent m_TurretComponent;
@@ -164,6 +169,14 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         if (m_bMapOpen)
             return;
 
+        // Check for rare system error
+        if (!m_bBSODCooldown && Math.RandomInt(0, 1506) == 506)
+        {
+            ShowBSOD();
+            m_bBSODCooldown = true;
+            return;
+        }
+
         m_TurretComponent = TurretComponent.Cast(m_Owner.FindComponent(TurretComponent));
 
         m_MapEntity = mapEntity;
@@ -181,6 +194,63 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         SetEventMask(m_Owner, EntityEvent.POSTFRAME);
     }
     
+    //------------------------------------------------------------------------------------------------
+    void ShowBSOD()
+    {
+        m_bBSODActive = true;
+        m_fBSODTimer = 8.0; // Display for 8 seconds
+
+        string bsodText = "<color rgba='30,120,255,255'>████████████████████████████████████████████████</color>\n";
+        bsodText = bsodText + "<color rgba='30,120,255,255'>███</color> <color rgba='255,255,255,255'>MORTAR COMPUTER ERROR</color> <color rgba='30,120,255,255'>███</color>\n";
+        bsodText = bsodText + "<color rgba='30,120,255,255'>████████████████████████████████████████████████</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>:(</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>Your mortar ran into a problem and needs</color>\n";
+        bsodText = bsodText + "<color rgba='255,255,255,255'>to restart. We're just collecting some</color>\n";
+        bsodText = bsodText + "<color rgba='255,255,255,255'>error info, and then we'll restart for you.</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>BALLISTIC_CALCULATION_FAULT</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='200,200,200,255'>Technical information:</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** STOP: 0x00000ED (0x81MM0RT4R)</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** MortarOS.sys - Address F73120AE</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** Datestamp 506IRRU</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>Memory dump complete.</color>\n\n";
+        bsodText = bsodText + "<color rgba='255,255,0,255'>Press ALT+F4 to restart computer...</color>";
+
+        SCR_HintManagerComponent.ShowCustomHint(bsodText, "SYSTEM ERROR", 10.0, true);
+
+        // Listen for ESC key
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+            inputManager.AddActionListener("MapMortarExit", EActionTrigger.DOWN, OnBSODEscapeAction);
+
+        // Enable frame updates to track timer
+        SetEventMask(m_Owner, EntityEvent.POSTFRAME);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void OnBSODEscapeAction(float value, EActionTrigger reason)
+    {
+        if (!m_bBSODActive)
+            return;
+
+        // Clean up BSOD
+        m_bBSODActive = false;
+        m_fBSODTimer = 0;
+        m_bBSODCooldown = false; // Reset cooldown so it can happen again
+        SCR_HintManagerComponent.ShowCustomHint("", "", 0.1, false); // Clear hint
+
+        // Remove the listener
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+            inputManager.RemoveActionListener("MapMortarExit", EActionTrigger.DOWN, OnBSODEscapeAction);
+
+        ClearEventMask(m_Owner, EntityEvent.POSTFRAME);
+    }
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     void CloseComputer()
@@ -446,6 +516,17 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     //------------------------------------------------------------------------------------------------
     override void EOnPostFrame(IEntity owner, float timeSlice)
     {
+        // Handle BSOD timer
+        if (m_bBSODActive)
+        {
+            m_fBSODTimer -= timeSlice;
+            if (m_fBSODTimer <= 0)
+            {
+                OnBSODEscapeAction(0, EActionTrigger.DOWN); // Auto-dismiss after timer
+            }
+            return;
+        }
+
         // Handle auto-aim rotation
         if (!m_bAutoAimActive || !m_TurretComponent)
         {
