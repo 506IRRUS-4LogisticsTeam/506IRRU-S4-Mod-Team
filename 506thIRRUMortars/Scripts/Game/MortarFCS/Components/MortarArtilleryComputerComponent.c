@@ -65,20 +65,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     {
         m_bAutoAimSystemEnabled = !m_bAutoAimSystemEnabled;
 
-        string status;
-        if (m_bAutoAimSystemEnabled)
-            status = "ENABLED";
-        else
-            status = "DISABLED";
-
-        string hint = string.Format("Auto-Aim: %1", status);
-        SCR_HintManagerComponent.ShowCustomHint(hint, "Mortar Computer", 3.0, false);
-
         if (!m_bAutoAimSystemEnabled && m_bAutoAimActive)
         {
             m_bAutoAimActive = false;
             ClearEventMask(m_Owner, EntityEvent.POSTFRAME);
         }
+
+        UpdateMainHint();
     }
 
     //------------------------------------------------------------------------------------------------
@@ -108,30 +101,57 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             }
         }
 
-        string hint = string.Format("Charge Selection: %1", chargeText);
-        SCR_HintManagerComponent.ShowCustomHint(hint, "Mortar Computer", 3.0, false);
-
         UpdateMainHint();
     }
 
     //------------------------------------------------------------------------------------------------
     void UpdateMainHint()
     {
+        if (!m_bMapOpen)
+            return;
+
         string autoAimStatus;
         if (m_bAutoAimSystemEnabled)
-            autoAimStatus = "ON";
+            autoAimStatus = "ENABLED";
         else
-            autoAimStatus = "OFF";
+            autoAimStatus = "DISABLED";
 
         string chargeText;
         if (m_iSelectedCharge == -1)
+        {
             chargeText = "AUTO";
+        }
         else
-            chargeText = string.Format("CHARGE %1", m_iSelectedCharge);
+        {
+            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable("HE", m_iSelectedCharge);
+            if (table && table.Count() > 0)
+            {
+                MortarBallisticEntry firstEntry = table.Get(0);
+                MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+                chargeText = string.Format("CHARGE %1 (%2-%3m)", m_iSelectedCharge, firstEntry.range, lastEntry.range);
+            }
+            else
+            {
+                chargeText = string.Format("CHARGE %1", m_iSelectedCharge);
+            }
+        }
 
-        string controlHint = string.Format("Shell: %1 | Charge: %2 | Auto-Aim: %3\n\nClick map for solution | T: Toggle auto-aim | C: Cycle charge",
-            m_sSelectedAmmoType, chargeText, autoAimStatus);
-        SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 10.0, false);
+        string controlHint;
+
+        // Check if gamepad is being used
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager && inputManager.IsUsingMouseAndKeyboard())
+        {
+            controlHint = string.Format("Shell: %1 | Charge: %2 | Auto-Aim: %3\n\nClick map to auto-aim mortar\n[T] Toggle auto-aim | [C] Cycle charge | [X/ESC] Exit",
+                m_sSelectedAmmoType, chargeText, autoAimStatus);
+        }
+        else
+        {
+            controlHint = string.Format("Shell: %1 | Charge: %2 | Auto-Aim: %3\n\nClick map to auto-aim mortar\n[L3] Toggle auto-aim | [RB] Cycle charge | [B] Exit",
+                m_sSelectedAmmoType, chargeText, autoAimStatus);
+        }
+
+        SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 12.0, false);
     }
     
     //------------------------------------------------------------------------------------------------
