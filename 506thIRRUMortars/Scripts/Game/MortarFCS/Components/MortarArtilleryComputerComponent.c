@@ -12,89 +12,247 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected string m_sSelectedAmmoType = "HE";
     protected ref array<string> m_aAvailableAmmoTypes = {"HE", "Smoke", "Illumination"};
     protected bool m_bHintShown = false;
+    protected int m_iSelectedCharge = -1;
+
+    // System error handling
+    protected bool m_bBSODActive = false;
+    protected float m_fBSODTimer = 0.0;
+    protected bool m_bBSODCooldown = false;
+
+    // Turret control components
+    protected TurretControllerComponent m_TurretController;
+    protected TurretComponent m_TurretComponent;
+    protected bool m_bAutoAimActive = false;
+    protected bool m_bAutoAimSystemEnabled = false;
+    protected vector m_vTargetAngles = vector.Zero;
+    protected vector m_vCurrentAngles = vector.Zero;
     
     protected const float MIN_ELEVATION_MILS = 800.0;
     protected const float MAX_ELEVATION_MILS = 1515.0;
     protected const float MILS_TO_DEGREES = 360.0 / 6400.0;
     protected const float DEGREES_TO_MILS = 6400.0 / 360.0;
     protected const float ALTITUDE_CORRECTION_FACTOR = 100.0;
+
+    // Configurable attributes for turret control
+    [Attribute(defvalue: "true", desc: "Enable auto-aim system by default")]
+    protected bool m_bDefaultAutoAimEnabled;
+
+    [Attribute(defvalue: "true", desc: "Keep map open after selecting target")]
+    protected bool m_bKeepMapOpen;
+
+    [Attribute(defvalue: "2.0", desc: "Delay before closing map after selection (seconds)")]
+    protected float m_fMapCloseDelay;
+
+    [Attribute(defvalue: "90.0", desc: "Horizontal rotation speed in degrees per second")]
+    protected float m_fHorizontalRotationSpeed;
+
+    [Attribute(defvalue: "45.0", desc: "Vertical rotation speed in degrees per second")]
+    protected float m_fVerticalRotationSpeed;
     
     //------------------------------------------------------------------------------------------------
-    //! Initialize component and ballistic tables
-    //! \param owner Entity that owns this component
     override void OnPostInit(IEntity owner)
     {
         super.OnPostInit(owner);
-        
+
         m_Owner = owner;
+        m_bAutoAimSystemEnabled = m_bDefaultAutoAimEnabled;
         MortarBallisticTables.Initialize();
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Get currently selected ammo type
-    //! \return Current ammo type string
-    protected string GetCurrentAmmoType()
-    {
-        return m_sSelectedAmmoType;
-    }
-    
-    //------------------------------------------------------------------------------------------------
-    //! Cycle through available ammunition types
-    void CycleAmmoType()
-    {
-        if (!m_aAvailableAmmoTypes || m_aAvailableAmmoTypes.Count() == 0)
-            return;
-            
-        int currentIndex = m_aAvailableAmmoTypes.Find(m_sSelectedAmmoType);
-        currentIndex++;
-        
-        if (currentIndex >= m_aAvailableAmmoTypes.Count())
-            currentIndex = 0;
-            
-        m_sSelectedAmmoType = m_aAvailableAmmoTypes.Get(currentIndex);
-        
-        string hint = string.Format("Shell Type: %1", m_sSelectedAmmoType);
-        SCR_HintManagerComponent.ShowCustomHint(hint, "Mortar Computer", 3.0, false);
-    }
-    
-    //------------------------------------------------------------------------------------------------
-    //! Get selected ammunition type
-    //! \return Selected ammo type string
     string GetSelectedAmmoType()
     {
         return m_sSelectedAmmoType;
     }
+
+    //------------------------------------------------------------------------------------------------
+    void ToggleAutoAim()
+    {
+        m_bAutoAimSystemEnabled = !m_bAutoAimSystemEnabled;
+
+        if (!m_bAutoAimSystemEnabled && m_bAutoAimActive)
+        {
+            m_bAutoAimActive = false;
+            ClearEventMask(m_Owner, EntityEvent.POSTFRAME);
+        }
+
+        UpdateMainHint();
+    }
+
+    //------------------------------------------------------------------------------------------------
+    void CycleChargeSelection()
+    {
+        m_iSelectedCharge++;
+        if (m_iSelectedCharge > 4)
+            m_iSelectedCharge = -1;
+
+        string chargeText;
+        if (m_iSelectedCharge == -1)
+        {
+            chargeText = "AUTO";
+        }
+        else
+        {
+            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable("HE", m_iSelectedCharge);
+            if (table && table.Count() > 0)
+            {
+                MortarBallisticEntry firstEntry = table.Get(0);
+                MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+                chargeText = string.Format("CHARGE %1 (%2m-%3m)", m_iSelectedCharge, firstEntry.range, lastEntry.range);
+            }
+            else
+            {
+                chargeText = string.Format("CHARGE %1", m_iSelectedCharge);
+            }
+        }
+
+        UpdateMainHint();
+    }
+
+    //------------------------------------------------------------------------------------------------
+    void UpdateMainHint()
+    {
+        if (!m_bMapOpen)
+            return;
+
+        string autoAimStatus;
+        if (m_bAutoAimSystemEnabled)
+            autoAimStatus = "ENABLED";
+        else
+            autoAimStatus = "DISABLED";
+
+        string chargeText;
+        if (m_iSelectedCharge == -1)
+        {
+            chargeText = "AUTO";
+        }
+        else
+        {
+            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable("HE", m_iSelectedCharge);
+            if (table && table.Count() > 0)
+            {
+                MortarBallisticEntry firstEntry = table.Get(0);
+                MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
+                chargeText = string.Format("CHARGE %1 (%2-%3m)", m_iSelectedCharge, firstEntry.range, lastEntry.range);
+            }
+            else
+            {
+                chargeText = string.Format("CHARGE %1", m_iSelectedCharge);
+            }
+        }
+
+        string controlHint;
+
+        // Check if gamepad is being used
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager && inputManager.IsUsingMouseAndKeyboard())
+        {
+            controlHint = string.Format("Shell: %1 | Charge: %2 | Auto-Aim: %3\n\nClick map to auto-aim mortar\n[T] Toggle auto-aim | [C] Cycle charge | [X/ESC] Exit",
+                m_sSelectedAmmoType, chargeText, autoAimStatus);
+        }
+        else
+        {
+            controlHint = string.Format("Shell: %1 | Charge: %2 | Auto-Aim: %3\n\nClick map to auto-aim mortar\n[L3] Toggle auto-aim | [RB] Cycle charge | [B] Exit",
+                m_sSelectedAmmoType, chargeText, autoAimStatus);
+        }
+
+        SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 12.0, false);
+    }
     
     //------------------------------------------------------------------------------------------------
-    //! Open mortar computer interface
-    //! \param mapEntity Map entity to use for target selection
-    //! \param user Entity using the computer
+    //------------------------------------------------------------------------------------------------
     void OpenComputer(SCR_MapEntity mapEntity, IEntity user)
     {
         if (!mapEntity)
             return;
-            
+
         if (m_bMapOpen)
             return;
-            
+
+        // Check for rare system error
+        if (!m_bBSODCooldown && Math.RandomInt(0, 1506) == 506)
+        {
+            ShowBSOD();
+            m_bBSODCooldown = true;
+            return;
+        }
+
+        m_TurretComponent = TurretComponent.Cast(m_Owner.FindComponent(TurretComponent));
+
         m_MapEntity = mapEntity;
-        
+
         m_MapEntity.GetOnMapOpen().Insert(OnMapOpen);
         m_MapEntity.GetOnSelection().Insert(OnMapSelection);
         m_MapEntity.GetOnMapClose().Insert(OnMapClose);
-        
+
         GetGame().GetMenuManager().OpenMenu(ChimeraMenuPreset.MapMenu);
         m_bMapOpen = true;
-        
-        GetGame().GetInputManager().AddActionListener("MenuBack", EActionTrigger.DOWN, CloseComputer);
-        
-        string controlHint = string.Format("Current Shell: %1\n\nClick map to calculate firing solution\nEscape to close", m_sSelectedAmmoType);
-        SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 8.0, false);
+
+        UpdateMainHint();
         m_bHintShown = false;
+
+        SetEventMask(m_Owner, EntityEvent.POSTFRAME);
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Close mortar computer interface
+    void ShowBSOD()
+    {
+        m_bBSODActive = true;
+        m_fBSODTimer = 8.0; // Display for 8 seconds
+
+        string bsodText = "<color rgba='30,120,255,255'>████████████████████████████████████████████████</color>\n";
+        bsodText = bsodText + "<color rgba='30,120,255,255'>███</color> <color rgba='255,255,255,255'>MORTAR COMPUTER ERROR</color> <color rgba='30,120,255,255'>███</color>\n";
+        bsodText = bsodText + "<color rgba='30,120,255,255'>████████████████████████████████████████████████</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>:(</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>Your mortar ran into a problem and needs</color>\n";
+        bsodText = bsodText + "<color rgba='255,255,255,255'>to restart. We're just collecting some</color>\n";
+        bsodText = bsodText + "<color rgba='255,255,255,255'>error info, and then we'll restart for you.</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>BALLISTIC_CALCULATION_FAULT</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='200,200,200,255'>Technical information:</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** STOP: 0x00000ED (0x81MM0RT4R)</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** MortarOS.sys - Address F73120AE</color>\n";
+        bsodText = bsodText + "<color rgba='200,200,200,255'>*** Datestamp 506IRRU</color>\n\n";
+
+        bsodText = bsodText + "<color rgba='255,255,255,255'>Memory dump complete.</color>\n\n";
+        bsodText = bsodText + "<color rgba='255,255,0,255'>Press ALT+F4 to restart computer...</color>";
+
+        SCR_HintManagerComponent.ShowCustomHint(bsodText, "SYSTEM ERROR", 10.0, true);
+
+        // Listen for ESC key
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+            inputManager.AddActionListener("MapMortarExit", EActionTrigger.DOWN, OnBSODEscapeAction);
+
+        // Enable frame updates to track timer
+        SetEventMask(m_Owner, EntityEvent.POSTFRAME);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void OnBSODEscapeAction(float value, EActionTrigger reason)
+    {
+        if (!m_bBSODActive)
+            return;
+
+        // Clean up BSOD
+        m_bBSODActive = false;
+        m_fBSODTimer = 0;
+        m_bBSODCooldown = false; // Reset cooldown so it can happen again
+        SCR_HintManagerComponent.ShowCustomHint("", "", 0.1, false); // Clear hint
+
+        // Remove the listener
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+            inputManager.RemoveActionListener("MapMortarExit", EActionTrigger.DOWN, OnBSODEscapeAction);
+
+        ClearEventMask(m_Owner, EntityEvent.POSTFRAME);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
     void CloseComputer()
     {
         if (!m_bMapOpen)
@@ -105,36 +263,59 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Handle map open event
-    //! \param config Map configuration
+    //------------------------------------------------------------------------------------------------
     protected void OnMapOpen(MapConfiguration config)
     {
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+        {
+            inputManager.AddActionListener("MapMortarAim", EActionTrigger.DOWN, OnToggleAutoAimAction);
+            inputManager.AddActionListener("MapMortarCharge", EActionTrigger.DOWN, OnCycleChargeAction);
+            inputManager.AddActionListener("MapMortarExit", EActionTrigger.DOWN, OnExitMapAction);
+        }
     }
-    
+
     //------------------------------------------------------------------------------------------------
-    //! Calculate firing solution for selected map position
-    //! \param selectedPos Selected position on map
+    protected void OnToggleAutoAimAction(float value, EActionTrigger reason)
+    {
+        ToggleAutoAim();
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void OnCycleChargeAction(float value, EActionTrigger reason)
+    {
+        CycleChargeSelection();
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void OnExitMapAction(float value, EActionTrigger reason)
+    {
+        CloseComputer();
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
     protected void OnMapSelection(vector selectedPos)
     {
         if (!m_MapEntity || !m_Owner)
             return;
-            
+
         float worldX, worldY;
         m_MapEntity.ScreenToWorld(selectedPos[0], selectedPos[2], worldX, worldY);
-        
+
         float heightAtPos = m_MapEntity.GetWorld().GetSurfaceY(worldX, worldY);
-        
+
         vector targetPos = Vector(worldX, heightAtPos, worldY);
         vector mortarPos = m_Owner.GetOrigin();
         
         vector toTarget = targetPos - mortarPos;
         float horizontalDistance = Math.Sqrt(toTarget[0] * toTarget[0] + toTarget[2] * toTarget[2]);
-        
+
         float azimuth = Math.Atan2(toTarget[0], toTarget[2]) * Math.RAD2DEG;
-        if (azimuth < 0) 
+        if (azimuth < 0)
             azimuth = azimuth + 360;
-        
-        string ammoType = GetCurrentAmmoType();
+
+        string ammoType = GetSelectedAmmoType();
         float minRange, maxRange;
         MortarBallisticTables.GetMinMaxRange(ammoType, minRange, maxRange);
         
@@ -150,44 +331,52 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         {
             CalculateAndDisplaySolution(ammoType, horizontalDistance, toTarget, targetPos, mortarPos, azimuth);
         }
-        
-        GetGame().GetMenuManager().CloseMenuByPreset(ChimeraMenuPreset.MapMenu);
+
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Handle map close event
-    //! \param config Map configuration
+    //------------------------------------------------------------------------------------------------
     protected void OnMapClose(MapConfiguration config)
     {
         if (!m_MapEntity)
             return;
-            
+
+        InputManager inputManager = GetGame().GetInputManager();
+        if (inputManager)
+        {
+            inputManager.RemoveActionListener("MapMortarAim", EActionTrigger.DOWN, OnToggleAutoAimAction);
+            inputManager.RemoveActionListener("MapMortarCharge", EActionTrigger.DOWN, OnCycleChargeAction);
+            inputManager.RemoveActionListener("MapMortarExit", EActionTrigger.DOWN, OnExitMapAction);
+        }
+
         m_MapEntity.GetOnMapOpen().Remove(OnMapOpen);
         m_MapEntity.GetOnSelection().Remove(OnMapSelection);
         m_MapEntity.GetOnMapClose().Remove(OnMapClose);
-        
-        GetGame().GetInputManager().RemoveActionListener("MenuBack", EActionTrigger.DOWN, CloseComputer);
-        
+
         m_bHintShown = false;
         m_bMapOpen = false;
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Calculate and display firing solution
-    //! \param ammoType Type of ammunition
-    //! \param horizontalDistance Horizontal distance to target
-    //! \param toTarget Vector from mortar to target
-    //! \param targetPos Target position
-    //! \param mortarPos Mortar position
-    //! \param azimuth Azimuth in degrees
+    //------------------------------------------------------------------------------------------------
     protected void CalculateAndDisplaySolution(string ammoType, float horizontalDistance, vector toTarget, vector targetPos, vector mortarPos, float azimuth)
     {
         float elevationMils;
         float timeOfFlight;
         int charge;
         int dElevCorrection;
-        
-        bool solutionFound = MortarBallisticTables.CalculateSolution(ammoType, horizontalDistance, elevationMils, timeOfFlight, charge, dElevCorrection);
+
+        bool solutionFound;
+
+        if (m_iSelectedCharge == -1)
+        {
+            solutionFound = MortarBallisticTables.CalculateSolution(ammoType, horizontalDistance, elevationMils, timeOfFlight, charge, dElevCorrection);
+        }
+        else
+        {
+            charge = m_iSelectedCharge;
+            solutionFound = MortarBallisticTables.CalculateSolutionForCharge(ammoType, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection);
+        }
         
         if (!solutionFound)
         {
@@ -200,14 +389,42 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         elevationMils = ClampElevation(elevationMils);
         
         DisplayFiringSolution(ammoType, horizontalDistance, toTarget, azimuth, elevationMils, elevationDifference, charge, timeOfFlight);
+
+        if (m_TurretComponent && m_bAutoAimSystemEnabled)
+        {
+            IEntity turretEntity = m_TurretComponent.GetOwner();
+            if (!turretEntity)
+                return;
+
+            vector turretMat[4];
+            turretEntity.GetTransform(turretMat);
+
+            float quat[4];
+            Math3D.MatrixToQuat(turretMat, quat);
+            float quatInv[4];
+            Math3D.QuatInverse(quatInv, quat);
+
+            float elevationAngleDeg = elevationMils * MILS_TO_DEGREES;
+
+            float azimuthRad = azimuth * Math.DEG2RAD;
+            float elevationRad = elevationAngleDeg * Math.DEG2RAD;
+
+            vector worldDirection;
+            worldDirection[0] = Math.Sin(azimuthRad) * Math.Cos(elevationRad);
+            worldDirection[1] = Math.Sin(elevationRad);
+            worldDirection[2] = Math.Cos(azimuthRad) * Math.Cos(elevationRad);
+
+            vector dirLocal = SCR_Math3D.QuatMultiply(quatInv, worldDirection);
+
+            vector desiredAngles = dirLocal.VectorToAngles();
+
+            m_vTargetAngles = Vector(desiredAngles[0] * Math.DEG2RAD, desiredAngles[1] * Math.DEG2RAD, 0);
+            m_bAutoAimActive = true;
+        }
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Display range error message
-    //! \param tooClose True if target is too close, false if too far
-    //! \param minRange Minimum range in meters
-    //! \param maxRange Maximum range in meters
-    //! \param distance Current target distance
+    //------------------------------------------------------------------------------------------------
     protected void DisplayRangeError(bool tooClose, float minRange, float maxRange, float distance)
     {
         string hint;
@@ -233,11 +450,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Apply altitude correction to elevation
-    //! \param elevationMils Base elevation in mils
-    //! \param elevationDifference Height difference between mortar and target
-    //! \param dElevCorrection Correction factor from ballistic tables
-    //! \return Corrected elevation in mils
+    //------------------------------------------------------------------------------------------------
     protected float ApplyAltitudeCorrection(float elevationMils, float elevationDifference, int dElevCorrection)
     {
         if (dElevCorrection <= 0 || elevationDifference == 0)
@@ -248,9 +461,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Clamp elevation to physical mortar limits
-    //! \param elevationMils Elevation to clamp
-    //! \return Clamped elevation value
+    //------------------------------------------------------------------------------------------------
     protected float ClampElevation(float elevationMils)
     {
         if (elevationMils < MIN_ELEVATION_MILS)
@@ -261,15 +472,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Display firing solution to player
-    //! \param ammoType Type of ammunition
-    //! \param horizontalDistance Horizontal distance to target
-    //! \param toTarget Vector from mortar to target
-    //! \param azimuth Azimuth in degrees
-    //! \param elevationMils Elevation in mils
-    //! \param elevationDifference Height difference
-    //! \param charge Number of charge rings
-    //! \param timeOfFlight Time of flight in seconds
+    //------------------------------------------------------------------------------------------------
     protected void DisplayFiringSolution(string ammoType, float horizontalDistance, vector toTarget, float azimuth, float elevationMils, float elevationDifference, int charge, float timeOfFlight)
     {
         float elevationDegrees = elevationMils * MILS_TO_DEGREES;
@@ -299,8 +502,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     }
     
     //------------------------------------------------------------------------------------------------
-    //! Display no solution hint
-    //! \param distance Distance to target
+    //------------------------------------------------------------------------------------------------
     protected void DisplayNoSolutionHint(float distance)
     {
         string hint = string.Format(
@@ -308,5 +510,47 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             distance.ToString(0)
         );
         SCR_HintManagerComponent.ShowCustomHint(hint, "Elevation Limit", 8.0, false);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
+    override void EOnPostFrame(IEntity owner, float timeSlice)
+    {
+        // Handle BSOD timer
+        if (m_bBSODActive)
+        {
+            m_fBSODTimer -= timeSlice;
+            if (m_fBSODTimer <= 0)
+            {
+                OnBSODEscapeAction(0, EActionTrigger.DOWN); // Auto-dismiss after timer
+            }
+            return;
+        }
+
+        // Handle auto-aim rotation
+        if (!m_bAutoAimActive || !m_TurretComponent)
+        {
+            m_bAutoAimActive = false;
+            return;
+        }
+
+        if (m_vTargetAngles == vector.Zero)
+        {
+            m_bAutoAimActive = false;
+            return;
+        }
+
+        m_TurretComponent.SetAimingRotation(m_vTargetAngles);
+        m_bAutoAimActive = false;
+
+        if (!m_bMapOpen)
+            ClearEventMask(owner, EntityEvent.POSTFRAME);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    override void OnDelete(IEntity owner)
+    {
+        ClearEventMask(owner, EntityEvent.POSTFRAME);
+        super.OnDelete(owner);
     }
 }
