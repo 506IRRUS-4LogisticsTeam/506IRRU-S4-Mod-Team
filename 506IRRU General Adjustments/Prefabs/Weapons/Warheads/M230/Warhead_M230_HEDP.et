@@ -1,0 +1,41 @@
+GenericEntity : "{9B5FF7EECAD376FA}Prefabs/Weapons/Warheads/Warhead_Base.et" {
+ ID "9D9BE68EA2672F76"
+ components {
+  BaseTriggerComponent "{55129E81CBAA1390}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{631770EAC95BC993}" {
+     ExplosionEffects {
+      BaseExplosionDamage "{631770EAC95BC982}" {
+       DamageValue 1500
+       DamageDistance 15
+       ExplosionDamagePower 1
+       ExplosionRangePower 0.65
+      }
+      ExplosionImpulseEffect "{631770EAC95BC988}" {
+       DamageDistance 6
+      }
+      ExplosionFragmentationEffect "{567CBC1D7AB652C7}" {
+       DamageValue 70
+       DamageDistance 50
+       DamageFragmentCount 400
+       FragDamagePower 0.6
+       FragRangePower 0.7
+      }
+      BaseExplosionDamage "{631770EAC95BC98E}" {
+       DamageValue 600
+       PerformTraces 1
+       DamageDistance 5
+       ExplosionDamagePower 1
+       ExplosionRangePower 0.65
+      }
+      BaseExplosionDamage "{631770EAC95BC9B2}" {
+       DamageValue 90
+       DamageDistance 12
+      }
+     }
+     ChargeWeight 50
+    }
+   }
+  }
+ }
+}
