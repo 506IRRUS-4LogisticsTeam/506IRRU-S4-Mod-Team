@@ -1,0 +1,11 @@
+GenericEntity : "{45C675ED3CFBBEC5}Prefabs/Props/Military/Compositions/US/ArsenalBox_US.et" {
+ ID "56F2C6D6F7C6DAFA"
+ components {
+  ClimbingDataComponent "{5E70BAF2D49D5341}" {
+   CanClimbOver 1
+  }
+  SCR_ArsenalComponent "{56F2C6D1431AD9AF}" {
+   m_eArsenalSaveType NO_RESTRICTIONS
+  }
+ }
+}
