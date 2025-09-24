@@ -218,7 +218,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         bsodText = bsodText + "<color rgba='200,200,200,255'>*** Datestamp 506IRRU</color>\n\n";
 
         bsodText = bsodText + "<color rgba='255,255,255,255'>Memory dump complete.</color>\n\n";
-        bsodText = bsodText + "<color rgba='255,255,0,255'>Press ALT+F4 to restart computer...</color>";
+        bsodText = bsodText + "<color rgba='255,255,0,255'>Press ESC to restart computer...</color>";
 
         SCR_HintManagerComponent.ShowCustomHint(bsodText, "SYSTEM ERROR", 10.0, true);
 
