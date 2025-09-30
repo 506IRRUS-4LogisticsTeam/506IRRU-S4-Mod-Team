@@ -5,7 +5,17 @@ GenericEntity : "{45C675ED3CFBBEC5}Prefabs/Props/Military/Compositions/US/Arsena
    CanClimbOver 1
   }
   SCR_ArsenalComponent "{56F2C6D1431AD9AF}" {
+   m_OverwriteArsenalConfig SCR_ArsenalItemListConfig "{667015A1AEDFEEDB}" : "{365A88D70A726CA4}Configs/Arsenal/506_CustomArsenal.conf" {
+   }
    m_eArsenalSaveType NO_RESTRICTIONS
+  }
+  UniversalInventoryStorageComponent "{56F2C6D15FE6C4CE}" {
+   Attributes SCR_ItemAttributeCollection "{56F2C6D6A36680FB}" {
+    ItemDisplayName SCR_InventoryUIInfo "{56F2C6D6A229E091}" {
+     Name "506th IRRU Arsenal"
+     Icon "{D7B269F23E482634}Pictures/506_Icon.edds"
+    }
+   }
   }
  }
 }

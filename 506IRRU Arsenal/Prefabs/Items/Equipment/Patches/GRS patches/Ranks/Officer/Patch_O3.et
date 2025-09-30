@@ -1,0 +1,26 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "O3"
+     Description "Captain"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{91E9F8F5DB005AC2}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Commissioned/Assets/O-3.xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{91E9F8F5DB005AC2}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Commissioned/Assets/O-3.xob"
+   WornMaterialsOverride {
+    "{06126046FE41725F}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Commissioned/Data/O-3.emat"
+   }
+   ItemModel "{91E9F8F5DB005AC2}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Commissioned/Assets/O-3.xob"
+   ItemMaterialsOverride {
+    "{06126046FE41725F}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Commissioned/Data/O-3.emat"
+   }
+  }
+ }
+}

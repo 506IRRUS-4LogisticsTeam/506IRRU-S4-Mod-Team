@@ -1,0 +1,26 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "E4"
+     Description "Senior Airman"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{B656C59E824EF42D}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-4.xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{B656C59E824EF42D}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-4.xob"
+   WornMaterialsOverride {
+    "{AA7385F2382F6532}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Data/E-4.emat"
+   }
+   ItemModel "{B656C59E824EF42D}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-4.xob"
+   ItemMaterialsOverride {
+    "{AA7385F2382F6532}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Data/E-4.emat"
+   }
+  }
+ }
+}

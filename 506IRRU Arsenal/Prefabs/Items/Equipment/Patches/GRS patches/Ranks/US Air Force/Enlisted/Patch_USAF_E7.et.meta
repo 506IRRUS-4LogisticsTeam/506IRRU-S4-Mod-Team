@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{1A5AAAE913E1F699}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/US Air Force/Enlisted/Patch_USAF_E7.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

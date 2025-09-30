@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{4CA49FD3ECD87186}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/US Army/Enlisted/Patch_E8.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

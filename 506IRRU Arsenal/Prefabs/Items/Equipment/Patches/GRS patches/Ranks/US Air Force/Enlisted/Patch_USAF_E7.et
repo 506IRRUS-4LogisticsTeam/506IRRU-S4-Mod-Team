@@ -1,0 +1,26 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "E7"
+     Description "Master Sergeant"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{8B8CDDA9226217AA}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-7 (MSgt).xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{8B8CDDA9226217AA}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-7 (MSgt).xob"
+   WornMaterialsOverride {
+    "{8FD6BEE129EB42E7}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Data/E-7 (MSgt).emat"
+   }
+   ItemModel "{8B8CDDA9226217AA}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Assets/E-7 (MSgt).xob"
+   ItemMaterialsOverride {
+    "{8FD6BEE129EB42E7}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/USAF/Enlisted/Data/E-7 (MSgt).emat"
+   }
+  }
+ }
+}

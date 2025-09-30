@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{9D0AB7DA043FBDBA}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/Officer/Patch_O2.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

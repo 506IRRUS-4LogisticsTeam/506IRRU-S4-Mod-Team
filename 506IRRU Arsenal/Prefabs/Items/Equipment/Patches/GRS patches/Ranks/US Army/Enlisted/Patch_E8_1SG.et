@@ -1,0 +1,26 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "E8 (1SG)"
+     Description "1SG"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{F3DA0860C34B8767}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Assets/E-8 (1SG).xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{F3DA0860C34B8767}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Assets/E-8 (1SG).xob"
+   WornMaterialsOverride {
+    "{AC9D48B50E752BA0}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Data/E-8 (1SG).emat"
+   }
+   ItemModel "{F3DA0860C34B8767}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Assets/E-8 (1SG).xob"
+   ItemMaterialsOverride {
+    "{AC9D48B50E752BA0}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Data/E-8 (1SG).emat"
+   }
+  }
+ }
+}

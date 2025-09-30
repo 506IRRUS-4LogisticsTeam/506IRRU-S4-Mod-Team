@@ -1,0 +1,21 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "E2"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{9325ED1FA26F9D55}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Assets/E-2.xob"
+   WornMaterialsOverride {
+    "{4C1F265B431A4A36}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Data/E-2.emat"
+   }
+   ItemModel "{9325ED1FA26F9D55}Prefabs/Items/Equipment/Patches/RHS Patches/Ranks/US Army/Enlisted/Assets/E-2.xob"
+   ItemMaterialsOverride {
+   }
+  }
+ }
+}

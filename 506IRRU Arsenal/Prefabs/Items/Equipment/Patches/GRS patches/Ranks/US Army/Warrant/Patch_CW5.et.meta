@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{2142131B4411846B}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/US Army/Warrant/Patch_CW5.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}
