@@ -1,0 +1,12 @@
+SCR_FactionManager : "{A242612865F2A48E}Prefabs/MP/Managers/Factions/FactionManager_Base.et" {
+ ID "56B2B4776E6E4499"
+ Factions {
+  SCR_Faction "{56DEAC40D2DBC8B1}" {
+   m_bIsPlayable 1
+   m_bShowInWelcomeScreenIfNonPlayable 0
+  }
+  SCR_Faction "{667D62AEE567F772}" : "{5A76845CF8A94EC3}Configs/Factions/506IRRU/506IRRU.conf" {
+   m_bIsPlayable 0
+  }
+ }
+}

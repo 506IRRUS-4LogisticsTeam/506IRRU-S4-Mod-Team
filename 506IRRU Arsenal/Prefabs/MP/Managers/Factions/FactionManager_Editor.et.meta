@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{E333801306EFF84D}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_506.et"
+ Name "{4A188E44289B9A50}Prefabs/MP/Managers/Factions/FactionManager_Editor.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
