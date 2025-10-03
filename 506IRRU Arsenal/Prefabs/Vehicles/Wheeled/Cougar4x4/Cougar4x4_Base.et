@@ -2,21 +2,16 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
  ID "BBCBA43A9778AE21"
  components {
   SCR_UniversalInventoryStorageComponent "{5D9A570F0AE8267E}" {
+   MaxCumulativeVolume 15000000
    MultiSlots {
     MultiSlotConfiguration "{5D9A570F0AE82677}" {
-     NumSlots 6
+     NumSlots 20
     }
     MultiSlotConfiguration "{6533453599079A2F}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{50A242E5D9742C62}Prefabs/Weapons/Magazines/Box_127x99_M2_100rnd_4AP_1Tracer.et"
      }
-     NumSlots 4
-    }
-    MultiSlotConfiguration "{65334535A8ED7868}" {
-     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{4068585808DF8DF2}Prefabs/Weapons/Magazines/Box_127x99_M2_100rnd_Tracer.et"
-     }
-     NumSlots 15
+     NumSlots 16
     }
     MultiSlotConfiguration "{65334535A891F2B3}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
@@ -27,12 +22,6 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     MultiSlotConfiguration "{65334535A8AD00C0}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{E8F00BF730225B00}Prefabs/Weapons/Grenades/Grenade_M67.et"
-     }
-     NumSlots 4
-    }
-    MultiSlotConfiguration "{65334535AB539D98}" {
-     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{33CBDE73AB48172A}Prefabs/Weapons/Explosives/DemoBlock_M112/DemoBlock_M112.et"
      }
      NumSlots 4
     }
@@ -73,7 +62,7 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     }
     MultiSlotConfiguration "{65334535AB915CF5}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{93AFBDAB0B0C3E38}Prefabs/Magazine/HEAT551_Magazine.et"
+      Prefab "{1C70541D08135513}Prefabs/Weapons/Ammo/Gustaf/Ammo_84mm_FFV751.et"
      }
      NumSlots 2
     }
@@ -103,7 +92,7 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     }
     MultiSlotConfiguration "{65872B295C9A7A35}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/SalineBag_US_01.et"
+      Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/506th_SalineBag_US_01.et"
      }
      NumSlots 10
     }
@@ -125,7 +114,20 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
      }
      NumSlots 10
     }
+    MultiSlotConfiguration "{66875B71D2198D00}" {
+     SlotTemplate InventoryStorageSlot WireCutters {
+      Prefab "{8554ED3F088BADA6}Prefabs/Items/Core/Wirecutters/wirecutters.et"
+     }
+     NumSlots 1
+    }
+    MultiSlotConfiguration "{66876927C42455BE}" {
+     SlotTemplate InventoryStorageSlot MortarRounds {
+      Prefab "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821.et"
+     }
+     NumSlots 15
+    }
    }
+   m_fMaxWeight 4000
   }
  }
 }

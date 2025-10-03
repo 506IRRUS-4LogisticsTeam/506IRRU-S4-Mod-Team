@@ -4,19 +4,13 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
   SCR_UniversalInventoryStorageComponent "{5D5A4D839C515AA7}" {
    MultiSlots {
     MultiSlotConfiguration "{5D5A4D839C51A371}" {
-     NumSlots 6
+     NumSlots 20
     }
     MultiSlotConfiguration "{65334B67E32E952F}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
       Prefab "{50A242E5D9742C62}Prefabs/Weapons/Magazines/Box_127x99_M2_100rnd_4AP_1Tracer.et"
      }
-     NumSlots 4
-    }
-    MultiSlotConfiguration "{65334B67E3D0285A}" {
-     SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{5CD690CF2464ABA9}Prefabs/Weapons/Magazines/Box_127x99_M2_100rnd_Base.et"
-     }
-     NumSlots 15
+     NumSlots 16
     }
     MultiSlotConfiguration "{65334B67E3F108B8}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
@@ -73,7 +67,7 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     }
     MultiSlotConfiguration "{65334B67E2CD4524}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{93AFBDAB0B0C3E38}Prefabs/Magazine/HEAT551_Magazine.et"
+      Prefab "{1C70541D08135513}Prefabs/Weapons/Ammo/Gustaf/Ammo_84mm_FFV751.et"
      }
      NumSlots 2
     }
@@ -109,7 +103,7 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
     }
     MultiSlotConfiguration "{65877429A0227037}" {
      SlotTemplate InventoryStorageSlot InventoryStorageSlot {
-      Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/SalineBag_US_01.et"
+      Prefab "{00E36F41CA310E2A}Prefabs/Items/Medicine/SalineBag_01/506th_SalineBag_US_01.et"
      }
      NumSlots 10
     }
@@ -131,7 +125,20 @@ Vehicle : "{E03D5609EEA6E03D}Prefabs/Vehicles/Core/Wheeled_Truck_Base.et" {
      }
      NumSlots 10
     }
+    MultiSlotConfiguration "{6687692701ABFF84}" {
+     SlotTemplate InventoryStorageSlot WireCuttters {
+      Prefab "{8554ED3F088BADA6}Prefabs/Items/Core/Wirecutters/wirecutters.et"
+     }
+     NumSlots 1
+    }
+    MultiSlotConfiguration "{668769271060E6B3}" {
+     SlotTemplate InventoryStorageSlot Mortars {
+      Prefab "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821.et"
+     }
+     NumSlots 15
+    }
    }
+   m_fMaxWeight 4000
   }
  }
 }

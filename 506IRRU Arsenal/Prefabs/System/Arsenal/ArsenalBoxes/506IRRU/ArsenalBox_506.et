@@ -8,19 +8,21 @@ GenericEntity : "{54986385A6AF77B2}Prefabs/Props/Military/Arsenal/ArsenalBoxes/A
    m_eArsenalSaveType NO_RESTRICTIONS
   }
   SCR_EditableEntityComponent "{667D546F371A449E}" {
+   m_EntityType SYSTEM
    m_UIInfo SCR_EditableEntityUIInfo "{667D546ED22EE55D}" {
-    Name "(ArsenalBox_506)"
+    Name "Arsenal - 506IRRU"
     Description "Arsenal with the approved gear for the 506IRRU"
     Icon "{4D6CB4D087CE9A75}Images/506_Icon.edds"
-    m_Image "UI/Textures/EditorPreviews/System/Arsenal/ArsenalBoxes/506IRRU/ArsenalBox_506.edds"
+    m_Image "{1FB8B7FC88FCC33C}UI/Textures/Editor/Attributes/Categories/Attribute_Category_Arsenal.edds"
     m_sFaction "506IRRU"
     m_aAuthoredLabels {
-     7 1001 280 1110498469 1
+     7 1001 1110498469 1
     }
     m_aAutoLabels {
      122 27
     }
    }
+   m_bAutoRegister ALWAYS
    m_bStatic 1
    m_Flags 391
   }
