@@ -1,0 +1,20 @@
+GameEntity : "{8A2B2A544F3ED831}Prefabs/Characters/HeadGear/Helmet_PASGT_01/Helmet_PASGT_01_base.et" {
+ ID "50D485E1435D6C72"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D601873E6784}" {
+    ItemDisplayName UIInfo "{52C8D60185955516}" {
+     Name "IHPS Multicam"
+     Description "The Integrated Head Protection System (IHPS) is the United States Army's newest combat helmet, intended to eventually replace the Advanced Combat Helmet and Enhanced Combat Helmet."
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{1DF595F2A4C620BB}H1G.xob"
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   WornModel "{C989B8C694C9B55F}H2.xob"
+   ItemModel "{431DBCB11B4BAEB4}H2G.xob"
+  }
+ }
+}

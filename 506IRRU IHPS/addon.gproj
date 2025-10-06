@@ -1,0 +1,8 @@
+GameProject {
+ ID "IHPS"
+ GUID "668D15F48C1BF2B6"
+ TITLE "IHPS"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
