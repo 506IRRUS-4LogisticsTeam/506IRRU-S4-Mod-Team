@@ -240,7 +240,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		}
 
 		float healPercent = Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING);
-		bool healedSomething = dmgManager.HealHitZones(healPercent, false, true);
+		bool healedSomething = dmgManager.HealHitZones(healPercent, true, 1.0);
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
