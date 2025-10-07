@@ -6,12 +6,12 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const vector CPR_PERFORMER_BB_OFFSET = {0, 0.45, 0};
 	protected static const vector CPR_PERFORMER_BB_HALF_EXTENDS = {0.15, 0.15, 0.15};
 	
-	protected static const float CPR_MAX_DURATION = 30.0;
+	protected static const float CPR_MAX_DURATION = 5.0;
 	protected static const float CPR_BASE_COOLDOWN = 12.0;
 	protected static const float CPR_COOLDOWN_RATIO = 0.4;
 	protected static const float CPR_MIN_COOLDOWN = 2.0;
-	protected static const float CPR_MIN_HEALING = 5.0;
-	protected static const float CPR_MAX_HEALING = 15.0;
+	protected static const float CPR_MIN_HEALING = 2.0;
+	protected static const float CPR_MAX_HEALING = 4.0;
 	protected static const float CPR_FALLBACK_DURATION = 5.0;
 	
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
