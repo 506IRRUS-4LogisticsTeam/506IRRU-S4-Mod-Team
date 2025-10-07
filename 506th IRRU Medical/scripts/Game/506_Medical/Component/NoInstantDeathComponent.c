@@ -9,39 +9,32 @@ class IRRU_NoInstantDeathComponentClass : ScriptComponentClass
 //! Prevents instant death and manages bleedout timer
 class IRRU_NoInstantDeathComponent : ScriptComponent
 {
-	// ─── debug utility ───────────────────────────────────────────────────
-	//------------------------------------------------------------------------------------------------
-	static void DebugPrint(string msg)
-	{
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath][NID] " + msg);
-	}
+	protected const float CHECK_INTERVAL = 1.0;
+	protected const float SAFETY_BUFFER_HP = 5.0;
+	protected const float MIN_UNCONSCIOUS_HP = 1.0;
+	protected const float PERIODIC_LOG_INTERVAL = 30.0;
+	protected const float REPLICATION_UPDATE_INTERVAL = 0.5;
 
-	// ─── state ───────────────────────────────────────────────────────────
-	protected bool m_bNID_Initialized  = false;
+	protected bool m_bNID_Initialized = false;
 	[RplProp(onRplName: "OnUnconsciousStateChanged")]
-	protected bool m_bIsUnconscious    = false;
+	protected bool m_bIsUnconscious = false;
 	protected bool m_bIsInitiatingKill = false;
 	[RplProp(onRplName: "OnCPRStateChanged")]
-	protected bool m_bReceivingCPR     = false;  // CPR flag to pause timer
+	protected bool m_bReceivingCPR = false;
 	[RplProp()]
-	protected float m_fCPRCooldownTimer = 0.0;   // CPR cooldown timer (counts down to 0)
-
-	protected bool m_bDeadBlockPrinted = false;  // one-shot info
-	protected bool m_bDeadWarned       = false;  // one-shot warn
-
-	// ─── timer config ────────────────────────────────────────────────────
-	protected const float CHECK_INTERVAL   =   1.0; // s
+	protected float m_fCPRCooldownTimer = 0.0;
 	[RplProp()]
-	protected float       m_fUnconsciousTimer = 0.0;
+	protected float m_fUnconsciousTimer = 0.0;
 
-	// ─── cached refs ─────────────────────────────────────────────────────
-	protected Instigator                          m_LastKnownInstigator;
-	protected RplComponent                        m_Rpl;
+	protected bool m_bDeadBlockPrinted = false;
+	protected bool m_bDeadWarned = false;
+
+	protected Instigator m_LastKnownInstigator;
+	protected RplComponent m_Rpl;
 	protected SCR_CharacterDamageManagerComponent m_CachedDmgManager;
-	protected SCR_CharacterControllerComponent    m_Ctrl;
+	protected SCR_CharacterControllerComponent m_Ctrl;
 
-	// ─── init / delete ───────────────────────────────────────────────────
+	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
@@ -50,23 +43,21 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 	override void EOnInit(IEntity owner)
 	{
-		m_Rpl              = RplComponent.Cast(owner.FindComponent(RplComponent));
+		m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
 		m_CachedDmgManager = SCR_CharacterDamageManagerComponent.Cast(
 			owner.FindComponent(SCR_CharacterDamageManagerComponent));
-		m_Ctrl             = SCR_CharacterControllerComponent.Cast(
+		m_Ctrl = SCR_CharacterControllerComponent.Cast(
 			owner.FindComponent(SCR_CharacterControllerComponent));
-		
-		// NEW: Register for life state changes to catch bleed-to-unconscious
+
 		if (m_Ctrl)
 			m_Ctrl.m_OnLifeStateChanged.Insert(OnLifeStateChanged);
-		
-		// Log version info once per session (using static to prevent spam)
-		static bool s_versionLogged = false;
-		if (!s_versionLogged && IRRU_NoInstantDeathSettings.IsDebugEnabled())
+
+		static bool s_bVersionLogged = false;
+		if (!s_bVersionLogged && IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
-			Print(string.Format("[NoInstantDeath][NID] Medical Mod v%1 loaded successfully", 
+			Print(string.Format("[NoInstantDeath] Medical Mod v%1 loaded",
 			                   IRRU_NoInstantDeathSettings.MOD_VERSION));
-			s_versionLogged = true;
+			s_bVersionLogged = true;
 		}
 	}
 
@@ -75,7 +66,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (m_CachedDmgManager && m_bNID_Initialized)
 			m_CachedDmgManager.GetOnDamageStateChanged().Remove(HandleDamageStateChange);
 
-		// NEW: Unregister life state listener
 		if (m_Ctrl)
 			m_Ctrl.m_OnLifeStateChanged.Remove(OnLifeStateChanged);
 
@@ -85,167 +75,172 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		super.OnDelete(owner);
 	}
 
-	// ─── external init (player controller) ───────────────────────────────
-	bool IsInitialized() { return m_bNID_Initialized; }
+	//------------------------------------------------------------------------------------------------
+	bool IsInitialized()
+	{
+		return m_bNID_Initialized;
+	}
 
+	//------------------------------------------------------------------------------------------------
 	void Initialize()
 	{
-		if (m_bNID_Initialized || !m_CachedDmgManager)
+		if (m_bNID_Initialized)
 			return;
+
+		if (!m_CachedDmgManager)
+		{
+			Print("[NoInstantDeath] Initialize failed - no damage manager", LogLevel.ERROR);
+			return;
+		}
 
 		m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
 		m_bNID_Initialized = true;
+
 		if (m_Rpl)
 			Replication.BumpMe();
-		
-		// Debug: Log initialization with timer value
-		float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-		DebugPrint(string.Format("%1: initialized with %2s bleedout timer", 
-		                            GetNameStr(GetOwner()), bleedoutTime));
+
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[NoInstantDeath] %1: initialized with %2s bleedout timer",
+			                   GetNameStr(GetOwner()),
+			                   IRRU_NoInstantDeathSettings.GetBleedoutTime()));
+		}
 	}
 
-	// ─── NEW: Life state change handler ──────────────────────────────────
+	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
-		// Catch transition to unconscious from any source (bleeding, resilience, etc)
-		if (newLifeState == ECharacterLifeState.INCAPACITATED && 
+		if (newLifeState == ECharacterLifeState.INCAPACITATED &&
 		    previousLifeState == ECharacterLifeState.ALIVE &&
 		    m_bNID_Initialized && !m_bIsUnconscious)
 		{
-			DebugPrint(GetNameStr(GetOwner()) + 
-			               ": detected unconscious from bleeding/resilience, starting timer");
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+			{
+				Print(string.Format("[NoInstantDeath] %1: unconscious from bleeding/resilience",
+				                   GetNameStr(GetOwner())));
+			}
 			MakeUnconscious(GetOwner());
 		}
 	}
 
-	// ─── knock-out transition ────────────────────────────────────────────
+	//------------------------------------------------------------------------------------------------
 	void MakeUnconscious(IEntity owner)
 	{
 		if (!m_bNID_Initialized || m_bIsUnconscious || !m_CachedDmgManager)
 			return;
 
-		m_bIsUnconscious     = true;
-		m_bDeadBlockPrinted  = false;
-		m_bDeadWarned        = false;
-		m_fUnconsciousTimer  = 0.0;
-		m_bIsInitiatingKill  = false;
+		m_bIsUnconscious = true;
+		m_bDeadBlockPrinted = false;
+		m_bDeadWarned = false;
+		m_fUnconsciousTimer = 0.0;
+		m_bIsInitiatingKill = false;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 
-		ApplySafetyBuffer(5.0);
+		ApplySafetyBuffer(SAFETY_BUFFER_HP);
 		m_CachedDmgManager.ForceUnconsciousness();
 
 		if (Replication.IsServer())
 		{
-			// Safety: Remove any existing timer before starting new one
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-			
+
 			if (m_Rpl)
 				Replication.BumpMe();
+
 			GetGame().GetCallqueue().CallLater(
 			    UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
 
-		float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-		DebugPrint(string.Format("%1: entering unconscious state (timer: %2s)", 
-		                            GetNameStr(owner), bleedoutTime));
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[NoInstantDeath] %1: entering unconscious state (%2s timer)",
+			                   GetNameStr(owner),
+			                   IRRU_NoInstantDeathSettings.GetBleedoutTime()));
+		}
 	}
 
+	//------------------------------------------------------------------------------------------------
 	protected void ApplySafetyBuffer(float minHP)
 	{
-		HitZone core  = m_CachedDmgManager.GetDefaultHitZone();
-		if (core  && core.GetHealth()  < minHP) core.SetHealth(minHP);
-		HitZone head  = m_CachedDmgManager.GetHitZoneByName("Head");
-		if (head  && head.GetHealth()  < minHP) head.SetHealth(minHP);
+		HitZone core = m_CachedDmgManager.GetDefaultHitZone();
+		if (core && core.GetHealth() < minHP)
+			core.SetHealth(minHP);
+
+		HitZone head = m_CachedDmgManager.GetHitZoneByName("Head");
+		if (head && head.GetHealth() < minHP)
+			head.SetHealth(minHP);
+
 		HitZone torso = m_CachedDmgManager.GetHitZoneByName("Torso");
-		if (torso && torso.GetHealth() < minHP) torso.SetHealth(minHP);
+		if (torso && torso.GetHealth() < minHP)
+			torso.SetHealth(minHP);
 	}
 
-	// ─── server-side timer ───────────────────────────────────────────────
+	//------------------------------------------------------------------------------------------------
 	protected void UpdateUnconsciousTimer()
 	{
 		IEntity owner = GetOwner();
 		if (!owner || !m_bIsUnconscious || !Replication.IsServer())
 			return;
 
-		// Alive? → stop timer
 		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.ALIVE)
 		{
-			StopBleedoutTimer("revived (life-state ALIVE)");
+			StopBleedoutTimer("revived");
 			return;
 		}
 
-		// DEAD guard
 		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD)
 		{
 			if (!m_bDeadBlockPrinted)
 			{
-				DebugPrint("Attempted to prevent DEAD state during bleed-out.");
+				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+					Print("[NoInstantDeath] Preventing premature DEAD state during bleedout");
 				m_bDeadBlockPrinted = true;
 			}
 
 			m_CachedDmgManager.ForceUnconsciousness();
 			HitZone core = m_CachedDmgManager.GetDefaultHitZone();
-			if (core && core.GetHealth() < 1.0) core.SetHealth(1.0);
+			if (core && core.GetHealth() < MIN_UNCONSCIOUS_HP)
+				core.SetHealth(MIN_UNCONSCIOUS_HP);
 
 			if (m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD && !m_bDeadWarned)
 			{
-				DebugPrint("[WARNING] " + GetNameStr(owner) +
-				      " reached DEAD life-state before timer expiry!");
+				Print(string.Format("[NoInstantDeath] WARNING: %1 reached DEAD state before timer expiry",
+				                   GetNameStr(owner)), LogLevel.WARNING);
 				m_bDeadWarned = true;
-				StopBleedoutTimer("life-state DEAD");
+				StopBleedoutTimer("forced death");
 				return;
 			}
 		}
 
-		// Timer only increments if NOT receiving CPR
 		if (!m_bReceivingCPR)
-		{
 			m_fUnconsciousTimer += CHECK_INTERVAL;
-		}
-		else
-		{
-			// Log CPR is pausing timer (only once every 10 seconds to avoid spam)
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled() 
-			    && Math.Mod(m_fUnconsciousTimer, 10.0) < CHECK_INTERVAL)
-			{
-				DebugPrint(GetNameStr(owner) + ": Timer paused - receiving CPR");
-			}
-		}
-		
-		// Bump replication periodically so clients get timer updates
-		// Update every 0.5 seconds for smooth timer display
-		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, 0.5) < CHECK_INTERVAL)
-		{
-			Replication.BumpMe();
-		}
 
-		// Only show periodic updates in verbose debug mode (every 30 seconds instead of 15)
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled()
-		    && Math.Mod(m_fUnconsciousTimer, 30.0) < CHECK_INTERVAL)
+		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, REPLICATION_UPDATE_INTERVAL) < CHECK_INTERVAL)
+			Replication.BumpMe();
+
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled() &&
+		    Math.Mod(m_fUnconsciousTimer, PERIODIC_LOG_INTERVAL) < CHECK_INTERVAL)
 		{
 			float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-			DebugPrint(string.Format("%1: bleed-out remaining %2 / %3 s",
-			               GetNameStr(owner),
-			               (bleedoutTime - m_fUnconsciousTimer),
-			               bleedoutTime));
+			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining",
+			                   GetNameStr(owner),
+			                   (bleedoutTime - m_fUnconsciousTimer),
+			                   bleedoutTime));
 		}
 
-		// Expire?
 		float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
 		if (m_fUnconsciousTimer >= bleedoutTime)
 		{
-			DebugPrint(GetNameStr(owner) +
-			               ": bleed-out expired → character dies.");
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print(string.Format("[NoInstantDeath] %1: bleedout timer expired", GetNameStr(owner)));
 			KillCharacter(owner);
 			return;
 		}
 
-		// queue next tick
 		GetGame().GetCallqueue().CallLater(
 		    UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 	}
 
-	// ─── timer-expiry kill ───────────────────────────────────────────────
+	//------------------------------------------------------------------------------------------------
 	void KillCharacter(IEntity owner)
 	{
 		if (!m_bIsUnconscious || !m_CachedDmgManager)
@@ -258,14 +253,15 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (!inst)
 		{
 			HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
-			if (hz) hz.SetHealth(0);
+			if (hz)
+				hz.SetHealth(0);
 			m_bIsInitiatingKill = false;
 			return;
 		}
 		m_CachedDmgManager.Kill(inst);
 	}
 
-	// ─── damage-state callback (revive & DESTROYED failsafe) ─────────────
+	//------------------------------------------------------------------------------------------------
 	protected void HandleDamageStateChange(EDamageState newState)
 	{
 		if (!m_bNID_Initialized || !Replication.IsServer())
@@ -273,40 +269,50 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		if (m_bIsUnconscious)
 		{
-			if (newState == EDamageState.UNDAMAGED ||
-			    newState == EDamageState.INTERMEDIARY)
+			if (newState == EDamageState.UNDAMAGED || newState == EDamageState.INTERMEDIARY)
 			{
-				StopBleedoutTimer("damage-state conscious");
+				StopBleedoutTimer("revived");
 			}
 			else if (newState == EDamageState.DESTROYED)
 			{
-				DebugPrint("[WARNING] " + GetNameStr(GetOwner()) +
-				      " damage-state DESTROYED before timer expiry!");
-				StopBleedoutTimer("damage-state DESTROYED");
+				Print(string.Format("[NoInstantDeath] WARNING: %1 DESTROYED before timer expiry",
+				                   GetNameStr(GetOwner())), LogLevel.WARNING);
+				StopBleedoutTimer("destroyed");
 			}
 		}
 	}
 
+	//------------------------------------------------------------------------------------------------
 	protected void StopBleedoutTimer(string reason)
 	{
 		if (!m_bIsUnconscious)
 			return;
 
-		DebugPrint(GetNameStr(GetOwner()) + ": bleed-out cancelled (" + reason + ").");
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[NoInstantDeath] %1: bleedout cancelled (%2)",
+			                   GetNameStr(GetOwner()), reason));
+		}
 
-		m_bIsUnconscious    = false;
+		m_bIsUnconscious = false;
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-		if (Replication.IsServer() && m_Rpl) 
+
+		if (Replication.IsServer() && m_Rpl)
 			Replication.BumpMe();
 	}
 
-	void OnRep_IsUnconscious() {}
+	//------------------------------------------------------------------------------------------------
+	protected void OnUnconsciousStateChanged()
+	{
+	}
 
-	// helper: name string
+	//------------------------------------------------------------------------------------------------
 	protected string GetNameStr(IEntity e)
 	{
-		if (!e) return "UnknownEntity(null)";
+		if (!e)
+			return "UnknownEntity";
+
 		PlayerManager pm = GetGame().GetPlayerManager();
 		if (pm)
 		{
@@ -317,113 +323,117 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 				if (pid > 0)
 				{
 					string n = pm.GetPlayerName(pid);
-					if (!n.IsEmpty()) return n;
+					if (!n.IsEmpty())
+						return n;
 				}
 			}
 		}
 		return e.ToString();
 	}
 
-	// ══════════════════════════════════════════════════════════════════════
-	// NEW TIMER EXPOSURE METHODS FOR UI
-	// ══════════════════════════════════════════════════════════════════════
-
-	//! Get remaining bleedout time in seconds
+	//------------------------------------------------------------------------------------------------
 	float GetBleedoutTimeRemaining()
 	{
 		if (!m_bIsUnconscious)
-			return -1.0; // Not bleeding out
-			
+			return -1.0;
+
 		return IRRU_NoInstantDeathSettings.GetBleedoutTime() - m_fUnconsciousTimer;
 	}
 
-	//! Get total bleedout time in seconds
+	//------------------------------------------------------------------------------------------------
 	float GetBleedoutTimeTotal()
 	{
 		return IRRU_NoInstantDeathSettings.GetBleedoutTime();
 	}
 
-	//! Get bleedout timer percentage (0-100)
+	//------------------------------------------------------------------------------------------------
 	float GetBleedoutPercentage()
 	{
 		if (!m_bIsUnconscious)
-			return 100.0; // Full time if not bleeding out
-			
+			return 100.0;
+
 		float remaining = GetBleedoutTimeRemaining();
 		if (remaining <= 0)
 			return 0.0;
-			
+
 		return (remaining / IRRU_NoInstantDeathSettings.GetBleedoutTime()) * 100.0;
 	}
 
-	// ══════════════════════════════════════════════════════════════════════
-	// ORIGINAL PUBLIC GETTERS
-	// ══════════════════════════════════════════════════════════════════════
-	
-	bool IsUnconscious()          { return m_bIsUnconscious; }
-	bool IsInitiatingKill()       { return m_bIsInitiatingKill; }
-	void ResetInitiatingKillFlag(){ m_bIsInitiatingKill = false; }
-	
-	// ══════════════════════════════════════════════════════════════════════
-	// REPLICATION CALLBACKS
-	// ══════════════════════════════════════════════════════════════════════
-	
-	//! Called when unconscious state changes (for client synchronization)
-	protected void OnUnconsciousStateChanged()
+	//------------------------------------------------------------------------------------------------
+	bool IsUnconscious()
 	{
-		// This is called on clients when the server updates m_bIsUnconscious
-		// No action needed - the UI will read the updated value
+		return m_bIsUnconscious;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	bool IsInitiatingKill()
+	{
+		return m_bIsInitiatingKill;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	void ResetInitiatingKillFlag()
+	{
+		m_bIsInitiatingKill = false;
 	}
 	
-	// ─── CPR Methods ─────────────────────────────────────────────────────
-	
-	//! Set whether patient is receiving CPR
+	//------------------------------------------------------------------------------------------------
 	void SetReceivingCPR(bool receiving)
 	{
 		if (m_bReceivingCPR == receiving)
 			return;
-			
+
 		m_bReceivingCPR = receiving;
-		
+
 		if (m_Rpl)
 			Replication.BumpMe();
-		
-		DebugPrint(string.Format("%1: CPR state changed to %2", 
-		                            GetNameStr(GetOwner()), receiving));
+
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			string cprState;
+			if (receiving)
+				cprState = "started";
+			else
+				cprState = "stopped";
+
+			Print(string.Format("[NoInstantDeath] %1: CPR %2",
+			                   GetNameStr(GetOwner()), cprState));
+		}
 	}
-	
-	//! Check if patient is receiving CPR
+
+	//------------------------------------------------------------------------------------------------
 	bool IsReceivingCPR()
 	{
 		return m_bReceivingCPR;
 	}
-	
-	//! RPC callback for CPR state changes
+
+	//------------------------------------------------------------------------------------------------
 	protected void OnCPRStateChanged()
 	{
-		// Could add visual/audio feedback here
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			DebugPrint(string.Format("%1: CPR state replicated - now %2", 
-			                            GetNameStr(GetOwner()), m_bReceivingCPR));
 	}
-	
-	//! Set CPR cooldown duration
+
+	//------------------------------------------------------------------------------------------------
 	void SetCPRCooldown(float cooldownDuration)
 	{
+		if (cooldownDuration < 0)
+		{
+			Print(string.Format("[NoInstantDeath] Invalid CPR cooldown: %1, clamping to 0", cooldownDuration), LogLevel.WARNING);
+			cooldownDuration = 0;
+		}
+
 		m_fCPRCooldownTimer = cooldownDuration;
-		
+
 		if (m_Rpl)
 			Replication.BumpMe();
-			
-		// Start updating the cooldown timer
+
 		if (cooldownDuration > 0 && Replication.IsServer())
 		{
 			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
-			GetGame().GetCallqueue().CallLater(UpdateCPRCooldownTimer, 1000, true); // Update every second
+			GetGame().GetCallqueue().CallLater(UpdateCPRCooldownTimer, 1000, true);
 		}
 	}
-	
-	//! Update CPR cooldown timer (called every second on server)
+
+	//------------------------------------------------------------------------------------------------
 	protected void UpdateCPRCooldownTimer()
 	{
 		if (m_fCPRCooldownTimer <= 0)
@@ -431,26 +441,26 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
 			return;
 		}
-		
-		m_fCPRCooldownTimer -= 1.0; // Decrease by 1 second
-		
+
+		m_fCPRCooldownTimer -= 1.0;
+
 		if (m_fCPRCooldownTimer <= 0)
 		{
 			m_fCPRCooldownTimer = 0;
 			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
 		}
-		
+
 		if (m_Rpl)
 			Replication.BumpMe();
 	}
-	
-	//! Check if currently on CPR cooldown
+
+	//------------------------------------------------------------------------------------------------
 	bool IsOnCPRCooldown()
 	{
 		return m_fCPRCooldownTimer > 0;
 	}
-	
-	//! Get remaining CPR cooldown in seconds
+
+	//------------------------------------------------------------------------------------------------
 	float GetCPRCooldownRemaining()
 	{
 		return m_fCPRCooldownTimer;

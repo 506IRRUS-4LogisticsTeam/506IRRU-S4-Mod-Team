@@ -1,11 +1,12 @@
 //! Damage interception component for no-instant-death system
+//! NOTE: This component appears redundant - damage interception is already handled
+//! in SCR_CharacterDamageManagerComponent.OnDamage(). Consider removing if unused.
 
 [ComponentEditorProps(category: "Health", description: "Intercepts player damage to prevent instant death")]
 class IRRU_DamageInterceptorComponentClass : ScriptComponentClass
 {
 }
 
-//! Intercepts damage to prevent instant death in medical system
 class IRRU_DamageInterceptorComponent : ScriptComponent
 {
 	protected SCR_CharacterDamageManagerComponent m_DamageManager;
@@ -14,14 +15,6 @@ class IRRU_DamageInterceptorComponent : ScriptComponent
 	protected bool m_bAnnouncedReady = false;
 
 	//------------------------------------------------------------------------------------------------
-	protected void DebugPrint(string msg)
-	{
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath][INT] " + msg);
-	}
-
-	//------------------------------------------------------------------------------------------------
-
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
@@ -37,12 +30,16 @@ class IRRU_DamageInterceptorComponent : ScriptComponent
 		m_DamageManager.OnCustomDamageTaken.Insert(OnEntityDamaged);
 		m_bListenerBound = true;
 
-		if (m_DeathLogic.IsInitialized())
-			DebugPrint("Interceptor active for player.");
-		else
-			DebugPrint("Interceptor dormant (AI or not initialized).");
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			if (m_DeathLogic.IsInitialized())
+				Print("[NoInstantDeath] Interceptor active for player");
+			else
+				Print("[NoInstantDeath] Interceptor dormant (AI or not initialized)");
+		}
 	}
 
+	//------------------------------------------------------------------------------------------------
 	void OnEntityDamaged(IEntity owner, float damage, notnull Instigator instigator, vector dir, HitZone hitZone)
 	{
 		if (!m_DeathLogic || !m_DeathLogic.IsInitialized())
@@ -50,13 +47,15 @@ class IRRU_DamageInterceptorComponent : ScriptComponent
 
 		if (!m_bAnnouncedReady)
 		{
-			DebugPrint("Interceptor active for player.");
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print("[NoInstantDeath] Interceptor active for player");
 			m_bAnnouncedReady = true;
 		}
 
 		if ((m_DamageManager.GetHealth() - damage) <= 0.1 && !m_DeathLogic.IsUnconscious())
 		{
-			DebugPrint("Intercepted lethal damage, forcing unconscious.");
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print("[NoInstantDeath] Intercepted lethal damage");
 			m_DeathLogic.MakeUnconscious(owner);
 		}
 	}

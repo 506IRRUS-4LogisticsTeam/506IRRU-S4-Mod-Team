@@ -9,6 +9,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const float CPR_MAX_DURATION = 30.0;
 	protected static const float CPR_BASE_COOLDOWN = 12.0;
 	protected static const float CPR_COOLDOWN_RATIO = 0.4;
+	protected static const float CPR_MIN_COOLDOWN = 2.0;
+	protected static const float CPR_MIN_HEALING = 5.0;
+	protected static const float CPR_MAX_HEALING = 15.0;
+	protected static const float CPR_FALLBACK_DURATION = 5.0;
 	
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
@@ -26,9 +30,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
 	{
 		super.Init(pOwnerEntity, pManagerComponent);
-		
+
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath][CPR] CPR action initialized");
+			Print("[NoInstantDeath] CPR action initialized");
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -225,23 +229,29 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	{
 		if (!patient || !Replication.IsServer())
 			return;
-		
+
 		SCR_CharacterDamageManagerComponent dmgManager = SCR_CharacterDamageManagerComponent.Cast(
 			patient.FindComponent(SCR_CharacterDamageManagerComponent));
-		
+
 		if (!dmgManager)
+		{
+			Print("[NoInstantDeath] CPR healing failed - patient has no damage manager", LogLevel.WARNING);
 			return;
-		
-		float healPercent = Math.RandomFloatInclusive(5.0, 15.0);
-		
+		}
+
+		float healPercent = Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING);
 		bool healedSomething = dmgManager.HealHitZones(healPercent, false, true);
-		
+
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
+			string healStatus;
 			if (healedSomething)
-				Print(string.Format("[NoInstantDeath][CPR] Full CPR completed - Applied %1%% healing to patient", healPercent));
+				healStatus = "applied";
 			else
-				Print("[NoInstantDeath][CPR] Full CPR completed - Patient already at full health");
+				healStatus = "already full";
+
+			Print(string.Format("[NoInstantDeath] CPR completed - healed %1%% (%2)",
+			                   healPercent, healStatus));
 		}
 	}
 	
@@ -251,21 +261,18 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (m_iPerformingPlayerId != -1 && Replication.IsServer())
 		{
 			float currentTime = GetGame().GetWorld().GetWorldTime();
-			float cprDuration = 0;
-			
-			// Calculate actual CPR duration if we have a valid start time
+			float cprDuration;
+
 			if (m_fCPRStartTime > 0)
 			{
 				cprDuration = (currentTime - m_fCPRStartTime) / 1000.0;
 			}
 			else
 			{
-				// Fallback if start time wasn't properly set
-				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-					Print("[NoInstantDeath][CPR] Warning: CPR start time was 0, using default duration");
-				cprDuration = 5.0; // Default to 5 seconds if we don't have proper timing
+				Print("[NoInstantDeath] CPR start time was invalid, using fallback duration", LogLevel.WARNING);
+				cprDuration = CPR_FALLBACK_DURATION;
 			}
-			
+
 			float cooldownTime;
 			if (wasForcedByFatigue)
 			{
@@ -274,25 +281,23 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			else
 			{
 				cooldownTime = cprDuration * CPR_COOLDOWN_RATIO;
-				cooldownTime = Math.Clamp(cooldownTime, 2.0, CPR_BASE_COOLDOWN);
+				cooldownTime = Math.Clamp(cooldownTime, CPR_MIN_COOLDOWN, CPR_BASE_COOLDOWN);
 			}
-			
+
 			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
 			if (userChar)
 			{
-				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
+				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(
+					userChar.FindComponent(IRRU_NoInstantDeathComponent));
+
 				if (userNid)
 				{
-					// Set cooldown duration (in seconds) - this will count down like the death timer
 					userNid.SetCPRCooldown(cooldownTime);
-					
+
 					if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 					{
-						Print(string.Format("[NoInstantDeath][CPR] StopCPR Debug:"));
-						Print(string.Format("  - Current time: %1ms", currentTime));
-						Print(string.Format("  - CPR start time: %1ms", m_fCPRStartTime));
-						Print(string.Format("  - CPR duration: %1s", cprDuration));
-						Print(string.Format("  - Cooldown time: %1s (will count down from this)", cooldownTime));
+						Print(string.Format("[NoInstantDeath] CPR stopped - duration %1s, cooldown %2s",
+						                   cprDuration, cooldownTime));
 					}
 				}
 			}
@@ -307,20 +312,17 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			m_pActiveHelper = null;
 		}
 		
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+			pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+
 		if (nid)
-		{
 			nid.SetReceivingCPR(false);
-			
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print("[NoInstantDeath][CPR] Cleared receiving CPR flag on patient");
-		}
-		
+
 		m_bCPRActive = false;
 		m_fCPRStartTime = 0;
 		m_iPerformingPlayerId = -1;
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
@@ -328,51 +330,54 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (playerManager)
 		{
 			int playerId = playerManager.GetPlayerIdFromControlledEntity(pUserEntity);
-			
+
 			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
 			{
 				StopCPR(pOwnerEntity, pUserEntity);
 				return;
 			}
-			
+
 			m_iPerformingPlayerId = playerId;
 		}
-		
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+			pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+
 		if (!nid)
 		{
+			Print("[NoInstantDeath] CPR failed - patient has no NID component", LogLevel.ERROR);
 			return;
 		}
-		
+
 		vector transform[4];
 		GetEntryTransform(transform, pOwnerEntity, pUserEntity);
-		
+
 		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
 		if (!userChar)
 		{
+			Print("[NoInstantDeath] CPR failed - user is not a character", LogLevel.ERROR);
 			return;
 		}
-		
+
 		m_pActiveHelper = IRRU_CPRHelperCompartment.Cast(
-			IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform)
-		);
-		
+			IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform));
+
 		if (m_pActiveHelper)
 		{
 			m_pActiveHelper.SetPatient(SCR_ChimeraCharacter.Cast(pOwnerEntity));
-			
 			m_pActiveHelper.GetOnTerminated().Insert(OnAnimationTerminated);
-			
+
 			nid.SetReceivingCPR(true);
 			m_bCPRActive = true;
-			
-			// Set CPR start time (will be replicated automatically via RplProp)
 			m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
-			
+
 			GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000);
-			
+
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CPR] Started CPR session at %1ms, will auto-stop in %2 seconds", m_fCPRStartTime, CPR_MAX_DURATION));
+			{
+				Print(string.Format("[NoInstantDeath] CPR started - max duration %1s",
+				                   CPR_MAX_DURATION));
+			}
 		}
 	}
 	

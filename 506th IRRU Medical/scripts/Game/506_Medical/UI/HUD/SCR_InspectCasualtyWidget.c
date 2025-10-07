@@ -16,8 +16,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	protected float m_fTimeTillUpdate;
 	protected float m_fTimeTillClose;
 	protected bool m_bShouldBeVisible;
-	
-	// NEW: Additional widgets for enhanced display
+
 	protected TextWidget m_wResilienceText;
 	protected RichTextWidget m_wDetailedStatus;
 	protected TextWidget m_wBleedoutTimerText;
@@ -27,8 +26,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	override void DisplayStartDraw(IEntity owner)
 	{
 		m_wCasualtyInspectWidget = GetRootWidget();
-		
-		// NEW: Find additional widgets if they exist in the layout
+
 		if (m_wCasualtyInspectWidget)
 		{
 			m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
@@ -36,7 +34,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
 			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
 		}
-		
+
 		DisableWidget();
 	}
 

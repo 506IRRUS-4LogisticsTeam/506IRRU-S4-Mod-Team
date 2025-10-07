@@ -1,98 +1,91 @@
 //! Settings configuration for medical system
 
 [BaseContainerProps(configRoot: true)]
-//! Configuration settings for the medical system
 class IRRU_NoInstantDeathSettings
 {
-	// Version constant
 	static const string MOD_VERSION = "2.1.3";
-	
-	// ─── Configurable Settings ─────────────────────────────────────────
+
+	protected const float MIN_BLEEDOUT_TIME = 60.0;
+	protected const float MAX_BLEEDOUT_TIME = 3600.0;
+	protected const float MIN_BLEEDING_SCALE = 0.01;
+	protected const float MAX_BLEEDING_SCALE = 5.0;
+	protected const float DEFAULT_BLEEDOUT_TIME = 360.0;
+	protected const float DEFAULT_BLEEDING_SCALE = 1.0;
+
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
 	float m_fBleedoutTime;
-	
+
 	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bDebugEnabled;
-	
+
 	[Attribute(defvalue: "1.0", desc: "Bleeding rate multiplier (0.5 = half speed, 2.0 = double speed)", category: "No Instant Death", params: "0.01 5.0 0.01")]
 	float m_fBleedingScale;
-	
+
 	[Attribute(defvalue: "1", desc: "Use descriptive text instead of exact timer (e.g. 'critical condition' instead of '1:23')", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bUseDescriptiveTimer;
-	
-	// ─── Static singleton instance ─────────────────────────────────────
+
 	protected static ref IRRU_NoInstantDeathSettings s_Instance;
 	protected static bool s_Initialized = false;
 	
 	//------------------------------------------------------------------------------------------------
-	//! Constructor
 	void IRRU_NoInstantDeathSettings()
 	{
-		// Set defaults if not specified
 		if (m_fBleedoutTime <= 0)
-			m_fBleedoutTime = 360.0;
-		
+			m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
+
 		if (m_fBleedingScale <= 0)
-			m_fBleedingScale = 1.0;
-		
-		// m_bUseDescriptiveTimer is now properly configurable - don't override it
+			m_fBleedingScale = DEFAULT_BLEEDING_SCALE;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	//! Get the singleton instance
 	static IRRU_NoInstantDeathSettings GetInstance()
 	{
 		if (!s_Instance)
 		{
-			// Try to load from config file with proper null checks
 			Resource holder = BaseContainerTools.LoadContainer("{7E9D8A65E020E49C}Configs/IRRU_NoInstantDeathSettings.conf");
 			if (!holder)
 			{
-				Print("[NoInstantDeath][CFG] WARNING: Config file not found at Configs/IRRU_NoInstantDeathSettings.conf");
+				Print("[NoInstantDeath] Config file not found", LogLevel.WARNING);
 			}
 			else if (!holder.GetResource())
 			{
-				Print("[NoInstantDeath][CFG] WARNING: Config file found but resource is null");
+				Print("[NoInstantDeath] Config file found but resource is null", LogLevel.WARNING);
 			}
 			else
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
 				if (!container)
 				{
-					Print("[NoInstantDeath][CFG] WARNING: Failed to convert resource to BaseContainer");
+					Print("[NoInstantDeath] Failed to convert resource to BaseContainer", LogLevel.WARNING);
 				}
 				else
 				{
 					s_Instance = IRRU_NoInstantDeathSettings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
 					if (!s_Instance)
-					{
-						Print("[NoInstantDeath][CFG] WARNING: Failed to create instance from container - class name mismatch?");
-					}
+						Print("[NoInstantDeath] Failed to create instance from container", LogLevel.ERROR);
 				}
 			}
 
-			// Create default if config not found or failed to load
 			if (!s_Instance)
 			{
-				Print("[NoInstantDeath][CFG] Creating default configuration");
+				Print("[NoInstantDeath] Creating default configuration");
 				s_Instance = new IRRU_NoInstantDeathSettings();
-				s_Instance.m_fBleedoutTime = 360.0;  // Default 6 minutes
-				s_Instance.m_bDebugEnabled = true;   // Default debug on
-				s_Instance.m_fBleedingScale = 1.0;  // Default normal bleeding rate
-				s_Instance.m_bUseDescriptiveTimer = true;  // Default to descriptive text
+				s_Instance.m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
+				s_Instance.m_bDebugEnabled = true;
+				s_Instance.m_fBleedingScale = DEFAULT_BLEEDING_SCALE;
+				s_Instance.m_bUseDescriptiveTimer = true;
 			}
-			
-			// Log initialization once
+
 			if (!s_Initialized)
 			{
 				s_Initialized = true;
-				Print(string.Format("[NoInstantDeath][CFG] Medical Mod v%1 initialized", MOD_VERSION));
-				Print(string.Format("[NoInstantDeath][CFG] Bleedout timer: %1 seconds", s_Instance.m_fBleedoutTime));
-				Print(string.Format("[NoInstantDeath][CFG] Debug mode: %1", s_Instance.m_bDebugEnabled));
-				Print(string.Format("[NoInstantDeath][CFG] Bleeding scale: %1x", s_Instance.m_fBleedingScale));
+				Print(string.Format("[NoInstantDeath] Medical Mod v%1 initialized", MOD_VERSION));
+				Print(string.Format("[NoInstantDeath] Bleedout timer: %1s", s_Instance.m_fBleedoutTime));
+				Print(string.Format("[NoInstantDeath] Debug mode: %1", s_Instance.m_bDebugEnabled));
+				Print(string.Format("[NoInstantDeath] Bleeding scale: %1x", s_Instance.m_fBleedingScale));
 			}
 		}
-		
+
 		return s_Instance;
 	}
 	
@@ -107,46 +100,44 @@ class IRRU_NoInstantDeathSettings
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	//! Get the configured bleedout time in seconds
 	static float GetBleedoutTime()
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			float time = settings.m_fBleedoutTime;
-			
-			// Validate and clamp
-			if (time < 60.0)
+
+			if (time < MIN_BLEEDOUT_TIME)
 			{
 				static bool s_warnedLow = false;
 				if (!s_warnedLow && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath][CFG] Bleedout time %1s too low, clamping to 60s", time));
+					Print(string.Format("[NoInstantDeath] Bleedout time %1s too low, clamping to %2s",
+					                   time, MIN_BLEEDOUT_TIME), LogLevel.WARNING);
 					s_warnedLow = true;
 				}
-				return 60.0;  // Minimum 1 minute
+				return MIN_BLEEDOUT_TIME;
 			}
-			
-			if (time > 3600.0)
+
+			if (time > MAX_BLEEDOUT_TIME)
 			{
 				static bool s_warnedHigh = false;
 				if (!s_warnedHigh && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath][CFG] Bleedout time %1s too high, clamping to 3600s", time));
+					Print(string.Format("[NoInstantDeath] Bleedout time %1s too high, clamping to %2s",
+					                   time, MAX_BLEEDOUT_TIME), LogLevel.WARNING);
 					s_warnedHigh = true;
 				}
-				return 3600.0;  // Maximum 1 hour
+				return MAX_BLEEDOUT_TIME;
 			}
-			
+
 			return time;
 		}
-		
-		// Fallback default
-		return 360.0;
+
+		return DEFAULT_BLEEDOUT_TIME;
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	//! Runtime configuration (for testing)
 	static void SetBleedoutTime(float seconds)
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
@@ -154,63 +145,60 @@ class IRRU_NoInstantDeathSettings
 		{
 			settings.m_fBleedoutTime = seconds;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CFG] Bleedout timer changed to %1 seconds", seconds));
+				Print(string.Format("[NoInstantDeath] Bleedout timer changed to %1s", seconds));
 		}
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	//! Runtime debug toggle
 	static void SetDebugEnabled(bool enabled)
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			settings.m_bDebugEnabled = enabled;
-			Print(string.Format("[NoInstantDeath][CFG] Debug mode set to %1", enabled));
+			Print(string.Format("[NoInstantDeath] Debug mode set to %1", enabled));
 		}
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	//! Get the configured bleeding scale
 	static float GetBleedingScale()
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 		{
 			float scale = settings.m_fBleedingScale;
-			
-			// Validate and clamp
-			if (scale < 0.01)
+
+			if (scale < MIN_BLEEDING_SCALE)
 			{
 				static bool s_warnedLow = false;
 				if (!s_warnedLow && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath][CFG] Bleeding scale %1 too low, clamping to 0.01", scale));
+					Print(string.Format("[NoInstantDeath] Bleeding scale %1 too low, clamping to %2",
+					                   scale, MIN_BLEEDING_SCALE), LogLevel.WARNING);
 					s_warnedLow = true;
 				}
-				return 0.01;  // Minimum 1% bleeding
+				return MIN_BLEEDING_SCALE;
 			}
-			
-			if (scale > 5.0)
+
+			if (scale > MAX_BLEEDING_SCALE)
 			{
 				static bool s_warnedHigh = false;
 				if (!s_warnedHigh && IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath][CFG] Bleeding scale %1 too high, clamping to 5.0", scale));
+					Print(string.Format("[NoInstantDeath] Bleeding scale %1 too high, clamping to %2",
+					                   scale, MAX_BLEEDING_SCALE), LogLevel.WARNING);
 					s_warnedHigh = true;
 				}
-				return 5.0;  // Maximum 5x bleeding
+				return MAX_BLEEDING_SCALE;
 			}
-			
+
 			return scale;
 		}
-		
-		// Fallback default
-		return 1.0;
+
+		return DEFAULT_BLEEDING_SCALE;
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	//! Runtime bleeding scale configuration (for testing)
 	static void SetBleedingScale(float scale)
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
@@ -218,22 +206,20 @@ class IRRU_NoInstantDeathSettings
 		{
 			settings.m_fBleedingScale = scale;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CFG] Bleeding scale changed to %1x", scale));
+				Print(string.Format("[NoInstantDeath] Bleeding scale changed to %1x", scale));
 		}
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	//! Check if descriptive timer mode is enabled
 	static bool IsDescriptiveTimerEnabled()
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 			return settings.m_bUseDescriptiveTimer;
-		return true; // Default to descriptive
+		return true;
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	//! Toggle descriptive timer mode
 	static void SetDescriptiveTimerEnabled(bool enabled)
 	{
 		IRRU_NoInstantDeathSettings settings = GetInstance();
@@ -241,7 +227,7 @@ class IRRU_NoInstantDeathSettings
 		{
 			settings.m_bUseDescriptiveTimer = enabled;
 			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath][CFG] Descriptive timer mode set to %1", enabled));
+				Print(string.Format("[NoInstantDeath] Descriptive timer mode set to %1", enabled));
 		}
 	}
 }
