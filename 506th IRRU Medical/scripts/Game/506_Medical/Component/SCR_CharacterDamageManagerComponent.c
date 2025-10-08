@@ -378,4 +378,58 @@ modded class SCR_CharacterDamageManagerComponent
 			                   GetPlayerOrEntityNameStr(owner)));
 		}
 	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Fixed version of HealHitZonesInParallel that prevents infinite loops from floating point errors
+	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones)
+	{
+		array<HitZone> damagedHitZones = {};
+		int maxIterations = 100;
+		int iteration = 0;
+
+		while (healthToDistribute > 0.01 && iteration < maxIterations)
+		{
+			iteration++;
+
+			foreach (HitZone hitZone : targetHitZones)
+			{
+				if (hitZone.GetHealth() < (hitZone.GetMaxHealth() * maxHealThresholdScaled))
+					damagedHitZones.Insert(hitZone);
+			}
+
+			if (damagedHitZones.IsEmpty())
+				break;
+
+			float healthToDistributeHitZone = healthToDistribute / damagedHitZones.Count();
+			foreach (HitZone hitZone : damagedHitZones)
+			{
+				if (healthToDistribute <= 0.01)
+					break;
+
+				float healthToAdd = (hitZone.GetMaxHealth() * maxHealThresholdScaled) - hitZone.GetHealth();
+				if (healthToAdd <= 0.01)
+					continue;
+
+				if (healthToDistributeHitZone > healthToAdd)
+				{
+					hitZone.HandleDamage(-healthToAdd, EDamageType.HEALING, null);
+					healthToDistribute -= healthToAdd;
+					continue;
+				}
+				else
+				{
+					hitZone.HandleDamage(-healthToDistributeHitZone, EDamageType.HEALING, null);
+					healthToDistribute -= healthToDistributeHitZone;
+					continue;
+				}
+			}
+
+			damagedHitZones.Clear();
+		}
+
+		if (iteration >= maxIterations && IRRU_NoInstantDeathSettings.IsDebugEnabled())
+			Print("[NoInstantDeath] HealHitZonesInParallel hit max iterations, prevented infinite loop", LogLevel.WARNING);
+
+		return healthToDistribute;
+	}
 }

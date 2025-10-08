@@ -6,13 +6,13 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const vector CPR_PERFORMER_BB_OFFSET = {0, 0.45, 0};
 	protected static const vector CPR_PERFORMER_BB_HALF_EXTENDS = {0.15, 0.15, 0.15};
 	
-	protected static const float CPR_MAX_DURATION = 5.0;
+	protected static const float CPR_MAX_DURATION = 30.0;
 	protected static const float CPR_BASE_COOLDOWN = 12.0;
 	protected static const float CPR_COOLDOWN_RATIO = 0.4;
-	protected static const float CPR_MIN_COOLDOWN = 2.0;
-	protected static const float CPR_MIN_HEALING = 2.0;
-	protected static const float CPR_MAX_HEALING = 4.0;
-	protected static const float CPR_FALLBACK_DURATION = 5.0;
+	protected static const float CPR_MIN_COOLDOWN = 12.0;
+	protected static const float CPR_MIN_HEALING = 5.0;
+	protected static const float CPR_MAX_HEALING = 15.0;
+	protected static const float CPR_FALLBACK_DURATION = 30.0;
 	
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
@@ -239,19 +239,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return;
 		}
 
-		float healPercent = Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING);
-		bool healedSomething = dmgManager.HealHitZones(healPercent, true, 1.0);
+		float healAmount = Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING);
+		float remainingHealth = dmgManager.HealHitZones(healAmount, false, 1.0);
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
-			string healStatus;
-			if (healedSomething)
-				healStatus = "applied";
-			else
-				healStatus = "already full";
-
-			Print(string.Format("[NoInstantDeath] CPR completed - healed %1%% (%2)",
-			                   healPercent, healStatus));
+			float actualHealed = healAmount - remainingHealth;
+			Print(string.Format("[NoInstantDeath] CPR completed - attempted %1 healing, applied %2",
+			                   healAmount, actualHealed));
 		}
 	}
 	
