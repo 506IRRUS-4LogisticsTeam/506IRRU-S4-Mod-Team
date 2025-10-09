@@ -1,0 +1,8 @@
+RHS_LightEntity : "{648E645C23EC2BF3}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Laser_LightEntity.et" {
+ ID "5CFADC1F39A94BCD"
+ LV 11
+ DistanceAttenuation 0.1
+ VolLightScale 0
+ VolLightIntensity 0.15
+ m_fLV 11
+}

@@ -1,0 +1,6 @@
+RHS_LightEntity {
+ ID "5CFADC1F39A94BCD"
+ ProjectionMap "{71CA1EBC65B42602}Assets/Weapons/Attachments/Lasers/_Shared/laser_point.edds"
+ SpotAngle 0.3
+ DistanceAttenuation 1.35
+}
