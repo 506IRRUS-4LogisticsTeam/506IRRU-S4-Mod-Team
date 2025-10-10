@@ -282,23 +282,9 @@ class CustomNamesManager
 			Print("[CustomNames] No existing custom names file found - starting with empty database", LogLevel.NORMAL);
 			return;
 		}
-		
-		string jsonContent;
-		string line;
-		while (file.ReadLine(line) != -1)
-		{
-			jsonContent += line + "\n";
-		}
+
+		ParseCustomNamesJsonFromFile(file);
 		file.Close();
-		
-		if (jsonContent.IsEmpty())
-		{
-			Print("[CustomNames] Custom names file is empty", LogLevel.NORMAL);
-			return;
-		}
-		
-		Print(string.Format("[CustomNames] Loaded %1 bytes of JSON data, parsing...", jsonContent.Length()), LogLevel.NORMAL);
-		ParseCustomNamesJson(jsonContent);
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -311,70 +297,72 @@ class CustomNamesManager
 			file = FileIO.OpenFile(m_SaveFilePath, FileMode.APPEND);
 			if (!file)
 				return;
-			
+
 			// Close and reopen in WRITE mode to overwrite
 			file.Close();
 			file = FileIO.OpenFile(m_SaveFilePath, FileMode.WRITE);
 			if (!file)
 				return;
 		}
-		
-		string jsonContent = CreateCustomNamesJson();
-		file.WriteLine(jsonContent);
+
+		WriteCustomNamesJsonToFile(file);
 		file.Close();
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
-	protected string CreateCustomNamesJson()
+	protected void WriteCustomNamesJsonToFile(FileHandle file)
 	{
-		string json = "{\n";
 		int count = 0;
 		int total = m_CustomNames.Count();
-		
+
+		file.WriteLine("{");
+
 		foreach (string playerUID, CustomNameEntry entry : m_CustomNames)
 		{
 			count++;
-			json += string.Format("  \"%1\": {\n", playerUID);
-			json += string.Format("    \"customName\": \"%1\",\n", entry.m_sCustomName);
-			json += string.Format("    \"lastUpdated\": %1,\n", entry.m_iLastUpdated);
-			json += string.Format("    \"lastPlayerName\": \"%1\"\n", entry.m_sLastPlayerName);
-			json += "  }";
-			
+			file.WriteLine(string.Format("  \"%1\": {", playerUID));
+			file.WriteLine(string.Format("    \"customName\": \"%1\",", entry.m_sCustomName));
+			file.WriteLine(string.Format("    \"lastUpdated\": %1,", entry.m_iLastUpdated));
+			file.WriteLine(string.Format("    \"lastPlayerName\": \"%1\"", entry.m_sLastPlayerName));
+
 			if (count < total)
-				json += ",";
-			json += "\n";
+			{
+				file.WriteLine("  },");
+			}
+			else
+			{
+				file.WriteLine("  }");
+			}
 		}
-		
-		json += "}";
-		return json;
+
+		file.WriteLine("}");
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected void ParseCustomNamesJson(string jsonContent)
+	protected void ParseCustomNamesJsonFromFile(FileHandle file)
 	{
-		int initialCount = m_CustomNames.Count();
-		
-		// Remove outer braces and clean up
-		jsonContent.Replace("{", "");
-		jsonContent.Replace("}", "");
-		
-		// Split by newlines
-		array<string> lines = {};
-		jsonContent.Split("\n", lines, false);
-		
 		string currentUID = "";
 		CustomNameEntry currentEntry = null;
 		int parsedEntries = 0;
-		
-		foreach (string line : lines)
+		int lineNumber = 0;
+		string line;
+
+		while (file.ReadLine(line) != -1)
 		{
+			lineNumber++;
 			line.Trim();
-			
-			if (line.IsEmpty() || line == ",")
+
+			if (line.IsEmpty() || line == "," || line == "{" || line == "}")
 				continue;
-				
-			// Check if this line starts a new entry
-			if (line.Contains("\": ") && !line.Contains("customName") && !line.Contains("lastUpdated") && !line.Contains("lastPlayerName"))
+
+			// Check if this line starts a new entry (contains a quoted UUID followed by colon)
+			// A UID line has format: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx": {
+			bool isUIDLine = line.Contains("\": ");
+			bool hasCustomName = line.Contains("customName");
+			bool hasLastUpdated = line.Contains("lastUpdated");
+			bool hasLastPlayerName = line.Contains("lastPlayerName");
+
+			if (isUIDLine && !hasCustomName && !hasLastUpdated && !hasLastPlayerName)
 			{
 				int firstQuote = line.IndexOf("\"");
 				if (firstQuote >= 0)
@@ -407,20 +395,23 @@ class CustomNamesManager
 				}
 			}
 		}
-		
+
 		int finalCount = m_CustomNames.Count();
-		Print(string.Format("[CustomNames] JSON parsing complete: %1 entries parsed, %2 total custom names loaded", 
-			parsedEntries, finalCount), LogLevel.NORMAL);
-			
+		Print(string.Format("[CustomNames] JSON parsing complete: %1 entries parsed from %2 lines, %3 total custom names loaded",
+			parsedEntries, lineNumber, finalCount), LogLevel.NORMAL);
+
 		// Log each parsed entry for debugging
+		int loggedCount = 0;
 		foreach (string uid, CustomNameEntry entry : m_CustomNames)
 		{
 			if (!entry.m_sCustomName.IsEmpty())
 			{
-				Print(string.Format("[CustomNames] Loaded: UID='%1' -> Name='%2' (Last: %3)", 
+				loggedCount++;
+				Print(string.Format("[CustomNames] Loaded: UID='%1' -> Name='%2' (Last: %3)",
 					uid, entry.m_sCustomName, entry.m_sLastPlayerName), LogLevel.NORMAL);
 			}
 		}
+		Print(string.Format("[CustomNames] Total non-empty entries: %1", loggedCount), LogLevel.NORMAL);
 	}
 	
 	//------------------------------------------------------------------------------------------------
