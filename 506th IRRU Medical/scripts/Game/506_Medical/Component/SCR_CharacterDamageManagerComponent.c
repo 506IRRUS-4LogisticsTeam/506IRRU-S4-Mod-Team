@@ -3,36 +3,9 @@
 modded class SCR_CharacterDamageManagerComponent
     : SCR_CharacterDamageManagerComponent
 {
-	protected const float PAIN_DAMAGE_SCALE = 1.5;
 	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
-	protected const float LETHAL_THRESHOLD = 0.1;
 
-	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
-
-	//------------------------------------------------------------------------------------------------
-	protected string GetPlayerOrEntityNameStr(IEntity entity)
-	{
-		if (!entity)
-			return "UnknownEntity";
-
-		PlayerManager pm = GetGame().GetPlayerManager();
-		if (pm)
-		{
-			SCR_ChimeraCharacter chr = SCR_ChimeraCharacter.Cast(entity);
-			if (chr)
-			{
-				int pid = pm.GetPlayerIdFromControlledEntity(chr);
-				if (pid > 0)
-				{
-					string n = pm.GetPlayerName(pid);
-					if (!n.IsEmpty())
-						return n;
-				}
-			}
-		}
-		return entity.ToString();
-	}
 
 	//------------------------------------------------------------------------------------------------
 	//! Get exact health percentage (0-100)
@@ -272,49 +245,6 @@ modded class SCR_CharacterDamageManagerComponent
 		rightArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
 		leftLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
 		rightLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override void OnDamage(notnull BaseDamageContext damageContext)
-	{
-		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(
-				owner.FindComponent(IRRU_NoInstantDeathComponent));
-
-		if (!nid || !nid.IsInitialized())
-		{
-			super.OnDamage(damageContext);
-			vector zv = vector.Zero;
-			OnCustomDamageTaken.Invoke(owner, damageContext.damageValue,
-			                           damageContext.instigator, zv,
-			                           damageContext.struckHitZone);
-			return;
-		}
-
-		if (!nid.IsUnconscious())
-		{
-			float projected = GetHealth() - damageContext.damageValue;
-			if (projected <= LETHAL_THRESHOLD)
-			{
-				nid.MakeUnconscious(owner);
-
-				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				{
-					Print(string.Format("[NoInstantDeath] %1: lethal hit intercepted",
-					                   GetPlayerOrEntityNameStr(owner)));
-				}
-				return;
-			}
-		}
-
-		super.OnDamage(damageContext);
-
-		vector zv2 = vector.Zero;
-		OnCustomDamageTaken.Invoke(owner, damageContext.damageValue,
-		                           damageContext.instigator, zv2,
-		                           damageContext.struckHitZone);
 	}
 
 	//------------------------------------------------------------------------------------------------
