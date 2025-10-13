@@ -3,6 +3,7 @@ MetaFileClass {
  Configurations {
   FBXResourceClass PC {
    ExportSkinning 1
+   ExportSceneHierarchy 1
    MaterialAssigns {
     MaterialAssignClass "{668D15F4E4729E35}" {
      SourceMaterial "MI_Helmet_IHPS_01"
@@ -11,6 +12,16 @@ MetaFileClass {
    }
    MeshParams {
     MeshParam SM_Helmet_IHPS {
+    }
+   }
+   GeometryParams {
+    GeometryParam UTM_FireGeo {
+     LayerPreset "FireGeo"
+     SurfaceProperties {
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
+     }
+     Mass 0
+     Margin 0
     }
    }
    Common TXOCommonClass "{668D15F4E6827635}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
