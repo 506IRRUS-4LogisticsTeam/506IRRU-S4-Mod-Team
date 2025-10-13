@@ -10,8 +10,6 @@ class IRRU_NoInstantDeathComponentClass : ScriptComponentClass
 class IRRU_NoInstantDeathComponent : ScriptComponent
 {
 	protected const float CHECK_INTERVAL = 1.0;
-	protected const float SAFETY_BUFFER_HP = 5.0;
-	protected const float MIN_UNCONSCIOUS_HP = 1.0;
 	protected const float PERIODIC_LOG_INTERVAL = 30.0;
 	protected const float REPLICATION_UPDATE_INTERVAL = 0.5;
 
@@ -136,7 +134,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_bIsInitiatingKill = false;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 
-		ApplySafetyBuffer(SAFETY_BUFFER_HP);
 		m_CachedDmgManager.ForceUnconsciousness();
 
 		if (Replication.IsServer())
@@ -156,22 +153,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			                   GetNameStr(owner),
 			                   IRRU_NoInstantDeathSettings.GetBleedoutTime()));
 		}
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected void ApplySafetyBuffer(float minHP)
-	{
-		HitZone core = m_CachedDmgManager.GetDefaultHitZone();
-		if (core && core.GetHealth() < minHP)
-			core.SetHealth(minHP);
-
-		HitZone head = m_CachedDmgManager.GetHitZoneByName("Head");
-		if (head && head.GetHealth() < minHP)
-			head.SetHealth(minHP);
-
-		HitZone torso = m_CachedDmgManager.GetHitZoneByName("Torso");
-		if (torso && torso.GetHealth() < minHP)
-			torso.SetHealth(minHP);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -197,9 +178,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			}
 
 			m_CachedDmgManager.ForceUnconsciousness();
-			HitZone core = m_CachedDmgManager.GetDefaultHitZone();
-			if (core && core.GetHealth() < MIN_UNCONSCIOUS_HP)
-				core.SetHealth(MIN_UNCONSCIOUS_HP);
 
 			if (m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD && !m_bDeadWarned)
 			{
@@ -249,16 +227,11 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 		m_bIsInitiatingKill = true;
 
-		Instigator inst = m_LastKnownInstigator;
-		if (!inst)
-		{
-			HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
-			if (hz)
-				hz.SetHealth(0);
-			m_bIsInitiatingKill = false;
-			return;
-		}
-		m_CachedDmgManager.Kill(inst);
+		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
+		if (hz)
+			hz.SetHealth(0);
+
+		m_bIsInitiatingKill = false;
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -297,6 +270,12 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_bIsUnconscious = false;
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
+
+		if (m_CachedDmgManager)
+		{
+			m_CachedDmgManager.ACE_Medical_SetSecondChanceTrigged(false);
+			m_CachedDmgManager.ACE_Medical_EnableSecondChance(true);
+		}
 
 		if (Replication.IsServer() && m_Rpl)
 			Replication.BumpMe();
@@ -376,7 +355,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	{
 		m_bIsInitiatingKill = false;
 	}
-	
+
 	//------------------------------------------------------------------------------------------------
 	void SetReceivingCPR(bool receiving)
 	{

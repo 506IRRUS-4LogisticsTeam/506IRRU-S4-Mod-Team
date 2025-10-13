@@ -13,6 +13,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const float CPR_MIN_HEALING = 5.0;
 	protected static const float CPR_MAX_HEALING = 15.0;
 	protected static const float CPR_FALLBACK_DURATION = 30.0;
+	protected static const float CPR_RESILIENCE_REGEN_INTERVAL = 1.0;
+	protected static const float CPR_RESILIENCE_PERCENT_PER_SECOND = 2.5;
+	protected static const float CPR_LIFESTATE_CHECK_INTERVAL = 0.5;
 	
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
 	protected float m_fMaxDistance;
@@ -103,6 +106,13 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		}
 		
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+
+		if (nid && !nid.IsUnconscious())
+		{
+			SetCannotPerformReason("Patient is conscious");
+			return false;
+		}
+
 		if (nid && nid.IsReceivingCPR())
 		{
 			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
@@ -114,12 +124,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 				SetCannotPerformReason("Another medic is already performing CPR");
 				return false;
 			}
-		}
-		
-		if (nid && !nid.IsUnconscious())
-		{
-			SetCannotPerformReason("Patient is conscious");
-			return false;
 		}
 		
 		if (IRRU_AnimationTools.GetHelperCompartment(user))
@@ -249,6 +253,73 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			                   healAmount, actualHealed));
 		}
 	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void CheckPatientLifeState()
+	{
+		if (!m_bCPRActive || !m_pActiveHelper)
+			return;
+
+		IEntity patient = m_pActiveHelper.GetPatient();
+		if (!patient)
+			return;
+
+		SCR_ChimeraCharacter patientChar = SCR_ChimeraCharacter.Cast(patient);
+		if (!patientChar)
+			return;
+
+		SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(patientChar.GetCharacterController());
+		if (!controller)
+			return;
+
+		if (controller.GetLifeState() == ECharacterLifeState.ALIVE)
+		{
+			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				Print("[NoInstantDeath] CPR auto-stopped - patient regained consciousness");
+
+			IEntity performer = m_pActiveHelper.GetPerformer();
+			if (performer)
+				StopCPR(patient, performer);
+			return;
+		}
+
+		GetGame().GetCallqueue().CallLater(CheckPatientLifeState, CPR_LIFESTATE_CHECK_INTERVAL * 1000, false);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void ApplyResilienceRegeneration()
+	{
+		if (!m_pActiveHelper || !Replication.IsServer())
+			return;
+
+		IEntity patient = m_pActiveHelper.GetPatient();
+		if (!patient)
+			return;
+
+		SCR_CharacterDamageManagerComponent dmgManager = SCR_CharacterDamageManagerComponent.Cast(
+			patient.FindComponent(SCR_CharacterDamageManagerComponent));
+
+		if (!dmgManager)
+			return;
+
+		float healthPercent = dmgManager.GetHealthPercentage();
+		if (healthPercent < 33.0)
+			return;
+
+		SCR_CharacterResilienceHitZone resilienceHZ = dmgManager.GetResilienceHitZone();
+		if (!resilienceHZ)
+			return;
+
+		float maxResilience = resilienceHZ.GetMaxHealth();
+		float resilienceHealAmount = maxResilience * (CPR_RESILIENCE_PERCENT_PER_SECOND / 100.0);
+		resilienceHZ.HandleDamage(-resilienceHealAmount, EDamageType.HEALING, null);
+
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[NoInstantDeath] CPR restored %1 resilience (%2%% of max, health at %3%%)",
+			                   resilienceHealAmount, CPR_RESILIENCE_PERCENT_PER_SECOND, healthPercent));
+		}
+	}
 	
 	//------------------------------------------------------------------------------------------------
 	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity, bool wasForcedByFatigue = false)
@@ -299,14 +370,16 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		}
 		
 		GetGame().GetCallqueue().Remove(AutoStopCPRDueToFatigue);
-		
+		GetGame().GetCallqueue().Remove(ApplyResilienceRegeneration);
+		GetGame().GetCallqueue().Remove(CheckPatientLifeState);
+
 		if (m_pActiveHelper)
 		{
 			m_pActiveHelper.GetOnTerminated().Remove(OnAnimationTerminated);
 			m_pActiveHelper.Terminate(EGetOutType.ANIMATED);
 			m_pActiveHelper = null;
 		}
-		
+
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
 			pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
 
@@ -367,6 +440,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
 
 			GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000);
+			GetGame().GetCallqueue().CallLater(CheckPatientLifeState, CPR_LIFESTATE_CHECK_INTERVAL * 1000, false);
+
+			if (Replication.IsServer())
+				GetGame().GetCallqueue().CallLater(ApplyResilienceRegeneration, CPR_RESILIENCE_REGEN_INTERVAL * 1000, true);
 
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			{

@@ -4,9 +4,8 @@ modded class SCR_CharacterDamageManagerComponent
     : SCR_CharacterDamageManagerComponent
 {
 	protected const float PAIN_DAMAGE_SCALE = 1.5;
+	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
 	protected const float LETHAL_THRESHOLD = 0.1;
-	protected const float SAFETY_BUFFER_HP = 5.0;
-	protected const float MIN_UNCONSCIOUS_HP = 1.0;
 
 	ref ScriptInvoker OnCustomDamageTaken = new ScriptInvoker();
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
@@ -169,18 +168,52 @@ modded class SCR_CharacterDamageManagerComponent
 	{
 		if (!m_pPainHitZone)
 			return 0.0;
-		
+
 		float painHealth = m_pPainHitZone.GetHealthScaled();
 		return 1.0 - painHealth;
 	}
 	
+	//------------------------------------------------------------------------------------------------
+	override void ACE_Medical_EnableSecondChance(bool enable)
+	{
+		IEntity owner = GetOwner();
+		if (owner)
+		{
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+				owner.FindComponent(IRRU_NoInstantDeathComponent));
+
+			if (nid && nid.IsUnconscious() && !enable)
+				return;
+		}
+
+		super.ACE_Medical_EnableSecondChance(enable);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	override float GetResilienceRegenScale()
+	{
+		float scale = super.GetResilienceRegenScale();
+
+		IEntity owner = GetOwner();
+		if (owner)
+		{
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+				owner.FindComponent(IRRU_NoInstantDeathComponent));
+
+			if (nid && nid.IsUnconscious() && ACE_Medical_WasSecondChanceTrigged())
+				return 0.0;
+		}
+
+		return scale;
+	}
+
 	//------------------------------------------------------------------------------------------------
 	override void ArmorHitEventDamage(EDamageType type, float damage, IEntity instigator)
 	{
 		super.ArmorHitEventDamage(type, damage, instigator);
 
 		if (m_pPainHitZone)
-			m_pPainHitZone.HandleDamage(damage * PAIN_DAMAGE_SCALE, type, instigator);
+			m_pPainHitZone.HandleDamage(damage * ARMOR_HIT_PAIN_SCALE, type, instigator);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -267,19 +300,6 @@ modded class SCR_CharacterDamageManagerComponent
 			{
 				nid.MakeUnconscious(owner);
 
-				EnforceMinHealth(GetDefaultHitZone(), SAFETY_BUFFER_HP);
-				HitZone head = GetHitZoneByName("Head");
-				if (head)
-					EnforceMinHealth(head, SAFETY_BUFFER_HP);
-				else if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-					Print("[NoInstantDeath] Head hitzone not found on character model", LogLevel.WARNING);
-
-				HitZone torso = GetHitZoneByName("Torso");
-				if (torso)
-					EnforceMinHealth(torso, SAFETY_BUFFER_HP);
-				else if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-					Print("[NoInstantDeath] Torso hitzone not found on character model", LogLevel.WARNING);
-
 				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 				{
 					Print(string.Format("[NoInstantDeath] %1: lethal hit intercepted",
@@ -289,53 +309,12 @@ modded class SCR_CharacterDamageManagerComponent
 			}
 		}
 
-		if (nid.IsUnconscious() &&
-			damageContext.damageType != EDamageType.HEALING &&
-			!nid.IsInitiatingKill())
-		{
-			EnforceMinHealth(damageContext.struckHitZone, MIN_UNCONSCIOUS_HP);
-			EnforceMinHealth(GetDefaultHitZone(), MIN_UNCONSCIOUS_HP);
-			return;
-		}
-
 		super.OnDamage(damageContext);
+
 		vector zv2 = vector.Zero;
 		OnCustomDamageTaken.Invoke(owner, damageContext.damageValue,
 		                           damageContext.instigator, zv2,
 		                           damageContext.struckHitZone);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected void EnforceMinHealth(HitZone hz, float minHP)
-	{
-		if (hz && hz.GetHealth() < minHP)
-			hz.SetHealth(minHP);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override void OnDamageStateChanged(EDamageState state)
-	{
-		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-
-		if (!nid || !nid.IsInitialized())
-		{
-			super.OnDamageStateChanged(state);
-			return;
-		}
-
-		if (nid.IsUnconscious() && !nid.IsInitiatingKill() && state == EDamageState.DESTROYED)
-		{
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			{
-				Print(string.Format("[NoInstantDeath] %1: DESTROYED state intercepted",
-				                   GetPlayerOrEntityNameStr(owner)));
-			}
-			return;
-		}
-		super.OnDamageStateChanged(state);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -360,23 +339,9 @@ modded class SCR_CharacterDamageManagerComponent
 		}
 
 		if (nid.IsUnconscious())
-		{
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			{
-				Print(string.Format("[NoInstantDeath] %1: Kill() ignored while unconscious",
-				                   GetPlayerOrEntityNameStr(owner)));
-			}
 			return;
-		}
 
 		nid.MakeUnconscious(owner);
-		EnforceMinHealth(GetDefaultHitZone(), MIN_UNCONSCIOUS_HP);
-
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-		{
-			Print(string.Format("[NoInstantDeath] %1: Kill() intercepted",
-			                   GetPlayerOrEntityNameStr(owner)));
-		}
 	}
 
 	//------------------------------------------------------------------------------------------------
