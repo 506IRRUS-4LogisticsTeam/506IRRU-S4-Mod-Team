@@ -1,8 +1,6 @@
 SCR_ChimeraCharacter {
  ID "520EC961A090B1EE"
  components {
-  IRRU_DamageInterceptorComponent "{661F226E8AF0F94B}" {
-  }
   IRRU_NoInstantDeathComponent "{661F226EB207A661}" {
   }
   SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
