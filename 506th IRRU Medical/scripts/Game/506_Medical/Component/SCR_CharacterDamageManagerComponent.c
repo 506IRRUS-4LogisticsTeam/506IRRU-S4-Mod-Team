@@ -163,6 +163,28 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
+	override void ACE_Medical_SetSecondChanceTrigged(bool isTriggered)
+	{
+		super.ACE_Medical_SetSecondChanceTrigged(isTriggered);
+
+		if (isTriggered)
+		{
+			SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
+			if (resilienceHZ)
+			{
+				float currentResilience = resilienceHZ.GetHealthScaled();
+				resilienceHZ.SetHealth(0.0);
+
+				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+				{
+					Print(string.Format("[NoInstantDeath] SecondChance triggered, forcing resilience from %1%% to 0%%",
+					                   currentResilience * 100.0));
+				}
+			}
+		}
+	}
+
+	//------------------------------------------------------------------------------------------------
 	override float GetResilienceRegenScale()
 	{
 		float scale = super.GetResilienceRegenScale();
