@@ -6,6 +6,7 @@ SCR_ChimeraCharacter {
   SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
    m_fUnconsciousRegenerationScale 0.6
    m_fMovementDamageMultiplier 1.5
+   m_fMaxMovementDamage 0.3
   }
   ActionsManagerComponent "{520EA1D2F659CE02}" {
    additionalActions {
