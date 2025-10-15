@@ -242,11 +242,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		if (m_bIsUnconscious)
 		{
-			if (newState == EDamageState.UNDAMAGED || newState == EDamageState.INTERMEDIARY)
-			{
-				StopBleedoutTimer("revived");
-			}
-			else if (newState == EDamageState.DESTROYED)
+			if (newState == EDamageState.DESTROYED)
 			{
 				Print(string.Format("[NoInstantDeath] WARNING: %1 DESTROYED before timer expiry",
 				                   GetNameStr(GetOwner())), LogLevel.WARNING);
@@ -271,7 +267,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
-		if (m_CachedDmgManager)
+		if (m_CachedDmgManager && reason == "revived")
 		{
 			m_CachedDmgManager.ACE_Medical_SetSecondChanceTrigged(false);
 			m_CachedDmgManager.ACE_Medical_EnableSecondChance(true);
