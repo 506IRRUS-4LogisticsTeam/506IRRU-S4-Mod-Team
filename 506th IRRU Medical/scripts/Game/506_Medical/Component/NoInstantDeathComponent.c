@@ -267,12 +267,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
-		if (m_CachedDmgManager && reason == "revived")
-		{
-			m_CachedDmgManager.ACE_Medical_SetSecondChanceTrigged(false);
-			m_CachedDmgManager.ACE_Medical_EnableSecondChance(true);
-		}
-
 		if (Replication.IsServer() && m_Rpl)
 			Replication.BumpMe();
 	}
