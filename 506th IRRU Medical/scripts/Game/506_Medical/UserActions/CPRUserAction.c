@@ -547,5 +547,5 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	{
 		return !InventoryItemComponent.Cast(entity.FindComponent(InventoryItemComponent));
 	}
-	
+
 }

@@ -177,8 +177,17 @@ modded class SCR_CharacterDamageManagerComponent
 
 				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 				{
-					Print(string.Format("[NoInstantDeath] SecondChance triggered, forcing resilience from %1%% to 0%%",
-					                   currentResilience * 100.0));
+					HitZone healthHZ = GetDefaultHitZone();
+					float currentHealth = 0;
+					if (healthHZ)
+						currentHealth = healthHZ.GetHealth();
+
+					Print(string.Format("[NoInstantDeath] SecondChance triggered - Health: %1, Resilience: %2%% -> 0%%",
+					                   currentHealth, currentResilience * 100.0));
+
+					string stackTrace;
+					Debug.DumpStack(stackTrace);
+					Print(stackTrace);
 				}
 			}
 		}

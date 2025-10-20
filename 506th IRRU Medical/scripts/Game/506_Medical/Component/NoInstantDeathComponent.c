@@ -114,8 +114,24 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		{
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			{
-				Print(string.Format("[NoInstantDeath] %1: unconscious from bleeding/resilience",
-				                   GetNameStr(GetOwner())));
+				if (m_CachedDmgManager)
+				{
+					float resilience = m_CachedDmgManager.GetResiliencePercentage();
+					float blood = m_CachedDmgManager.GetBloodPercentage();
+					float health = m_CachedDmgManager.GetHealthPercentage();
+
+					Print(string.Format("[NoInstantDeath] %1: unconscious from bleeding/resilience - Health: %2%%, Blood: %3%%, Resilience: %4%%",
+					                   GetNameStr(GetOwner()), health, blood, resilience));
+
+					string stackTrace;
+					Debug.DumpStack(stackTrace);
+					Print(stackTrace);
+				}
+				else
+				{
+					Print(string.Format("[NoInstantDeath] %1: unconscious from bleeding/resilience",
+					                   GetNameStr(GetOwner())));
+				}
 			}
 			MakeUnconscious(GetOwner());
 		}
