@@ -61,9 +61,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 	override void OnDelete(IEntity owner)
 	{
-		if (m_CachedDmgManager && m_bNID_Initialized)
-			m_CachedDmgManager.GetOnDamageStateChanged().Remove(HandleDamageStateChange);
-
 		if (m_Ctrl)
 			m_Ctrl.m_OnLifeStateChanged.Remove(OnLifeStateChanged);
 
@@ -91,7 +88,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 		}
 
-		m_CachedDmgManager.GetOnDamageStateChanged().Insert(HandleDamageStateChange);
 		m_bNID_Initialized = true;
 
 		if (m_Rpl)
@@ -248,23 +244,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			hz.SetHealth(0);
 
 		m_bIsInitiatingKill = false;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected void HandleDamageStateChange(EDamageState newState)
-	{
-		if (!m_bNID_Initialized || !Replication.IsServer())
-			return;
-
-		if (m_bIsUnconscious)
-		{
-			if (newState == EDamageState.DESTROYED)
-			{
-				Print(string.Format("[NoInstantDeath] WARNING: %1 DESTROYED before timer expiry",
-				                   GetNameStr(GetOwner())), LogLevel.WARNING);
-				StopBleedoutTimer("destroyed");
-			}
-		}
 	}
 
 	//------------------------------------------------------------------------------------------------

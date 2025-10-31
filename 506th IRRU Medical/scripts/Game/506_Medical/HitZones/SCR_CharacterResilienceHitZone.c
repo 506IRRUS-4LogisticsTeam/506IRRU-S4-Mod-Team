@@ -1,16 +1,19 @@
-//! Modded resilience hitzone to make players beefier by reducing damage
+//! Modded resilience hitzone to reduce incoming damage
+//! ACE Medical handles regeneration scaling, we handle damage reduction
 
 modded class SCR_CharacterResilienceHitZone : SCR_RegeneratingHitZone
 {
 	//------------------------------------------------------------------------------------------------
-	//! Override damage calculation to reduce resilience damage based on settings
+	//! Reduce incoming resilience damage to make characters beefier
+	//! This applies to all damage sources (bullets hitting armor, explosions, etc.)
+	//! Does NOT conflict with ACE Medical's regeneration scaling system
 	override float ComputeEffectiveDamage(notnull BaseDamageContext damageContext, bool isDOT)
 	{
 		float damage = super.ComputeEffectiveDamage(damageContext, isDOT);
 
-		// Scale down damage using configurable multiplier
-		// 0.5 = 50% damage reduction (default), 1.0 = no reduction, 0.01 = 99% reduction
-		float scale = IRRU_NoInstantDeathSettings.GetResilienceDamageScale();
-		return damage * scale;
+		// Apply damage reduction: 0.5 = 50% damage reduction (characters take half damage)
+		float damageScale = IRRU_NoInstantDeathSettings.GetResilienceDamageScale();
+
+		return damage * damageScale;
 	}
 }

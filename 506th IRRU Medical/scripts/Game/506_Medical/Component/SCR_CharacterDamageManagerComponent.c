@@ -9,30 +9,29 @@ modded class SCR_CharacterDamageManagerComponent
 
 	//------------------------------------------------------------------------------------------------
 	//! Get exact health percentage (0-100)
+	//! Returns TRUE health hitzone value (not the "default" hitzone)
 	float GetHealthPercentage()
 	{
-		HitZone defaultHZ = GetDefaultHitZone();
-		if (!defaultHZ)
-			return 100.0;
+		// Find the actual Health hitzone, not the "default" hitzone
+		array<HitZone> hitZones = {};
+		GetAllHitZones(hitZones);
 
-
-		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-
-		if (nid && nid.IsUnconscious())
+		foreach (HitZone hz : hitZones)
 		{
-			float currentHealth = defaultHZ.GetHealth();
-			float maxHealth = defaultHZ.GetMaxHealth();
+			SCR_CharacterHealthHitZone healthHZ = SCR_CharacterHealthHitZone.Cast(hz);
+			if (healthHZ)
+			{
+				float currentHealth = healthHZ.GetHealth();
+				float maxHealth = healthHZ.GetMaxHealth();
 
-			if (maxHealth > 0)
-				return Math.Max(1.0, (currentHealth / maxHealth) * 100.0);
-			else
-				return 1.0;
+				if (maxHealth <= 0)
+					return 100.0;
+
+				return (currentHealth / maxHealth) * 100.0;
+			}
 		}
 
-		return GetHealthScaled() * 100.0;
+		return 100.0;
 	}
 
 	//! Get exact blood percentage (0-100)
@@ -76,20 +75,14 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get bleeding rate in ml/s
+	//! Get bleeding rate in ml/s (ACE Medical now handles all bleeding calculations)
 	float GetBleedingRateMLPerSecond()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
 		if (!bloodHZ)
 			return 0.0;
 
-		return bloodHZ.GetTotalBleedingAmount() * GetBleedingScale();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override float GetBleedingScale()
-	{
-		return IRRU_NoInstantDeathSettings.GetBleedingScale();
+		return bloodHZ.GetTotalBleedingAmount();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -147,7 +140,9 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	override void ACE_Medical_EnableSecondChance(bool enable)
+	//! Override to prevent Second Chance deactivation while our bleedout timer is running
+	//! Returns false to keep Second Chance active during entire bleedout period
+	override bool ACE_Medical_ShouldDeactivateSecondChance()
 	{
 		IEntity owner = GetOwner();
 		if (owner)
@@ -155,60 +150,40 @@ modded class SCR_CharacterDamageManagerComponent
 			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
 				owner.FindComponent(IRRU_NoInstantDeathComponent));
 
-			if (nid && nid.IsUnconscious() && !enable)
-				return;
+			// Keep Second Chance active while our bleedout timer is running
+			if (nid && nid.IsUnconscious())
+				return false;
 		}
 
-		super.ACE_Medical_EnableSecondChance(enable);
+		// If not using our bleedout system, fall back to ACE Medical's default behavior
+		// (ACE Medical will deactivate Second Chance after 1 second)
+		return true;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	override void ACE_Medical_SetSecondChanceTrigged(bool isTriggered)
+	override void ACE_Medical_OnSecondChanceGranted()
 	{
-		super.ACE_Medical_SetSecondChanceTrigged(isTriggered);
+		super.ACE_Medical_OnSecondChanceGranted();
 
-		if (isTriggered)
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
 			SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
+			HitZone healthHZ = GetDefaultHitZone();
+			float currentHealth = 0;
+			float currentResilience = 0;
+
+			if (healthHZ)
+				currentHealth = healthHZ.GetHealth();
 			if (resilienceHZ)
-			{
-				float currentResilience = resilienceHZ.GetHealthScaled();
-				resilienceHZ.SetHealth(0.0);
+				currentResilience = resilienceHZ.GetHealthScaled();
 
-				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				{
-					HitZone healthHZ = GetDefaultHitZone();
-					float currentHealth = 0;
-					if (healthHZ)
-						currentHealth = healthHZ.GetHealth();
+			Print(string.Format("[NoInstantDeath] SecondChance triggered - Health: %1, Resilience: %2%% -> 0%%",
+			                   currentHealth, currentResilience * 100.0));
 
-					Print(string.Format("[NoInstantDeath] SecondChance triggered - Health: %1, Resilience: %2%% -> 0%%",
-					                   currentHealth, currentResilience * 100.0));
-
-					string stackTrace;
-					Debug.DumpStack(stackTrace);
-					Print(stackTrace);
-				}
-			}
+			string stackTrace;
+			Debug.DumpStack(stackTrace);
+			Print(stackTrace);
 		}
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override float GetResilienceRegenScale()
-	{
-		float scale = super.GetResilienceRegenScale();
-
-		IEntity owner = GetOwner();
-		if (owner)
-		{
-			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
-				owner.FindComponent(IRRU_NoInstantDeathComponent));
-
-			if (nid && nid.IsUnconscious() && ACE_Medical_WasSecondChanceTrigged())
-				return 0.0;
-		}
-
-		return scale;
 	}
 
 	//------------------------------------------------------------------------------------------------
