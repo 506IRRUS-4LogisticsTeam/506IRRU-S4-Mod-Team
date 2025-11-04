@@ -3,9 +3,8 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
  components {
   CollisionTriggerComponent "{60AC9441243E3504}" {
    PROJECTILE_EFFECTS {
-    ExplosionEffect "{60AC944154EC2E35}" {
-     EffectPrefab "{6B8EE808E69A69E0}Prefabs/Weapons/Warheads/Warhead_Shell_HE_M821.et"
-     ParticleEffect "{318510C6FB1633D9}Particles/Weapon/Explosion_Mortar_Base.ptc"
+    ExplosionEffect "{66448E9CBD7626AB}" {
+     EffectPrefab "{4ADD13BD948F93E6}Prefabs/Weapons/Warheads/Warhead_Shell_HE_M821_Bigger.et"
     }
    }
   }
@@ -23,7 +22,7 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
    Object "{299588829D57B4DD}Assets/Weapons/Ammo/Shells/81mm_Mortar_M252/Shell_81mm_HE_M821.xob"
   }
   RigidBody "{60AC9440016FD3D4}" {
-   Mass 1
+   Mass 4.06
   }
   SCR_MortarShellGadgetComponent "{60AC94402A1A228B}" {
    m_aChargeRingConfig +{
@@ -36,9 +35,9 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
      Description "#AR-Magazine_M821_Description"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{60AC94417B58CB7F}" {
-     Weight 1
+     Weight 0.25
      ItemDimensions 8 8 18
-     ItemVolume 2000
+     ItemVolume 500
     }
     ItemAnimationAttributes ItemAnimationAttributes "{61267CEBCD285422}" {
      AnimationAttachments {
