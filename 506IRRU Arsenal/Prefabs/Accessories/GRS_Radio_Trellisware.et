@@ -1,0 +1,15 @@
+GenericEntity {
+ ID "65CC0BEF64421013"
+ components {
+  BaseRadioComponent "{65CC0BEE0F327293}" {
+   Transceivers {
+    RadioTransceiver "{65CC0BEE0F3272AB}" {
+     "Frequency resolution" 200
+    }
+    RadioTransceiver "{65CC0BEE0F3272A6}" {
+     "Frequency resolution" 200
+    }
+   }
+  }
+ }
+}
