@@ -1,8 +1,14 @@
 SCR_BaseGameMode {
  ID "56B2B479C6B96951"
  components {
+  SCR_AdditionalGameModeSettingsComponent "{6170E11C3C452ACC}" {
+   m_bDisableNightNoiseEffect 1
+  }
   SCR_FuelConsumptionComponent "{666A2232F0C3C220}" {
    m_fFuelConsumption 1.17
+  }
+  SCR_TimeAndWeatherHandlerComponent "{66D046E4069FD473}" {
+   m_bWindOverride 1
   }
  }
 }

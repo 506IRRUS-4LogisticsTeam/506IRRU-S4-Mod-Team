@@ -9,6 +9,9 @@ GenericEntity {
     RadioTransceiver "{65CC0BEE0F3272A6}" {
      "Frequency resolution" 200
     }
+    RadioTransceiver "{65CC0BEE0F32729D}" {
+     "Frequency resolution" 200
+    }
    }
   }
  }

@@ -6,7 +6,7 @@ SCR_AIWorld {
    m_fWeaponFiredReactionDistance 250
    m_fSuppressedWeaponFiredAudibleDistance 50
    m_iInvestigateRadius 100
-   m_fAimAccuracyErrorModifier 1.5
+   m_fAimAccuracyErrorModifier 2
    m_fGlobalWeaponFiredReactionDistance 200
    m_fGlobalSuppressedWeaponFiredAudibleDistance 50
    m_fGlobalAimAccuracyErrorModifier 1.2
