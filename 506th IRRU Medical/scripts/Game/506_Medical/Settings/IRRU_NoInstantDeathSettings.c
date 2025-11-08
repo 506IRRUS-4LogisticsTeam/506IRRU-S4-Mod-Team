@@ -3,7 +3,7 @@
 [BaseContainerProps(configRoot: true)]
 class IRRU_NoInstantDeathSettings
 {
-	static const string MOD_VERSION = "2.2.2";
+	static const string MOD_VERSION = "2.2.3";
 
 	protected const float MIN_BLEEDOUT_TIME = 60.0;
 	protected const float MAX_BLEEDOUT_TIME = 3600.0;

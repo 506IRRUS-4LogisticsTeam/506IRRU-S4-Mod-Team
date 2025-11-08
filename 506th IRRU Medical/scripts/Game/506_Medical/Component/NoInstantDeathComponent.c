@@ -185,7 +185,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			if (!m_bDeadBlockPrinted)
 			{
 				if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-					Print("[NoInstantDeath] Preventing premature DEAD state during bleedout");
+					Print(string.Format("[NoInstantDeath] %1: preventing premature DEAD state during bleedout", GetNameStr(owner)));
 				m_bDeadBlockPrinted = true;
 			}
 
@@ -272,7 +272,9 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected string GetNameStr(IEntity e)
+	//! Get player name or entity string for an entity
+	//! Used for debug logging to identify characters/players
+	string GetNameStr(IEntity e)
 	{
 		if (!e)
 			return "UnknownEntity";

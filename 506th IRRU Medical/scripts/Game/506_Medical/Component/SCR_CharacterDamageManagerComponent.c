@@ -8,11 +8,8 @@ modded class SCR_CharacterDamageManagerComponent
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 
 	//------------------------------------------------------------------------------------------------
-	//! Get exact health percentage (0-100)
-	//! Returns TRUE health hitzone value (not the "default" hitzone)
 	float GetHealthPercentage()
 	{
-		// Find the actual Health hitzone, not the "default" hitzone
 		array<HitZone> hitZones = {};
 		GetAllHitZones(hitZones);
 
@@ -34,7 +31,6 @@ modded class SCR_CharacterDamageManagerComponent
 		return 100.0;
 	}
 
-	//! Get exact blood percentage (0-100)
 	float GetBloodPercentage()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
@@ -51,7 +47,6 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get exact resilience percentage (0-100)
 	float GetResiliencePercentage()
 	{
 		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
@@ -68,14 +63,12 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Check if character has resilience system
 	bool HasResilienceSystem()
 	{
 		return GetResilienceHitZone() != null;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get bleeding rate in ml/s (ACE Medical now handles all bleeding calculations)
 	float GetBleedingRateMLPerSecond()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
@@ -86,7 +79,6 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get bleedout timer info
 	void GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
 	{
 		IEntity owner = GetOwner();
@@ -140,24 +132,25 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	//! Override to prevent Second Chance deactivation while our bleedout timer is running
-	//! Returns false to keep Second Chance active during entire bleedout period
 	override bool ACE_Medical_ShouldDeactivateSecondChance()
 	{
 		IEntity owner = GetOwner();
-		if (owner)
-		{
-			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
-				owner.FindComponent(IRRU_NoInstantDeathComponent));
+		if (!owner)
+			return super.ACE_Medical_ShouldDeactivateSecondChance();
 
-			// Keep Second Chance active while our bleedout timer is running
-			if (nid && nid.IsUnconscious())
-				return false;
-		}
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+			owner.FindComponent(IRRU_NoInstantDeathComponent));
 
-		// If not using our bleedout system, fall back to ACE Medical's default behavior
-		// (ACE Medical will deactivate Second Chance after 1 second)
-		return true;
+		if (!nid)
+			return super.ACE_Medical_ShouldDeactivateSecondChance();
+
+		if (!nid.IsInitialized())
+			nid.Initialize();
+
+		if (nid.IsUnconscious())
+			return false;
+
+		return super.ACE_Medical_ShouldDeactivateSecondChance();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -165,8 +158,35 @@ modded class SCR_CharacterDamageManagerComponent
 	{
 		super.ACE_Medical_OnSecondChanceGranted();
 
+		IEntity owner = GetOwner();
+		if (owner)
+		{
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+				owner.FindComponent(IRRU_NoInstantDeathComponent));
+
+			if (nid)
+			{
+				if (!nid.IsInitialized())
+					nid.Initialize();
+
+				if (!nid.IsUnconscious())
+					nid.MakeUnconscious(owner);
+			}
+		}
+
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
+			IEntity owner = GetOwner();
+			IRRU_NoInstantDeathComponent nid = null;
+			string characterName = "Unknown";
+
+			if (owner)
+			{
+				nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+				if (nid)
+					characterName = nid.GetNameStr(owner);
+			}
+
 			SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
 			HitZone healthHZ = GetDefaultHitZone();
 			float currentHealth = 0;
@@ -177,8 +197,8 @@ modded class SCR_CharacterDamageManagerComponent
 			if (resilienceHZ)
 				currentResilience = resilienceHZ.GetHealthScaled();
 
-			Print(string.Format("[NoInstantDeath] SecondChance triggered - Health: %1, Resilience: %2%% -> 0%%",
-			                   currentHealth, currentResilience * 100.0));
+			Print(string.Format("[NoInstantDeath] SecondChance triggered on %1 - Health: %2, Resilience: %3%% -> 0%%",
+			                   characterName, currentHealth, currentResilience * 100.0));
 
 			string stackTrace;
 			Debug.DumpStack(stackTrace);
@@ -196,7 +216,6 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get detailed medical status for inspection
 	void GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent,
 								  out float resiliencePercent, out bool hasResilience,
 								  out float bleedingRateMLs, out bool isUnconscious,
@@ -219,7 +238,6 @@ modded class SCR_CharacterDamageManagerComponent
 		GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
 	}
 
-	//! Get color code for health percentage (for UI display)
 	string GetHealthColorCode(float percentage)
 	{
 		if (percentage >= 75)
@@ -232,14 +250,14 @@ modded class SCR_CharacterDamageManagerComponent
 			return "FF0000"; // Red
 	}
 
-	//! Get specific limb health percentage
+
 	float GetLimbHealthPercentage(ECharacterHitZoneGroup limb)
 	{
 		float limbHealth = GetGroupHealthScaled(limb);
 		return limbHealth * 100.0;
 	}
 
-	//! Get all limb health percentages at once
+
 	void GetAllLimbHealthPercentages(out float head, out float chest, out float abdomen,
 									  out float leftArm, out float rightArm, 
 									  out float leftLeg, out float rightLeg)
@@ -251,33 +269,6 @@ modded class SCR_CharacterDamageManagerComponent
 		rightArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
 		leftLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
 		rightLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override void Kill(notnull Instigator instigator)
-	{
-		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-
-		if (!nid || !nid.IsInitialized())
-		{
-			super.Kill(instigator);
-			return;
-		}
-
-		if (nid.IsInitiatingKill())
-		{
-			super.Kill(instigator);
-			nid.ResetInitiatingKillFlag();
-			return;
-		}
-
-		if (nid.IsUnconscious())
-			return;
-
-		nid.MakeUnconscious(owner);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -329,7 +320,20 @@ modded class SCR_CharacterDamageManagerComponent
 		}
 
 		if (iteration >= maxIterations && IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath] HealHitZonesInParallel hit max iterations, prevented infinite loop", LogLevel.WARNING);
+		{
+			IEntity owner = GetOwner();
+			IRRU_NoInstantDeathComponent nid = null;
+			string characterName = "Unknown";
+
+			if (owner)
+			{
+				nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+				if (nid)
+					characterName = nid.GetNameStr(owner);
+			}
+
+			Print(string.Format("[NoInstantDeath] %1: HealHitZonesInParallel hit max iterations, prevented infinite loop", characterName), LogLevel.WARNING);
+		}
 
 		return healthToDistribute;
 	}

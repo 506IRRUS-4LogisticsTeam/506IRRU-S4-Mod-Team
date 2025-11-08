@@ -248,9 +248,17 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
+			IRRU_NoInstantDeathComponent patientNid = IRRU_NoInstantDeathComponent.Cast(
+				patient.FindComponent(IRRU_NoInstantDeathComponent));
+
 			float actualHealed = healAmount - remainingHealth;
-			Print(string.Format("[NoInstantDeath] CPR completed - attempted %1 healing, applied %2",
-			                   healAmount, actualHealed));
+			float currentResilience = dmgManager.GetResiliencePercentage();
+			string patientName = "Unknown";
+			if (patientNid)
+				patientName = patientNid.GetNameStr(patient);
+
+			Print(string.Format("[NoInstantDeath] CPR on %1: completed healing (applied %2, resilience: %3%%)",
+			                   patientName, actualHealed, currentResilience));
 		}
 	}
 
@@ -275,7 +283,17 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (controller.GetLifeState() == ECharacterLifeState.ALIVE)
 		{
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print("[NoInstantDeath] CPR auto-stopped - patient regained consciousness");
+			{
+				IRRU_NoInstantDeathComponent patientNid = IRRU_NoInstantDeathComponent.Cast(
+					patient.FindComponent(IRRU_NoInstantDeathComponent));
+
+				string patientName = "Unknown";
+				if (patientNid)
+					patientName = patientNid.GetNameStr(patient);
+
+				Print(string.Format("[NoInstantDeath] CPR auto-stopped: %1 regained consciousness",
+				                   patientName));
+			}
 
 			IEntity performer = m_pActiveHelper.GetPerformer();
 			if (performer)
@@ -316,8 +334,16 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
-			Print(string.Format("[NoInstantDeath] CPR restored %1 resilience (%2%% of max, health at %3%%)",
-			                   resilienceHealAmount, CPR_RESILIENCE_PERCENT_PER_SECOND, healthPercent));
+			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
+				patient.FindComponent(IRRU_NoInstantDeathComponent));
+
+			float currentResilience = dmgManager.GetResiliencePercentage();
+			string patientName = "Unknown";
+			if (nid)
+				patientName = nid.GetNameStr(patient);
+
+			Print(string.Format("[NoInstantDeath] CPR on %1: restored %2%% resilience (now at %3%%)",
+			                   patientName, CPR_RESILIENCE_PERCENT_PER_SECOND, currentResilience));
 		}
 	}
 	
@@ -362,8 +388,16 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 					if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 					{
-						Print(string.Format("[NoInstantDeath] CPR stopped - duration %1s, cooldown %2s",
-						                   cprDuration, cooldownTime));
+						string performerName = userNid.GetNameStr(pUserEntity);
+
+						IRRU_NoInstantDeathComponent patientNid = IRRU_NoInstantDeathComponent.Cast(
+							pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+						string patientName = "Unknown";
+						if (patientNid)
+							patientName = patientNid.GetNameStr(pOwnerEntity);
+
+						Print(string.Format("[NoInstantDeath] CPR stopped: %1 performed on %2 for %3s (cooldown %4s)",
+						                   performerName, patientName, cprDuration, cooldownTime));
 					}
 				}
 			}
@@ -447,8 +481,18 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			{
-				Print(string.Format("[NoInstantDeath] CPR started - max duration %1s",
-				                   CPR_MAX_DURATION));
+				SCR_CharacterDamageManagerComponent dmgManager = SCR_CharacterDamageManagerComponent.Cast(
+					pOwnerEntity.FindComponent(SCR_CharacterDamageManagerComponent));
+
+				float currentResilience = 0;
+				if (dmgManager)
+					currentResilience = dmgManager.GetResiliencePercentage();
+
+				string performerName = nid.GetNameStr(pUserEntity);
+				string patientName = nid.GetNameStr(pOwnerEntity);
+
+				Print(string.Format("[NoInstantDeath] CPR started: %1 performing on %2 (resilience: %3%%, max duration: %4s)",
+				                   performerName, patientName, currentResilience, CPR_MAX_DURATION));
 			}
 		}
 	}
