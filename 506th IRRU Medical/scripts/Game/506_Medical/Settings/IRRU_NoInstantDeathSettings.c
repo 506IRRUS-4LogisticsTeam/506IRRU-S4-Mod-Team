@@ -7,19 +7,13 @@ class IRRU_NoInstantDeathSettings
 
 	protected const float MIN_BLEEDOUT_TIME = 60.0;
 	protected const float MAX_BLEEDOUT_TIME = 3600.0;
-	protected const float MIN_RESILIENCE_DAMAGE_SCALE = 0.01;
-	protected const float MAX_RESILIENCE_DAMAGE_SCALE = 1.0;
 	protected const float DEFAULT_BLEEDOUT_TIME = 360.0;
-	protected const float DEFAULT_RESILIENCE_DAMAGE_SCALE = 0.5;
 
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
 	float m_fBleedoutTime;
 
 	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bDebugEnabled;
-
-	[Attribute(defvalue: "0.5", desc: "Resilience damage multiplier - makes characters beefier (0.5 = 50% damage reduction, 1.0 = normal damage)", category: "No Instant Death", params: "0.01 1.0 0.01")]
-	float m_fResilienceDamageScale;
 
 	[Attribute(defvalue: "1", desc: "Use descriptive text instead of exact timer (e.g. 'critical condition' instead of '1:23')", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bUseDescriptiveTimer;
@@ -32,9 +26,6 @@ class IRRU_NoInstantDeathSettings
 	{
 		if (m_fBleedoutTime <= 0)
 			m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
-
-		if (m_fResilienceDamageScale <= 0)
-			m_fResilienceDamageScale = DEFAULT_RESILIENCE_DAMAGE_SCALE;
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -72,7 +63,6 @@ class IRRU_NoInstantDeathSettings
 				s_Instance = new IRRU_NoInstantDeathSettings();
 				s_Instance.m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
 				s_Instance.m_bDebugEnabled = true;
-				s_Instance.m_fResilienceDamageScale = DEFAULT_RESILIENCE_DAMAGE_SCALE;
 				s_Instance.m_bUseDescriptiveTimer = true;
 			}
 
@@ -82,7 +72,6 @@ class IRRU_NoInstantDeathSettings
 				Print(string.Format("[NoInstantDeath] Medical Mod v%1 initialized", MOD_VERSION));
 				Print(string.Format("[NoInstantDeath] Bleedout timer: %1s", s_Instance.m_fBleedoutTime));
 				Print(string.Format("[NoInstantDeath] Debug mode: %1", s_Instance.m_bDebugEnabled));
-				Print(string.Format("[NoInstantDeath] Resilience damage scale: %1x", s_Instance.m_fResilienceDamageScale));
 			}
 		}
 
@@ -178,56 +167,6 @@ class IRRU_NoInstantDeathSettings
 			settings.m_bUseDescriptiveTimer = enabled;
 			if (IsDebugEnabled())
 				Print(string.Format("[NoInstantDeath] Descriptive timer mode set to %1", enabled));
-		}
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static float GetResilienceDamageScale()
-	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-		{
-			float scale = settings.m_fResilienceDamageScale;
-
-			if (scale < MIN_RESILIENCE_DAMAGE_SCALE)
-			{
-				static bool s_warnedLow = false;
-				if (!s_warnedLow && IsDebugEnabled())
-				{
-					Print(string.Format("[NoInstantDeath] Resilience damage scale %1 too low, clamping to %2",
-					                   scale, MIN_RESILIENCE_DAMAGE_SCALE), LogLevel.WARNING);
-					s_warnedLow = true;
-				}
-				return MIN_RESILIENCE_DAMAGE_SCALE;
-			}
-
-			if (scale > MAX_RESILIENCE_DAMAGE_SCALE)
-			{
-				static bool s_warnedHigh = false;
-				if (!s_warnedHigh && IsDebugEnabled())
-				{
-					Print(string.Format("[NoInstantDeath] Resilience damage scale %1 too high, clamping to %2",
-					                   scale, MAX_RESILIENCE_DAMAGE_SCALE), LogLevel.WARNING);
-					s_warnedHigh = true;
-				}
-				return MAX_RESILIENCE_DAMAGE_SCALE;
-			}
-
-			return scale;
-		}
-
-		return DEFAULT_RESILIENCE_DAMAGE_SCALE;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static void SetResilienceDamageScale(float scale)
-	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-		{
-			settings.m_fResilienceDamageScale = scale;
-			if (IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath] Resilience damage scale changed to %1x", scale));
 		}
 	}
 }
