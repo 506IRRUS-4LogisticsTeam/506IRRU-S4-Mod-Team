@@ -176,13 +176,11 @@ modded class SCR_CharacterDamageManagerComponent
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
-			IEntity owner = GetOwner();
-			IRRU_NoInstantDeathComponent nid = null;
 			string characterName = "Unknown";
 
 			if (owner)
 			{
-				nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 				if (nid)
 					characterName = nid.GetNameStr(owner);
 			}
