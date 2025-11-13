@@ -1,0 +1,12 @@
+GameEntity : "{966B4E5523D2F166}Prefabs/Weapons/Attachments/Optics/WeaponOptic_Base.et" {
+ ID "4BA426CBAED42A14"
+ components {
+  InventoryItemComponent "{52627A1F45CD4EB6}" {
+   Attributes SCR_ItemAttributeCollection "{52627A1EBB0698FD}" {
+    ItemPhysAttributes ItemPhysicalAttributes "{5D0CC83435B55848}" {
+     Weight 0.05
+    }
+   }
+  }
+ }
+}

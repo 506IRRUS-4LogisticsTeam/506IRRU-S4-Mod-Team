@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{4E95BED2AC80D358}Prefabs/Characters/Eyewear/AUS_3RBN_EyePro_GatorzMagnum_ClearLens.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,12 @@
+GameEntity : "{57B16556CFDE9E31}Prefabs/Characters/Core/AUS_FaceWear_Base.et" {
+ ID "5D0541616BE87029"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{5244E4431DA56D64}" {
+    ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
+     Weight 0.02
+    }
+   }
+  }
+ }
+}
