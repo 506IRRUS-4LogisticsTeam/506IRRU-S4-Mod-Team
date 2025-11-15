@@ -1,0 +1,26 @@
+GameEntity : "{E72B1C7C4BD61F3E}Prefabs/Items/Equipment/Patches/GRS patches/Patch_Green_Beret.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "E8"
+     Description "Senior Master Sergeant"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{9C67AB2E8CE04255}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Assets/E-8 (SMSgt).xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{9C67AB2E8CE04255}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Assets/E-8 (SMSgt).xob"
+   WornMaterialsOverride {
+    "{6213F9BC85387153}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/E-8 (SMSgt).emat"
+   }
+   ItemModel "{8B8CDDA9226217AA}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Assets/E-7 (MSgt).xob"
+   ItemMaterialsOverride {
+    "{6213F9BC85387153}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/E-8 (SMSgt).emat"
+   }
+  }
+ }
+}
