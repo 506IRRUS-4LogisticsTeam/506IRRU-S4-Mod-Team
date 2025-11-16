@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{694D3A86E101219E}Sounds/Vehicles/Helicopters/AH6M/WCS_Vehicles_AH-6M_Rotor_Turbine.acp"
+ Configurations {
+  AudioProjectResourceClass PC {
+  }
+  AudioProjectResourceClass XBOX_ONE : PC {
+  }
+  AudioProjectResourceClass XBOX_SERIES : PC {
+  }
+  AudioProjectResourceClass PS4 : PC {
+  }
+  AudioProjectResourceClass PS5 : PC {
+  }
+  AudioProjectResourceClass HEADLESS : PC {
+  }
+ }
+}
