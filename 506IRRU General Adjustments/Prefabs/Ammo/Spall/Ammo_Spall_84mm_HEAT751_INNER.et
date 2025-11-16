@@ -1,0 +1,40 @@
+Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
+ ID "DA5C6308000CDEF2"
+ components {
+  InventoryItemComponent "{66DF7803D3BC2CE1}" {
+   Enabled 0
+  }
+  ShellMoveComponent "{851AA4A2AE0A5691}" {
+   InitSpeed 1000
+   InitSpeedVariation 5
+   ParentSpeedMultiplier 0.15
+   Mass 1
+   TimeToLive 0.1
+   ProjectileEffects {
+    ProjectileDamage "{5168BBF3DBD79134}" {
+     DamageValue 150
+    }
+    AIHitEffect "{C422E51CCDDF6BD3}" {
+     Enabled 0
+    }
+    HitSoundEffect "{2FC22748C7ABD466}" {
+     Enabled 0
+    }
+    ProjectileDamage "{66DF78024FFBF930}" {
+     DamageValue 100
+     DamageType Incendiary
+    }
+   }
+   BallisticTableConfig "{5EB67F0C72B1C106}Configs/Weapons/AIBallisticTables/AIBT_Penetrator_Base.conf"
+   SonicCracks ""
+   SubsonicFlybys ""
+   AirDrag 0.0000001
+   Diameter 3
+   DeflectionCriticalAngle 1
+   PenetratorType Chemical
+   PenetrationDepth 750
+   PenetrationDirDistribution 0.1
+  }
+ }
+ scale 0.4
+}
