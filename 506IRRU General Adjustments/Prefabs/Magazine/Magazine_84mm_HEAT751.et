@@ -9,8 +9,8 @@ GenericEntity : "{8204D96F3B7AB7A5}Prefabs/Magazine/Magazine_84mm_Base.et" {
   InventoryMagazineComponent "{66DC5CCCD7666E36}" {
    Attributes SCR_ItemAttributeCollection "{66DC5CCCD7666E35}" {
     ItemDisplayName UIInfo "{66DC5CCCD76669CB}" {
-     Name "506th HEAT751"
-     Description "Boom Boom!"
+     Name "506th 84mm HEAT 751 Round"
+     Description "HEAT 751 anti-armor round featuring a tandem warhead system. The precursor charge defeats reactive armor while the main 150mm shaped charge penetrates up to 500mm RHA. Effective range 500m against armored vehicles. Arming distance 15-20m."
     }
     ItemPhysAttributes ItemPhysicalAttributes "{66DC5CCB0EC4371D}" {
      Weight 0.25
@@ -39,7 +39,7 @@ GenericEntity : "{8204D96F3B7AB7A5}Prefabs/Magazine/Magazine_84mm_Base.et" {
    MagazineWell MagazineWellMAAWS "{66DC5CC8982E1B68}" {
    }
    UIInfo MagazineUIInfo "{66DC5CCCD76669CF}" {
-    Name "HEAT-751"
+    Name "HEAT 751"
     Description "#ICR-Magazine_HEAT_Desc"
     m_sAmmoType "HEAT-751"
     m_bShowAmmoTypeText 1

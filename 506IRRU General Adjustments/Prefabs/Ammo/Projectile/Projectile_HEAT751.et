@@ -1,4 +1,4 @@
-Projectile : "{4B8257ECD30B8ED3}Prefabs/Ammo/Projectile/Projectile_Base.et" {
+Projectile : "{8506EEF15E42FDA1}Prefabs/Ammo/Projectile/Projectile_Base.et" {
  ID "66DC5CC547374A81"
  components {
   CollisionTriggerComponent "{66DC5CC5DA35EB0E}" {
@@ -13,11 +13,9 @@ Projectile : "{4B8257ECD30B8ED3}Prefabs/Ammo/Projectile/Projectile_Base.et" {
    ThrustInitTime 0.06
    ThrustTime 1.5
    ThrustForce 325
-   SideAirFriction 0
-   AlignTorque 0
   }
   RocketTraceEffectComponent "{66DC5CC5E044EAD8}" {
-   ParticleEffect "{0F364F4CD1D72350}Particles/Weapon/Trail_PG7VL.ptc"
+   ParticleEffect "{88D879A6A5C91CEC}Particles/Weapon/Trail_MAAWS_RAP.ptc"
   }
  }
 }
