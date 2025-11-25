@@ -1,0 +1,149 @@
+GenericEntity {
+ ID "66DE4912DEB57141"
+ components {
+  Persistence "{66DE4912DEB571B7}" {
+  }
+  SignalsManagerComponent "{66DE4912DEB571BA}" {
+  }
+  SoundComponent "{66DE4912DEB571B8}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+  }
+  GRS_EquipmentStorageComponent "{66DE4912DEB571A6}" {
+   Attributes SCR_ItemAttributeCollection "{66DE4912DEB571A7}" {
+    ItemDisplayName UIInfo "{66DE4912DEB571A4}" {
+     Name "506th Dual Mag"
+     Description "GRS: Dual AR & Single 17rnd Pistol Tako Pouch - MC"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66DE4912DEB571A2}" {
+     Weight 0.2
+     SizeSetupStrategy Manual
+     ItemVolume 800
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66DE4912DEB571A1}" {
+      CameraOrbitAngles -15 15 0
+      PreviewWornModel 1
+      PreviewModel ""
+     }
+    }
+    CommonItemType "NONE"
+    m_bDraggable 0
+    m_bVisible 0
+    m_bStackable 0
+   }
+   Priority 100
+   StoragePurpose 0x41 0
+   UseCapacityCoefficient 0
+   CapacityCoefficient 1
+   MaxCumulativeVolume 500
+   MaxItemSize 10 10 10
+   UseVirtualInventoryReplication 0
+   InitialStorageSlots {
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_0 {
+     Offset 0.0378 0.0122 0.0232
+     Angles 0 90 180
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     AllowedItemTypes {
+      "ARMA_RIFLE_M7"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_1 {
+     Offset 0.0378 0.0122 0.0581
+     Angles 0 90 -180
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     AllowedItemTypes {
+      "RHS_RIFLE_AMMO" "ARMA_RIFLE_AMMO" "ARMA_MARKSMAN_AMMO"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+    GRS_EquipmentStorageSlot GRS_Pistol_Pouch_0 {
+     Offset -0.0028 0.0617 0.0919
+     Angles -19.0136 91.4553 179.6983
+     ChildPivotID "snap_weapon"
+     AllowedItemTypes {
+      "RHS_PISTOL_AMMO" "ARMA_PISTOL_AMMO"
+     }
+     m_AllowedTypeStrings {
+      "RHS_PISTOL_AMMO" "ARMA_PISTOL_AMMO"
+     }
+    }
+   }
+  }
+  MeshObject "{66DE4912DEB571A8}" {
+   Object "{BC0AEA631CF5A34B}Assets/Pouches/new_dual_tri_mag.xob"
+   LODFactors {
+    1 1 1 1
+   }
+   InheritVisibility 1
+  }
+  RigidBody "{66DE4912DEB57196}" {
+   Enabled 0
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{66DE4912DEB57197}" {
+   Enabled 0
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66DE4912DEB57192}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66DE4912DEB57193}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66DE4912DEB57199}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{66DE4912DEB57187}" {
+   AreaType GL_Belt_Nade_Slot "{66DE4912DEB57184}" {
+   }
+   WornModel "{BC0AEA631CF5A34B}Assets/Pouches/new_dual_tri_mag.xob"
+   WornMaterialsOverride {
+    "{AFBDC2F0B3126606}Assets/Pouches/Coyote/Mag_Pouch_02_Coyote.emat"
+   }
+   ItemModel "{BC0AEA631CF5A34B}Assets/Pouches/new_dual_tri_mag.xob"
+   ItemMaterialsOverride {
+    "{AFBDC2F0B3126606}Assets/Pouches/Coyote/Mag_Pouch_02_Coyote.emat"
+   }
+  }
+  ActionsManagerComponent "{66DE4912DEB57182}" {
+   ActionContexts {
+    UserActionContext "{66DE4912DEB57183}" {
+     ContextName "default"
+     Position PointInfo "{66DE4912DEB57180}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{66DE4912DEB5718E}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{66DE4912DEB5718F}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{66DE4912DEB5718C}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66DE4912DEB5718A}" {
+  }
+ }
+ coords -0.14 -0.009 -0.06
+}

@@ -1,0 +1,126 @@
+GenericEntity {
+ ID "66DE4913FE14F941"
+ components {
+  Persistence "{66DE4913FE14F948}" {
+  }
+  SignalsManagerComponent "{66DE4913FE14F94F}" {
+  }
+  SoundComponent "{66DE4913FE14F950}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+  }
+  GRS_EquipmentStorageComponent "{66DE4913FE14F951}" {
+   Attributes SCR_ItemAttributeCollection "{66DE4913FE14F953}" {
+    ItemDisplayName UIInfo "{66DE4913FE174A05}" {
+     Name "506th Single Mag Pouch"
+     Description "GRS: Single AR Tako Pouch - MC"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66DE4913FE174A03}" {
+     Weight 0.2
+     SizeSetupStrategy Manual
+     ItemVolume 800
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66DE4913FE174A00}" {
+      CameraOrbitAngles -15 15 0
+      PreviewWornModel 1
+      PreviewModel ""
+     }
+    }
+    CommonItemType "NONE"
+    m_bDraggable 0
+    m_bVisible 0
+    m_bStackable 0
+   }
+   Priority 0
+   StoragePurpose 0x41 0
+   UseCapacityCoefficient 0
+   CapacityCoefficient 1
+   MaxCumulativeVolume 500
+   MaxItemSize 10 10 10
+   UseVirtualInventoryReplication 0
+   InitialStorageSlots {
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_0 {
+     Offset 0.0374 0.0131 0.0234
+     Angles 0 90 180
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     AllowedItemTypes {
+      "ARMA_RIFLE_M7"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+   }
+  }
+  MeshObject "{66DE4913FE174A0A}" {
+   Object "{FF66770E37293231}Assets/Pouches/new_single_AR_Pouch.xob"
+   LODFactors {
+    1 1 1 1
+   }
+   InheritVisibility 1
+  }
+  RigidBody "{66DE4913FE174A0B}" {
+   Enabled 0
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{66DE4913FE174A09}" {
+   Enabled 0
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66DE4913FE174A37}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66DE4913FE174A34}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66DE4913FE174A3F}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{66DE4913FE174A3C}" {
+   AreaType GL_Belt_Nade_Slot "{66DE4913FE174A3D}" {
+   }
+   WornModel "{FF66770E37293231}Assets/Pouches/new_single_AR_Pouch.xob"
+   WornMaterialsOverride {
+    "{47D8ECDBE8CF843A}Assets/Pouches/Black/Mag_Pouch_02_Black.emat"
+   }
+   ItemModel "{FF66770E37293231}Assets/Pouches/new_single_AR_Pouch.xob"
+   ItemMaterialsOverride {
+    "{47D8ECDBE8CF843A}Assets/Pouches/Black/Mag_Pouch_02_Black.emat"
+   }
+  }
+  ActionsManagerComponent "{66DE4913FE174A3A}" {
+   ActionContexts {
+    UserActionContext "{66DE4913FE174A3B}" {
+     ContextName "default"
+     Position PointInfo "{66DE4913FE17A739}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{66DE4913FE17A73B}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{66DE4913FE17A724}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{66DE4913FE17A725}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66DE4913FE17A727}" {
+  }
+ }
+ coords -1.169 1.211 2.273
+}

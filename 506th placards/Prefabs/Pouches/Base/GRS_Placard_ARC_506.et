@@ -1,0 +1,156 @@
+GenericEntity {
+ ID "66DE4407E5F1929F"
+ components {
+  Persistence "{66DE4407E5F19289}" {
+  }
+  SignalsManagerComponent "{66DE4407E5F192A0}" {
+  }
+  SoundComponent "{66DE4407E5F192A2}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+  }
+  GRS_EquipmentStorageComponent "{66DE4407E5F192A4}" {
+   Attributes SCR_ItemAttributeCollection "{66DE4407E5F192A7}" {
+    ItemDisplayName UIInfo "{66DE4407E5F192A6}" {
+     Name "506th M7 Placard"
+     Description "506th M7 Placard"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66DE4407E5F19358}" {
+     Weight 0.001
+     SizeSetupStrategy Manual
+     ItemDimensions 1 1 1
+     ItemVolume 0.00000001
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66DE4407E5F1935B}" {
+      CameraOrbitAngles -15 15 0
+      CameraDistanceToItem 0.3
+      PreviewWornModel 1
+      PreviewModel ""
+     }
+    }
+    CommonItemType "NONE"
+    m_bDraggable 0
+    m_bVisible 0
+    m_bStackable 0
+   }
+   Priority 100
+   StoragePurpose 0x41 0
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 600
+   MaxItemSize 10 10 10
+   UseVirtualInventoryReplication 0
+   InitialStorageSlots {
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_0 {
+     Offset -0.044 0.0083 0.0331
+     Angles 0.7807 88.7692 -177.6143
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     DisablePhysicsInteraction 1
+     DeactivatePhysicsOnAtaching 1
+     AllowedItemTypes {
+      "ARMA_RIFLE_M7"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_1 {
+     Offset 0.1214 0.0086 0.0287
+     Angles 1.3124 88.7577 -179.7059
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     DisablePhysicsInteraction 1
+     DeactivatePhysicsOnAtaching 1
+     AllowedItemTypes {
+      "ARMA_RIFLE_M7"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+    GRS_EquipmentStorageSlot GRS_Rifle_Pouch_2 {
+     Offset 0.0382 0.0086 0.0267
+     Angles 0.7475 91.1847 179.4248
+     ChildPivotID "snap_weapon"
+     Prefab "{41C0478FF9458440}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid1.et"
+     DisablePhysicsInteraction 1
+     DeactivatePhysicsOnAtaching 1
+     AllowedItemTypes {
+      "ARMA_RIFLE_M7"
+     }
+     m_AllowedTypeStrings {
+      "ARMA_RIFLE_M7"
+     }
+    }
+   }
+  }
+  MeshObject "{66DE4407E5F19350}" {
+   Object "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   LODFactors {
+    1 1 1 1
+   }
+   InheritVisibility 1
+  }
+  RigidBody "{66DE4407E5F19352}" {
+   Enabled 0
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{66DE4407E5F19354}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66DE4407E5F19356}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66DE4407E5F19349}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66DE4407E5F19378}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{66DE4407E5F1937B}" {
+   AreaType GL_Vest_Mag_Placard "{66DE4407E5F1937A}" {
+   }
+   WornModel "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   WornMaterialsOverride {
+    ""
+   }
+   ItemModel "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   ItemMaterialsOverride {
+    ""
+   }
+  }
+  ActionsManagerComponent "{66DE4407E5F1937D}" {
+   ActionContexts {
+    UserActionContext "{66DE4407E5F1937C}" {
+     ContextName "default"
+     Position PointInfo "{66DE4407E5F1937F}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{66DE4407E5F19371}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{66DE4407E5F1A16B}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{66DE4407E5F1A168}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66DE4407E5F1A16E}" {
+  }
+ }
+ coords -1.048 1.456 3.005
+}

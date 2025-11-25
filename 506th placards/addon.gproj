@@ -1,0 +1,8 @@
+GameProject {
+ ID "506thplacards"
+ GUID "66DCF2D074ABE31C"
+ TITLE "506th placards"
+ Dependencies {
+  "651834C8D77BF86B" "62021EB6163A2698" "58D0FB3206B6F859"
+ }
+}
