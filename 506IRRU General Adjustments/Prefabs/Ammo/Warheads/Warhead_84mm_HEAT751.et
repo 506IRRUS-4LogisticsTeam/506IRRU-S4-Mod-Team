@@ -100,7 +100,7 @@ GenericEntity {
        FragRangeScale 10
       }
      }
-     ChargeWeight 1500
+     ChargeWeight 500
      TntEquivalent 1.7
     }
     SubmunitionEffect "{66DF780380755F7B}" {

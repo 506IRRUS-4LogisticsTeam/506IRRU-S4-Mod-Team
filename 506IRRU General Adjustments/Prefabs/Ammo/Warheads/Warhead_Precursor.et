@@ -20,7 +20,7 @@ GenericEntity {
       ExplosionImpulseEffect "{66DF46A926181F95}" {
       }
      }
-     ChargeWeight 300
+     ChargeWeight 150
     }
    }
    DELETE_ON_TRIGGER 0

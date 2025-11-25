@@ -21,7 +21,7 @@ Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
      Enabled 0
     }
     ProjectileDamage "{66DF78023E7DF4E2}" {
-     DamageValue 25
+     DamageValue 2
      DamageType Incendiary
     }
    }
