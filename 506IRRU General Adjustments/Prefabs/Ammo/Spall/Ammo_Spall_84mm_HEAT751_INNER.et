@@ -9,7 +9,7 @@ Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
    InitSpeedVariation 5
    ParentSpeedMultiplier 0.15
    Mass 1
-   TimeToLive 0.1
+   TimeToLive 0.08
    ProjectileEffects {
     ProjectileDamage "{5168BBF3DBD79134}" {
      DamageValue 150
@@ -32,7 +32,7 @@ Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
    Diameter 3
    DeflectionCriticalAngle 1
    PenetratorType Chemical
-   PenetrationDepth 600
+   PenetrationDepth 550
    PenetrationDirDistribution 0.1
   }
  }

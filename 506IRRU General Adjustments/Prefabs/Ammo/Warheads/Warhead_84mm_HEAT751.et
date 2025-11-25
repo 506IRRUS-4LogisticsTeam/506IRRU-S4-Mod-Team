@@ -106,7 +106,7 @@ GenericEntity {
     SubmunitionEffect "{66DF780380755F7B}" {
      Prefab "{51E5A50767AA534F}Prefabs/Ammo/Spall/Ammo_Spall_84mm_HEAT751_INNER.et"
      Count 50
-     Dispersion 30
+     Dispersion 15
     }
     SubmunitionEffect "{66DF35726D685B3A}" {
      Enabled 1
