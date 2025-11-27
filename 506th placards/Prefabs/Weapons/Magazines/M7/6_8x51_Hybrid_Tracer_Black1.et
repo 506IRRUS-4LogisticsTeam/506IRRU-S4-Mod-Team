@@ -11,5 +11,12 @@ GenericEntity : "{08649CD48F0F224B}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid_Tr
     CommonItemType "ARMA_RIFLE_M7"
    }
   }
+  MeshObject "{CA6BE4D6A23F8EF0}" {
+   Object "{164B4A0491DC1222}Assets/Weapons/Magazines/M7_Mag_New.xob"
+  }
+  MagazineAnimationComponent "{621347561CFD857D}" {
+   AnimatedMesh "{164B4A0491DC1222}Assets/Weapons/Magazines/M7_Mag_New.xob"
+  }
  }
+ coords 0 0 0
 }

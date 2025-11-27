@@ -24,5 +24,9 @@ GenericEntity : "{5294D9B49795B57D}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid_Tr
     0 0 0 0 0
    }
   }
+  MeshObject "{CA6BE4D6A23F8EF0}" {
+   Object "{164B4A0491DC1222}Assets/Weapons/Magazines/M7_Mag_New.xob"
+  }
  }
+ coords 0 0 0
 }
