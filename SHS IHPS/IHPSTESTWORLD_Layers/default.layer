@@ -1,0 +1,314 @@
+GameEntity {
+ components {
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   WornModel "{635F85241364CD1E}assets/characters/headgear/IHPStest/test.xob"
+   ItemModel "{C7700080C4011515}assets/characters/headgear/IHPStest/Ground.xob"
+  }
+ }
+ coords 128.863 1 127.263
+}
+$grp GenericEntity {
+ {
+  components {
+   MeshObject "{669F76815EB1F870}" {
+    Object "{635F85241364CD1E}assets/characters/headgear/IHPStest/test.xob"
+   }
+  }
+  coords 128.991 1 126.647
+ }
+ {
+  components {
+   MeshObject "{669F768011BEE4B8}" {
+    Object "{C7700080C4011515}assets/characters/headgear/IHPStest/Ground.xob"
+   }
+  }
+  coords 129.813 1 128.172
+ }
+ {
+  components {
+   MeshObject "{66A3592C0467A540}" {
+    Object "{24582CA0FF54CE94}assets/characters/headgear/Crye Precision Airframe/Crye Helmet item.xob"
+   }
+  }
+  coords 137.07 1 149.843
+ }
+ {
+  components {
+   ClothNodeStorageComponent "{66A3592D89C3C04F}" {
+    Attributes SCR_IdentityItemAttributeCollection "{66A3592DB07F12E7}" {
+     ItemDisplayName UIInfo "{66A3592DB3E6B5AF}" {
+      Name "VRY PRECISION AIRFRAME"
+      Description "VRY PRECISION AIRFRAME"
+     }
+     ItemPhysAttributes ItemPhysicalAttributes "{66A3592DD73B5525}" {
+      Weight 1
+      SizeSetupStrategy Manual
+      ItemDimensions 20 20 20
+      ItemVolume 2500
+     }
+     CustomAttributes {
+      PreviewRenderAttributes "{66A3592DEC5ADAA3}" {
+      }
+     }
+    }
+    StoragePurpose 64
+    UseCapacityCoefficient 0
+    MaxCumulativeVolume 0.1
+   }
+   ColliderHistoryComponent "{66A3592D302091CF}" {
+   }
+   MeshObject "{66A3592C07F310D0}" {
+    Object "{05D628F77948166E}assets/characters/headgear/Crye Precision Airframe/Crye Helmet base.xob"
+   }
+   ParametricMaterialInstanceComponent "{66A3592D2AF41809}" {
+    ApplyPropertiesWhenMeshChanged 1
+   }
+   RigidBody "{66A3592D5920874C}" {
+    LayerPreset "FireGeo"
+    Active Active
+    SimState Collision
+    ResponseIndex "NoCollision"
+    ModelGeometry 1
+    Static 1
+   }
+   SCR_ArmorDamageManagerComponent "{66A3592D62B6693E}" {
+    "Additional hit zones" {
+     SCR_ArmorHitZone Helmet {
+      ColliderNames {
+       "UTM_FireGeo"
+      }
+      HZDefault 1
+      MaxHealth 10000
+      m_eHitZoneGroup HEAD
+     }
+    }
+   }
+   SCR_ItemOutfitFactionComponent "{66A3592ED03F9158}" {
+    m_OutfitDataHolder SCR_OutfitFactionDataHolder "{66A3592ED2917170}" {
+     m_aOutfitFactionData {
+      SCR_OutfitFactionData "{66A3592ED41A28A6}" {
+       m_AffiliatedFactionKey "US"
+       m_iOutfitFactionValue 15
+      }
+     }
+    }
+   }
+   SCR_SoundDataComponent "{66A3592EF237F168}" {
+    m_aAudioSourceConfiguration {
+     SCR_AudioSourceConfiguration "{66A3592EF47B8494}" {
+      m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+      m_sSoundEventName "SOUND_PICK_UP"
+     }
+     SCR_AudioSourceConfiguration "{66A3592EF402B4CA}" {
+      m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+      m_sSoundEventName "SOUND_EQUIP"
+     }
+     SCR_AudioSourceConfiguration "{66A3592EF4FE4E3F}" {
+      m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+      m_sSoundEventName "SOUND_DROP"
+     }
+    }
+   }
+   BaseLoadoutClothComponent "{66A3592C295FC1B0}" {
+    AreaType LoadoutHeadCoverArea "{66A3592E28F7BA65}" {
+    }
+    Slots {
+     LoadoutSlotInfo Cover {
+      Offset 0 1.6946 0.0034
+      Prefab "{1330FA517C85C355}Prefabs/Characters/HeadGear/Crye Precision Airframe/Crye MC.et"
+     }
+    }
+    WornModel "{24582CA0FF54CE94}assets/characters/headgear/Crye Precision Airframe/Crye Helmet item.xob"
+    ItemModel "{05D628F77948166E}assets/characters/headgear/Crye Precision Airframe/Crye Helmet base.xob"
+    PhysicsOnWearEnabled 1
+    AnimateCollidersOnWear 1
+   }
+   ActionsManagerComponent "{66A3592E791E0F8B}" {
+    ActionContexts {
+     UserActionContext "{66A3592F997DA10D}" {
+      ContextName "Default"
+     }
+    }
+    additionalActions {
+     SCR_EquipClothAction "{66A3592F84AACD71}" {
+      ParentContextList {
+       "Default"
+      }
+      UIInfo SCR_ActionUIInfo "{66A3592FB5B37474}" {
+       m_sIconName "pick-up"
+      }
+      "Sort Priority" -10
+     }
+     SCR_PickUpItemAction "{66A3592FC391ED18}" {
+     }
+    }
+   }
+   RplComponent "{66A3592FF10860A4}" {
+   }
+  }
+  coords 133.282 1 150.975
+ }
+}
+GameEntity : "{B165BF2C2E278671}Prefabs/Characters/HeadGear/IHPS/IHPS.et" {
+ components {
+  ClothNodeStorageComponent "{669F769EE8490400}" {
+   Attributes SCR_IdentityItemAttributeCollection "{669F769EE8490438}" {
+    ItemDisplayName UIInfo "{669F769EE849043A}" {
+     Name "IHPS"
+     Description "IHPS"
+     Icon "{1BC9D7EA568788EB}Prefabs/Characters/HeadGear/IHPS/IHPS.edds"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{669F769EE849043F}" {
+     Weight 1.5
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 2500
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{669F769EE8490430}" {
+     }
+    }
+   }
+   StoragePurpose 64
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 0.1
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "IHPS"
+     Description "IHPS"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     SizeSetupStrategy Manual
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{A22297280A30A9CD}assets/characters/headgear/IHPS/IHPS Final.xob"
+   Materials {
+    MaterialAssignClass "{66A04548DB019F04}" {
+     SourceMaterial "ECH"
+     AssignedMaterial "{45DB051C2FE7E41D}assets/characters/headgear/IHPS/Data/ECH.emat"
+    }
+   }
+  }
+  RigidBody "{5112706CD4157AE6}" {
+   LayerPreset "FireGeo"
+   Active Active
+  }
+  SCR_ArmorDamageManagerComponent "{669F769EE849042C}" {
+   "Additional hit zones" {
+    SCR_ArmorHitZone helmet {
+     ColliderNames +{
+     }
+     HZDefault 1
+     MaxHealth 10000
+     m_eHitZoneGroup HEAD
+    }
+   }
+   m_fPassedDamageScale 1
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   Slots {
+    LoadoutSlotInfo Cover {
+     PivotID "Head"
+     Offset 0 0.0217 -0.0251
+     Angles 0 0.0284 -0.0296
+     Prefab "{310FCFDFFA84F1C9}Prefabs/Characters/HeadGear/IHPS/Cover.et"
+     AreaType SHS_IHPS_Cover "{669F769EE8490423}" {
+     }
+    }
+    LoadoutSlotInfo NVG {
+     Offset 0.0849 1.6701 0.1461
+     Prefab "{AD1CD4DBAF105D2D}Prefabs/Characters/Items/NVG/GPNVG_18.et"
+    }
+    LoadoutSlotInfo Goggles {
+     PivotID "Head"
+     Offset 0 -0.0202 -0.0057
+     AreaType SHS_Exfil_Goggle "{669F769EE8490426}" {
+     }
+    }
+    LoadoutSlotInfo NVGMount {
+     Offset 0.091 0.0232 -0.0287
+     Angles 0.4681 -180 0
+    }
+    LoadoutSlotInfo Attachments {
+     PivotID "Head"
+     Offset 0 0.0284 -0.0311
+     Angles 0 -180 0
+     InspectionWidgetOffset 0 0.2113 0.0061
+     AreaType SHS_IHPS_Mohawk "{669F769EE84904D8}" {
+     }
+    }
+    LoadoutSlotInfo Ears {
+     PivotID "Head"
+     Offset 0 0.027 -0.0311
+     Angles 0 -180 0
+     InspectionWidgetOffset 0 0.0092 -0.0214
+     AreaType SHS_Ears "{669F769EE84904DA}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Right {
+     PivotID "Head"
+     Offset -0.0806 0.1805 -0.025
+     Angles 39.3855 -87.4071 2.2293
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_Patch "{669F769EE84904D5}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Custom_Right {
+     PivotID "Head"
+     Offset -0.0852 0.1844 -0.0247
+     Angles 39.3855 -87.4071 2.2293
+     Prefab "{183FFEBDAC75395E}Prefabs/Characters/HeadGear/IHPS/Red Currahee.et"
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_506_Patch "{66A0AAC6C330642C}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Left {
+     PivotID "Head"
+     Offset 0.0864 0.1794 -0.0247
+     Angles 33.9952 94.0406 0.5814
+     InspectionWidgetOffset 0.0986 0.1253 0
+     AreaType SHS_Patch "{669F769EE84AC951}" {
+     }
+    }
+    LoadoutSlotInfo Pach_Right {
+     PivotID "Head"
+     Offset -0.0806 0.1805 -0.025
+     Angles 39.3855 -87.4071 2.2293
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_Patch "{66A0AAC6DBBF4992}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Custom_Left {
+     PivotID "Head"
+     Offset 0.0913 0.1826 -0.0249
+     Angles 33.9952 94.0406 0.5814
+     Prefab "{183FFEBDAC75395E}Prefabs/Characters/HeadGear/IHPS/Red Currahee.et"
+     InspectionWidgetOffset 0.0986 0.1253 0
+     AreaType SHS_506_Patch "{66A0AAC7F60A01E2}" {
+     }
+    }
+    LoadoutSlotInfo AnimatedNVG {
+     Offset 0 0 -0.0146
+     AreaType NVS_Slotted "{669F769EE84AC952}" {
+     }
+    }
+   }
+   PhysicsOnWearEnabled 1
+  }
+ }
+ coords 137.844 1 136.056
+}
+GameEntity : "{BCCB7D5AB38BB3A7}Prefabs/Characters/HeadGear/Hat_Knitted_01/Hat_Knitted_01_base.et" {
+ coords 130.675 1 128.036
+}
+GameEntity : "{E12126CDE731EED5}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01.et" {
+ coords 131.234 1 127.678
+}
+GameEntity : "{E2BBAB596C66BC46}Prefabs/Characters/HeadGear/Crye Precision Airframe/Crye Precision.et" {
+ coords 145.647 1 163.592
+}

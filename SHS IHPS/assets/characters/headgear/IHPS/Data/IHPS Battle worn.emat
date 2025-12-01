@@ -1,0 +1,6 @@
+MatPBRBasic {
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{595CF452CC13A0ED}assets/characters/headgear/IHPS/Data/IHPS worn4.edds"
+ NMOMap "{633F02BC1F544E29}assets/characters/headgear/IHPS/Data/IHPS_Normal_OpenGL.edds"
+}

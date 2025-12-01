@@ -1,0 +1,9 @@
+ThermalImagingEffect {
+ TempConversionTex "{2C38577A06ECE936}Textures/Thermal_Filter/Orange.edds"
+ TemperatureConversionMethod AutomaticHistogramEq
+ DownsizeMethod Blur
+ SimOverrideValues 1
+ SimForceRecomputeTableOnChange 1
+ SimTemperatureSkyMax -68
+ SimTemperatureWaterMin -29.7
+}

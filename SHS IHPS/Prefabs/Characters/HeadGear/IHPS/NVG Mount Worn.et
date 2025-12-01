@@ -1,0 +1,42 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "NVG Mount Worn"
+     Description "NVG Mount"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+   Materials {
+    MaterialAssignClass "{66A571ECFE85A05A}" {
+     SourceMaterial "Patch_sdr"
+     AssignedMaterial "{839E9404355753C7}assets/characters/headgear/Patches_custom/Patches/Data/Patch_sdr.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_NVGMount "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+   ItemModel "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+   ItemMaterialsOverride {
+    "{A1827306FE085DFB}assets/characters/headgear/IHPS/Data/IHPS Battle worn.emat"
+   }
+   DeflatedModel "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+  }
+ }
+}

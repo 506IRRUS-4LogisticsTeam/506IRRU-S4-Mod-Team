@@ -1,0 +1,7 @@
+MatPBRBasic {
+ Color 0.337 0.337 0.337 1
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{AD8A8688BB3C2E9C}assets/characters/headgear/IHPS/Data/IHPS_Base_Color.edds"
+ NMOMap "{633F02BC1F544E29}assets/characters/headgear/IHPS/Data/IHPS_Normal_OpenGL.edds"
+}

@@ -1,0 +1,32 @@
+MatPBRBasicGlass {
+ Color 0.004 0.004 0.004 1
+ DiffuseIBL 0.004 0.004 0.004 1
+ SpecularIBL 0.004 0.004 0.004 1
+ Diffuse 0.004 0.004 0.004 1
+ ZWrite 0
+ Cull none
+ Sort translucent
+ CastShadow 0
+ ReceiveShadow 1
+ SurfaceProperties "{3DC7C8A918E3F4A5}Common/Materials/Game/glass.gamemat"
+ Specular 0.004 0.004 0.004 1
+ AlphaMul 3.204
+ BlendMode AlphaBlend
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{8B59275E8F260750}Assets/_SharedData/Glass/ST_Glass_Test_01_BCR.edds"
+ OpacityMap "{A730977A76334925}Assets/_SharedData/Glass/ST_Glass_Test_01_A.edds"
+ GlobalMapsUVTransform MatUVTransform "{5AD2BA0078118C2C}" {
+  TilingU 4
+  TilingV 2
+ }
+ DetailNormalPower 1
+ DetailNormalMap "{5E9B5A9AF633BD94}Assets/_SharedData/Metal/ST_Steel_Battered_NMO.edds"
+ DetailNormalMapUVTransform MatUVTransform "{5AD2BA018F0CFDAA}" {
+  TilingU 0.05
+  TilingV 0.05
+ }
+ FresnelPower 3.503
+ FresnelBias 0.737
+ Backscatterig 1
+}

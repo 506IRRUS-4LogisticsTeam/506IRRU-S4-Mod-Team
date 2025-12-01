@@ -1,0 +1,20 @@
+GameEntity : "{CE7527705940EA56}Prefabs/Characters/Eyewear/GatorzBase.et" {
+ ID "62B14282A2193F97"
+ components {
+  InventoryItemComponent "{62B14282A2193FE8}" {
+   Attributes SCR_ItemAttributeCollection "{62B14282A2193FEC}" {
+    ItemDisplayName UIInfo "{62B14282A2193FEE}" {
+     Name "Gatorz Yellow"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{62B14282A2193FC1}" {
+   WornMaterialsOverride {
+    "" "{07D337344931FBE1}assets/characters/Eyewear/Data/Gatorz_Glass_Yellow.emat"
+   }
+   ItemMaterialsOverride {
+    "" "{07D337344931FBE1}assets/characters/Eyewear/Data/Gatorz_Glass_Yellow.emat"
+   }
+  }
+ }
+}

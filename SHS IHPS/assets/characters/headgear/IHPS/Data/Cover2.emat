@@ -1,0 +1,12 @@
+MatPBRBasic {
+ TITemperature1 305.26
+ TITemperature2 265.07
+ TITemperature3 242.11
+ TITemperature4 155.98
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ AOScale 5
+ CavityFromAO 0
+ BCRMap "{84CFC0E05A8AF433}assets/characters/headgear/IHPS/Data/Cover_BCR.edds"
+ NMOMap "{BC177B7283FDA6AD}assets/characters/headgear/IHPS/Data/Cover_NMO.edds"
+}

@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{4361BB7EBA61637F}assets/characters/headgear/attachments/Data/M_3M_Peltor_Comtac_VII.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

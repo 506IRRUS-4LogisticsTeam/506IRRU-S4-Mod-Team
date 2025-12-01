@@ -1,0 +1,14 @@
+MatPBRBasicGlass {
+ Color 0.319 0.729 1 1
+ DiffuseIBL 0.319 0.729 1 1
+ SpecularIBL 0.156 0.231 0.275 1
+ SpecularMul 5
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 0
+ MetalnessScale 5
+ DielectricReflectance 0.16
+ OpacityMap "{60972A1E2BFE9D6F}Assets/_SharedData/Glass/ST_Glass_Dirt_01_A.edds"
+ NormalPower 0.25
+ NMOMap "{DF1F056340230E00}system/textures/defBlack.edds"
+}

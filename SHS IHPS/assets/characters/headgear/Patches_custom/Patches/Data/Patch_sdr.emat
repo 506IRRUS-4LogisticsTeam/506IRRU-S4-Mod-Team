@@ -1,0 +1,14 @@
+MatPBRBasic {
+ Emissive 1 0.984 0.984 0
+ EmissiveLV -5.176
+ Cull none
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 1.801
+ MetalnessScale 5
+ DielectricReflectance 0.16
+ EmissiveMap "{B5918FC96D398703}assets/characters/headgear/Patches_custom/Patches/Data/NATO_Emissive.edds"
+ BCRMap "{CD8E580BAAFD148B}assets/characters/headgear/Patches_custom/Patches/Data/NATO_BCR.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+ NMOMap "{F556E399738A4615}assets/characters/headgear/Patches_custom/Patches/Data/NATO_NMO.edds"
+}

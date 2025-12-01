@@ -9,7 +9,6 @@ GenericEntity : "{B67C9B2F1F864B71}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid.et
     }
     CustomAttributes {
      SCR_ItemOfInterestAttribute "{5556C918268A1683}" {
-      m_InterestType ARMA_RIFLE_M7
      }
     }
     CommonItemType "ARMA_RIFLE_M7"

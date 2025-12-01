@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{07B09BF26A67C1FB}assets/characters/headgear/IHPS/Data/Cover_coyote.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

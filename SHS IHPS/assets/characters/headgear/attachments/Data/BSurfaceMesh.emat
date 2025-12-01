@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{FE6A8E1863763D80}assets/characters/headgear/attachments/Data/glass_Base_color.edds"
+ NMOMap "{7F664C4FB93B3A3A}assets/characters/headgear/attachments/Data/glass_Normal.edds"
+}

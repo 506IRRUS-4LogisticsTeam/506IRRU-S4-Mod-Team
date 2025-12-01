@@ -1,0 +1,28 @@
+GameEntity : "{33C2A547FE79A74E}Prefabs/Characters/Eyewear/GatorzBase.et" {
+ ID "62B14282A2193F97"
+ components {
+  InventoryItemComponent "{62B14282A2193FE8}" {
+   Attributes SCR_ItemAttributeCollection "{62B14282A2193FEC}" {
+    ItemDisplayName UIInfo "{62B14282A2193FEE}" {
+     Name "Gatorz Ops Edition"
+    }
+   }
+  }
+  MeshObject "{62B14282A2193FD8}" {
+   Materials {
+    MaterialAssignClass "{62B14282DD90DF86}" {
+     SourceMaterial "Glass"
+     AssignedMaterial "{67B626D5732DF9BF}assets/characters/Eyewear/Data/Gatorz_Glass_Clear.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{62B14282A2193FC1}" {
+   WornMaterialsOverride {
+    "{A226F75F8C111D5D}assets/characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" "{AF61349501900375}assets/characters/Eyewear/Data/Gatorz_Glass_Operator.emat"
+   }
+   ItemMaterialsOverride {
+    "{A226F75F8C111D5D}assets/characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" "{AF61349501900375}assets/characters/Eyewear/Data/Gatorz_Glass_Operator.emat"
+   }
+  }
+ }
+}

@@ -1,0 +1,47 @@
+GRS Patches Mod – Usage & Licensing Terms  
+Effective: July 2025
+
+This content is the property of the GRS Mod Team and is provided exclusively for non-commercial, personal use within Arma Reforger.  
+All models, textures, materials, and prefab assets included in this mod are either original works created by GRS or legally obtained  
+through licensed marketplaces or direct agreements with individual creators.
+
+The configuration, integration, scripting, and technical setup within this mod are unique to GRS and are the result of significant  
+custom development and engineering.
+
+Terms of Use  
+By downloading, installing, or using this mod, you agree to the following terms:
+
+1. Allowed Modifications  
+You are permitted to edit, modify, and reuse prefabs, EMAT files, textures, and other visual configurations included in this mod  
+for personal or non-commercial use. These modifications may be included in your own mods, provided that:  
+- You do not modify or include any GRS code (scripts, components, or systems).  
+- You credit the GRS Mod Team where appropriate.
+
+2. Allowed Dependency Use  
+You are permitted to use this mod as a dependency in your own mod projects (e.g., creating your own patches or gear) as long as:  
+- The GRS Patches Mod is listed as a required dependency (not repackaged into your own mod).  
+- You do not extract or include any GRS scripts or components directly in your own mod.
+
+3. No Code Editing or Derivative Works  
+Editing, decompiling, or creating derivative works based on any of the scripts, components, or technical systems within this mod  
+is strictly prohibited. If you wish to extend or modify the codebase, you must contact Gl1tch_ directly and obtain written permission.
+
+4. No Commercial Use  
+This mod may not be used in any commercial product, project, or monetized server.
+
+5. No Repackaging of GRS Assets  
+You may not repackage, include, or embed any part of this mod’s files (such as models, EMATs, or textures) directly into your own mod.  
+Instead, your mod must reference the GRS Patches Mod as a required dependency.
+
+6. No Unauthorized Redistribution  
+You may not upload or distribute this mod’s original files under your own name or branding. Use the Steam Workshop or mod.io dependency system.
+
+7. Violations and Enforcement  
+Violations of these terms may result in takedown actions, blacklist enforcement within the modding community, and/or legal consequences  
+where applicable.
+
+8. Respect for Original Work  
+All scripting, configuration, and integration work are the intellectual property of the GRS Mod Team. Please respect the time,  
+effort, and resources that went into this project.
+
+For permission requests or licensing inquiries, contact the GRS Mod Team via Discord.

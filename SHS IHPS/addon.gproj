@@ -1,0 +1,22 @@
+GameProject {
+ ID "GRS IHPS"
+ GUID "6690146F125ED75C"
+ TITLE "GRS IHPS"
+ Dependencies {
+  "58D0FB3206B6F859" "606B100247F5C709" "65EA34D181AEF10A" "657B064AE0E231DF" "65157D09F042428A" "66FB7D1206248F13"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

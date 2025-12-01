@@ -1,0 +1,119 @@
+GameEntity {
+ ID "66F366B5E6F1F6DA"
+ components {
+  AFW_LightsComponent "{66F366B5E6F1F6D1}" {
+   m_aLightSources {
+    AFW_LightSource "{66F366B5E6F1F6CA}" {
+     m_sLightPrefab "{243B462DB09D0F97}Prefabs/Editor/Common/M600v_Light.et"
+     m_vOriginalColor 1 1 1
+     m_vLightPosition PointInfo "{66F366B5E6F1F6CC}" {
+      PivotID "Head"
+      Offset 0.1224 0.1521 -0.1296
+     }
+    }
+   }
+  }
+  ClothNodeStorageComponent "{66F366B5E6F1F6CE}" {
+   Attributes SCR_ItemAttributeCollection "{66F366B5E6F1F6CF}" {
+    ItemDisplayName UIInfo "{66F366B5E6F1F6C0}" {
+     Name "Surefire Right"
+     Description "Surefire Right"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66F366B5E6F1F6C1}" {
+     Weight 0
+     DimensionScaler 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66F366B5E6F1F6C3}" {
+      CameraOrbitAngles -25 25 0
+      CameraDistanceToItem 2
+      FOV 10
+     }
+    }
+   }
+   StoragePurpose 0x21 0
+  }
+  MeshObject "{66F366B5E6F1F6C5}" {
+   Object "{72D3E75521C30217}assets/attachments/TNVCRight.xob"
+   InheritVisibility 1
+  }
+  ParametricMaterialInstanceComponent "{66F366B5E6F1F6C6}" {
+   UserParamAlpha 0
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  RigidBody "{66F366B5E6F1F6F8}" {
+   Mass 1.5
+   SimState None
+   ModelGeometry 1
+   Static 1
+  }
+  SCR_SoundDataComponent "{66F366B5E6F1F6F9}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66F366B5E6F1F6FB}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66F366B5E6F1F6F2}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66F366B5E6F1F6F3}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  SHS_HelmetFlashlightAttachmentComponent "{66F67AEE8477212A}" {
+  }
+  BaseLoadoutClothComponent "{66F366B5E6F1F6F5}" {
+   AreaType GRS_Raillite "{66F366B5E6F1F6F6}" {
+   }
+   WornModel "{72D3E75521C30217}assets/attachments/TNVCRight.xob"
+   WornMaterialsOverride {
+    ""
+   }
+   ItemMaterialsOverride {
+    ""
+   }
+  }
+  ActionsManagerComponent "{66F366B5E6F1F6E8}" {
+   ActionContexts {
+    UserActionContext "{66F366B5E6F1156E}" {
+     ContextName "default"
+     Position PointInfo "{66F366B5E6F1156C}" {
+      PivotID "Head"
+      Offset 0 0.2258 0
+     }
+    }
+   }
+   additionalActions {
+    SCR_EquipClothAction "{52E6EC76F51E12DE}" : "{83B98F1A96591AC6}Prefabs/Characters/Core/Actions/EquipClothAction.conf" {
+     "Sort Priority" -10
+    }
+    SCR_PickUpItemAction "{52E6EC76F43FCD58}" : "{F39A4E9B190C1846}Prefabs/Characters/Core/Actions/PickUpItemAction.conf" {
+    }
+    AFW_ToggleActionUserAction "{66F366B5E6F1156A}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{66F366B5E6F1156B}" {
+      Name "IR Illuminator"
+     }
+     Duration 0.15
+     m_iLightSourceType IR_LASER
+    }
+    SCR_SwitchFlashlightLensAction "{66F6728E1B8E9B20}" {
+     UIInfo UIInfo "{66F6728E1FFAF116}" {
+     }
+    }
+   }
+  }
+  RplComponent "{66F366B5E6F11569}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66F366B5E6F11566}" {
+  }
+ }
+}

@@ -1,0 +1,40 @@
+MetaFileClass {
+ Name "{FFDA63A17F88CFD1}assets/characters/headgear/IHPS/IHPSCOVERGround.xob"
+ Configurations {
+  FBXResourceClass PC {
+   Scale 1 0.95 1
+   MaterialAssigns {
+    MaterialAssignClass "{66AB4E8CBA7268E4}" {
+     SourceMaterial "Cover"
+     AssignedMaterial "{461774D314DBDBEC}assets/characters/headgear/IHPS/Data/MC.emat"
+    }
+   }
+   MeshParams {
+    MeshParam IHPS_COVER {
+    }
+   }
+   Common TXOCommonClass "{66A747CDF0565F18}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_ONE : PC {
+   Common TXOCommonClass "{66A747CDF0565F9F}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass XBOX_SERIES : PC {
+   Common TXOCommonClass "{66A747CDF0565FB1}" : "{DD9F02115C764647}Configs/System/ResourceTypes/XBOX_SERIES/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS4 : PC {
+   Common TXOCommonClass "{66A747CDF056405E}" : "{53EC476BC921D99A}Configs/System/ResourceTypes/PS4/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass PS5 : PC {
+   Common TXOCommonClass "{66A747CDF056407D}" : "{F62AA8E7B8EA9D26}Configs/System/ResourceTypes/PS5/MeshObjectCommon.conf" {
+   }
+  }
+  FBXResourceClass HEADLESS : PC {
+   Common TXOCommonClass "{66A747CDF056401A}" : "{3A5B3356978039E8}Configs/System/ResourceTypes/HEADLESS/MeshObjectCommon.conf" {
+   }
+  }
+ }
+}

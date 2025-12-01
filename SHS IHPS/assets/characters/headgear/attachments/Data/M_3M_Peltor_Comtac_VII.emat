@@ -1,0 +1,6 @@
+MatPBRBasic {
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{964E8AE777CC2306}assets/characters/headgear/attachments/Data/T_3M_Peltor_Comtac_VII_TAN_Base_color.edds"
+ NMOMap "{8771C3DD6207C3E9}assets/characters/headgear/attachments/Data/T_3M_Peltor_Comtac_VII_Normal_OpenGL.edds"
+}

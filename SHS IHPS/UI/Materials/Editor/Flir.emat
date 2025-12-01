@@ -1,0 +1,15 @@
+ThermalImagingEffect {
+ TempConversionTex "{AE15DEBC7236E722}Textures/Thermal_Filter/Military/Flir.edds"
+ TemperatureConversionClipLimit 4.79
+ TemperatureChangeSpeed 0
+ ApplyShadows 0
+ DownsizePercent 100
+ BlurAmount 0.17
+ GhostingAmount 0
+ DegradeFPS 0
+ SimSunIrradianceMin 1234.4
+ SimSunIrradianceMax 2000
+ SimTemperatureAirMin -11
+ SimTemperatureAirMax -29.2
+ SimTemperatureSkyMin -12.9
+}

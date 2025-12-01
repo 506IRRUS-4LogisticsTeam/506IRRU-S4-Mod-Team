@@ -1,0 +1,8 @@
+GameEntity {
+ ID "65E88A6D71F398FF"
+ components {
+  NVS_NightVisionComponent "{65E88A6C20D287A2}" {
+   m_bThermalEnabled 0
+  }
+ }
+}

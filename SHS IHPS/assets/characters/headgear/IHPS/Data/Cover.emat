@@ -1,0 +1,13 @@
+MatPBRBasic {
+ Cull none
+ Sort overall
+ CastShadow 0
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 5
+ MetalnessScale 5
+ BCRMap "{0BBAD72A974B95C8}assets/characters/headgear/IHPS/Data/Cover_Base_Color.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+ NormalPower 4
+ NMOMap "{721B7A65AA08F52C}assets/characters/headgear/IHPS/Data/Cover_Normal_NMO.edds"
+}

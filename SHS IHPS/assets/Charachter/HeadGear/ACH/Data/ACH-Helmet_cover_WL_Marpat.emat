@@ -1,0 +1,16 @@
+MatPBRBasic {
+ CastShadow 0
+ ReceiveShadow 0
+ TITemperature1 230.62
+ SpecularMul 0
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 0.885
+ MetalnessScale 0
+ AOScale 0.67
+ DielectricReflectance 0.02
+ GlobalAOPower 0
+ BCRMap "{DB2BE7D4BF27BD90}Assets/Charachter/HeadGear/ACH/Data/ACH-Helmet-Cover_MC_BCR.edds"
+ NormalPower 0.9
+ NMOMap "{143C4116F3ABCCEE}Assets/Charachter/HeadGear/ACH/Data/ACH-Helmet-Cover_USMC-Desert-Marpat_NMO.edds"
+}

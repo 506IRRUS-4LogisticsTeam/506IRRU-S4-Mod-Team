@@ -1,0 +1,13 @@
+MatPBRBasic {
+ EmissiveLV -5.176
+ Cull none
+ SpecularMul 0
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 5
+ MetalnessScale 1.801
+ BCRMap "{59F572CBE578A39C}assets/characters/headgear/2001/Patches/Data/CSAT_BCR.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+ NormalPower 1.382
+ NMOMap "{612DC9593C0FF102}assets/characters/headgear/2001/Patches/Data/CSAT_NMO.edds"
+}

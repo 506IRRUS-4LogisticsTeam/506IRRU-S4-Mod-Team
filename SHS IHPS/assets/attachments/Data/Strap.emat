@@ -1,0 +1,4 @@
+MatPBRBasic {
+ BCRMap "{4B183CFCFD8AA7D3}assets/attachments/Data/Strap_BCR.edds"
+ NMOMap "{73C0876E24FDF54D}assets/attachments/Data/Strap_NMO.edds"
+}

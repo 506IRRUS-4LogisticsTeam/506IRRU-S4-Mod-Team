@@ -1,0 +1,61 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  ClothNodeStorageComponent "{66F548C3B13144BD}" {
+   Attributes ItemAttributeCollection "{66F548C3B58B4BDD}" {
+    ItemDisplayName UIInfo "{66F548C3B7A3D237}" {
+     Name "PVS Battery pack"
+     Description "PVS Battery pack"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66F548C3A2235CF4}" {
+    }
+    ItemAnimationAttributes ItemAnimationAttributes "{66F548C3A3CC944B}" {
+    }
+   }
+   StoragePurpose 0x40 0
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{66F548C2E77583A7}" {
+    ItemDisplayName UIInfo "{66F548C2E775845D}" {
+     Name "IHPS Cover "
+     Description "IHPS Cover Coyote"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66F548C2E775845F}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66F548C2E7758451}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{FFDA63A17F88CFD1}assets/characters/headgear/IHPS/IHPSCOVERGround.xob"
+   Materials {
+    MaterialAssignClass "{66F548C2E7758452}" {
+     SourceMaterial "Cover"
+     AssignedMaterial "{48A3F9E5A7B35515}assets/characters/headgear/IHPS/Data/Cover2.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_IHPS_Mohawk "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{ADCF6728E6EC8FF5}assets/attachments/PVS31Batterypack.xob"
+   WornMaterialsOverride {
+    ""
+   }
+   ItemModel "{ADCF6728E6EC8FF5}assets/attachments/PVS31Batterypack.xob"
+   ItemMaterialsOverride {
+    ""
+   }
+  }
+  SHS_RplComponent "{5244E440DAA03DB6}" {
+  }
+ }
+ coords 0 0 0
+}

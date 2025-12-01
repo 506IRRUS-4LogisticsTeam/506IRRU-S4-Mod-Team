@@ -1,0 +1,90 @@
+GameEntity {
+ ID "66F241E9B5F79210"
+ components {
+  ClothNodeStorageComponent "{66F241E9B5F7920B}" {
+   Attributes SCR_ItemAttributeCollection "{66F241E9B5F79202}" {
+    ItemDisplayName UIInfo "{66F241E9B5F79204}" {
+     Name "Light Tan (Non Functional)"
+     Description "Light Tan (Non Functional)"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66F241E9B5F79206}" {
+     Weight 0
+     DimensionScaler 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66F241E9B5F79239}" {
+      CameraOrbitAngles -25 25 0
+      CameraDistanceToItem 2
+      FOV 10
+     }
+    }
+   }
+   StoragePurpose 0x21 0
+  }
+  MeshObject "{66F241E9B5F7923B}" {
+   Object "{BFAD52C13C89E14B}Assets/Helmets/Light/ArcLight.xob"
+   InheritVisibility 1
+  }
+  ParametricMaterialInstanceComponent "{66F241E9B5F7923D}" {
+   UserParamAlpha 0
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  RigidBody "{66F241E9B5F7923C}" {
+   Mass 1.5
+   SimState None
+   ModelGeometry 1
+   Static 1
+  }
+  SCR_SoundDataComponent "{66F241E9B5F7923F}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66F241E9B5F79230}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66F241E9B5F79233}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66F241E9B5F79232}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{66F241E9B5F79235}" {
+   AreaType LoadoutLightCoverArea "{66F241E9B5F7922F}" {
+   }
+   WornModel "{BFAD52C13C89E14B}Assets/Helmets/Light/ArcLight.xob"
+   WornMaterialsOverride {
+    "{22F8706015600D0D}Assets/Helmets/Light/Data/BaseBlack.emat"
+   }
+   ItemModel "{BFAD52C13C89E14B}Assets/Helmets/Light/ArcLight.xob"
+   ItemMaterialsOverride {
+    "{22F8706015600D0D}Assets/Helmets/Light/Data/BaseBlack.emat"
+   }
+  }
+  ActionsManagerComponent "{66F241E9B5F79220}" {
+   ActionContexts {
+    UserActionContext "{66F241E9B5F79223}" {
+     ContextName "default"
+     Position PointInfo "{66F241E9B5F79222}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_EquipClothAction "{52E6EC76F51E12DE}" : "{83B98F1A96591AC6}Prefabs/Characters/Core/Actions/EquipClothAction.conf" {
+     "Sort Priority" -10
+    }
+    SCR_PickUpItemAction "{52E6EC76F43FCD58}" : "{F39A4E9B190C1846}Prefabs/Characters/Core/Actions/PickUpItemAction.conf" {
+    }
+   }
+  }
+  RplComponent "{66F241E9B5F79227}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66F241E9B5F792D9}" {
+  }
+ }
+}

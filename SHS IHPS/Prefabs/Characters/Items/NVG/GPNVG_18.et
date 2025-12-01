@@ -1,0 +1,8 @@
+GameEntity : "{9F3A7D7943C278D1}Prefabs/Characters/HeadGear/Hat_FlatCap_01/Hat_FlatCap_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  NVS_NightVisionComponent "{65901D13E5944082}" {
+   m_bThermalEnabled 0
+  }
+ }
+}

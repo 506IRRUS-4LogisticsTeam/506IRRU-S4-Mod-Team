@@ -1,0 +1,7 @@
+MatPBRBasic {
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{237683557D6ECF7A}Assets/Characters/Eyewear/Data/Gatorz_Eyepro_Gatorz_BCR.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+ NMOMap "{1BAE38C7A4199DE4}Assets/Characters/Eyewear/Data/Gatorz_Eyepro_Gatorz_NMO.edds"
+}

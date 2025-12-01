@@ -1,0 +1,45 @@
+GameEntity : "{9F3A7D7943C278D1}Prefabs/Characters/HeadGear/Hat_FlatCap_01/Hat_FlatCap_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  SignalsManagerComponent "{669D27648707E727}" {
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{59D6D2E254858EA3}" {
+    ItemDisplayName UIInfo "{59D6D2E254858D5C}" {
+     Name "GPNVG-18 Amber"
+     Description "Quad tube night vision goggles in Amber"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{59D6D2E254858D58}" {
+     ItemVolume 0.00000001
+     DimensionScaler 1
+     RestingAdditiveRotationLS 0 0 0
+     RestingAdditiveOffsetLS 0 0 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{59D6D2E254858D54}" {
+      CameraOrbitAngles -25 15 0
+      CameraDistanceToItem 0.95
+      AspectRatio 1
+     }
+    }
+    CommonItemType "NIGHT_VISION"
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{299F33EF07F64AEF}Assets/GPNVG/gpnvg18_rigged.xob"
+  }
+  NVS_NightVisionComponent "{669D27648707E7D7}" {
+   m_eUseMask CUSTOM
+   m_sNVHDRMaterial "{CE8581E96D5D1C45}Assets/Shaders/NVSystem/Colors/NV_Amber_HDR_QUAD.emat"
+   m_sFilmGrain "{ECB4B2E03F876C10}Assets/Shaders/NVSystem/Grains/FilmGrainT2.emat"
+   m_bAllowGainControl 1
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_IHPS_NVG "{5AD4C744691240D1}" {
+   }
+   WornModel "{299F33EF07F64AEF}Assets/GPNVG/gpnvg18_rigged.xob"
+   ItemModel "{4A8E8BBDB6F83143}Assets/GPNVG/gpnvg18_grnd.xob"
+  }
+ }
+ coords 3.2 3.675 -1.225
+}

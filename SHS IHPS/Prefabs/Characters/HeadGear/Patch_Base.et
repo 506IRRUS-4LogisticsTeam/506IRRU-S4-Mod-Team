@@ -1,0 +1,40 @@
+GameEntity : "{17F335BF60DD2550}Prefabs/Characters/Core/Headgear_Base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{5244E4431DA56D64}" {
+    ItemDisplayName UIInfo "{5244E443130B31B9}" {
+     Name "Patch"
+     Description "Morale!"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
+     Weight 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{52D2D35767351900}" {
+      CameraOrbitAngles 0 25 0
+      CameraDistanceToItem 0.5
+      PreviewWornModel 1
+      LodModel 0
+     }
+    }
+    m_Size SLOT_1x1
+    m_bStackable 0
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{934F505AD962D152}assets/characters/headgear/2001/Patches/PatchBase.xob"
+   LODFactors {
+    1000 276.24301 0.00001
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType OT_Patch "{61C6CD69BCD93F89}" {
+   }
+   WornModel "{934F505AD962D152}assets/characters/headgear/2001/Patches/PatchBase.xob"
+   ItemModel "{934F505AD962D152}assets/characters/headgear/2001/Patches/PatchBase.xob"
+  }
+  SHS_RplComponent "{5244E440DAA03DB6}" {
+  }
+ }
+}

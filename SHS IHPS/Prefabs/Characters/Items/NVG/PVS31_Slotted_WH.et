@@ -1,0 +1,25 @@
+GameEntity : "{7B0A4C5DF5093721}Prefabs/Characters/Items/NVG/GPNVG_WP_Slotted.et" {
+ ID "65E88A6D71F398FF"
+ components {
+  InventoryItemComponent "{65E88A6C2833E8B4}" {
+   Attributes SCR_ItemAttributeCollection "{65E88A6CCB83FEFA}" {
+    ItemDisplayName SCR_InventoryUIInfo "{65E88A6CC1BA977A}" {
+     Name "PVS 31 WH Thermal"
+     Description "Configured for Green Phosphor"
+    }
+   }
+  }
+  MeshObject "{65E88A6C2AFE952F}" {
+   Object "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+  }
+  NVS_NightVisionComponent "{65E88A6C20D287A2}" {
+   m_sNVHDRMaterial "{AE77E8BD29425FE6}Assets/Shaders/NVSystem/Colors/NV_GreenPhosphor_HDR.emat"
+   m_sFilmGrain "{71DB30DD9856147D}Assets/Shaders/NVSystem/Grains/PVS_FilmGrain_NEW.emat"
+   m_bThermalEnabled 1
+  }
+  BaseLoadoutClothComponent "{65E88A6C358095FA}" {
+   WornModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+   ItemModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+  }
+ }
+}

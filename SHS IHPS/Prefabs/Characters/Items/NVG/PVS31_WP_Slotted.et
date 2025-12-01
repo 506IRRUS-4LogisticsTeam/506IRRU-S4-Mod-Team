@@ -1,0 +1,112 @@
+GameEntity {
+ ID "66DB7CF3100623D1"
+ components {
+  SignalsManagerComponent "{66DB7CF3100623C8}" {
+  }
+  SoundComponent "{66DB7CF3100623E5}" {
+   DistanceManagement 0
+  }
+  InventoryItemComponent "{66DB7CF3100623E7}" {
+   Attributes SCR_ItemAttributeCollection "{66DB7CF3100623E6}" {
+    ItemDisplayName SCR_InventoryUIInfo "{66DB7CF31005C106}" {
+     Name "PVS 31 [WP]"
+     Description "Configured for White Phosphor"
+     m_aItemHints {
+      SCR_InventoryItemHintUIInfo "{66DB7CF31005C178}" {
+       Name "This item requires a headstrap or compatible helmet"
+       Icon "{E23427CAC80DA8B7}UI/Textures/Icons/icons_mapMarkersUI.imageset"
+       IconSetName "mark-exclamation"
+      }
+     }
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66DB7CF31005C17A}" {
+     Weight 0.2
+     SizeSetupStrategy Manual
+     ItemDimensions 5 5 5
+     ItemVolume 0.00000001
+     DimensionScaler 1
+     RestingAdditiveRotationLS 0 0 0
+     RestingAdditiveOffsetLS 0 0 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66DB7CF31005C17D}" {
+     }
+    }
+    CommonItemType "NIGHT_VISION"
+    m_SlotType SLOT_ANY
+   }
+  }
+  MeshObject "{66DB7CF31005C17F}" {
+   Object "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+   InheritVisibility 1
+  }
+  NVS_NightVisionComponent "{66DB7CF31005C171}" {
+   m_eAnimVariable 2147483647
+   m_eUseMask CUSTOM
+   m_bCanBeHeld 0
+   m_sNVHDRMaterial "{D59965854941083D}Assets/Shaders/NVSystem/Colors/NV_WhitePhosphor_HDR_QUAD.emat"
+   m_sFilmGrain "{71DB30DD9856147D}Assets/Shaders/NVSystem/Grains/PVS_FilmGrain_NEW.emat"
+   m_bAllowGainControl 1
+   m_fLuminosityMinimum 0.001
+   m_fLuminosityMaximum 10
+   m_sSignalName "w_nvRotator"
+   m_bThermalEnabled 0
+  }
+  ParametricMaterialInstanceComponent "{66DB7CF31005C170}" {
+   Enabled 1
+   AcceptHierarchyProperties 0 0
+   UserParamAlpha 0
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  RigidBody "{66DB7CF31005C172}" {
+   SimState None
+   ResponseIndex "TinyDestructible"
+   ModelGeometry 1
+  }
+  ProcAnimComponent "{66DB7CF31005C175}" {
+   Parameters {
+    ProcAnimParams "{66DB7CF31005C165}" {
+     ResourceName "{21AB0B3E398A53D1}nvg.pap"
+     BoneNames {
+      "w_nvgRotator"
+     }
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{66DB7CF31005C167}" {
+   AreaType NVS_Slotted "{66DB7CF31005C166}" {
+   }
+   Animate 0
+   WornModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+   ItemModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
+  }
+  ActionsManagerComponent "{66DB7CF31005C159}" {
+   ActionContexts {
+    UserActionContext "{66DB7CF31005C158}" {
+     ContextName "default"
+     Position PointInfo "{66DB7CF31005C15B}" {
+      Offset 0 0.0879 0.0259
+     }
+     Radius 0.3
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{66DB7CF31005C15D}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{66DB7CF31005C15C}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{66DB7CF31005C15F}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{66DB7CF31005C15E}" {
+  }
+ }
+ coords 1209.543 37.382 2629.37
+}

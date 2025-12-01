@@ -1,0 +1,27 @@
+GameEntity : "{CE7527705940EA56}Prefabs/Characters/Eyewear/GatorzBase.et" {
+ ID "62B14282A2193F97"
+ components {
+  InventoryItemComponent "{62B14282A2193FE8}" {
+   Attributes SCR_ItemAttributeCollection "{62B14282A2193FEC}" {
+    ItemDisplayName UIInfo "{62B14282A2193FEE}" {
+     Name "Gatorz Yellow"
+    }
+   }
+  }
+  MeshObject "{62B14282A2193FD8}" {
+   Object "{B4AA8DAE661EA102}assets/characters/headgear/attachments/Goggles rigged.xob"
+  }
+  BaseLoadoutClothComponent "{62B14282A2193FC1}" {
+   AreaType SHS_Goggle "{66A6DE4E723A6297}" {
+   }
+   WornModel "{B4AA8DAE661EA102}assets/characters/headgear/attachments/Goggles rigged.xob"
+   WornMaterialsOverride {
+    "" "{07D337344931FBE1}assets/characters/Eyewear/Data/Gatorz_Glass_Yellow.emat"
+   }
+   ItemModel "{9F2700C621208150}assets/characters/headgear/attachments/Goggles.xob"
+   ItemMaterialsOverride {
+    "" "{07D337344931FBE1}assets/characters/Eyewear/Data/Gatorz_Glass_Yellow.emat" ""
+   }
+  }
+ }
+}

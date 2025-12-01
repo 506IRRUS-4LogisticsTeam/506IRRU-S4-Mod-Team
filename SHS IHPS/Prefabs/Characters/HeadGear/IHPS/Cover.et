@@ -1,0 +1,46 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "IHPS Cover "
+     Description "IHPS Cover Coyote"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{FFDA63A17F88CFD1}assets/characters/headgear/IHPS/IHPSCOVERGround.xob"
+   Materials {
+    MaterialAssignClass "{66D768E3392871A0}" {
+     SourceMaterial "Cover"
+     AssignedMaterial "{48A3F9E5A7B35515}assets/characters/headgear/IHPS/Data/Cover2.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_IHPS_Cover "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{FFDA63A17F88CFD1}assets/characters/headgear/IHPS/IHPSCOVERGround.xob"
+   WornMaterialsOverride {
+    "{48A3F9E5A7B35515}assets/characters/headgear/IHPS/Data/Cover2.emat"
+   }
+   ItemModel "{FFDA63A17F88CFD1}assets/characters/headgear/IHPS/IHPSCOVERGround.xob"
+   ItemMaterialsOverride {
+    "{48A3F9E5A7B35515}assets/characters/headgear/IHPS/Data/Cover2.emat"
+   }
+  }
+  SHS_RplComponent "{5244E440DAA03DB6}" {
+  }
+ }
+}

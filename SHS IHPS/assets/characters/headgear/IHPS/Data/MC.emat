@@ -1,0 +1,21 @@
+MatPBRBasic {
+ SpecularIBL 0.93 0.93 0.93 1
+ Sort near
+ Specular 0.127 0.127 0.127 1
+ SpecularMul 5
+ BlendMode Additive
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ GlobalLayerMode Manual
+ GlobalLayerAngleStart 0
+ GlobalLayerAngleEnd 0
+ GlobalLayerPosition 0.368
+ GlobalLayerGlobalAO 0
+ GlobalLayerBlending "Detailed with geometry mask"
+ RoughnessScale 5
+ MetalnessScale 0
+ AOScale 5
+ CavityFromAO 0
+ GlobalLayerNoiseUVScale 0.05
+ BCRMap "{E64C2BEEACC3314A}assets/characters/headgear/IHPS/Data/Coverbase.edds"
+}

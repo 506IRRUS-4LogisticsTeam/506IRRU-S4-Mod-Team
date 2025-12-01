@@ -1,0 +1,78 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  ClothNodeStorageComponent "{66D826D848BB6014}" {
+   Attributes SCR_ItemAttributeCollection "{66D826D84DE9AFD1}" {
+    ItemDisplayName UIInfo "{66D826D841649F87}" {
+     Name "NVG Mount"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66D826D87AAE74D8}" {
+     Weight 0.2
+     SizeSetupStrategy Manual
+     ItemDimensions 5 5 5
+     ItemVolume 10
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66D826DB9A12E49F}" {
+     }
+    }
+   }
+   StoragePurpose 0x40 0x1
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 200
+   MaxItemSize 5 5 5
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "NVG Mount"
+     Description "NVG Mount"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{653D379F41E2A63F}assets/characters/headgear/IHPS/NVGMount.xob"
+   Materials {
+    MaterialAssignClass "{669D0D09F180A4EE}" {
+     SourceMaterial "Patch_sdr"
+     AssignedMaterial "{839E9404355753C7}assets/characters/headgear/Patches_custom/Patches/Data/Patch_sdr.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType NVS_ItemSlot "{5A68DCDCBC46C964}" {
+   }
+   Slots {
+    LoadoutSlotInfo NVG {
+     PivotID "Head"
+     Offset 0.0004 0.0506 -0.144
+     Angles 0 180 0
+     Enabled 0
+     Prefab "{F90F44A672533212}Prefabs/Characters/Items/NVG/GPNVG_GP_Slotted.et"
+     AreaType NVS_Slotted "{66D776F26C419B5C}" {
+     }
+    }
+   }
+   WornModel "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+   ItemModel "{475BBE015A564C98}assets/characters/headgear/IHPS/NVGMountground.xob"
+   HidingArray {
+    HidingCloth "{66D826D81E8D00A2}" {
+     Prefab "{EC0071079B219026}Prefabs/Characters/Core/Headgear_Helmet_Base.et"
+     AreaType LoadoutHeadCoverArea "{66D826D809905F30}" {
+     }
+    }
+   }
+  }
+ }
+ coords 0 0 0
+}

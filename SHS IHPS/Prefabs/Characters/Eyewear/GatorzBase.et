@@ -1,0 +1,81 @@
+GameEntity {
+ ID "62B14282A2193F97"
+ components {
+  SignalsManagerComponent "{62B14282A2193FF8}" {
+  }
+  SoundComponent "{62B14282A2193FF2}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+   DistanceManagement 0
+  }
+  InventoryItemComponent "{62B14282A2193FE8}" {
+   Attributes SCR_ItemAttributeCollection "{62B14282A2193FEC}" {
+    ItemDisplayName UIInfo "{62B14282A2193FEE}" {
+     Name "Gatorz"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{62B14282A2193FE3}" {
+     Weight 0.39
+     SizeSetupStrategy Manual
+     ItemDimensions 1 1 1
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{62B14282A2193FE4}" {
+      CameraOrbitAngles -25 25 0
+      CameraDistanceToItem 2
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{62B14282A2193FD8}" {
+   Object "{A6528B5FBE95280F}Assets/Characters/Eyewear/GatorzGround.xob"
+   Materials {
+    MaterialAssignClass "{62B14282DD90DF86}" {
+     SourceMaterial "Glass"
+     AssignedMaterial "{67B626D5732DF9BF}Assets/Characters/Eyewear/Data/Gatorz_Glass_Clear.emat"
+    }
+   }
+  }
+  ParametricMaterialInstanceComponent "{62B14282A2193FCD}" {
+   UserParamAlpha 0
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  RigidBody "{62B14282A2193FCF}" {
+   Mass 1.5
+   ModelGeometry 1
+   Static 1
+  }
+  BaseLoadoutClothComponent "{62B14282A2193FC1}" {
+   AreaType ZEL_EyesArea "{62B14282A2193FC3}" {
+   }
+   WornModel "{2FE769E6C8580540}Assets/Characters/Eyewear/Gatorz.xob"
+   WornMaterialsOverride {
+    "{A226F75F8C111D5D}Assets/Characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" ""
+   }
+   ItemModel "{A6528B5FBE95280F}Assets/Characters/Eyewear/GatorzGround.xob"
+   ItemMaterialsOverride {
+    "{A226F75F8C111D5D}Assets/Characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" ""
+   }
+  }
+  ActionsManagerComponent "{62B14282A2193F39}" {
+   ActionContexts {
+    UserActionContext "{62B14282A2193F30}" {
+     ContextName "default"
+     Position PointInfo "{62B14282A2193F33}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_EquipClothAction "{52E6EC76F51E12DE}" : "{83B98F1A96591AC6}Prefabs/Characters/Core/Actions/EquipClothAction.conf" {
+    }
+    SCR_PickUpItemAction "{52E6EC76F43FCD58}" : "{F39A4E9B190C1846}Prefabs/Characters/Core/Actions/PickUpItemAction.conf" {
+    }
+   }
+  }
+  RplComponent "{62B14282A2193F37}" {
+   "Parent Node From Parent Entity" 0
+  }
+ }
+}

@@ -1,0 +1,13 @@
+GameEntity : "{33C2A547FE79A74E}Prefabs/Characters/Eyewear/GatorzBase.et" {
+ ID "62B14282A2193F97"
+ components {
+  BaseLoadoutClothComponent "{62B14282A2193FC1}" {
+   WornMaterialsOverride {
+    "{A226F75F8C111D5D}assets/characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" "{DB99A0BCB788340B}assets/characters/Eyewear/Data/Gatorz_Glass_Purple.emat"
+   }
+   ItemMaterialsOverride {
+    "{A226F75F8C111D5D}assets/characters/Eyewear/Data/Base_Eyepro_Gatorz.emat" "{DB99A0BCB788340B}assets/characters/Eyewear/Data/Gatorz_Glass_Purple.emat"
+   }
+  }
+ }
+}

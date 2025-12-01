@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{EF5EF33DC8FE39D4}assets/characters/headgear/IHPS/Data/MI_SuperHighCut_AC.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,10 @@
+MatPBRBasic {
+ Cull none
+ SpecularMul 0.18
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 5
+ MetalnessScale 0
+ BCRMap "{9475744047DF58CD}assets/characters/headgear/IHPS/Data/SuperHighCut_AC1_BCR.edds"
+ NMOMap "{9795B61EA1D384D7}assets/characters/headgear/IHPS/Data/SuperHighCut_AC_NMO.edds"
+}

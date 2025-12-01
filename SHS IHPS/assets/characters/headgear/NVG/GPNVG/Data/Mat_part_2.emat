@@ -1,0 +1,12 @@
+MatPBRBasic {
+ Emissive 0 0.502 0.502 1
+ EmissiveLV -2
+ SpecularMul 0.15
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 1.165
+ EmissiveMap "{C9CA232881F96304}assets/characters/headgear/NVG/GPNVG/Data/helmet_part_2_Emissive.edds"
+ BCRMap "{3989E268A45A81CD}assets/characters/headgear/NVG/GPNVG/Data/helmet_part_2_BCR.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+ NMOMap "{015159FA7D2DD353}assets/characters/headgear/NVG/GPNVG/Data/helmet_part_2_NMO.edds"
+}

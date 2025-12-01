@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{B9AE5D9DB7209830}assets/characters/Eyewear/Data/Gatorz_Glass_Clear.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,173 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  ClothNodeStorageComponent "{66D73DEB56FAA59D}" {
+   Attributes SCR_IdentityItemAttributeCollection "{66D73DEB56FAA5B4}" {
+    ItemDisplayName UIInfo "{66D73DEB56FAA5B6}" {
+     Name "IHPS"
+     Description "IHPS"
+     Icon "{1BC9D7EA568788EB}Prefabs/Characters/HeadGear/IHPS/IHPS.edds"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66D73DEB56FAA5A8}" {
+     Weight 1.5
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 2500
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66D73DEB56FAA5AB}" {
+     }
+    }
+   }
+   StoragePurpose 0x40 0x1
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 0.1
+  }
+  ColliderHistoryComponent "{66D73DEB56FAA5AC}" {
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{66D73DEB56FAA5AE}" {
+    ItemDisplayName UIInfo "{66D73DEB56FAA5A1}" {
+     Name "IHPS"
+     Description "IHPS"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66D73DEB56FA9822}" {
+     SizeSetupStrategy Manual
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{A22297280A30A9CD}assets/characters/headgear/IHPS/IHPS Final.xob"
+   Materials {
+    MaterialAssignClass "{66D73DEB56FA9821}" {
+     SourceMaterial "ECH"
+     AssignedMaterial "{45DB051C2FE7E41D}assets/characters/headgear/IHPS/Data/IHPS Clean.emat"
+    }
+   }
+   InheritSkeleton 1
+  }
+  RigidBody "{5112706CD4157AE6}" {
+   LayerPreset "FireGeo"
+   Active Active
+   SimState Collision
+   ResponseIndex "NoCollision"
+  }
+  SCR_ArmorDamageManagerComponent "{66D73DEB56FA9824}" {
+   "Additional hit zones" {
+    SCR_ArmorHitZone helmet {
+     ColliderNames {
+      "UTM_FireGeo"
+     }
+     HZDefault 1
+     MaxHealth 10000
+     m_eHitZoneGroup HEAD
+    }
+   }
+   m_fPassedDamageScale 0.25
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   Slots {
+    LoadoutSlotInfo Cover {
+     PivotID "Head"
+     Offset 0 -0.0213 -0.0297
+     Prefab "{310FCFDFFA84F1C9}Prefabs/Characters/HeadGear/IHPS/Cover.et"
+     AreaType SHS_IHPS_Cover "{66D73DEB56FA9BD9}" {
+     }
+    }
+    LoadoutSlotInfo NVG_Mount {
+     PivotID "Head"
+     Offset 0.091 -0.0209 -0.0324
+     Angles 0 180 0
+     Prefab "{2404524ECA010A89}Prefabs/Characters/HeadGear/IHPS/NVG Mount.et"
+     AreaType NVS_ItemSlot "{66D73DEB56FA9BDE}" {
+     }
+    }
+    LoadoutSlotInfo Ears {
+     PivotID "Head"
+     Offset 0 0.1029 -0.0407
+     Angles 0 -180 0
+     Enabled 0
+     Prefab "{BBA37820067EEE5E}Prefabs/Characters/HeadGear/IHPS/Amps.et"
+     InspectionWidgetOffset 0 0.0092 -0.0214
+     AreaType SHS_Ears "{66D73DEB56FA9BCC}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Custom_Right {
+     PivotID "Head"
+     Offset -0.0662 0.1593 -0.0904
+     Angles 36.9527 -119.5077 -15.7421
+     Enabled 0
+     Prefab "{183FFEBDAC75395E}Prefabs/Characters/HeadGear/IHPS/Red Currahee.et"
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_506_Patch "{66D73DEB56FA9BC2}" {
+     }
+    }
+    GRS_MorphSlotComponent Patch_Left {
+     PivotID "Head"
+     Offset 0.0927 0.1513 -0.0284
+     Angles -27.2023 -84.3426 1.9882
+     Enabled 0
+     Prefab "{07B51EB43F3F7ABD}Prefabs/Rectangle_Patches/Rectangle_Cronus_Gold.et"
+     AreaType GRS_ShirtLowerPatch "{66E7174948E021D5}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY -0.814
+     m_fMorphValueX -1
+    }
+    GRS_MorphSlotComponent Patch_right {
+     PivotID "Head"
+     Offset -0.0868 0.1634 -0.034
+     Angles -34.7711 80 3.9911
+     Enabled 0
+     Prefab "{07B51EB43F3F7ABD}Prefabs/Rectangle_Patches/Rectangle_Cronus_Gold.et"
+     AreaType GRS_ShirtLowerPatch "{66F366B4F9A148D8}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY -0.591
+     m_fMorphValueX -0.953
+    }
+    LoadoutSlotInfo vLITE {
+     Enabled 0
+     Prefab "{5040C1C15C6CBA36}Prefabs/Characters/Attachments/Vlite.et"
+     AreaType GRS_Vlite "{66F00264B4E34E2C}" {
+     }
+    }
+    LoadoutSlotInfo Rail_left {
+     Offset 0.015 0.013 0
+     Enabled 0
+     Prefab "{8EB802171361FE35}Prefabs/Characters/Attachments/Surfire Left.et"
+     AreaType GRS_Raillite "{66F23C403CF0ACB5}" {
+     }
+    }
+    LoadoutSlotInfo Rail_right {
+     Offset -0.013 0.01 -0.019
+     Angles -0.6848 -2.6131 0
+     Enabled 0
+     Prefab "{629D3B6F6F1E7599}Prefabs/Characters/Attachments/Surfire Right.et"
+     AreaType GRS_Raillite "{66F366B55FC1FF87}" {
+     }
+    }
+    LoadoutSlotInfo Mohhawk {
+     Prefab "{F3B8A9B5141A6ED5}Prefabs/Characters/Attachments/Batterypack.et"
+     InheritParentSkeleton 1
+     AreaType SHS_IHPS_Mohawk "{66F548C3E8D555F0}" {
+     }
+    }
+   }
+   WornModel "{A22297280A30A9CD}assets/characters/headgear/IHPS/IHPS Final.xob"
+   WornMaterialsOverride {
+    "{45DB051C2FE7E41D}assets/characters/headgear/IHPS/Data/IHPS Clean.emat"
+   }
+   ItemModel "{09DA437F1A4CE24F}assets/characters/headgear/IHPS/IHPS Ground.xob"
+   ItemMaterialsOverride {
+    "{45DB051C2FE7E41D}assets/characters/headgear/IHPS/Data/IHPS Clean.emat"
+   }
+   PhysicsOnWearEnabled 1
+   AnimateCollidersOnWear 1
+   DebugWornModel 1
+   DeflatedModel "{09DA437F1A4CE24F}assets/characters/headgear/IHPS/IHPS Ground.xob"
+  }
+ }
+ coords 0 0 0
+}

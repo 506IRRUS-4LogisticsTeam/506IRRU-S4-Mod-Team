@@ -1,0 +1,12 @@
+GameEntity : "{33C2A547FE79A74E}Prefabs/Characters/Eyewear/GatorzBase.et" {
+ ID "62B14282A2193F97"
+ components {
+  InventoryItemComponent "{62B14282A2193FE8}" {
+   Attributes SCR_ItemAttributeCollection "{62B14282A2193FEC}" {
+    ItemDisplayName UIInfo "{62B14282A2193FEE}" {
+     Name "Gatorz Clear"
+    }
+   }
+  }
+ }
+}

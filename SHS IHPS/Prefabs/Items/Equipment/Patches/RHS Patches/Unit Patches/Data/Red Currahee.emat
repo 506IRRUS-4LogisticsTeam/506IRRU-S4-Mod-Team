@@ -1,0 +1,6 @@
+MatPBRBasic {
+ Color 0.468 0.468 0.468 1
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{7B9D93E1F03326FB}Prefabs/Items/Equipment/Patches/RHS Patches/Unit Patches/Assets/Red Currahee_co.edds"
+}

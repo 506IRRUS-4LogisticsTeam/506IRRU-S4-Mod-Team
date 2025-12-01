@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{AACBAA7F2CCF42F3}assets/characters/headgear/attachments/Data/BSurfaceMesh.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

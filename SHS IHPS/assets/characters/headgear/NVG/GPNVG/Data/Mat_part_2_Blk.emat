@@ -1,0 +1,7 @@
+MatPBRBasic : "{9F285192C44BE90A}assets/characters/headgear/NVG/GPNVG/Data/Mat_part_2.emat" {
+ Color 0.515 0.515 0.515 1
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ BCRMap "{F285F59B6C6B2E97}assets/characters/headgear/NVG/GPNVG/Data/helmet_part_black_BCR.edds"
+ OpacityMap "{70A53F4EA373F142}Assets/Characters/Basebody/Data/HeadClipping_A.edds"
+}

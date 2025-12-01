@@ -1,0 +1,26 @@
+GameEntity : "{AD1CD4DBAF105D2B}Prefabs/Characters/Items/NVG/GPNVG_18.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{59D6D2E254858EA3}" {
+    ItemDisplayName UIInfo "{59D6D2E254858D5C}" {
+     Name "PVS-31 GP"
+     Description "Dual tube night vision goggles in Green Phosphorus"
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{71263AD2CF75891A}assets/characters/headgear/NVG/PVS31/PVS31.xob"
+  }
+  NVS_NightVisionComponent "{65901D13E5944082}" {
+   m_sNVHDRMaterial "{AE77E8BD29425FE6}Assets/Shaders/NVSystem/Colors/NV_GreenPhosphor_HDR.emat"
+   m_sFilmGrain "{18BCF578325A0464}Assets/Shaders/NVSystem/Grains/FilmGrainT3.emat"
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_Dual_NVG "{5AD4C744691240D1}" {
+   }
+   WornModel "{71263AD2CF75891A}assets/characters/headgear/NVG/PVS31/PVS31.xob"
+   ItemModel "{71263AD2CF75891A}assets/characters/headgear/NVG/PVS31/PVS31.xob"
+  }
+ }
+}

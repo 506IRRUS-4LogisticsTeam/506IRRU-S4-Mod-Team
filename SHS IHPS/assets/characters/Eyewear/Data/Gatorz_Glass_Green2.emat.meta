@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{9E0234E9699F8E0F}assets/characters/Eyewear/Data/Gatorz_Glass_Green2.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}

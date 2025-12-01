@@ -1,0 +1,47 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "test"
+     Description "test"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{C5F7183FD933AA04}assets/Patch/SHS Patch.xob"
+   Materials {
+    MaterialAssignClass "{66A133F8ECB94ADA}" {
+     SourceMaterial "Patch_sdr"
+     AssignedMaterial "{839E9404355753C7}assets/characters/headgear/Patches_custom/Patches/Data/Patch_sdr.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_Patch "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{C5F7183FD933AA04}assets/Patch/SHS Patch.xob"
+   WornMaterialsOverride {
+    "{BD04D53F9C3CA5D9}assets/Patch/Data/Mat_Patch.emat"
+   }
+   ItemModel "{C5F7183FD933AA04}assets/Patch/SHS Patch.xob"
+   ItemMaterialsOverride {
+    "{BD04D53F9C3CA5D9}assets/Patch/Data/Mat_Patch.emat"
+   }
+   DeflatedModel "{C5F7183FD933AA04}assets/Patch/SHS Patch.xob"
+  }
+  SHS_RplComponent "{5244E440DAA03DB6}" {
+  }
+ }
+}

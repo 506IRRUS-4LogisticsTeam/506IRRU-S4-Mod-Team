@@ -1,0 +1,164 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  ClothNodeStorageComponent "{66A34479DAFB9015}" {
+   Attributes SCR_IdentityItemAttributeCollection "{66A34479DAFB900C}" {
+    ItemDisplayName UIInfo "{66A34479DAFB900E}" {
+     Name "CRYE Precision Airframe"
+     Description "CRYE Precision Airframe"
+     Icon "{1BC9D7EA568788EB}Prefabs/Characters/HeadGear/IHPS/IHPS.edds"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66A34479DAFB9002}" {
+     Weight 1.5
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 2500
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{66A34479DAFB9007}" {
+     }
+    }
+   }
+   StoragePurpose 64
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 0.1
+  }
+  ColliderHistoryComponent "{66A34479DAFB9038}" {
+  }
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Enabled 0
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "IHPS"
+     Description "IHPS"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     SizeSetupStrategy Manual
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{05D628F77948166E}assets/characters/headgear/Crye Precision Airframe/Crye Helmet base.xob"
+   Materials {
+    MaterialAssignClass "{66A34479DAFB9030}" {
+     SourceMaterial "ECH"
+     AssignedMaterial "{45DB051C2FE7E41D}assets/characters/headgear/IHPS/Data/ECH.emat"
+    }
+   }
+   InheritSkeleton 1
+  }
+  RigidBody "{5112706CD4157AE6}" {
+   LayerPreset "FireGeo"
+   Active Active
+   SimState Collision
+   ResponseIndex "NoCollision"
+  }
+  SCR_ArmorDamageManagerComponent "{66A34479DAFB902B}" {
+   "Additional hit zones" {
+    SCR_ArmorHitZone helmet {
+     ColliderNames {
+      "UTM_FireGeo"
+     }
+     HZDefault 1
+     MaxHealth 10000
+     m_eHitZoneGroup HEAD
+    }
+   }
+   m_fPassedDamageScale 1
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   Slots {
+    LoadoutSlotInfo Cover {
+     PivotID "Head"
+     Offset -0.0895 0.074 -0.0278
+     Angles 0 -0.9618 0
+     Prefab "{1330FA517C85C355}Prefabs/Characters/HeadGear/Crye Precision Airframe/Crye MC.et"
+     AreaType SHS_IHPS_Cover "{66A34479DAFB9020}" {
+     }
+    }
+    LoadoutSlotInfo NVG {
+     Offset -0.0037 0.012 0
+     AreaType SHS_IHPS_NVG "{66A34479DAFB9022}" {
+     }
+    }
+    LoadoutSlotInfo NVG_QUAD_TUBE {
+     Offset -0.0037 0.012 0
+     AreaType SHS_IHPS_NVG "{66A34479DAFB9025}" {
+     }
+    }
+    LoadoutSlotInfo Goggles {
+     PivotID "Head"
+     Offset 0 -0.0202 -0.0057
+     AreaType SHS_Exfil_Goggle "{66A34479DAFB9024}" {
+     }
+    }
+    LoadoutSlotInfo NVGMount {
+     PivotID "Head"
+     Offset 0.091 0.0232 -0.0287
+     Angles 3.7957 -180 0
+     InspectionWidgetOffset 0 0.1126 -0.1455
+     AreaType SHS_NVGMount "{66A34479DAFB9026}" {
+     }
+    }
+    LoadoutSlotInfo Attachments {
+     PivotID "Head"
+     Offset 0 0.0284 -0.0311
+     Angles 0 -180 0
+     InspectionWidgetOffset 0 0.2113 0.0061
+     AreaType SHS_IHPS_Mohawk "{66A34479DAFB90DC}" {
+     }
+    }
+    LoadoutSlotInfo Ears {
+     PivotID "Head"
+     Offset 0 0.027 -0.0311
+     Angles 0 -180 0
+     InspectionWidgetOffset 0 0.0092 -0.0214
+     AreaType SHS_Ears "{66A34479DAFB90DE}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Right {
+     PivotID "Head"
+     Offset -0.0806 0.1805 -0.025
+     Angles 39.3855 -87.4071 2.2293
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_Patch "{66A34479DAFB90D1}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Custom_Right {
+     PivotID "Head"
+     Offset -0.0632 0.1157 -0.1284
+     Angles 12.6786 -131.77951 9.823
+     InspectionWidgetOffset -0.1 0.1239 0
+     AreaType SHS_506_Patch "{66A34479DAFB90D0}" {
+     }
+    }
+    LoadoutSlotInfo Patch_Left {
+     PivotID "Head"
+     Offset 0.0984 0.1723 -0.0254
+     Angles 33.9952 94.0406 0.5814
+     InspectionWidgetOffset 0.0986 0.1253 0
+     AreaType GRS_ShirtLowerPatch "{66A34479DAFB90D3}" {
+     }
+    }
+    LoadoutSlotInfo NVG_DUAL_TUBE {
+     Offset -0.0015 0.0193 -0.0223
+     Angles 0 -0.2261 0
+     AreaType SHS_Dual_NVG "{66A34479DAFB90D2}" {
+     }
+    }
+   }
+   WornModel "{05D628F77948166E}assets/characters/headgear/Crye Precision Airframe/Crye Helmet base.xob"
+   WornMaterialsOverride {
+    ""
+   }
+   ItemModel "{24582CA0FF54CE94}assets/characters/headgear/Crye Precision Airframe/Crye Helmet item.xob"
+   ItemMaterialsOverride {
+    ""
+   }
+   PhysicsOnWearEnabled 1
+   AnimateCollidersOnWear 1
+   DeflatedModel "{05D628F77948166E}assets/characters/headgear/Crye Precision Airframe/Crye Helmet base.xob"
+  }
+ }
+ coords 0 0 0
+}

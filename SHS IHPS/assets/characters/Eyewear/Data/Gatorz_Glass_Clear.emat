@@ -1,0 +1,16 @@
+MatPBRBasicGlass {
+ Color 0.242 0.242 0.242 1
+ DiffuseIBL 0.305 0.305 0.305 1
+ SpecularIBL 0.462 0.462 0.462 1
+ Diffuse 0.366 0.366 0.366 1
+ ZWrite 0
+ Sort translucent
+ Specular 0.342 0.342 0.342 1
+ BlendMode AlphaBlend
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ RoughnessScale 0.347
+ MetalnessScale 4.015
+ DielectricReflectance 0.068
+ OpacityMap "{E05D515EDE26551C}Assets/_SharedData/Glass/ST_Glass_Dirt_01_BCR.edds"
+}

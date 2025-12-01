@@ -1,0 +1,40 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "Ops-Core AMPS"
+     Description "Ops-Core AMPS"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{323FBF84D50DFFF0}assets/attachments/AMPSheadset.xob"
+   Materials {
+    MaterialAssignClass "{66A133A4BC5A5954}" {
+     SourceMaterial "SuperHighCut_Ac_sdr"
+     AssignedMaterial "{28819F96AE846C98}assets/characters/headgear/IHPS/Data/SuperHighCut_Ac_sdr.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_Ears "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{323FBF84D50DFFF0}assets/attachments/AMPSheadset.xob"
+   ItemModel "{323FBF84D50DFFF0}assets/attachments/AMPSheadset.xob"
+   DeflatedModel "{323FBF84D50DFFF0}assets/attachments/AMPSheadset.xob"
+  }
+ }
+ coords 0 0 0
+}

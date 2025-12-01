@@ -1,0 +1,28 @@
+ThermalImagingEffect {
+ TempConversionTex "{C54845F847618CE2}Textures/Thermal_Filter/Military/BlackHot_01.edds"
+ TemperatureConversionPLHEPower 0.01
+ TemperatureConversionClipLimit 17.23
+ TemperatureRangeMin -712.92
+ TemperatureRangeMax -186.6
+ TemperatureDisplayMin -119.62
+ TemperatureDisplayMax -157.89
+ TemperatureChangeSpeed 0.402
+ FogRelStart 0.517
+ FogRelEnd 0.268
+ SkyHeightStart 2584
+ SkyHeightEnd 3301
+ SkyVirtualDistance 20000
+ DownsizeMethod Blur
+ DownsizePercent 100
+ BlurAmount 0.56
+ UpsampleMethod Nearest
+ GhostingAmount 0
+ SimSunIrradianceMin 976.1
+ SimSunIrradianceMax 918.7
+ SimTemperatureAirMin -8.1
+ SimTemperatureAirMax -35.9
+ SimTemperatureSkyMin 1.4
+ SimTemperatureWaterMin 42.6
+ SimTemperatureWaterMax -13.9
+ SimFreeAttenuationCoef 0.674
+}
