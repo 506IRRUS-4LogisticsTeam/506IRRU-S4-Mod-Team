@@ -74,7 +74,7 @@ GameEntity {
    }
   }
   BaseLoadoutClothComponent "{66DB7CF31005C167}" {
-   AreaType NVS_Slotted "{66DB7CF31005C166}" {
+   AreaType SHS_NVG "{66DB7CF31005C166}" {
    }
    Animate 0
    WornModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"

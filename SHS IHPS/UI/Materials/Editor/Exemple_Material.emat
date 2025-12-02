@@ -1,10 +1,7 @@
 ThermalImagingEffect {
+ ApplyAO 0
+ DownsizeMethod Simple
  DownsizePercent 100
  GhostingAmount 0
  DegradeFPS 0
- SimSunIrradianceMin 2000
- SimSunIrradianceMax 2000
- SimTemperatureAirMin 35.3
- SimTemperatureAirMax 0.5
- SimTemperatureSkyMax 66.4
 }

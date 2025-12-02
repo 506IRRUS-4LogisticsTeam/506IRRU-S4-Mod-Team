@@ -57,9 +57,8 @@ GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat
      PivotID "Head"
      Offset 0.0004 0.0506 -0.144
      Angles 0 180 0
-     Enabled 0
-     Prefab "{F90F44A672533212}Prefabs/Characters/Items/NVG/GPNVG_GP_Slotted.et"
-     AreaType NVS_Slotted "{66D776F26C419B5C}" {
+     Prefab "{5DBB214481864276}Prefabs/Characters/Items/NVG/PVS31_WP_Slotted.et"
+     AreaType SHS_NVG "{66D776F26C419B5C}" {
      }
     }
    }

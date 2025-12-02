@@ -19,6 +19,8 @@ GameEntity : "{7B0A4C5DF5093721}Prefabs/Characters/Items/NVG/GPNVG_WP_Slotted.et
    m_sThermalMaterial "{A832B962AC7424AD}UI/Materials/Editor/Flir1.emat"
   }
   BaseLoadoutClothComponent "{65E88A6C358095FA}" {
+   AreaType SHS_NVG "{65E88A6C88E041E5}" {
+   }
    WornModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
    ItemModel "{A155F3D4B2A527C0}assets/characters/headgear/NVG/PVS31/PVS31Rigged.xob"
   }

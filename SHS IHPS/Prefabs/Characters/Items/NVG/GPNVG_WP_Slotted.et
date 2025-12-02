@@ -4,5 +4,9 @@ GameEntity {
   NVS_NightVisionComponent "{65E88A6C20D287A2}" {
    m_bThermalEnabled 0
   }
+  BaseLoadoutClothComponent "{65E88A6C358095FA}" {
+   AreaType SHS_NVG "{65E88A6C88E041E5}" {
+   }
+  }
  }
 }

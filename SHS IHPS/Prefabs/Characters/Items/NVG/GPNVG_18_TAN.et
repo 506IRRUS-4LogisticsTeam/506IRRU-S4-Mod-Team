@@ -1,3 +1,9 @@
 GameEntity : "{AD1CD4DBAF105D2B}Prefabs/Characters/Items/NVG/GPNVG_18.et" {
  ID "5112706CD4157AC7"
+ components {
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_NVG "{5AD4C744691240D1}" {
+   }
+  }
+ }
 }

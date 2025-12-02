@@ -1,0 +1,38 @@
+GameEntity : "{17F335BF60DD2550}Prefabs/Characters/Core/Headgear_Base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  Persistence "{64F093A6E0E850D0}" {
+   Enabled 0
+  }
+  ClothNodeStorageComponent "{65E8358D155DF816}" {
+   Enabled 0
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Enabled 0
+  }
+  ParametricMaterialInstanceComponent "{5854DCD8F168E46E}" {
+   Enabled 0
+  }
+  RigidBody "{5112706CD4157AE6}" {
+   Enabled 0
+  }
+  SCR_SoundDataComponent "{5B18D20B1F8073E0}" {
+   Enabled 0
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   Enabled 0
+  }
+  ActionsManagerComponent "{5112706CD4157AC9}" {
+   Enabled 0
+  }
+  NwkPhysicsMovementComponent "{65FC74DEDF3E25B3}" {
+   Enabled 0
+  }
+  RplComponent "{5244E440DAA03DB6}" {
+   Enabled 0
+  }
+  Hierarchy "{5C669EC8821C4E4B}" {
+   Enabled 0
+  }
+ }
+}

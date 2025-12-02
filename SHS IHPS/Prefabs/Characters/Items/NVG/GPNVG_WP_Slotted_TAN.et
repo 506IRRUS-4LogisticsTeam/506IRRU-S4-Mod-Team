@@ -1,3 +1,9 @@
 GameEntity : "{7B0A4C5DF5093721}Prefabs/Characters/Items/NVG/GPNVG_WP_Slotted.et" {
  ID "65E88A6D71F398FF"
+ components {
+  BaseLoadoutClothComponent "{65E88A6C358095FA}" {
+   AreaType SHS_NVG "{65E88A6C88E041E5}" {
+   }
+  }
+ }
 }
