@@ -15,93 +15,93 @@ class RHS_RpcManager : ScriptComponent
 		return character.GetRHSRpcManager();
 	}
 	
-	void AskAuthorityToSyncPresetFreq(notnull RHS_RadioComponent pRadioComp, int pPresetNumber, int pNewFrequency)
-	{
-		RplId id = Replication.FindId(pRadioComp);
-		if (id && id.IsValid())
-		{
-			Rpc(RpcAsk_SyncPresetFreq, id, pPresetNumber, pNewFrequency);
-		}
-	}
+	// void AskAuthorityToSyncPresetFreq(notnull RHS_RadioComponent pRadioComp, int pPresetNumber, int pNewFrequency)
+	// {
+	// 	RplId id = Replication.FindId(pRadioComp);
+	// 	if (id && id.IsValid())
+	// 	{
+	// 		Rpc(RpcAsk_SyncPresetFreq, id, pPresetNumber, pNewFrequency);
+	// 	}
+	// }
 
-	void AskAuthorityToSyncKnobState(notnull RHS_RadioComponent pRadioComp, int pNewKnobState)
-	{
-		RplId id = Replication.FindId(pRadioComp);
-		if (id && id.IsValid())
-		{
-			Rpc(RpcAsk_SyncKnobState, id, pNewKnobState);
-		}
-	}
+	// void AskAuthorityToSyncKnobState(notnull RHS_RadioComponent pRadioComp, int pNewKnobState)
+	// {
+	// 	RplId id = Replication.FindId(pRadioComp);
+	// 	if (id && id.IsValid())
+	// 	{
+	// 		Rpc(RpcAsk_SyncKnobState, id, pNewKnobState);
+	// 	}
+	// }
 
-	void AskAuthorityToAddNewPreset(notnull RHS_RadioComponent pRadioComp, int pPresetNumber, int pNewFrequency)
-	{
-		RplId id = Replication.FindId(pRadioComp);
-		if (id && id.IsValid())
-		{
-			Rpc(RpcAsk_AddNewPreset, id, pPresetNumber, pNewFrequency);
-		}
-	}
+	// void AskAuthorityToAddNewPreset(notnull RHS_RadioComponent pRadioComp, int pPresetNumber, int pNewFrequency)
+	// {
+	// 	RplId id = Replication.FindId(pRadioComp);
+	// 	if (id && id.IsValid())
+	// 	{
+	// 		Rpc(RpcAsk_AddNewPreset, id, pPresetNumber, pNewFrequency);
+	// 	}
+	// }
 
-	void AskAuthorityToPlaySound(notnull RHS_RadioComponent pRadioComp, string pEventName, string pSoundType)
-	{
-		RplId id = Replication.FindId(pRadioComp);
-		if (id && id.IsValid())
-		{
-			Rpc(RpcAsk_PlayRadioSound, id, pEventName, pSoundType);
-		}
-	}
+	// void AskAuthorityToPlaySound(notnull RHS_RadioComponent pRadioComp, string pEventName, string pSoundType)
+	// {
+	// 	RplId id = Replication.FindId(pRadioComp);
+	// 	if (id && id.IsValid())
+	// 	{
+	// 		Rpc(RpcAsk_PlayRadioSound, id, pEventName, pSoundType);
+	// 	}
+	// }
 
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void RpcAsk_PlayRadioSound(RplId pRplID, string pEventName, string pSoundType)
-	{
-		if (!pRplID || !pRplID.IsValid())
-			return;
+	// [RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	// void RpcAsk_PlayRadioSound(RplId pRplID, string pEventName, string pSoundType)
+	// {
+	// 	if (!pRplID || !pRplID.IsValid())
+	// 		return;
 
-		RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
-		if (!enhancedRadioDevice)
-			return;
+	// 	RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
+	// 	if (!enhancedRadioDevice)
+	// 		return;
 
-		enhancedRadioDevice.AuthorityPlaySound(pEventName, pSoundType);
-	}
+	// 	enhancedRadioDevice.AuthorityPlaySound(pEventName, pSoundType);
+	// }
 
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void RpcAsk_SyncPresetFreq(RplId pRplID, int pPresetNumber, int pNewFrequency)
-	{
-		if (!pRplID || !pRplID.IsValid())
-			return;
+	// [RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	// void RpcAsk_SyncPresetFreq(RplId pRplID, int pPresetNumber, int pNewFrequency)
+	// {
+	// 	if (!pRplID || !pRplID.IsValid())
+	// 		return;
 
-		RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
-		if (!enhancedRadioDevice)
-			return;
+	// 	RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
+	// 	if (!enhancedRadioDevice)
+	// 		return;
 
-		enhancedRadioDevice.AuthoritySyncPresetNewFrequency(pPresetNumber, pNewFrequency);
-	}
+	// 	enhancedRadioDevice.AuthoritySyncPresetNewFrequency(pPresetNumber, pNewFrequency);
+	// }
 
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void RpcAsk_SyncKnobState(RplId pRplID, int pNewKnobState)
-	{
-		if (!pRplID || !pRplID.IsValid())
-			return;
+	// [RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	// void RpcAsk_SyncKnobState(RplId pRplID, int pNewKnobState)
+	// {
+	// 	if (!pRplID || !pRplID.IsValid())
+	// 		return;
 
-		RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
-		if (!enhancedRadioDevice)
-			return;
+	// 	RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
+	// 	if (!enhancedRadioDevice)
+	// 		return;
 
-		enhancedRadioDevice.AuthoritySyncNewKnobState(pNewKnobState);
-	}
+	// 	enhancedRadioDevice.AuthoritySyncNewKnobState(pNewKnobState);
+	// }
 
-	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	void RpcAsk_AddNewPreset(RplId pRplID, int pPresetNumber, int pNewFrequency)
-	{
-		if (!pRplID || !pRplID.IsValid())
-			return;
+	// [RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	// void RpcAsk_AddNewPreset(RplId pRplID, int pPresetNumber, int pNewFrequency)
+	// {
+	// 	if (!pRplID || !pRplID.IsValid())
+	// 		return;
 
-		RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
-		if (!enhancedRadioDevice)
-			return;
+	// 	RHS_RadioComponent enhancedRadioDevice = RHS_RadioComponent.Cast(Replication.FindItem(pRplID));
+	// 	if (!enhancedRadioDevice)
+	// 		return;
 
-		enhancedRadioDevice.AuthorityAddNewPreset(pPresetNumber, pNewFrequency);
-	}
+//		enhancedRadioDevice.AuthorityAddNewPreset(pPresetNumber, pNewFrequency);
+//	}
 
 	///////////////////////////////////////////////////////////
 	////////////////////////// N V G //////////////////////////
