@@ -1,0 +1,6 @@
+MatPBRBasic {
+ Emissive 0 0 0 1
+ BCRMap "{0A4DD30CD2CC2814}Assets/Weapons/Mortar/Data/backpack_co.edds"
+ OpacityMap "{ABF6399D48D8266E}Assets/Weapons/Mortar/Data/backpack_ti_ca.edds"
+ NMOMap "{D7A6A60BC9527C4D}Assets/Weapons/Mortar/Data/backpack_nohq.edds"
+}

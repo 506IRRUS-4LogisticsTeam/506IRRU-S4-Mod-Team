@@ -1,0 +1,40 @@
+GenericEntity : "{37F022D0CDC84C11}Prefabs/Weapons/Launchers/M72/Launcher_M72A3_base.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames {
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{204CA9293215699F}Assets/Weapons/Mortar/M224_Bag.xob"
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    SCR_MuzzleInMagComponent "{50F65D04F21F7633}" {
+     MaxAmmo 0
+     InitialAmmo 0
+     ProjectileVisible 0
+    }
+   }
+   UIInfo WeaponUIInfo "{CC3BA6A2C42F09F4}" {
+    Name "M224 Bag"
+    Description "Slingable Bag for the M224 Mortar"
+   }
+  }
+  ActionsManagerComponent "{A29AE67FF4D82B0F}" {
+   additionalActions {
+    AssembleMortarUserAction "{66F6145E858245FE}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo SCR_ActionUIInfo "{66F6145EF6A24366}" {
+      Name "Assemble Mortar"
+     }
+     Duration 5
+     m_TargetPrefab "{7AB538EA9A7DB2F2}Prefabs/Weapons/Mortars/Mortar_M224.et"
+     m_ActionName "Assemble Mortar"
+    }
+   }
+  }
+ }
+}

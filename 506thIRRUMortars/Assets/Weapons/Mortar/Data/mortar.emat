@@ -1,0 +1,5 @@
+MatPBRBasic {
+ BCRMap "{8F98DC171B1B9A8E}Assets/Weapons/Mortar/Data/mortar_co.edds"
+ OpacityMap "{59BC66A468B94FC1}Assets/Weapons/Mortar/Data/mortar_smdi.edds"
+ NMOMap "{BFC33C73DC202F2D}Assets/Weapons/Mortar/Data/mortar_nohq.edds"
+}
