@@ -3,7 +3,7 @@ AudioClass {
   SignalClass "30733" {
    id 30733
    name "Signal 1"
-   tl -768 -512
+   tl -768 -512.572
    res "{CF1F9C4B120DE5F8}Sounds/VON/Von.sig"
    inputsport {
     1
@@ -47,7 +47,7 @@ AudioClass {
   SignalClass "77837" {
    id 77837
    name "Signal Reverb"
-   tl 512 -656
+   tl 651.921 -650.753
    res "{76CBB40EF7F227B6}Sounds/_SharedData/Signals/Reverb/Reverb_Base.sig"
    inputsport {
     1 35 112
@@ -65,6 +65,44 @@ AudioClass {
     100 1 16000
    }
    path "{76CBB40EF7F227B6}Sounds/_SharedData/Signals/Reverb/Reverb_Base.sig"
+  }
+  SignalClass "95245" {
+   id 95245
+   name "Ear Routing Selection"
+   tl -150.689 -570.683
+   res "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
+   conns {
+    IOPConnectionClass iopConnection {
+     port 1
+     conn {
+      ConnectionsClass connections {
+       id 26
+       links {
+        ConnectionClass "96286:65" {
+         id 96286
+         port 65
+        }
+       }
+      }
+     }
+    }
+   }
+   inputsport {
+    1
+   }
+   outputsport {
+    2 4 5
+   }
+   inputvalues {
+    0
+   }
+   inputvaluesmin {
+    0
+   }
+   inputvaluesmax {
+    1
+   }
+   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
   }
  }
  filters {
@@ -321,23 +359,56 @@ AudioClass {
     }
    }
   }
+  VariableClass "96286" {
+   id 96286
+   name "Ear Routing Input"
+   version 5
+   tl -314.708 -649.959
+   varName "EarRouting"
+   varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
+   curve {
+    CurvePoint "1" {
+     X 0.9999
+    }
+    CurvePoint "2" {
+     X 1
+     Y 1
+    }
+    CurvePoint "3" {
+     X 1.9999
+     Y 1
+    }
+    CurvePoint "4" {
+     X 2
+     Y 2
+    }
+   }
+  }
  }
  sounds {
   SoundClass "27657" {
    id 27657
    name "VON_RADIO"
    version 5
-   tl 256 -256
+   tl 436.921 -259.753
    ins {
     ConnectionsClass "con:64" {
      id 64
      links {
-      ConnectionClass "46098:65" {
-       id 46098
-       port 65
-      }
       ConnectionClass "22546:65" {
        id 22546
+       port 65
+      }
+      ConnectionClass "94226:65" {
+       id 94226
+       port 65
+      }
+      ConnectionClass "89106:65" {
+       id 89106
+       port 65
+      }
+      ConnectionClass "90130:65" {
+       id 90130
        port 65
       }
      }
@@ -415,7 +486,7 @@ AudioClass {
    id 50183
    name "Bus Voice + Noise"
    version 7
-   tl -256 -256
+   tl -257.143 -256.572
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -521,6 +592,102 @@ AudioClass {
     1 0
    }
   }
+  BusClass "91143" {
+   id 91143
+   name "Bus Center"
+   version 7
+   tl -25.793 -264.164
+   ins {
+    ConnectionsClass "con:0" {
+     id 0
+     links {
+      ConnectionClass "95245:2" {
+       id 95245
+       port 2
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "50183:65" {
+       id 50183
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1 0
+   }
+   pu {
+    1 0
+   }
+  }
+  BusClass "92167" {
+   id 92167
+   name "Bus Left"
+   version 7
+   tl -20.696 -391.678
+   ins {
+    ConnectionsClass "con:0" {
+     id 0
+     links {
+      ConnectionClass "95245:4" {
+       id 95245
+       port 4
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "50183:65" {
+       id 50183
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1 0
+   }
+   pu {
+    1 0
+   }
+  }
+  BusClass "93191" {
+   id 93191
+   name "Bus Right"
+   version 7
+   tl -20.689 -138.073
+   ins {
+    ConnectionsClass "con:0" {
+     id 0
+     links {
+      ConnectionClass "95245:5" {
+       id 95245
+       port 5
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "50183:65" {
+       id 50183
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1 0
+   }
+   pu {
+    1 0
+   }
+  }
  }
  generators {
   GeneratorClass "36869" {
@@ -557,7 +724,7 @@ AudioClass {
    id 13323
    name "OutputState"
    version 4
-   tl 768 -768
+   tl 907.921 -762.753
    res "{B764D803219C775E}Sounds/FinalMix.afm"
    ins {
     ConnectionsClass "con:77831" {
@@ -662,23 +829,6 @@ AudioClass {
     7 0
    }
   }
-  ShaderClass "46098" {
-   id 46098
-   name "Shader Radio"
-   version 5
-   tl 0 -256
-   ins {
-    ConnectionsClass "con:64" {
-     id 64
-     links {
-      ConnectionClass "50183:65" {
-       id 50183
-       port 65
-      }
-     }
-    }
-   }
-  }
   ShaderClass "57362" {
    id 57362
    name "Shader RAW"
@@ -695,6 +845,61 @@ AudioClass {
      }
     }
    }
+  }
+  ShaderClass "89106" {
+   id 89106
+   name "Shader Radio Center"
+   version 5
+   tl 241.628 -256.592
+   ins {
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "91143:65" {
+       id 91143
+       port 65
+      }
+     }
+    }
+   }
+  }
+  ShaderClass "90130" {
+   id 90130
+   name "Shader Radio Right"
+   version 5
+   tl 238.284 -133.663
+   ins {
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "93191:65" {
+       id 93191
+       port 65
+      }
+     }
+    }
+   }
+   Enable 1
+   Position 3 0 0
+  }
+  ShaderClass "94226" {
+   id 94226
+   name "Shader Radio Left"
+   version 5
+   tl 241.267 -377.237
+   ins {
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "92167:65" {
+       id 92167
+       port 65
+      }
+     }
+    }
+   }
+   Enable 1
+   Position -3 0 0
   }
  }
  amplitudes {
@@ -815,7 +1020,7 @@ AudioClass {
    id 81949
    name "AuxOut Reverb INT Small"
    version 5
-   tl 512 -480
+   tl 651.921 -474.753
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -857,7 +1062,7 @@ AudioClass {
    id 82973
    name "AuxOut Reverb INT Medium"
    version 5
-   tl 512 -352
+   tl 651.921 -346.753
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -899,7 +1104,7 @@ AudioClass {
    id 83997
    name "AuxOut Reverb INT Large"
    version 5
-   tl 512 -224
+   tl 651.921 -218.753
    ins {
     ConnectionsClass "con:0" {
      id 0
