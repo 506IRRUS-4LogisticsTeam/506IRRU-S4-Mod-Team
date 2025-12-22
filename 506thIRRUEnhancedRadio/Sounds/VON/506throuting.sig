@@ -3,17 +3,38 @@ AudioSignalResClass {
   IOPItemInputClass {
    id 1
    name "EarRouting"
-   tl -274 8
+   tl -253.584 -46.442
    children {
-    20
+    20 21
    }
   }
  }
  Ops {
   IOPItemOpConvertorClass {
    id 20
-   name "Center"
-   tl 109.679 -4.53
+   name "LeftChannelVol"
+   tl 74.821 -185.388
+   children {
+    22
+   }
+   inputs {
+    ConnectionClass "1:0" {
+     id 1
+     port 0
+    }
+   }
+   Default 6
+   Intervals {
+    IOPItemOpConvertorRange LeftChannel {
+     min 1
+     max 2
+    }
+   }
+  }
+  IOPItemOpConvertorClass {
+   id 21
+   name "RightChannelVol"
+   tl 76.623 124.05
    children {
     2
    }
@@ -23,20 +44,11 @@ AudioSignalResClass {
      port 0
     }
    }
-   Default 0
-   DefaultFromInput 1
+   Default 6
    Intervals {
-    IOPItemOpConvertorRange CenterRouting {
-    }
-    IOPItemOpConvertorRange RightRouting {
-     min 1
-     max 2
-     "out" -1.57
-    }
-    IOPItemOpConvertorRange LeftRouting {
+    IOPItemOpConvertorRange RightChannel {
      min 2
      max 3
-     "out" 1.57
     }
    }
   }
@@ -44,8 +56,14 @@ AudioSignalResClass {
  Outputs {
   IOPItemOutputClass {
    id 2
-   name "PanAngle"
-   tl 454.6 -12.35
+   name "RightVol"
+   tl 450.252 126.78
+   input 21
+  }
+  IOPItemOutputClass {
+   id 22
+   name "LeftVol"
+   tl 444.534 -174.651
    input 20
   }
  }
@@ -56,9 +74,13 @@ AudioSignalResClass {
   }
  }
  Output_Order {
-  ItemDetailListItemClass PanAngle {
-   Name "PanAngle"
+  ItemDetailListItemClass RightVol {
+   Name "RightVol"
    Id 2
+  }
+  ItemDetailListItemClass LeftVol {
+   Name "LeftVol"
+   Id 22
   }
  }
 }

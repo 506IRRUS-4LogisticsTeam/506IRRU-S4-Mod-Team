@@ -66,10 +66,10 @@ AudioClass {
    }
    path "{76CBB40EF7F227B6}Sounds/_SharedData/Signals/Reverb/Reverb_Base.sig"
   }
-  SignalClass "89101" {
-   id 89101
-   name "Radio Panning"
-   tl -4.111 -378.43
+  SignalClass "95245" {
+   id 95245
+   name "Routing Signal"
+   tl 0.262 -527.629
    res "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -78,8 +78,8 @@ AudioClass {
       ConnectionsClass connections {
        id 26
        links {
-        ConnectionClass "90142:65" {
-         id 90142
+        ConnectionClass "98334:65" {
+         id 98334
          port 65
         }
        }
@@ -91,7 +91,7 @@ AudioClass {
     1
    }
    outputsport {
-    2
+    2 22
    }
    inputvalues {
     0
@@ -359,11 +359,13 @@ AudioClass {
     }
    }
   }
-  VariableClass "90142" {
-   id 90142
+  VariableClass "98334" {
+   id 98334
    name "Routing Selection"
+   comment "0 = Center, 1 = Right, 2 = Left"
    version 5
-   tl 0.846 -504.277
+   tl -179.735 -527.883
+   ctl 0 -24
    varName "EarRouting"
    varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
   }
@@ -398,7 +400,7 @@ AudioClass {
    id 45065
    name "SOUND_ROGER_BEEP"
    version 5
-   tl 256 0
+   tl 256 0.572
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -567,6 +569,46 @@ AudioClass {
     1 0
    }
   }
+  BusClass "94215" {
+   id 94215
+   name "Routing Bus"
+   version 7
+   tl 3.545 -378.293
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "95245:22" {
+       id 95245
+       port 22
+      }
+     }
+    }
+    ConnectionsClass "con:3" {
+     id 3
+     links {
+      ConnectionClass "95245:2" {
+       id 95245
+       port 2
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "50183:65" {
+       id 50183
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1020 0
+   }
+   channels "2"
+   channelVolume 1
+  }
  }
  generators {
   GeneratorClass "36869" {
@@ -712,22 +754,13 @@ AudioClass {
    id 46098
    name "Shader Radio"
    version 5
-   tl -1 -255
+   tl 0.095 -248.758
    ins {
-    ConnectionsClass "con:3" {
-     id 3
-     links {
-      ConnectionClass "89101:2" {
-       id 89101
-       port 2
-      }
-     }
-    }
     ConnectionsClass "con:64" {
      id 64
      links {
-      ConnectionClass "50183:65" {
-       id 50183
+      ConnectionClass "94215:65" {
+       id 94215
        port 65
       }
      }
