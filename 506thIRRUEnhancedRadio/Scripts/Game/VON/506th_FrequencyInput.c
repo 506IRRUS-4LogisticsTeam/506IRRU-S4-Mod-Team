@@ -113,7 +113,7 @@ class IRRU_FrequencyInput
         
         if (m_RadioEntry)
         {
-            m_RadioEntry.AdjustEntryModif(0);
+            m_RadioEntry.SetEntryFrequency(freqKHz);
             m_RadioEntry.Update();
         }
     }
