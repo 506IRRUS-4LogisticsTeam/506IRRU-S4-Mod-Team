@@ -21,7 +21,7 @@ modded class SCR_VoNComponent : VoNComponent
             s_bVariableValid = (varId != -1);
             
             if (!s_bVariableValid)
-                Print("[IRRU] ERROR: EarRouting variable not found! Check config path.");
+                Print("[IRRU] ERROR: EarRouting variable not found!");
             else
                 Print("[IRRU] SUCCESS: Audio variable found and ready.");
             
@@ -31,11 +31,10 @@ modded class SCR_VoNComponent : VoNComponent
         if (s_bVariableValid)
         {
             float earRouting = GetEarRoutingForTransceiver(receiver);
-            
-            SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-            Print("[IRRU] OnReceive - Frequency: " + frequency + " | Routing: " + settings.GetRoutingDisplayText(earRouting));
-            
             AudioSystem.SetVariableByName("EarRouting", earRouting, EAR_ROUTING_CONFIG);
+            
+            float currentValue = AudioSystem.GetVariableValue("EarRouting", EAR_ROUTING_CONFIG);
+            Print("[IRRU] EarRouting set to: " + earRouting + " | Verified: " + currentValue);
         }
         
         super.OnReceive(playerId, isSenderEditor, receiver, frequency, quality);
