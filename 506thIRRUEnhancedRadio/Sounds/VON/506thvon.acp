@@ -102,7 +102,7 @@ AudioClass {
    inputvaluesmax {
     1
    }
-   path "$profile:.tmp/AudioEditor/#F3B02BB0A8FE1F51#506throuting.sig"
+   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
   }
  }
  filters {
@@ -880,7 +880,7 @@ AudioClass {
     }
    }
    Enable 1
-   Position 10 0 0
+   Position 5 0 0
   }
   ShaderClass "94226" {
    id 94226
@@ -899,7 +899,7 @@ AudioClass {
     }
    }
    Enable 1
-   Position -10 0 0
+   Position -5 0 0
   }
  }
  amplitudes {
