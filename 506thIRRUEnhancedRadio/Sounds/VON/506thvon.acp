@@ -69,7 +69,7 @@ AudioClass {
   SignalClass "95245" {
    id 95245
    name "Ear Routing Selection"
-   tl -150.689 -570.683
+   tl -150.689 -571.341
    res "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -102,7 +102,7 @@ AudioClass {
    inputvaluesmax {
     1
    }
-   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
+   path "$profile:.tmp/AudioEditor/#F3B02BB0A8FE1F51#506throuting.sig"
   }
  }
  filters {
@@ -880,7 +880,7 @@ AudioClass {
     }
    }
    Enable 1
-   Position 3 0 0
+   Position 10 0 0
   }
   ShaderClass "94226" {
    id 94226
@@ -899,7 +899,7 @@ AudioClass {
     }
    }
    Enable 1
-   Position -3 0 0
+   Position -10 0 0
   }
  }
  amplitudes {
