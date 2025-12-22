@@ -12,7 +12,6 @@ modded class SCR_VONEntryRadio
         if (!m_RadioTransceiver)
             return;
         
-        // Get current ear routing and append to frequency text
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         IRRUEarRouting routing = settings.GetRouting(m_RadioTransceiver);
         
@@ -30,7 +29,6 @@ modded class SCR_VONEntryRadio
                 break;
         }
         
-        // Update frequency text with routing indicator
         entryComp.SetFrequencyText(m_sText + " [" + routingText + "]");
     }
 }
