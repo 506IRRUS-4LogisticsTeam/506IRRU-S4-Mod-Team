@@ -13,7 +13,6 @@ modded class SCR_VONController
     const string IRRU_SOUND_LOCAL_OFF = "{F60574D50A8FA527}Sounds/VON/GL_Sounds/RadioLocalOff.wav";
     const string IRRU_SOUND_LOCAL_ON = "{2E10BC6B1FF478BC}Sounds/VON/GL_Sounds/RadioLocalOn.wav";
     
-    protected int m_iBeepType = 2;
     protected ref IRRU_FrequencyInput m_FrequencyInput;
     
     protected AudioHandle m_AudioHandleCycle;
@@ -31,12 +30,15 @@ modded class SCR_VONController
         if (!transceiver)
             return;
         
+        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
+        IRRUBeepType beepType = settings.GetBeepType(transceiver);
+        
         string eventName;
-        switch (m_iBeepType)
+        switch (beepType)
         {
-            case 1: eventName = IRRU_BEEP_HIGH; break;
-            case 2: eventName = IRRU_BEEP_LOW; break;
-            case 3: eventName = IRRU_GRS_START; break;
+            case IRRUBeepType.ACE_HIGH: eventName = IRRU_BEEP_HIGH; break;
+            case IRRUBeepType.ACE_LOW: eventName = IRRU_BEEP_LOW; break;
+            case IRRUBeepType.GRS: eventName = IRRU_GRS_START; break;
             default: return;
         }
         
@@ -48,14 +50,17 @@ modded class SCR_VONController
         if (!transceiver)
             return;
         
+        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
+        IRRUBeepType beepType = settings.GetBeepType(transceiver);
+        
         string eventName;
-        switch (m_iBeepType)
+        switch (beepType)
         {
-            case 1:
-            case 2:
+            case IRRUBeepType.ACE_HIGH:
+            case IRRUBeepType.ACE_LOW:
                 eventName = IRRU_CLICK_OFF;
                 break;
-            case 3:
+            case IRRUBeepType.GRS:
                 eventName = IRRU_GRS_END;
                 break;
             default:
@@ -116,7 +121,6 @@ modded class SCR_VONController
         
         super.ActionVONProximityToggle(value, reason);
         
-        // Play sound based on new toggle state
         if (m_bIsToggledDirect && !wasToggled)
         {
             if (m_AudioHandleLocalOn != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleLocalOn))
@@ -167,6 +171,9 @@ modded class SCR_VONController
             
             if (inputMgr && inputMgr.GetActionTriggered("IRRU_SetFrequencyAction"))
                 OnSetFrequencyPressed();
+            
+            if (inputMgr && inputMgr.GetActionTriggered("IRRU_VONBeepTypeAction"))
+                OnBeepTypeToggle();
         }
     }
     
@@ -186,6 +193,26 @@ modded class SCR_VONController
         
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         settings.CycleRouting(transceiver);
+        
+        radialMenu.UpdateEntries();
+    }
+    
+    protected void OnBeepTypeToggle()
+    {
+        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
+        if (!radialMenu)
+            return;
+        
+        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
+        if (!radioEntry)
+            return;
+        
+        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        if (!transceiver)
+            return;
+        
+        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
+        settings.CycleBeepType(transceiver);
         
         radialMenu.UpdateEntries();
     }
