@@ -416,6 +416,7 @@ AudioClass {
      }
     }
    }
+   volume_dB -60
    outState 13323
    outStatePort 77831
   }
