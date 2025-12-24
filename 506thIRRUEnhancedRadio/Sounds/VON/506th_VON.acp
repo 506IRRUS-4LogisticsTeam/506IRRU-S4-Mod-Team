@@ -3,8 +3,24 @@ AudioClass {
   SignalClass "30733" {
    id 30733
    name "Signal 1"
-   tl -768.572 -512
+   tl -768.572 -513
    res "{CF1F9C4B120DE5F8}Sounds/VON/506thVon.sig"
+   conns {
+    IOPConnectionClass iopConnection {
+     port 1
+     conn {
+      ConnectionsClass connections {
+       id 26
+       links {
+        ConnectionClass "100382:65" {
+         id 100382
+         port 65
+        }
+       }
+      }
+     }
+    }
+   }
    inputsport {
     1
    }
@@ -374,7 +390,7 @@ AudioClass {
    name "Jamming Strength"
    comment "0 = highest level of jamming"
    version 5
-   tl -1029.777 -510.926
+   tl -1029.777 -511.682
    ctl 0 -24
    varName "JamStrength"
    varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
@@ -533,8 +549,8 @@ AudioClass {
     ConnectionsClass "con:64" {
      id 64
      links {
-      ConnectionClass "101380:65" {
-       id 101380
+      ConnectionClass "26641:65" {
+       id 26641
        port 65
       }
      }
@@ -897,20 +913,6 @@ AudioClass {
     }
     AudioBankSampleClass "Radio_RogerBeep_B_3.wav" {
      Filename "{F9019A94402A5D5F}Sounds/RadioProtocol/Samples/RogerBeep/Radio_RogerBeep_B_3.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
-    }
-   }
-  }
-  BankLocalClass "101380" {
-   id 101380
-   name "TEST"
-   version 7
-   tl -768.655 -682.299
-   Samples {
-    AudioBankSampleClass Sample {
-     Filename "{12210CEFD6BA9A19}untitled.wav"
      Probability 100
      Index 0
      SampleMetadata ""
