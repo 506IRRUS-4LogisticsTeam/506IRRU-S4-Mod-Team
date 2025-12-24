@@ -174,6 +174,11 @@ modded class SCR_VONController
             
             if (inputMgr && inputMgr.GetActionTriggered("IRRU_VONBeepTypeAction"))
                 OnBeepTypeToggle();
+            
+            // Volume control
+            float volumeValue = inputMgr.GetActionValue("IRRU_VolumeAction");
+            if (volumeValue != 0)
+                OnVolumeAdjust(volumeValue);
         }
     }
     
@@ -236,4 +241,34 @@ modded class SCR_VONController
         
         m_FrequencyInput.Open(transceiver, radioEntry);
     }
+    
+	protected void OnVolumeAdjust(float value)
+	{
+	    SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
+	    if (!radialMenu)
+	        return;
+	    
+	    SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
+	    if (!radioEntry)
+	        return;
+	    
+	    BaseTransceiver transceiver = radioEntry.GetTransceiver();
+	    if (!transceiver)
+	        return;
+	    
+	    SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
+	    
+	    float delta;
+	    if (value > 0)
+	        delta = 0.1;
+	    else
+	        delta = -0.1;
+	    
+	    settings.AdjustVolume(transceiver, delta);
+	    
+	    radialMenu.UpdateEntries();
+	    
+	    int percent = settings.GetVolumePercent(transceiver);
+	    Print(string.Format("[IRRU] Volume: %1%%", percent), LogLevel.NORMAL);
+	}
 }

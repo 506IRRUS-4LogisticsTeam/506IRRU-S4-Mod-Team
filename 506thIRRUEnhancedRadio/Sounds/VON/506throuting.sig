@@ -8,6 +8,16 @@ AudioSignalResClass {
     20 21
    }
   }
+  IOPInputVariableClass {
+   id 25
+   name "Channel Volume"
+   tl 84.429 275.99
+   children {
+    23 24
+   }
+   varName "ChannelVolume"
+   varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
+  }
  }
  Ops {
   IOPItemOpConvertorClass {
@@ -15,7 +25,7 @@ AudioSignalResClass {
    name "LeftChannelVol"
    tl 74.821 -185.388
    children {
-    22
+    23
    }
    inputs {
     ConnectionClass "1:0" {
@@ -36,7 +46,7 @@ AudioSignalResClass {
    name "RightChannelVol"
    tl 76.623 124.05
    children {
-    2
+    24
    }
    inputs {
     ConnectionClass "1:0" {
@@ -52,19 +62,55 @@ AudioSignalResClass {
     }
    }
   }
+  IOPItemOpMulClass {
+   id 23
+   name "Left Mul"
+   tl 476.603 -180.532
+   children {
+    22
+   }
+   inputs {
+    ConnectionClass "25:0" {
+     id 25
+     port 0
+    }
+    ConnectionClass "20:0" {
+     id 20
+     port 0
+    }
+   }
+  }
+  IOPItemOpMulClass {
+   id 24
+   name "Right Mul"
+   tl 465.299 120.338
+   children {
+    2
+   }
+   inputs {
+    ConnectionClass "25:0" {
+     id 25
+     port 0
+    }
+    ConnectionClass "21:0" {
+     id 21
+     port 0
+    }
+   }
+  }
  }
  Outputs {
   IOPItemOutputClass {
    id 2
    name "RightVol"
-   tl 450.252 126.78
-   input 21
+   tl 888.513 125.041
+   input 24
   }
   IOPItemOutputClass {
    id 22
    name "LeftVol"
-   tl 444.534 -174.651
-   input 20
+   tl 888.012 -183.347
+   input 23
   }
  }
  Input_Order {

@@ -19,6 +19,7 @@ class SCR_IRRURadioEarSettings
     
     protected ref map<BaseTransceiver, IRRUEarRouting> m_mRoutingByTransceiver = new map<BaseTransceiver, IRRUEarRouting>();
     protected ref map<BaseTransceiver, IRRUBeepType> m_mBeepTypeByTransceiver = new map<BaseTransceiver, IRRUBeepType>();
+    protected ref map<BaseTransceiver, float> m_mVolumeByTransceiver = new map<BaseTransceiver, float>();
     
     static SCR_IRRURadioEarSettings GetInstance()
     {
@@ -159,5 +160,45 @@ class SCR_IRRURadioEarSettings
         }
         
         return "ACE-H";
+    }
+    
+    // VOLUME CONTROL
+    
+    float GetVolume(BaseTransceiver transceiver)
+    {
+        if (!transceiver)
+            return 1.0;
+        
+        if (!m_mVolumeByTransceiver.Contains(transceiver))
+            return 1.0;
+        
+        return m_mVolumeByTransceiver.Get(transceiver);
+    }
+    
+    void SetVolume(BaseTransceiver transceiver, float volume)
+    {
+        if (!transceiver)
+            return;
+        
+        m_mVolumeByTransceiver.Set(transceiver, Math.Clamp(volume, 0.0, 1.0));
+    }
+    
+    float AdjustVolume(BaseTransceiver transceiver, float delta)
+    {
+        float current = GetVolume(transceiver);
+        float newVolume = Math.Clamp(current + delta, 0.0, 1.0);
+        SetVolume(transceiver, newVolume);
+        return newVolume;
+    }
+    
+    int GetVolumePercent(BaseTransceiver transceiver)
+    {
+        return Math.Round(GetVolume(transceiver) * 100);
+    }
+    
+    string GetVolumeDisplayText(BaseTransceiver transceiver)
+    {
+        int percent = GetVolumePercent(transceiver);
+        return percent.ToString() + "%";
     }
 }
