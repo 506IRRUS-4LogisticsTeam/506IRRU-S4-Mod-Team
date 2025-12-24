@@ -28,7 +28,7 @@ class IRRU_SignalManager
 
         quality = Math.Clamp(quality, 0.0, 1.0);
 
-        Print(string.Format("[IRRU Signal] Quality: %1 (jammer: %2)", quality, jammerDegradation), LogLevel.NORMAL);
+        //Print(string.Format("[IRRU Signal] Quality: %1 (jammer: %2)", quality, jammerDegradation), LogLevel.NORMAL);
 
         return quality;
     }

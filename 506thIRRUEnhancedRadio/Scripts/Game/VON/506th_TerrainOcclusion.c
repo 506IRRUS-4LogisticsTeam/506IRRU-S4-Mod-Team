@@ -36,7 +36,7 @@ class IRRU_TerrainOcclusion
             // Cap at 0.8 - radios can partially punch through obstacles
             float occlusion = Math.Clamp((1.0 - traceResult) * 0.8, 0.0, 0.8);
 
-            Print(string.Format("[IRRU Occlusion] Blocked - trace: %1, degradation: %2", traceResult, occlusion), LogLevel.NORMAL);
+            //Print(string.Format("[IRRU Occlusion] Blocked - trace: %1, degradation: %2", traceResult, occlusion), LogLevel.NORMAL);
 
             return occlusion;
         }
