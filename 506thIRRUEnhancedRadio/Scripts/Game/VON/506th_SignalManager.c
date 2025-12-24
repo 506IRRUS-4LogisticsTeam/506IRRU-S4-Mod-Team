@@ -26,9 +26,11 @@ class IRRU_SignalManager
         float jammerDegradation = jammerManager.CalculateJammerDegradation(receiverPos);
         quality = quality * (1.0 - jammerDegradation);
 
-        // FUTURE: Distance-based degradation
+        // TODO: Distance-based degradation
         // float distanceDegradation = CalculateDistanceDegradation(transmitterPos, receiverPos);
         // quality = quality * (1.0 - distanceDegradation);
+		
+		//honestly im not even sure if BI already has this???
 
         quality = Math.Clamp(quality, 0.0, 1.0);
 
