@@ -62,19 +62,16 @@ class IRRU_JammerManager
                 return 0.0;
         }
 
-        // Check if terrain blocks jammer signal to target
-        IRRU_TerrainOcclusion occlusion = IRRU_TerrainOcclusion.GetInstance();
-        float terrainBlock = occlusion.CalculateOcclusion(jammerPos, receiverPos);
+        // DISABLED: Terrain blocking jammer signal - needs more work
+        // IRRU_TerrainOcclusion occlusion = IRRU_TerrainOcclusion.GetInstance();
+        // float terrainBlock = occlusion.CalculateOcclusion(jammerPos, receiverPos);
+        // float baseDegradation = 1.0 - (distance / range);
+        // float effectiveDegradation = baseDegradation * (1.0 - terrainBlock);
+        // return effectiveDegradation;
 
-        // Base jamming effect (closer = stronger)
-        float baseDegradation = 1.0 - (distance / range);
-
-        // Terrain reduces jammer effectiveness
-        float effectiveDegradation = baseDegradation * (1.0 - terrainBlock);
-
-        return effectiveDegradation;
+        float degradation = 1.0 - (distance / range);
+        return degradation;
     }
-
     int GetActiveJammerCount()
     {
         int count = 0;

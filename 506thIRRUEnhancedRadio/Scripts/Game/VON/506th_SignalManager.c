@@ -16,25 +16,19 @@ class IRRU_SignalManager
     {
         float quality = 1.0;
 
-        // Terrain occlusion between transmitter and receiver
-        IRRU_TerrainOcclusion terrainOcclusion = IRRU_TerrainOcclusion.GetInstance();
-        float terrainDegradation = terrainOcclusion.CalculateOcclusion(transmitterPos, receiverPos);
-        quality = quality * (1.0 - terrainDegradation);
+        // DISABLED: Terrain occlusion - needs more work
+        // IRRU_TerrainOcclusion terrainOcclusion = IRRU_TerrainOcclusion.GetInstance();
+        // float terrainDegradation = terrainOcclusion.CalculateOcclusion(transmitterPos, receiverPos);
+        // quality = quality * (1.0 - terrainDegradation);
 
         // Jammer effects on receiver
         IRRU_JammerManager jammerManager = IRRU_JammerManager.GetInstance();
         float jammerDegradation = jammerManager.CalculateJammerDegradation(receiverPos);
         quality = quality * (1.0 - jammerDegradation);
 
-        // TODO: Distance-based degradation
-        // float distanceDegradation = CalculateDistanceDegradation(transmitterPos, receiverPos);
-        // quality = quality * (1.0 - distanceDegradation);
-		
-		//honestly im not even sure if BI already has this???
-
         quality = Math.Clamp(quality, 0.0, 1.0);
 
-        Print(string.Format("[IRRU Signal] Quality: %1 (terrain: %2, jammer: %3)", quality, terrainDegradation, jammerDegradation), LogLevel.NORMAL);
+        Print(string.Format("[IRRU Signal] Quality: %1 (jammer: %2)", quality, jammerDegradation), LogLevel.NORMAL);
 
         return quality;
     }
