@@ -1,0 +1,26 @@
+GenericEntity : "{63611FABA52B31BA}PrefabsEditable/EffectsModules/BaseEffectModule_Zoned.et" {
+ ID "5CA2D832A4C193FA"
+ components {
+  SCR_EditableEffectsModuleComponent "{5CA2D83089A8F56E}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5CA90815AF19C85A}" {
+    Name "#AR-EditableEntity_EffectModule_Mortar_Barrage_Small"
+    Icon "{DC42B98359B9016D}UI/Imagesets/EffectModule/EffectTextures/64px/mortar-barrage-64.edds"
+    m_Image "{5A1D892F60E529E8}UI/Imagesets/EffectModule/EffectTextures/128px/mortar-barrage-128.edds"
+    m_aAuthoredLabels + {
+     TRAIT_EXPLOSIVE
+    }
+    m_EntityBudgetCost {
+     SCR_EntityBudgetValue "{673116EFEA377E26}" {
+      m_BudgetType SYSTEMS
+      m_Value 5
+     }
+    }
+   }
+  }
+  SCR_EffectsModuleComponent "{5CA2DE492D8BBCF5}" {
+   m_EffectConfig SCR_BarrageEffectsModule "{5CAAB18CE5F19741}" : "{4BC91B13A08BD11D}Configs/EffectModules/Mortar/MortarBarrage_Small_EffectModule.conf" {
+   }
+  }
+ }
+ coords 167.741 1.001 67.289
+}
