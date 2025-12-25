@@ -118,7 +118,7 @@ AudioClass {
    inputvaluesmax {
     1
    }
-   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
+   path "$profile:.tmp/AudioEditor/#F3B02BB0A8FE1F51#506throuting.sig"
   }
  }
  filters {
@@ -408,10 +408,6 @@ AudioClass {
      links {
       ConnectionClass "46098:65" {
        id 46098
-       port 65
-      }
-      ConnectionClass "22546:65" {
-       id 22546
        port 65
       }
      }
