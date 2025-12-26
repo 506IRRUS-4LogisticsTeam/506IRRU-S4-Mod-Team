@@ -7,10 +7,10 @@ GenericEntity {
   SCR_EditableEntityComponent "{673116ED3A2181DD}" {
    m_EntityType SYSTEM
    m_UIInfo SCR_EditableEntityUIInfo "{673116EDDCF76DFB}" {
-    Name "Jammer Omni"
+    Name "Jammer Omni 500 M"
     Description "Omnidirectional Radio Jammer"
-    Icon "{1FBE76E25DDFB65C}UI/Textures/Editor/EditableEntities/Systems/EditableEntity_System_ZoneRestriction.edds"
-    m_Image "{D0DA6122A4003A15}UI/Textures/Editor/EditableEntities/Objectives/EditableEntity_Objective_Refuel.edds"
+    Icon "{0EFA7F78B2EF4B8E}Assets/RadarImage.edds"
+    m_Image "{0EFA7F78B2EF4B8E}Assets/RadarImage.edds"
     m_aAuthoredLabels {
      ENTITYTYPE_SYSTEM TRAIT_EFFECT_MODULE
     }

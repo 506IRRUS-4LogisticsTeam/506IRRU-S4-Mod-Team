@@ -41,7 +41,7 @@ class IRRU_JammerManager
         return worstDegradation;
     }
 
-    protected float CalculateSingleJammerEffect(IRRU_JammerComponent jammer, vector receiverPos)
+        protected float CalculateSingleJammerEffect(IRRU_JammerComponent jammer, vector receiverPos)
     {
         vector jammerPos = jammer.GetPosition();
         float range = jammer.GetRange();
@@ -62,14 +62,13 @@ class IRRU_JammerManager
                 return 0.0;
         }
 
-        // DISABLED: Terrain blocking jammer signal - needs more work
-        // IRRU_TerrainOcclusion occlusion = IRRU_TerrainOcclusion.GetInstance();
-        // float terrainBlock = occlusion.CalculateOcclusion(jammerPos, receiverPos);
-        // float baseDegradation = 1.0 - (distance / range);
-        // float effectiveDegradation = baseDegradation * (1.0 - terrainBlock);
-        // return effectiveDegradation;
+        //removed the terrain obstruction calculations here since uh it is completely scuffed and makes no sense
+        //TODO: in addition to adding terrain obsturction back in a less scuffed way... have inverse square law calculation for the weaker jammers
 
-        float degradation = 1.0 - (distance / range);
+        // Area denial jammer - strong throughout, fades at edge (uses ratio squared just like IRL base jammers)
+        float ratio = distance / range;
+        float quality = ratio * ratio;
+        float degradation = 1.0 - quality;
         return degradation;
     }
     int GetActiveJammerCount()

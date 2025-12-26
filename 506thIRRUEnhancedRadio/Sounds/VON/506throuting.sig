@@ -33,7 +33,7 @@ AudioSignalResClass {
      port 0
     }
    }
-   Default 2
+   Default 1
    Intervals {
     IOPItemOpConvertorRange LeftChannel {
      min 1
@@ -54,7 +54,7 @@ AudioSignalResClass {
      port 0
     }
    }
-   Default 2
+   Default 1
    Intervals {
     IOPItemOpConvertorRange RightChannel {
      min 2

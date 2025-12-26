@@ -3,16 +3,16 @@ AudioSignalResClass {
   IOPItemInputClass {
    id 1
    name "TransmissionQuality"
-   tl -351.778 176.889
+   tl -403.039 93.931
    children {
-    6 7 14
+    6 7 14 19 21 23
    }
    value 1
   }
   IOPInputValueClass {
    id 9
    name "Vol Min [dB]"
-   tl -346.364 378.182
+   tl -347.234 378.182
    children {
     10
    }
@@ -25,7 +25,7 @@ AudioSignalResClass {
    children {
     17
    }
-   value -12
+   value -6
   }
  }
  Ops {
@@ -114,6 +114,53 @@ AudioSignalResClass {
     }
    }
   }
+  IOPItemOpInterpolateClass {
+   id 19
+   name "Interpolate 14"
+   tl 31.431 748.374
+   children {
+    18
+   }
+   inputs {
+    ConnectionClass "1:0" {
+     id 1
+     port 0
+    }
+   }
+   "Y max" 1.5
+  }
+  IOPItemOpInterpolateClass {
+   id 21
+   name "Interpolate 1"
+   tl 42.662 -149.72
+   children {
+    20
+   }
+   inputs {
+    ConnectionClass "1:0" {
+     id 1
+     port 0
+    }
+   }
+   "Y min" 1000
+   "Y max" 3600
+  }
+  IOPItemOpInterpolateClass {
+   id 23
+   name "Interpolate 1"
+   tl 43.812 -379.72
+   children {
+    22
+   }
+   inputs {
+    ConnectionClass "1:0" {
+     id 1
+     port 0
+    }
+   }
+   "Y min" 3400
+   "Y max" 1200
+  }
  }
  Outputs {
   IOPItemOutputClass {
@@ -133,6 +180,24 @@ AudioSignalResClass {
    name "Radio_V"
    tl 227 477.287
    input 14
+  }
+  IOPItemOutputClass {
+   id 18
+   name "Voice_V"
+   tl 247.953 749.243
+   input 19
+  }
+  IOPItemOutputClass {
+   id 20
+   name "LP_Cutoff"
+   tl 233.662 -149.72
+   input 21
+  }
+  IOPItemOutputClass {
+   id 22
+   name "HP_Cutoff"
+   tl 234.812 -380.87
+   input 23
   }
  }
  compiled IOPCompiledClass "{672F7881628506F1}" {
@@ -221,6 +286,18 @@ AudioSignalResClass {
   ItemDetailListItemClass Radio_V {
    Name "Radio_V"
    Id 12
+  }
+  ItemDetailListItemClass Voice_V {
+   Name "Voice_V"
+   Id 18
+  }
+  ItemDetailListItemClass LP_Cutoff {
+   Name "LP_Cutoff"
+   Id 20
+  }
+  ItemDetailListItemClass HP_Cutoff {
+   Name "HP_Cutoff"
+   Id 22
   }
  }
 }

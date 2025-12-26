@@ -3,7 +3,7 @@ AudioClass {
   SignalClass "30733" {
    id 30733
    name "Signal 1"
-   tl -768.572 -513
+   tl -776.622 -514.362
    res "{CF1F9C4B120DE5F8}Sounds/VON/506thVon.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -25,10 +25,10 @@ AudioClass {
     1
    }
    outputsport {
-    5 8 12
+    5 8 12 18 20 22
    }
    inputvalues {
-    0
+    0.1
    }
    inputvaluesmin {
     0
@@ -50,7 +50,7 @@ AudioClass {
     36
    }
    inputvalues {
-    1 0 0 16000
+    0 0 0 16000
    }
    inputvaluesmin {
     0 0 0 0
@@ -72,7 +72,7 @@ AudioClass {
     39 105 107 106 110
    }
    inputvalues {
-    100 1 16000
+    100 0 16000
    }
    inputvaluesmin {
     0 0 0
@@ -85,7 +85,7 @@ AudioClass {
   SignalClass "95245" {
    id 95245
    name "Routing Signal"
-   tl 0.262 -527.629
+   tl 122.001 -545.02
    res "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -110,7 +110,7 @@ AudioClass {
     2 22
    }
    inputvalues {
-    0
+    1
    }
    inputvaluesmin {
     0
@@ -118,7 +118,7 @@ AudioClass {
    inputvaluesmax {
     1
    }
-   path "$profile:.tmp/AudioEditor/#F3B02BB0A8FE1F51#506throuting.sig"
+   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
   }
  }
  filters {
@@ -126,7 +126,7 @@ AudioClass {
    id 33814
    name "Filter Bitcrusher"
    version 5
-   tl -512 -592
+   tl -522.05 -644.85
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -211,7 +211,7 @@ AudioClass {
    id 63510
    name "Filter HP"
    version 5
-   tl -512 -512
+   tl -520.392 -581.538
    pi {
     1 0
    }
@@ -226,7 +226,7 @@ AudioClass {
    id 64534
    name "Filter LP"
    version 5
-   tl -512 -352
+   tl -515.05 -449.85
    pi {
     1 0
    }
@@ -240,13 +240,70 @@ AudioClass {
    id 88086
    name "Filter Clipper"
    version 5
-   tl -512 -432
+   tl -518.05 -513.85
    pi {
     1 0
    }
    DSPObject DistortionDSPTypeClass dsp {
     distortionType HardClipper
     drive 20
+   }
+  }
+  FilterClass "105494" {
+   id 105494
+   name "Filter Dynamic HP"
+   version 5
+   tl -513.785 -384.525
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "30733:20" {
+       id 30733
+       port 20
+      }
+     }
+    }
+   }
+   pi {
+    5 0
+   }
+   pu {
+    4 0
+   }
+   volume_dB 2
+   DSPObject BiquadDSPTypeClass dsp {
+    biquadType HighPass
+    fc 1200
+    Q 2
+   }
+  }
+  FilterClass "107542" {
+   id 107542
+   name "Filter Dynamic LP"
+   version 5
+   tl -514.908 -297.054
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "30733:22" {
+       id 30733
+       port 22
+      }
+     }
+    }
+   }
+   pi {
+    5 0
+   }
+   pu {
+    4 0
+   }
+   volume_dB 2
+   DSPObject BiquadDSPTypeClass dsp {
+    fc 3600
+    Q 1.8
    }
   }
  }
@@ -256,7 +313,7 @@ AudioClass {
    name "FilterChain"
    comment "Dont use compressor here. Creates panorama movement when DIRECT and RADIO are mixed."
    version 5
-   tl -256 -416
+   tl -262.174 -580.984
    ctl 0 -21
    ins {
     ConnectionsClass "con:1" {
@@ -349,6 +406,56 @@ AudioClass {
    }
    ports 4
   }
+  FilterChainClass "106519" {
+   id 106519
+   name "FilterChain Voice"
+   comment "this is something else man"
+   version 5
+   tl -260.328 -407.45
+   ctl 0 -21
+   ins {
+    ConnectionsClass "con:1" {
+     id 1
+     links {
+      ConnectionClass "33814:65" {
+       id 33814
+       port 65
+      }
+     }
+    }
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "105494:65" {
+       id 105494
+       port 65
+      }
+     }
+    }
+    ConnectionsClass "con:3" {
+     id 3
+     links {
+      ConnectionClass "88086:65" {
+       id 88086
+       port 65
+      }
+     }
+    }
+    ConnectionsClass "con:4" {
+     id 4
+     links {
+      ConnectionClass "107542:65" {
+       id 107542
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    30 0
+   }
+   ports 4
+  }
  }
  vars {
   VariableClass "87070" {
@@ -380,7 +487,7 @@ AudioClass {
    name "Routing Selection"
    comment "0 = Center, 1 = Right, 2 = Left"
    version 5
-   tl -179.735 -527.883
+   tl -57.996 -545.274
    ctl 0 -24
    varName "EarRouting"
    varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
@@ -401,7 +508,7 @@ AudioClass {
    id 27657
    name "VON_RADIO"
    version 5
-   tl 256.323 -257.323
+   tl 256.616 -257.453
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -484,9 +591,9 @@ AudioClass {
  buses {
   BusClass "50183" {
    id 50183
-   name "Bus Voice + Noise"
+   name "Bus Noise Only"
    version 7
-   tl -256 -256
+   tl -247.452 -102.799
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -509,12 +616,12 @@ AudioClass {
     ConnectionsClass "con:64" {
      id 64
      links {
-      ConnectionClass "52231:65" {
-       id 52231
-       port 65
-      }
       ConnectionClass "36869:65" {
        id 36869
+       port 65
+      }
+      ConnectionClass "103429:65" {
+       id 103429
        port 65
       }
      }
@@ -623,6 +730,10 @@ AudioClass {
        id 50183
        port 65
       }
+      ConnectionClass "101383:65" {
+       id 101383
+       port 65
+      }
      }
     }
    }
@@ -632,13 +743,54 @@ AudioClass {
    channels "2"
    channelVolume 1
   }
+  BusClass "101383" {
+   id 101383
+   name "Bus Voice Only"
+   version 7
+   tl -249.59 -233.825
+   ins {
+    ConnectionsClass "con:0" {
+     id 0
+     links {
+      ConnectionClass "30733:18" {
+       id 30733
+       port 18
+      }
+     }
+    }
+    ConnectionsClass "con:1" {
+     id 1
+     links {
+      ConnectionClass "106519:65" {
+       id 106519
+       port 65
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "52231:65" {
+       id 52231
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    3 0
+   }
+   pu {
+    1 0
+   }
+  }
  }
  generators {
   GeneratorClass "36869" {
    id 36869
    name "Generator Noise"
    version 6
-   tl -512 -256
+   tl -511.271 -158.705
    ins {
     ConnectionsClass "con:1" {
      id 1
@@ -657,6 +809,34 @@ AudioClass {
     2 0
    }
    function BrownianNoise
+   volume 0.2
+   volume_dB -14
+   time 10
+   infinite 1
+  }
+  GeneratorClass "103429" {
+   id 103429
+   name "Generator Noise"
+   version 6
+   tl -513.496 -94.844
+   ins {
+    ConnectionsClass "con:1" {
+     id 1
+     links {
+      ConnectionClass "30733:8" {
+       id 30733
+       port 8
+      }
+     }
+    }
+   }
+   pi {
+    2 0
+   }
+   pu {
+    2 0
+   }
+   function PinkNoise
    volume 0.2
    volume_dB -14
    time 10
@@ -852,7 +1032,7 @@ AudioClass {
    id 26641
    name "Stream 1"
    version 5
-   tl -768 -768
+   tl -765.217 -764.522
   }
  }
  banks_local {
