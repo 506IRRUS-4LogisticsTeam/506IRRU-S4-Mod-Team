@@ -117,7 +117,7 @@ AudioSignalResClass {
   IOPItemOpInterpolateClass {
    id 19
    name "Interpolate 14"
-   tl 31.431 748.374
+   tl 32.581 748.374
    children {
     18
    }
@@ -127,7 +127,6 @@ AudioSignalResClass {
      port 0
     }
    }
-   "Y max" 1.5
   }
   IOPItemOpInterpolateClass {
    id 21

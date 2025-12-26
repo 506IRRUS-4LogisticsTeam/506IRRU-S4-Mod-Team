@@ -3,7 +3,7 @@ AudioClass {
   SignalClass "30733" {
    id 30733
    name "Signal 1"
-   tl -776.622 -514.362
+   tl -776.622 -515.118
    res "{CF1F9C4B120DE5F8}Sounds/VON/506thVon.sig"
    conns {
     IOPConnectionClass iopConnection {
@@ -28,7 +28,7 @@ AudioClass {
     5 8 12 18 20 22
    }
    inputvalues {
-    0.1
+    0
    }
    inputvaluesmin {
     0
@@ -126,7 +126,7 @@ AudioClass {
    id 33814
    name "Filter Bitcrusher"
    version 5
-   tl -522.05 -644.85
+   tl -522.05 -645.606
    ins {
     ConnectionsClass "con:0" {
      id 0
@@ -249,63 +249,6 @@ AudioClass {
     drive 20
    }
   }
-  FilterClass "105494" {
-   id 105494
-   name "Filter Dynamic HP"
-   version 5
-   tl -513.785 -384.525
-   ins {
-    ConnectionsClass "con:2" {
-     id 2
-     links {
-      ConnectionClass "30733:20" {
-       id 30733
-       port 20
-      }
-     }
-    }
-   }
-   pi {
-    5 0
-   }
-   pu {
-    4 0
-   }
-   volume_dB 2
-   DSPObject BiquadDSPTypeClass dsp {
-    biquadType HighPass
-    fc 1200
-    Q 2
-   }
-  }
-  FilterClass "107542" {
-   id 107542
-   name "Filter Dynamic LP"
-   version 5
-   tl -514.908 -297.054
-   ins {
-    ConnectionsClass "con:2" {
-     id 2
-     links {
-      ConnectionClass "30733:22" {
-       id 30733
-       port 22
-      }
-     }
-    }
-   }
-   pi {
-    5 0
-   }
-   pu {
-    4 0
-   }
-   volume_dB 2
-   DSPObject BiquadDSPTypeClass dsp {
-    fc 3600
-    Q 1.8
-   }
-  }
  }
  filter_chain {
   FilterChainClass "32791" {
@@ -354,9 +297,9 @@ AudioClass {
     }
    }
    pi {
-    30 0
+    62 0
    }
-   ports 4
+   ports 5
   }
   FilterChainClass "53271" {
    id 53271
@@ -396,56 +339,6 @@ AudioClass {
      links {
       ConnectionClass "39958:65" {
        id 39958
-       port 65
-      }
-     }
-    }
-   }
-   pi {
-    30 0
-   }
-   ports 4
-  }
-  FilterChainClass "106519" {
-   id 106519
-   name "FilterChain Voice"
-   comment "this is something else man"
-   version 5
-   tl -260.328 -407.45
-   ctl 0 -21
-   ins {
-    ConnectionsClass "con:1" {
-     id 1
-     links {
-      ConnectionClass "33814:65" {
-       id 33814
-       port 65
-      }
-     }
-    }
-    ConnectionsClass "con:2" {
-     id 2
-     links {
-      ConnectionClass "105494:65" {
-       id 105494
-       port 65
-      }
-     }
-    }
-    ConnectionsClass "con:3" {
-     id 3
-     links {
-      ConnectionClass "88086:65" {
-       id 88086
-       port 65
-      }
-     }
-    }
-    ConnectionsClass "con:4" {
-     id 4
-     links {
-      ConnectionClass "107542:65" {
-       id 107542
        port 65
       }
      }
@@ -508,7 +401,7 @@ AudioClass {
    id 27657
    name "VON_RADIO"
    version 5
-   tl 256.616 -257.453
+   tl 257.486 -257.453
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -761,8 +654,8 @@ AudioClass {
     ConnectionsClass "con:1" {
      id 1
      links {
-      ConnectionClass "106519:65" {
-       id 106519
+      ConnectionClass "32791:65" {
+       id 32791
        port 65
       }
      }

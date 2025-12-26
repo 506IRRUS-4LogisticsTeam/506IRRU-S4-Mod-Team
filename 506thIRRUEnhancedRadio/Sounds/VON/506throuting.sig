@@ -23,7 +23,7 @@ AudioSignalResClass {
   IOPItemOpConvertorClass {
    id 20
    name "LeftChannelVol"
-   tl 73.821 -186.388
+   tl 71.065 -185.632
    children {
     27
    }
@@ -33,7 +33,7 @@ AudioSignalResClass {
      port 0
     }
    }
-   Default 1
+   Default 2
    Intervals {
     IOPItemOpConvertorRange LeftChannel {
      min 1
@@ -54,7 +54,7 @@ AudioSignalResClass {
      port 0
     }
    }
-   Default 1
+   Default 2
    Intervals {
     IOPItemOpConvertorRange RightChannel {
      min 2
