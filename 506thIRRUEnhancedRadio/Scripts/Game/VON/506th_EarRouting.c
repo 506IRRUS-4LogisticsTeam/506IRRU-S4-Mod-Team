@@ -16,48 +16,48 @@ enum IRRUBeepType
 class SCR_IRRURadioEarSettings
 {
     private static ref SCR_IRRURadioEarSettings s_Instance;
-    
+
     protected ref map<BaseTransceiver, IRRUEarRouting> m_mRoutingByTransceiver = new map<BaseTransceiver, IRRUEarRouting>();
     protected ref map<BaseTransceiver, IRRUBeepType> m_mBeepTypeByTransceiver = new map<BaseTransceiver, IRRUBeepType>();
     protected ref map<BaseTransceiver, float> m_mVolumeByTransceiver = new map<BaseTransceiver, float>();
-    
+    protected BaseTransceiver m_AlternateTransceiver;
+    protected bool m_bTransmittingOnAlternate = false;
+
     static SCR_IRRURadioEarSettings GetInstance()
     {
         if (!s_Instance)
             s_Instance = new SCR_IRRURadioEarSettings();
-        
+
         return s_Instance;
     }
-    
-    // EAR ROUTING MAGIC :D
-    
+
     IRRUEarRouting GetRouting(BaseTransceiver transceiver)
     {
         if (!transceiver)
             return IRRUEarRouting.CENTER;
-        
+
         if (!m_mRoutingByTransceiver.Contains(transceiver))
             return IRRUEarRouting.CENTER;
-        
+
         return m_mRoutingByTransceiver.Get(transceiver);
     }
-    
+
     void SetRouting(BaseTransceiver transceiver, IRRUEarRouting routing)
     {
         if (!transceiver)
             return;
-        
+
         m_mRoutingByTransceiver.Set(transceiver, routing);
     }
-    
+
     IRRUEarRouting CycleRouting(BaseTransceiver transceiver)
     {
         if (!transceiver)
             return IRRUEarRouting.CENTER;
-        
+
         IRRUEarRouting current = GetRouting(transceiver);
         IRRUEarRouting next;
-        
+
         switch (current)
         {
             case IRRUEarRouting.CENTER:
@@ -72,11 +72,11 @@ class SCR_IRRURadioEarSettings
             default:
                 next = IRRUEarRouting.CENTER;
         }
-        
+
         SetRouting(transceiver, next);
         return next;
     }
-    
+
     string GetRoutingDisplayText(IRRUEarRouting routing)
     {
         switch (routing)
@@ -88,39 +88,37 @@ class SCR_IRRURadioEarSettings
             default:
                 return "C";
         }
-        
+
         return "C";
     }
-    
-    // Beep type stuff
-    
+
     IRRUBeepType GetBeepType(BaseTransceiver transceiver)
     {
         if (!transceiver)
             return IRRUBeepType.ACE_HIGH;
-        
+
         if (!m_mBeepTypeByTransceiver.Contains(transceiver))
             return IRRUBeepType.ACE_HIGH;
-        
+
         return m_mBeepTypeByTransceiver.Get(transceiver);
     }
-    
+
     void SetBeepType(BaseTransceiver transceiver, IRRUBeepType beepType)
     {
         if (!transceiver)
             return;
-        
+
         m_mBeepTypeByTransceiver.Set(transceiver, beepType);
     }
-    
+
     IRRUBeepType CycleBeepType(BaseTransceiver transceiver)
     {
         if (!transceiver)
             return IRRUBeepType.ACE_HIGH;
-        
+
         IRRUBeepType current = GetBeepType(transceiver);
         IRRUBeepType next;
-        
+
         switch (current)
         {
             case IRRUBeepType.OFF:
@@ -138,11 +136,11 @@ class SCR_IRRURadioEarSettings
             default:
                 next = IRRUBeepType.ACE_LOW;
         }
-        
+
         SetBeepType(transceiver, next);
         return next;
     }
-    
+
     string GetBeepTypeDisplayText(IRRUBeepType beepType)
     {
         switch (beepType)
@@ -158,31 +156,29 @@ class SCR_IRRURadioEarSettings
             default:
                 return "ACE-L";
         }
-        
+
         return "ACE-H";
     }
-    
-    // VOLUME CONTROL
-    
+
     float GetVolume(BaseTransceiver transceiver)
     {
         if (!transceiver)
             return 1.0;
-        
+
         if (!m_mVolumeByTransceiver.Contains(transceiver))
             return 1.0;
-        
+
         return m_mVolumeByTransceiver.Get(transceiver);
     }
-    
+
     void SetVolume(BaseTransceiver transceiver, float volume)
     {
         if (!transceiver)
             return;
-        
+
         m_mVolumeByTransceiver.Set(transceiver, Math.Clamp(volume, 0.0, 1.0));
     }
-    
+
     float AdjustVolume(BaseTransceiver transceiver, float delta)
     {
         float current = GetVolume(transceiver);
@@ -190,15 +186,65 @@ class SCR_IRRURadioEarSettings
         SetVolume(transceiver, newVolume);
         return newVolume;
     }
-    
+
     int GetVolumePercent(BaseTransceiver transceiver)
     {
         return Math.Round(GetVolume(transceiver) * 100);
     }
-    
+
     string GetVolumeDisplayText(BaseTransceiver transceiver)
     {
         int percent = GetVolumePercent(transceiver);
         return percent.ToString() + "%";
+    }
+
+    BaseTransceiver GetAlternateTransceiver()
+    {
+        return m_AlternateTransceiver;
+    }
+
+    bool IsAlternate(BaseTransceiver transceiver)
+    {
+        if (!transceiver || !m_AlternateTransceiver)
+            return false;
+
+        return transceiver == m_AlternateTransceiver;
+    }
+
+    void SetAlternateTransceiver(BaseTransceiver transceiver)
+    {
+        m_AlternateTransceiver = transceiver;
+    }
+
+    void ClearAlternateTransceiver()
+    {
+        m_AlternateTransceiver = null;
+    }
+
+    bool ToggleAlternate(BaseTransceiver transceiver)
+    {
+        if (!transceiver)
+            return false;
+
+        if (IsAlternate(transceiver))
+        {
+            ClearAlternateTransceiver();
+            return false;
+        }
+        else
+        {
+            SetAlternateTransceiver(transceiver);
+            return true;
+        }
+    }
+
+    bool IsTransmittingOnAlternate()
+    {
+        return m_bTransmittingOnAlternate;
+    }
+
+    void SetTransmittingOnAlternate(bool transmitting)
+    {
+        m_bTransmittingOnAlternate = transmitting;
     }
 }

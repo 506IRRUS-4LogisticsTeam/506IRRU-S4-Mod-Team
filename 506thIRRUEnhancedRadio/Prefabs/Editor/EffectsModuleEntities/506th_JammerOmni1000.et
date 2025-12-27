@@ -2,8 +2,7 @@ GenericEntity {
  ID "67340DB827ACA80D"
  components {
   IRRU_JammerComponent "{67340DB827ACA86C}" {
-   m_fRange 1000
-   m_fConeAngle 180
+   m_fRangeConfig 1000
   }
   SCR_EditableEntityComponent "{67340DB827ACA844}" {
    m_EntityType SYSTEM
