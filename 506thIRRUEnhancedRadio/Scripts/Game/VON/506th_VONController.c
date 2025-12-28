@@ -187,6 +187,12 @@ modded class SCR_VONController
             if (volumeValue != 0)
                 OnVolumeAdjust(volumeValue);
 
+            if (inputMgr.GetActionTriggered("IRRU_VolumeUp"))
+                OnVolumeAdjust(1);
+
+            if (inputMgr.GetActionTriggered("IRRU_VolumeDown"))
+                OnVolumeAdjust(-1);
+
             if (inputMgr && inputMgr.GetActionTriggered("IRRU_AlternateChannelAction"))
                 OnAlternateChannelToggle();
         }

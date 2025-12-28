@@ -97,9 +97,9 @@ AudioSignalResClass {
   IOPItemOpMulClass {
    id 29
    name "Mul 27"
-   tl 648.097 -191.453
+   tl 648.097 -192.209
    children {
-    22
+    33
    }
    inputs {
     ConnectionClass "28:0" {
@@ -145,11 +145,39 @@ AudioSignalResClass {
    name "Mul 27"
    tl 653.642 137.218
    children {
-    2
+    34
    }
    inputs {
     ConnectionClass "30:0" {
      id 30
+     port 0
+    }
+   }
+  }
+  IOPItemOpMulClass {
+   id 33
+   name "Mul 27"
+   tl 841.109 -193.058
+   children {
+    22
+   }
+   inputs {
+    ConnectionClass "29:0" {
+     id 29
+     port 0
+    }
+   }
+  }
+  IOPItemOpMulClass {
+   id 34
+   name "Mul 27"
+   tl 848.695 140.957
+   children {
+    2
+   }
+   inputs {
+    ConnectionClass "32:0" {
+     id 32
      port 0
     }
    }
@@ -159,14 +187,14 @@ AudioSignalResClass {
   IOPItemOutputClass {
    id 2
    name "RightVol"
-   tl 888.513 125.041
-   input 32
+   tl 1082.863 139.991
+   input 34
   }
   IOPItemOutputClass {
    id 22
    name "LeftVol"
-   tl 888.012 -183.347
-   input 29
+   tl 1099.2 -190.94
+   input 33
   }
  }
  Input_Order {
