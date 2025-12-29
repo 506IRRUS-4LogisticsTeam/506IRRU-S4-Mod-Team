@@ -20,7 +20,7 @@ class SCR_IRRURadioEarSettings
     protected ref map<BaseTransceiver, IRRUEarRouting> m_mRoutingByTransceiver = new map<BaseTransceiver, IRRUEarRouting>();
     protected ref map<BaseTransceiver, IRRUBeepType> m_mBeepTypeByTransceiver = new map<BaseTransceiver, IRRUBeepType>();
     protected ref map<BaseTransceiver, float> m_mVolumeByTransceiver = new map<BaseTransceiver, float>();
-    protected BaseTransceiver m_AlternateTransceiver;
+    protected int m_iAlternateFrequency = -1;
     protected bool m_bTransmittingOnAlternate = false;
 
     static SCR_IRRURadioEarSettings GetInstance()
@@ -198,27 +198,27 @@ class SCR_IRRURadioEarSettings
         return percent.ToString() + "%";
     }
 
-    BaseTransceiver GetAlternateTransceiver()
+    int GetAlternateFrequency()
     {
-        return m_AlternateTransceiver;
+        return m_iAlternateFrequency;
     }
 
     bool IsAlternate(BaseTransceiver transceiver)
     {
-        if (!transceiver || !m_AlternateTransceiver)
+        if (!transceiver || m_iAlternateFrequency < 0)
             return false;
 
-        return transceiver == m_AlternateTransceiver;
+        return transceiver.GetFrequency() == m_iAlternateFrequency;
     }
 
-    void SetAlternateTransceiver(BaseTransceiver transceiver)
+    void SetAlternateFrequency(int frequency)
     {
-        m_AlternateTransceiver = transceiver;
+        m_iAlternateFrequency = frequency;
     }
 
-    void ClearAlternateTransceiver()
+    void ClearAlternateFrequency()
     {
-        m_AlternateTransceiver = null;
+        m_iAlternateFrequency = -1;
     }
 
     bool ToggleAlternate(BaseTransceiver transceiver)
@@ -228,12 +228,12 @@ class SCR_IRRURadioEarSettings
 
         if (IsAlternate(transceiver))
         {
-            ClearAlternateTransceiver();
+            ClearAlternateFrequency();
             return false;
         }
         else
         {
-            SetAlternateTransceiver(transceiver);
+            SetAlternateFrequency(transceiver.GetFrequency());
             return true;
         }
     }

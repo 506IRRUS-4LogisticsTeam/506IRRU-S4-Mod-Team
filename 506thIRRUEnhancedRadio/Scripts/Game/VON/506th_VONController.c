@@ -306,12 +306,12 @@ modded class SCR_VONController
     protected void OnAlternatePTTStart()
     {
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        BaseTransceiver altTransceiver = settings.GetAlternateTransceiver();
+        int altFrequency = settings.GetAlternateFrequency();
 
-        if (!altTransceiver)
+        if (altFrequency < 0)
             return;
 
-        SCR_VONEntryRadio altEntry = FindEntryForTransceiver(altTransceiver);
+        SCR_VONEntryRadio altEntry = FindEntryByFrequency(altFrequency);
         if (!altEntry)
             return;
 
@@ -334,9 +334,9 @@ modded class SCR_VONController
         DeactivateVON(EVONTransmitType.CHANNEL);
     }
 
-    protected SCR_VONEntryRadio FindEntryForTransceiver(BaseTransceiver transceiver)
+    protected SCR_VONEntryRadio FindEntryByFrequency(int frequency)
     {
-        if (!transceiver)
+        if (frequency < 0)
             return null;
 
         array<ref SCR_VONEntry> entries = {};
@@ -345,8 +345,12 @@ modded class SCR_VONController
         foreach (SCR_VONEntry entry : entries)
         {
             SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(entry);
-            if (radioEntry && radioEntry.GetTransceiver() == transceiver)
-                return radioEntry;
+            if (radioEntry)
+            {
+                BaseTransceiver transceiver = radioEntry.GetTransceiver();
+                if (transceiver && transceiver.GetFrequency() == frequency)
+                    return radioEntry;
+            }
         }
 
         return null;

@@ -9,6 +9,8 @@ modded class SCR_VonDisplay
 			SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
 			if (settings.IsTransmittingOnAlternate())
 				data.m_Widgets.m_wFrequency.SetColor(Color.FromInt(Color.CYAN));
+			else
+				data.m_Widgets.m_wFrequency.SetColor(Color.FromInt(Color.WHITE));
 		}
 
 		return result;
