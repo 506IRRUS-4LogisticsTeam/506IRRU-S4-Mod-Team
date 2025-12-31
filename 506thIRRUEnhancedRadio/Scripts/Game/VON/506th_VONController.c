@@ -18,6 +18,7 @@ modded class SCR_VONController
     protected AudioHandle m_AudioHandleLocalOn;
     protected AudioHandle m_AudioHandleLocalOff;
     protected bool m_bAlternatePTTActive = false;
+    protected SCR_VONEntry m_SavedPrimaryEntry;
 
     override void OnPostInit(IEntity owner)
     {
@@ -318,6 +319,7 @@ modded class SCR_VONController
         m_bAlternatePTTActive = true;
         settings.SetTransmittingOnAlternate(true);
 
+        m_SavedPrimaryEntry = m_ActiveEntry;
         m_ActiveEntry = altEntry;
         ActivateVON(EVONTransmitType.CHANNEL);
     }
@@ -332,6 +334,12 @@ modded class SCR_VONController
         m_bAlternatePTTActive = false;
 
         DeactivateVON(EVONTransmitType.CHANNEL);
+
+        if (m_SavedPrimaryEntry)
+        {
+            m_ActiveEntry = m_SavedPrimaryEntry;
+            m_SavedPrimaryEntry = null;
+        }
     }
 
     protected SCR_VONEntryRadio FindEntryByFrequency(int frequency)
