@@ -25,7 +25,7 @@ AudioSignalResClass {
    children {
     17
    }
-   value -6
+   value -10
   }
  }
  Ops {
