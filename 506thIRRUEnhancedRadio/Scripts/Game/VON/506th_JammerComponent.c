@@ -23,7 +23,7 @@ class IRRU_JammerComponent : ScriptComponent
 	{
 		super.OnPostInit(owner);
 
-		// Server copies config to replicated vars
+		// Server copies config to replicated vars... hopefully....
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
 			m_fRange = m_fRangeConfig;

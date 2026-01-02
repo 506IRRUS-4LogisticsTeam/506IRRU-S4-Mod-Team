@@ -28,7 +28,7 @@ AudioClass {
     5 8 12 18 20 22
    }
    inputvalues {
-    0
+    1
    }
    inputvaluesmin {
     0
@@ -119,6 +119,44 @@ AudioClass {
     1
    }
    path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
+  }
+  SignalClass "105485" {
+   id 105485
+   name "Signal 103"
+   tl -780.6 -266.008
+   res "{9779478978323693}Sounds/VON/506th_SignalQuality.sig"
+   conns {
+    IOPConnectionClass iopConnection {
+     port 1
+     conn {
+      ConnectionsClass connections {
+       id 26
+       links {
+        ConnectionClass "104478:65" {
+         id 104478
+         port 65
+        }
+       }
+      }
+     }
+    }
+   }
+   inputsport {
+    1
+   }
+   outputsport {
+    2 3 7
+   }
+   inputvalues {
+    0.2
+   }
+   inputvaluesmin {
+    0
+   }
+   inputvaluesmax {
+    1
+   }
+   path "{9779478978323693}Sounds/VON/506th_SignalQuality.sig"
   }
  }
  filters {
@@ -226,9 +264,20 @@ AudioClass {
    id 64534
    name "Filter LP"
    version 5
-   tl -515.05 -449.85
+   tl -520.92 -420.633
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "105485:3" {
+       id 105485
+       port 3
+      }
+     }
+    }
+   }
    pi {
-    1 0
+    5 0
    }
    volume_dB 2
    DSPObject BiquadDSPTypeClass dsp {
@@ -241,8 +290,19 @@ AudioClass {
    name "Filter Clipper"
    version 5
    tl -518.05 -513.85
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "105485:2" {
+       id 105485
+       port 2
+      }
+     }
+    }
+   }
    pi {
-    1 0
+    5 0
    }
    DSPObject DistortionDSPTypeClass dsp {
     distortionType HardClipper
@@ -395,14 +455,33 @@ AudioClass {
    varName "JamStrength"
    varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
   }
+  VariableClass "104478" {
+   id 104478
+   name "Signal Quality"
+   comment "RF PROPAGATION MODEL ONLY"
+   version 5
+   tl -1021.022 -267.922
+   ctl 0 -24
+   varName "SignalQuality"
+   varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
+  }
  }
  sounds {
   SoundClass "27657" {
    id 27657
    name "VON_RADIO"
    version 5
-   tl 257.486 -257.453
+   tl 252.163 -259.453
    ins {
+    ConnectionsClass "con:1" {
+     id 1
+     links {
+      ConnectionClass "105485:7" {
+       id 105485
+       port 7
+      }
+     }
+    }
     ConnectionsClass "con:64" {
      id 64
      links {
@@ -412,6 +491,9 @@ AudioClass {
       }
      }
     }
+   }
+   pi {
+    2 0
    }
    varName "VON_Radio"
    varResource "{A60F08955792B575}Sounds/_SharedData/Variables/GlobalVariables.conf"
@@ -484,7 +566,7 @@ AudioClass {
  buses {
   BusClass "50183" {
    id 50183
-   name "Bus Noise Only"
+   name "Bus Jamming Noise Only"
    version 7
    tl -247.452 -102.799
    ins {

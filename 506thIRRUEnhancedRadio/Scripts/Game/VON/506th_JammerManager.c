@@ -62,8 +62,8 @@ class IRRU_JammerManager
                 return 0.0;
         }
 
-        //removed the terrain obstruction calculations here since uh it is completely scuffed and makes no sense
-        //TODO: in addition to adding terrain obsturction back in a less scuffed way... have inverse square law calculation for the weaker jammers
+        //RF propogation model exists in a different script now - def we can find a way to integrate this with the jammers LOL
+        //TODO: in addition to adding terrain obsturction back in a less scuffed way... have inverse square law calculation for the weaker jammers?
 
         // Area denial jammer - strong throughout, fades at edge (uses ratio squared just like IRL base jammers)
         float ratio = distance / range;

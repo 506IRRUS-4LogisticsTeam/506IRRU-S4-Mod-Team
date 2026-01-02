@@ -10,26 +10,15 @@ class IRRU_SignalManager
         return s_Instance;
     }
 
-    // Main entry point - calculates final signal quality
-    // Returns: 1.0 = clear, 0.0 = fully degraded
-    float GetSignalQuality(vector transmitterPos, vector receiverPos)
+    float GetSignalQuality(vector transmitterPos, vector receiverPos, float frequencyKHz = 0)
     {
-        float quality = 1.0;
+        IRRU_RFPropagationModel propagation = IRRU_RFPropagationModel.GetInstance();
+        return propagation.CalculateSignalQuality(transmitterPos, receiverPos, frequencyKHz);
+    }
 
-        // DISABLED: Terrain occlusion - needs more work
-        // IRRU_TerrainOcclusion terrainOcclusion = IRRU_TerrainOcclusion.GetInstance();
-        // float terrainDegradation = terrainOcclusion.CalculateOcclusion(transmitterPos, receiverPos);
-        // quality = quality * (1.0 - terrainDegradation);
-
-        // Jammer effects on receiver
+    float GetJammerStrength(vector receiverPos)
+    {
         IRRU_JammerManager jammerManager = IRRU_JammerManager.GetInstance();
-        float jammerDegradation = jammerManager.CalculateJammerDegradation(receiverPos);
-        quality = quality * (1.0 - jammerDegradation);
-
-        quality = Math.Clamp(quality, 0.0, 1.0);
-
-        //Print(string.Format("[IRRU Signal] Quality: %1 (jammer: %2)", quality, jammerDegradation), LogLevel.NORMAL);
-
-        return quality;
+        return jammerManager.CalculateJammerDegradation(receiverPos);
     }
 }
