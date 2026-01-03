@@ -86,6 +86,8 @@ modded class SCR_VoNComponent : VoNComponent
     protected float GetJamStrength(vector receiverPos)
     {
         IRRU_SignalManager signalManager = IRRU_SignalManager.GetInstance();
-        return signalManager.GetJammerStrength(receiverPos);
+        float jammerDegradation = signalManager.GetJammerStrength(receiverPos);
+        // CAREFUL THIS IS INVERTED!!!!
+        return 1.0 - jammerDegradation;
     }
 }
