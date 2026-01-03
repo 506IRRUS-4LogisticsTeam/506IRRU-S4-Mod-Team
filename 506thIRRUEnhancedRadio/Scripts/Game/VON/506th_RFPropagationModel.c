@@ -63,7 +63,7 @@ class IRRU_RFPropagationModel
         float totalLoss = freeSpaceLoss + worstDiffractionLoss + obstacleLoss;
         float quality = LossToQuality(totalLoss);
 
-        if (IRRU_RFPropagationSettings.IsDebugEnabled())
+        if (IRRU_RFPropagationNetworkComponent.IsDebugEnabled())
         {
             Print(string.Format("[RFPropagation] Dist: %1m | FSPL: %2dB | Diffraction: %3dB | Obstacle: %4dB | Total: %5dB | Quality: %6",
                 Math.Round(totalDistance), Math.Round(freeSpaceLoss), Math.Round(worstDiffractionLoss), Math.Round(obstacleLoss), Math.Round(totalLoss), quality));

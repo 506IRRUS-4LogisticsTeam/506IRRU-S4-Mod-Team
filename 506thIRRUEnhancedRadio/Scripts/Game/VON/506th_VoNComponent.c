@@ -70,7 +70,7 @@ modded class SCR_VoNComponent : VoNComponent
 
     protected float GetSignalQuality(int senderId, int frequencyKHz, vector receiverPos)
     {
-        if (!IRRU_RFPropagationSettings.IsRFPropagationEnabled())
+        if (!IRRU_RFPropagationNetworkComponent.IsRFPropagationEnabled())
             return 1.0;
 
         IEntity transmitter = GetGame().GetPlayerManager().GetPlayerControlledEntity(senderId);
