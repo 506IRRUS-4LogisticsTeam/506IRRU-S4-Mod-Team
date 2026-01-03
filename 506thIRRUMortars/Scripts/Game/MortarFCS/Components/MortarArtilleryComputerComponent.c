@@ -20,8 +20,12 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected bool m_bBSODCooldown = false;
 
     // Turret control components
+    protected TurretControllerComponent m_TurretController;
     protected TurretComponent m_TurretComponent;
+    protected bool m_bAutoAimActive = false;
     protected bool m_bAutoAimSystemEnabled = false;
+    protected vector m_vTargetAngles = vector.Zero;
+    protected vector m_vCurrentAngles = vector.Zero;
     
     protected const float MIN_ELEVATION_MILS = 800.0;
     protected const float MAX_ELEVATION_MILS = 1515.0;
@@ -65,6 +69,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     void ToggleAutoAim()
     {
         m_bAutoAimSystemEnabled = !m_bAutoAimSystemEnabled;
+
+        if (!m_bAutoAimSystemEnabled && m_bAutoAimActive)
+        {
+            m_bAutoAimActive = false;
+            ClearEventMask(m_Owner, EntityEvent.POSTFRAME);
+        }
+
         UpdateMainHint();
     }
 
@@ -158,6 +169,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         if (m_bMapOpen)
             return;
 
+        // Check for rare system error
         if (!m_bBSODCooldown && Math.RandomInt(0, 1506) == 506)
         {
             ShowBSOD();
@@ -178,6 +190,8 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         UpdateMainHint();
         m_bHintShown = false;
+
+        SetEventMask(m_Owner, EntityEvent.POSTFRAME);
     }
     
     //------------------------------------------------------------------------------------------------
@@ -404,28 +418,11 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
             vector desiredAngles = dirLocal.VectorToAngles();
 
-            vector targetAngles = Vector(desiredAngles[0] * Math.DEG2RAD, desiredAngles[1] * Math.DEG2RAD, 0);
-
-            // Send to server for replication
-            Rpc(RpcAsk_SetTurretAim, targetAngles);
+            m_vTargetAngles = Vector(desiredAngles[0] * Math.DEG2RAD, desiredAngles[1] * Math.DEG2RAD, 0);
+            m_bAutoAimActive = true;
         }
     }
-
-    //------------------------------------------------------------------------------------------------
-    //! RPC: Client requests server to set turret aim
-    //! \param targetAngles Target angles in radians (yaw, pitch, 0)
-    [RplRpc(RplChannel.Reliable, RplRcver.Server)]
-    protected void RpcAsk_SetTurretAim(vector targetAngles)
-    {
-        if (!m_TurretComponent)
-            m_TurretComponent = TurretComponent.Cast(m_Owner.FindComponent(TurretComponent));
-
-        if (!m_TurretComponent)
-            return;
-
-        m_TurretComponent.SetAimingRotation(targetAngles);
-    }
-
+    
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void DisplayRangeError(bool tooClose, float minRange, float maxRange, float distance)
@@ -527,7 +524,27 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             {
                 OnBSODEscapeAction(0, EActionTrigger.DOWN); // Auto-dismiss after timer
             }
+            return;
         }
+
+        // Handle auto-aim rotation
+        if (!m_bAutoAimActive || !m_TurretComponent)
+        {
+            m_bAutoAimActive = false;
+            return;
+        }
+
+        if (m_vTargetAngles == vector.Zero)
+        {
+            m_bAutoAimActive = false;
+            return;
+        }
+
+        m_TurretComponent.SetAimingRotation(m_vTargetAngles);
+        m_bAutoAimActive = false;
+
+        if (!m_bMapOpen)
+            ClearEventMask(owner, EntityEvent.POSTFRAME);
     }
 
     //------------------------------------------------------------------------------------------------
