@@ -16,6 +16,7 @@ modded class SCR_VoNComponent : VoNComponent
             s_bSignalQualityValid = (AudioSystem.GetVariableIDByName("SignalQuality", EAR_ROUTING_CONFIG) != -1);
             s_bJamStrengthValid = (AudioSystem.GetVariableIDByName("JamStrength", EAR_ROUTING_CONFIG) != -1);
             s_bChannelVolumeValid = (AudioSystem.GetVariableIDByName("ChannelVolume", EAR_ROUTING_CONFIG) != -1);
+            IRRU_RFPropagationSettings.GetInstance();
         }
 
         if (s_bEarRoutingValid)

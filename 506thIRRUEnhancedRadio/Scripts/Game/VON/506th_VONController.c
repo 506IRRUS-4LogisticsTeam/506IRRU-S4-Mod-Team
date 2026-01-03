@@ -24,6 +24,7 @@ modded class SCR_VONController
     {
         super.OnPostInit(owner);
         AudioSystem.PlayEventInitialize(IRRU_BEEP_CONFIG);
+        IRRU_RFPropagationSettings.GetInstance();
     }
 
     protected void PlayBeepStart(BaseTransceiver transceiver)
