@@ -489,6 +489,10 @@ AudioClass {
        id 46098
        port 65
       }
+      ConnectionClass "22546:65" {
+       id 22546
+       port 65
+      }
      }
     }
    }
