@@ -4,7 +4,8 @@ GenericEntity {
   ColliderHistoryComponent "{684832092672BA66}" {
   }
   IRRU_JammerComponent "{684832092672BA70}" {
-   m_fConeAngleConfig 180
+   m_fRangeConfig 2000
+   m_fConeAngleConfig 90
   }
   MeshObject "{684832092672BA72}" {
    Object "{AFB42967612D5D72}Assets/jammer large.xob"
@@ -31,6 +32,19 @@ GenericEntity {
     }
    }
    m_Flags PLACEABLE
+  }
+  ActionsManagerComponent "{68491B29F028F4D9}" {
+   ActionContexts {
+    UserActionContext "{68491B29F42201EC}" {
+     UIInfo UIInfo "{68491B29E9082216}" {
+      Name "Power Box"
+      Description "Power Box"
+     }
+     Position PointInfo "{68491B291B828339}" {
+      Offset -5.1699 1.1425 -1.8201
+     }
+    }
+   }
   }
   RplComponent "{684832092672BA04}" {
   }
