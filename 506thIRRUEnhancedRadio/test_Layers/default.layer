@@ -1,0 +1,30 @@
+$grp SCR_DestructibleTreeV2 : "{C8F36E9B099401D1}Prefabs/Vegetation/Core/test.et" {
+ {
+  Flags 0 0x80002
+  coords 94.256 1 161.009
+  m_fHealth 10
+ }
+ {
+  coords 98.27 0 160.911
+ }
+}
+$grp GenericEntity : "{D0C3F31EEDBD40C7}Prefabs/506th_JammerOmni500j.et" {
+ {
+  components {
+   RigidBody "{684832700B951E63}" {
+    LayerPreset "PropFireView"
+    ModelGeometry 1
+   }
+  }
+  coords 96.651 1 160.47
+ }
+ {
+  components {
+   RigidBody "{6848327032C3BA6E}" {
+    LayerPreset "PropFireView"
+    ModelGeometry 1
+   }
+  }
+  coords 96.907 1 162.825
+ }
+}

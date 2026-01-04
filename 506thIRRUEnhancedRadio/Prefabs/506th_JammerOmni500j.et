@@ -1,0 +1,39 @@
+GenericEntity {
+ ID "6848327CE5FB7A60"
+ components {
+  ColliderHistoryComponent "{6848327D0826A0A3}" {
+  }
+  IRRU_JammerComponent "{6848327CE5FB7A77}" {
+   m_fConeAngleConfig 180
+  }
+  MeshObject "{6848327C10E13C57}" {
+   Object "{D4C5EDF6AD00E68C}Assets/Jammersmall FBX.xob"
+  }
+  RigidBody "{684832704FF978BE}" {
+   LayerPreset "PropFireView"
+   ModelGeometry 1
+  }
+  SCR_EditableEntityComponent "{6848327CE5FB7A09}" {
+   m_EntityType SYSTEM
+   m_UIInfo SCR_EditableEntityUIInfo "{6848327CE5FB7A06}" {
+    Name "Jammer Omni 500 M"
+    Description "Omnidirectional Radio Jammer"
+    Icon "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
+    m_Image "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
+    m_aAuthoredLabels {
+     ENTITYTYPE_SYSTEM TRAIT_EFFECT_MODULE
+    }
+    m_EntityBudgetCost {
+     SCR_EntityBudgetValue "{6848327CE5FB7A07}" {
+      m_BudgetType SYSTEMS
+      m_Value 5
+     }
+    }
+   }
+   m_Flags PLACEABLE
+  }
+  RplComponent "{6848327CE5FB7A01}" {
+  }
+ }
+ coords 3 3.967 3.197
+}
