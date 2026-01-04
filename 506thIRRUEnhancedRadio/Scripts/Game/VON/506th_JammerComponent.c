@@ -20,9 +20,7 @@ class IRRU_JammerComponent : ScriptComponent
 	protected float m_fConeAngle;
 
 	#ifdef WORKBENCH
-	protected ref Shape m_DebugSphere;
-	protected ref Shape m_DebugForward;
-	protected ref Shape m_DebugConeLines;
+	protected ref array<ref Shape> m_aDebugShapes;
 	#endif
 
 	override void OnPostInit(IEntity owner)
@@ -47,69 +45,64 @@ class IRRU_JammerComponent : ScriptComponent
 	#ifdef WORKBENCH
 	override void EOnFrame(IEntity owner, float timeSlice)
 	{
-		DebugDrawJammer();
+		DebugDrawJammer(owner);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	protected void DebugDrawJammer()
+	protected void DebugDrawJammer(IEntity owner)
 	{
-		// Clear previous shapes
-		m_DebugSphere = null;
-		m_DebugForward = null;
-		m_DebugConeLines = null;
+		if (!owner)
+			return;
 
-		vector origin = GetPosition();
-		vector forward = GetForwardVector();
+		if (!m_aDebugShapes)
+			m_aDebugShapes = new array<ref Shape>();
+		m_aDebugShapes.Clear();
+
+		vector mat[4];
+		owner.GetWorldTransform(mat);
+		vector origin = mat[3];
+		vector forward = mat[2];
+		vector right = mat[0];
+		vector up = mat[1];
+
 		float range = m_fRangeConfig;
 		float coneAngle = m_fConeAngleConfig;
 
-		// Choose color based on active state
-		int sphereColor = Color.GRAY;
+		int sphereColor = 0x40808080;
 		int lineColor = Color.GRAY;
 		if (m_bActive)
 		{
-			sphereColor = Color.RED;
+			sphereColor = 0x40FF0000;
 			lineColor = Color.YELLOW;
 		}
 
-		// Draw range sphere (wireframe style using NOZBUFFER so it's visible through terrain)
-		m_DebugSphere = Shape.CreateSphere(sphereColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE | ShapeFlags.WIREFRAME, origin, range);
+		Shape sphereShape = Shape.CreateSphere(sphereColor, ShapeFlags.ONCE | ShapeFlags.TRANSP, origin, range);
+		if (sphereShape)
+			m_aDebugShapes.Insert(sphereShape);
 
-		// Draw forward direction arrow
 		vector forwardEnd = origin + forward * range;
-		m_DebugForward = Shape.CreateArrow(origin, forwardEnd, 5.0, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		Shape arrowShape = Shape.CreateArrow(origin, forwardEnd, 5.0, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+		if (arrowShape)
+			m_aDebugShapes.Insert(arrowShape);
 
-		// If directional (cone angle < 180), draw cone edges
 		if (coneAngle < 180)
 		{
 			float halfAngleRad = (coneAngle * 0.5) * Math.DEG2RAD;
-
-			// Get right and up vectors relative to forward
-			vector right = GetOwner().GetTransformAxis(0);
-			vector up = GetOwner().GetTransformAxis(1);
-
-			// Calculate cone edge directions
 			float cosAngle = Math.Cos(halfAngleRad);
 			float sinAngle = Math.Sin(halfAngleRad);
 
-			// Create 4 edge lines for the cone (right, left, up, down)
-			vector coneRight = (forward * cosAngle + right * sinAngle).Normalized() * range;
-			vector coneLeft = (forward * cosAngle - right * sinAngle).Normalized() * range;
-			vector coneUp = (forward * cosAngle + up * sinAngle).Normalized() * range;
-			vector coneDown = (forward * cosAngle - up * sinAngle).Normalized() * range;
+			int numConeLines = 16;
+			float coneStep = (Math.PI * 2.0) / numConeLines;
 
-			// Draw cone lines
-			vector conePoints[8];
-			conePoints[0] = origin;
-			conePoints[1] = origin + coneRight;
-			conePoints[2] = origin;
-			conePoints[3] = origin + coneLeft;
-			conePoints[4] = origin;
-			conePoints[5] = origin + coneUp;
-			conePoints[6] = origin;
-			conePoints[7] = origin + coneDown;
+			for (int i = 0; i < numConeLines; i++)
+			{
+				float angle = i * coneStep;
+				vector radialDir = right * Math.Cos(angle) + up * Math.Sin(angle);
+				vector coneDir = (forward * cosAngle + radialDir * sinAngle).Normalized() * range;
 
-			m_DebugConeLines = Shape.CreateLines(lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE, conePoints, 8);
+				Shape coneLine = Shape.CreateArrow(origin, origin + coneDir, 0.1, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+				if (coneLine)
+					m_aDebugShapes.Insert(coneLine);
+			}
 		}
 	}
 	#endif
