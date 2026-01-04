@@ -13,6 +13,9 @@ class IRRU_JammerComponent : ScriptComponent
 	[Attribute("1", UIWidgets.CheckBox, "Is jammer active on spawn")]
 	protected bool m_bActiveConfig;
 
+	[Attribute("0 0 0", UIWidgets.Coords, "Emitter offset from entity origin (local space)")]
+	protected vector m_vEmitterOffset;
+
 	[RplProp(onRplName: "OnActiveChanged")]
 	protected bool m_bActive;
 
@@ -62,10 +65,10 @@ class IRRU_JammerComponent : ScriptComponent
 
 		vector mat[4];
 		owner.GetWorldTransform(mat);
-		vector origin = mat[3];
 		vector forward = mat[2];
 		vector right = mat[0];
 		vector up = mat[1];
+		vector origin = GetPosition();
 
 		float range = m_fRangeConfig;
 		float coneAngle = m_fConeAngleConfig;
@@ -166,7 +169,17 @@ class IRRU_JammerComponent : ScriptComponent
 
 	vector GetPosition()
 	{
-		return GetOwner().GetOrigin();
+		IEntity owner = GetOwner();
+		if (!owner)
+			return vector.Zero;
+
+		if (m_vEmitterOffset == vector.Zero)
+			return owner.GetOrigin();
+
+		vector mat[4];
+		owner.GetWorldTransform(mat);
+		vector worldOffset = m_vEmitterOffset[0] * mat[0] + m_vEmitterOffset[1] * mat[1] + m_vEmitterOffset[2] * mat[2];
+		return mat[3] + worldOffset;
 	}
 
 	vector GetForwardVector()
