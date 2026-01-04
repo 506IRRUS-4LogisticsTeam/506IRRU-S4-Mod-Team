@@ -45,6 +45,15 @@ GenericEntity {
      }
     }
    }
+   additionalActions {
+    IRRU_JammerToggleUserAction "{6849118DA0E31404}" {
+     UIInfo UIInfo "{6849118DA6438711}" {
+      Name "Toggle Jammer"
+      Description "Toggle Jammer"
+     }
+     ActionTitle "Toggle Jammer"
+    }
+   }
   }
   RplComponent "{684832092672BA04}" {
   }

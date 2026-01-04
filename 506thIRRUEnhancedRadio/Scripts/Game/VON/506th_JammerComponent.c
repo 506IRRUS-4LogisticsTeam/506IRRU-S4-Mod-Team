@@ -10,7 +10,10 @@ class IRRU_JammerComponent : ScriptComponent
 	[Attribute("180", UIWidgets.Slider, "Cone angle in degrees (180 = omnidirectional)", "10 180 5")]
 	protected float m_fConeAngleConfig;
 
-	[Attribute("1", UIWidgets.CheckBox, "Is jammer active")]
+	[Attribute("1", UIWidgets.CheckBox, "Is jammer active on spawn")]
+	protected bool m_bActiveConfig;
+
+	[RplProp(onRplName: "OnActiveChanged")]
 	protected bool m_bActive;
 
 	[RplProp()]
@@ -27,11 +30,11 @@ class IRRU_JammerComponent : ScriptComponent
 	{
 		super.OnPostInit(owner);
 
-		// Server copies config to replicated vars... hopefully....
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
 			m_fRange = m_fRangeConfig;
 			m_fConeAngle = m_fConeAngleConfig;
+			m_bActive = m_bActiveConfig;
 			Replication.BumpMe();
 		}
 
@@ -129,7 +132,26 @@ class IRRU_JammerComponent : ScriptComponent
 
 	void SetJammerActive(bool active)
 	{
+		if (Replication.IsServer() || !Replication.IsRunning())
+		{
+			m_bActive = active;
+			Replication.BumpMe();
+		}
+		else
+		{
+			Rpc(RpcAsk_SetJammerActive, active);
+		}
+	}
+
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	protected void RpcAsk_SetJammerActive(bool active)
+	{
 		m_bActive = active;
+		Replication.BumpMe();
+	}
+
+	protected void OnActiveChanged()
+	{
 	}
 
 	float GetRange()
