@@ -38,6 +38,7 @@ GenericEntity {
       Name "Power Box"
       Description "Power Box"
      }
+     ContextName "JammerControlPanel"
      Position PointInfo "{68491B291B828339}" {
       Offset -5.1699 1.1425 -1.8201
      }
@@ -45,6 +46,9 @@ GenericEntity {
    }
    additionalActions {
     IRRU_JammerToggleUserAction "{6849118DA0E31404}" {
+     ParentContextList {
+      "JammerControlPanel"
+     }
      UIInfo UIInfo "{6849118DA6438711}" {
       Name "Toggle Jammer"
       Description "Toggle Jammer"
