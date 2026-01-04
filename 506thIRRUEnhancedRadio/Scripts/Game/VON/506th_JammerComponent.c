@@ -75,33 +75,42 @@ class IRRU_JammerComponent : ScriptComponent
 			lineColor = Color.YELLOW;
 		}
 
-		Shape sphereShape = Shape.CreateSphere(sphereColor, ShapeFlags.ONCE | ShapeFlags.TRANSP, origin, range);
-		if (sphereShape)
-			m_aDebugShapes.Insert(sphereShape);
-
-		vector forwardEnd = origin + forward * range;
-		Shape arrowShape = Shape.CreateArrow(origin, forwardEnd, 5.0, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
-		if (arrowShape)
-			m_aDebugShapes.Insert(arrowShape);
-
-		if (coneAngle < 180)
+		if (coneAngle >= 180)
 		{
+			Shape sphereShape = Shape.CreateSphere(sphereColor, ShapeFlags.ONCE | ShapeFlags.TRANSP, origin, range);
+			if (sphereShape)
+				m_aDebugShapes.Insert(sphereShape);
+		}
+		else
+		{
+			vector forwardEnd = origin + forward * range;
+			Shape arrowShape = Shape.CreateArrow(origin, forwardEnd, 5.0, Color.BLUE, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+			if (arrowShape)
+				m_aDebugShapes.Insert(arrowShape);
+
 			float halfAngleRad = (coneAngle * 0.5) * Math.DEG2RAD;
-			float cosAngle = Math.Cos(halfAngleRad);
-			float sinAngle = Math.Sin(halfAngleRad);
 
 			int numConeLines = 16;
+			int numRings = 3;
 			float coneStep = (Math.PI * 2.0) / numConeLines;
 
-			for (int i = 0; i < numConeLines; i++)
+			for (int ring = 1; ring <= numRings; ring++)
 			{
-				float angle = i * coneStep;
-				vector radialDir = right * Math.Cos(angle) + up * Math.Sin(angle);
-				vector coneDir = (forward * cosAngle + radialDir * sinAngle).Normalized() * range;
+				float ringFraction = ring / (float)numRings;
+				float ringAngleRad = halfAngleRad * ringFraction;
+				float cosAngle = Math.Cos(ringAngleRad);
+				float sinAngle = Math.Sin(ringAngleRad);
 
-				Shape coneLine = Shape.CreateArrow(origin, origin + coneDir, 0.1, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
-				if (coneLine)
-					m_aDebugShapes.Insert(coneLine);
+				for (int i = 0; i < numConeLines; i++)
+				{
+					float angle = i * coneStep;
+					vector radialDir = right * Math.Cos(angle) + up * Math.Sin(angle);
+					vector coneDir = (forward * cosAngle + radialDir * sinAngle).Normalized() * range;
+
+					Shape coneLine = Shape.CreateArrow(origin, origin + coneDir, 0.1, lineColor, ShapeFlags.NOZBUFFER | ShapeFlags.ONCE);
+					if (coneLine)
+						m_aDebugShapes.Insert(coneLine);
+				}
 			}
 		}
 	}
