@@ -17,17 +17,15 @@ GenericEntity {
   SCR_EditableEntityComponent "{684832092672BA0D}" {
    m_EntityType SYSTEM
    m_UIInfo SCR_EditableEntityUIInfo "{684832092672BA0F}" {
-    Name "Jammer Omni 500 M"
-    Description "Omnidirectional Radio Jammer"
+    Name "Mega Jammer Dish"
+    Description "Directional 2000m Jammer"
     Icon "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
     m_Image "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
     m_aAuthoredLabels {
-     ENTITYTYPE_SYSTEM TRAIT_EFFECT_MODULE
+     ENTITYTYPE_COMPOSITION TRAIT_EFFECT_MODULE
     }
     m_EntityBudgetCost {
      SCR_EntityBudgetValue "{684832092672BA09}" {
-      m_BudgetType SYSTEMS
-      m_Value 5
      }
     }
    }
