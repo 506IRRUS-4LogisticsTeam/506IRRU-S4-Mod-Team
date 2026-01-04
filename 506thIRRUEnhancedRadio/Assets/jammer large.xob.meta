@@ -22,13 +22,21 @@ MetaFileClass {
     }
    }
    MeshParams {
-    MeshParam "Cube.030" {
-    }
     MeshParam "Cube.038" {
     }
     MeshParam "Cube.058" {
     }
-    MeshParam "Cylinder.022" {
+    MeshParam Axis {
+    }
+    MeshParam "Axis.001" {
+    }
+    MeshParam "Cube.001" {
+    }
+    MeshParam "Cube.002" {
+    }
+    MeshParam Dish {
+    }
+    MeshParam "Dish.001" {
     }
    }
    GeometryParams {
@@ -49,16 +57,30 @@ MetaFileClass {
      Mass 0
      Margin 0
     }
-    GeometryParam UTM_Platform {
+    GeometryParam UTM_Power {
      LayerPreset "PropFireView"
+     SurfaceProperties {
+      "{3CDB1DDB660C5DEC}_3_.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam "UTM_base.001" {
      SurfaceProperties {
       "{433B1FD5FF67352E}_4_.gamemat"
      }
      Mass 0
      Margin 0
     }
-    GeometryParam UTM_Power {
-     LayerPreset "PropFireView"
+    GeometryParam "UTM_Dish.001" {
+     SurfaceProperties {
+      "{D32E054905A8A95C}light_red.gamemat"
+      "{BD3B5F900A355962}_5_.gamemat"
+     }
+     Mass 0
+     Margin 0
+    }
+    GeometryParam "UTM_Power.001" {
      SurfaceProperties {
       "{3CDB1DDB660C5DEC}_3_.gamemat"
      }

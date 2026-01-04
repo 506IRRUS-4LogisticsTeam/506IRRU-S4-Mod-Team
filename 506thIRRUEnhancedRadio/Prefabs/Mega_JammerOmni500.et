@@ -6,6 +6,7 @@ GenericEntity {
   IRRU_JammerComponent "{684832092672BA70}" {
    m_fRangeConfig 2000
    m_fConeAngleConfig 90
+   m_vEmitterOffset 0 12 3
   }
   MeshObject "{684832092672BA72}" {
    Object "{AFB42967612D5D72}Assets/jammer large.xob"
@@ -19,8 +20,8 @@ GenericEntity {
    m_UIInfo SCR_EditableEntityUIInfo "{684832092672BA0F}" {
     Name "Mega Jammer Dish"
     Description "Directional 2000m Jammer"
-    Icon "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
-    m_Image "{20F815979A8ED462}PrefabsEditable/Auto/Compositions/Slotted/SlotFlatSmall/Jammer.edds"
+    Icon "{F3471836A05A4DE7}Prefabs/mega jammer.edds"
+    m_Image "{F3471836A05A4DE7}Prefabs/mega jammer.edds"
     m_aAuthoredLabels {
      ENTITYTYPE_COMPOSITION TRAIT_EFFECT_MODULE
     }
