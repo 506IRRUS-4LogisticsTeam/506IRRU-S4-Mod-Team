@@ -7,14 +7,15 @@ class IRRU_RFPropagationModel
     protected static const float SAMPLE_INTERVAL = 50.0;
     protected static const int MAX_SAMPLES = 200;
     protected static const float MIN_DISTANCE = 50.0;
+    protected static const int MAX_KNIFE_EDGES = 3;
 
-    protected static const float EXCELLENT_THRESHOLD = 80.0;
-    protected static const float GOOD_THRESHOLD = 100.0;
-    protected static const float POOR_THRESHOLD = 120.0;
-    protected static const float CUTOFF_THRESHOLD = 140.0;
+    protected static const float EARTH_RADIUS = 6371000.0;
+    protected static const float K_FACTOR = 1.333;
 
-    protected static const int MAX_OBSTACLE_ITERATIONS = 10;
-    protected static const float RAYCAST_STEP_OFFSET = 0.5;
+    protected static const float EXCELLENT_THRESHOLD = 75.0;
+    protected static const float GOOD_THRESHOLD = 85.0;
+    protected static const float POOR_THRESHOLD = 92.0;
+    protected static const float CUTOFF_THRESHOLD = 100.0;
 
     private static ref IRRU_RFPropagationModel s_Instance;
 
@@ -56,24 +57,22 @@ class IRRU_RFPropagationModel
         float dy = rxHeight - txHeight;
         float totalDistance = Math.Sqrt(horizontalDist * horizontalDist + dy * dy);
 
-        float worstDiffractionLoss = CalculateTerrainDiffractionLoss(world, txPos, rxPos, txHeight, rxHeight, horizontalDist, wavelength);
-        float freeSpaceLoss = CalculateFreeSpacePathLoss(totalDistance, frequencyMHz);
-        float obstacleLoss = CalculateObstacleLoss(world, txPos, rxPos);
+        float diffractionLoss = CalculateTerrainDiffractionLoss(world, txPos, rxPos, txHeight, rxHeight, horizontalDist, wavelength);
+        float pathLoss = CalculatePathLoss(totalDistance, frequencyMHz);
 
-        float totalLoss = freeSpaceLoss + worstDiffractionLoss + obstacleLoss;
+        float totalLoss = pathLoss + diffractionLoss;
         float quality = LossToQuality(totalLoss);
 
         if (IRRU_RFPropagationNetworkComponent.IsDebugEnabled())
         {
-            Print(string.Format("[RFPropagation] Dist: %1m | FSPL: %2dB | Diffraction: %3dB | Obstacle: %4dB | Total: %5dB | Quality: %6",
-                Math.Round(totalDistance), Math.Round(freeSpaceLoss), Math.Round(worstDiffractionLoss), Math.Round(obstacleLoss), Math.Round(totalLoss), quality));
+            Print(string.Format("[RFPropagation] Dist: %1m | PathLoss: %2dB | Diffraction: %3dB | Total: %4dB | Quality: %5",
+                Math.Round(totalDistance), Math.Round(pathLoss), Math.Round(diffractionLoss), Math.Round(totalLoss), quality));
         }
 
         return quality;
     }
 
     //------------------------------------------------------------------------------------------------
-    // too much math
     protected float CalculateTerrainDiffractionLoss(BaseWorld world, vector txPos, vector rxPos, float txHeight, float rxHeight, float horizontalDist, float wavelength)
     {
         int numSamples = Math.Floor(horizontalDist / SAMPLE_INTERVAL);
@@ -87,9 +86,10 @@ class IRRU_RFPropagationModel
         float dirX = dx / horizontalDist;
         float dirZ = dz / horizontalDist;
 
-        float worstObstruction = 0.0;
-        float worstD1 = 0.0;
-        float worstD2 = 0.0;
+        ref array<float> peakHeights = new array<float>();
+        ref array<float> peakD1 = new array<float>();
+        ref array<float> peakD2 = new array<float>();
+
         float worstFresnelIntrusion = 0.0;
         float worstFresnelRadius = 0.0;
 
@@ -102,18 +102,17 @@ class IRRU_RFPropagationModel
             float sampleZ = txPos[2] + dirZ * d1;
 
             float terrainY = world.GetSurfaceY(sampleX, sampleZ);
+            float earthBulge = CalculateEarthBulge(d1, d2);
+            float effectiveTerrainY = terrainY + earthBulge;
             float losHeight = txHeight + (rxHeight - txHeight) * (d1 / horizontalDist);
             float fresnelRadius = CalculateFresnelRadius(d1, d2, horizontalDist, wavelength);
-            float heightAboveLOS = terrainY - losHeight;
+            float heightAboveLOS = effectiveTerrainY - losHeight;
 
-            if (heightAboveLOS > worstObstruction)
+            if (heightAboveLOS > 0)
             {
-                worstObstruction = heightAboveLOS;
-                worstD1 = d1;
-                worstD2 = d2;
+                InsertPeakSorted(peakHeights, peakD1, peakD2, heightAboveLOS, d1, d2);
             }
-
-            if (heightAboveLOS <= 0)
+            else
             {
                 float fresnelClearance = -heightAboveLOS;
                 float fresnelIntrusion = fresnelRadius - fresnelClearance;
@@ -127,9 +126,16 @@ class IRRU_RFPropagationModel
 
         float totalLoss = 0.0;
 
-        if (worstObstruction > 0)
+        int numPeaks = peakHeights.Count();
+        if (numPeaks > MAX_KNIFE_EDGES)
+            numPeaks = MAX_KNIFE_EDGES;
+
+        for (int p = 0; p < numPeaks; p++)
         {
-            float diffractionLoss = CalculateDiffractionLoss(worstObstruction, worstD1, worstD2, horizontalDist, wavelength);
+            float h = peakHeights.Get(p);
+            float d1 = peakD1.Get(p);
+            float d2 = peakD2.Get(p);
+            float diffractionLoss = CalculateDiffractionLoss(h, d1, d2, horizontalDist, wavelength);
             totalLoss += diffractionLoss;
         }
 
@@ -152,6 +158,32 @@ class IRRU_RFPropagationModel
     }
 
     //------------------------------------------------------------------------------------------------
+    protected void InsertPeakSorted(array<float> heights, array<float> d1Arr, array<float> d2Arr, float h, float d1, float d2)
+    {
+        int insertIdx = heights.Count();
+        for (int i = 0; i < heights.Count(); i++)
+        {
+            if (h > heights.Get(i))
+            {
+                insertIdx = i;
+                break;
+            }
+        }
+
+        heights.InsertAt(h, insertIdx);
+        d1Arr.InsertAt(d1, insertIdx);
+        d2Arr.InsertAt(d2, insertIdx);
+
+        while (heights.Count() > MAX_KNIFE_EDGES)
+        {
+            int lastIdx = heights.Count() - 1;
+            heights.Remove(lastIdx);
+            d1Arr.Remove(lastIdx);
+            d2Arr.Remove(lastIdx);
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------
     protected float CalculateFresnelRadius(float d1, float d2, float totalDist, float wavelength)
     {
         if (totalDist <= 0)
@@ -159,6 +191,14 @@ class IRRU_RFPropagationModel
 
         float radius = Math.Sqrt(wavelength * d1 * d2 / totalDist);
         return radius;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected float CalculateEarthBulge(float d1, float d2)
+    {
+        float effectiveRadius = EARTH_RADIUS * K_FACTOR;
+        float bulge = (d1 * d2) / (2.0 * effectiveRadius);
+        return bulge;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -185,124 +225,17 @@ class IRRU_RFPropagationModel
     }
 
     //------------------------------------------------------------------------------------------------
-    protected float CalculateFreeSpacePathLoss(float distance, float frequencyMHz)
+    protected float CalculatePathLoss(float distance, float frequencyMHz)
     {
         if (distance <= 1.0)
             return 0.0;
 
-        float loss = 20.0 * Math.Log10(distance) + 20.0 * Math.Log10(frequencyMHz) - 27.55; // FSPL formula in dB
-        // constant is 27.55 when distance in meters and frequency in MHz
+        float loss = 20.0 * Math.Log10(distance) + 20.0 * Math.Log10(frequencyMHz) - 27.55;
 
         if (loss < 0)
             loss = 0;
 
         return loss;
-    }
-
-    //------------------------------------------------------------------------------------------------
-    protected float CalculateObstacleLoss(BaseWorld world, vector txPos, vector rxPos)
-    {
-        vector startPos = txPos + Vector(0, ANTENNA_HEIGHT, 0);
-        vector endPos = rxPos + Vector(0, ANTENNA_HEIGHT, 0);
-
-        vector dir = (endPos - startPos).Normalized();
-        vector currentStart = startPos + dir * 1.0;
-
-        float totalLoss = 0.0;
-
-        for (int iteration = 0; iteration < MAX_OBSTACLE_ITERATIONS; iteration++)
-        {
-            float remainingDist = vector.Distance(currentStart, endPos);
-            if (remainingDist < RAYCAST_STEP_OFFSET)
-                break;
-
-            TraceParam trace = new TraceParam();
-            trace.Start = currentStart;
-            trace.End = endPos;
-            trace.Flags = TraceFlags.WORLD | TraceFlags.ENTS;
-            trace.LayerMask = EPhysicsLayerPresets.Projectile;
-
-            float result = world.TraceMove(trace, null);
-
-            if (result >= 1.0)
-                break;
-
-            vector hitPos = currentStart + (endPos - currentStart) * result;
-
-            float hitLoss = 0.0;
-
-            if (trace.TraceMaterial && trace.TraceMaterial.Length() > 0)
-                hitLoss += GetMaterialLoss(trace.TraceMaterial);
-
-            if (trace.TraceEnt)
-                hitLoss += GetEntityLoss(trace.TraceEnt);
-
-            if (hitLoss <= 0)
-                hitLoss = 10.0;
-
-            totalLoss += hitLoss;
-
-            currentStart = hitPos + dir * RAYCAST_STEP_OFFSET;
-        }
-
-        return totalLoss;
-    }
-
-    //------------------------------------------------------------------------------------------------
-    protected float GetMaterialLoss(string material)
-    {
-		// there must be a better way to do this....
-        if (!material || material.Length() == 0)
-            return 0.0;
-
-        string mat = material;
-        mat.ToLower();
-
-        if (mat.Contains("concrete") || mat.Contains("stone") || mat.Contains("rock"))
-            return 15.0;
-        if (mat.Contains("metal") || mat.Contains("steel") || mat.Contains("iron"))
-            return 25.0;
-        if (mat.Contains("brick"))
-            return 12.0;
-
-        if (mat.Contains("wood") || mat.Contains("plank"))
-            return 5.0;
-        if (mat.Contains("glass"))
-            return 2.0;
-
-        if (mat.Contains("grass") || mat.Contains("dirt") || mat.Contains("sand") || mat.Contains("soil"))
-            return 0.0;
-        if (mat.Contains("gravel") || mat.Contains("asphalt") || mat.Contains("road"))
-            return 0.0;
-
-        Print(string.Format("[RF Propagation] Unknown material: %1", material), LogLevel.DEBUG);
-        return 3.0;
-    }
-
-    //------------------------------------------------------------------------------------------------
-    protected float GetEntityLoss(IEntity ent)
-    {
-        if (!ent)
-            return 0.0;
-
-        if (ent.FindComponent(SlotManagerComponent))
-            return 15.0;
-
-        string typeName = ent.Type().ToString();
-        typeName.ToLower();
-
-        if (typeName.Contains("tree"))
-            return 3.0;
-        if (typeName.Contains("bush") || typeName.Contains("shrub"))
-            return 1.0;
-
-        if (typeName.Contains("building") || typeName.Contains("house") || typeName.Contains("wall"))
-            return 15.0;
-
-        if (typeName.Contains("vehicle") || typeName.Contains("car") || typeName.Contains("truck"))
-            return 20.0;
-
-        return 5.0;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -390,15 +323,24 @@ class IRRU_RFPropagationModel
 
         Print(string.Format("[RF Debug] Frequency: %1 MHz, Wavelength: %2 m", debugFreqMHz, wavelength), LogLevel.NORMAL);
         Print(string.Format("[RF Debug] Horizontal distance: %1 m, samples: %2", horizontalDist, numSamples), LogLevel.NORMAL);
+
+        float effectiveEarthRadius = EARTH_RADIUS * K_FACTOR;
+        float maxBulgeD1 = horizontalDist * 0.5;
+        float maxBulgeD2 = horizontalDist * 0.5;
+        float maxBulge = (maxBulgeD1 * maxBulgeD2) / (2.0 * effectiveEarthRadius);
+        Print(string.Format("[RF Debug] Atmospheric K-factor: %1 (effective earth radius: %2 km)", K_FACTOR, (effectiveEarthRadius / 1000.0).ToString(0)), LogLevel.NORMAL);
+        Print(string.Format("[RF Debug] Max earth bulge at midpoint: %1 m", maxBulge.ToString(2)), LogLevel.NORMAL);
+
         Print("[RF Debug] --- Terrain Profile ---", LogLevel.NORMAL);
 
         float dirX = dx / horizontalDist;
         float dirZ = dz / horizontalDist;
 
-        float worstObstruction = 0.0;
-        float worstD1 = 0.0;
-        float worstD2 = 0.0;
-        int worstSample = -1;
+        ref array<float> peakHeights = new array<float>();
+        ref array<float> peakD1 = new array<float>();
+        ref array<float> peakD2 = new array<float>();
+        ref array<int> peakSamples = new array<int>();
+
         float worstFresnelIntrusion = 0.0;
         float worstFresnelRadius = 0.0;
 
@@ -413,21 +355,18 @@ class IRRU_RFPropagationModel
             float sampleZ = playerPos[2] + dirZ * d1;
             float terrainY = world.GetSurfaceY(sampleX, sampleZ);
 
+            float earthBulge = model.CalculateEarthBulge(d1, d2);
+            float effectiveTerrainY = terrainY + earthBulge;
+
             float losHeight = playerHeight + (targetHeight - playerHeight) * (d1 / horizontalDist);
             float fresnelRadius = model.CalculateFresnelRadius(d1, d2, horizontalDist, wavelength);
-            float heightAboveLOS = terrainY - losHeight;
+            float heightAboveLOS = effectiveTerrainY - losHeight;
 
             string status;
             if (heightAboveLOS > 0)
             {
                 status = "BLOCKED";
-                if (heightAboveLOS > worstObstruction)
-                {
-                    worstObstruction = heightAboveLOS;
-                    worstD1 = d1;
-                    worstD2 = d2;
-                    worstSample = i;
-                }
+                DebugInsertPeak(peakHeights, peakD1, peakD2, peakSamples, heightAboveLOS, d1, d2, i);
             }
             else
             {
@@ -450,23 +389,39 @@ class IRRU_RFPropagationModel
                 }
             }
 
-            Print(string.Format("  Sample %1: d=%2m, terrain=%3m, LOS=%4m, aboveLOS=%5m, Fresnel=%6m [%7]",
-                i, d1, terrainY, losHeight, heightAboveLOS, fresnelRadius, status), LogLevel.NORMAL);
+            Print(string.Format("  Sample %1: d=%2m, terrain=%3m, bulge=%4m, LOS=%5m, aboveLOS=%6m [%7]",
+                i, d1, terrainY, earthBulge.ToString(2), losHeight, heightAboveLOS.ToString(2), status), LogLevel.NORMAL);
         }
 
         Print("[RF Debug] --- Calculations ---", LogLevel.NORMAL);
 
         float dy = targetHeight - playerHeight;
         float totalDistance = Math.Sqrt(horizontalDist * horizontalDist + dy * dy);
-        float fspl = model.CalculateFreeSpacePathLoss(totalDistance, debugFreqMHz);
-        Print(string.Format("[RF Debug] Free Space Path Loss: %1 dB (3D dist: %2 m)", fspl, totalDistance), LogLevel.NORMAL);
+
+        float pathLoss = model.CalculatePathLoss(totalDistance, debugFreqMHz);
+
+        Print(string.Format("[RF Debug] Path Loss (FSPL): %1 dB", pathLoss), LogLevel.NORMAL);
 
         float diffLoss = 0.0;
-        if (worstObstruction > 0)
+        int numPeaks = peakHeights.Count();
+        if (numPeaks > 0)
         {
-            diffLoss = model.CalculateDiffractionLoss(worstObstruction, worstD1, worstD2, horizontalDist, wavelength);
-            Print(string.Format("[RF Debug] Worst obstruction: Sample %1, h=%2 m above LOS", worstSample, worstObstruction), LogLevel.NORMAL);
-            Print(string.Format("[RF Debug] Diffraction Loss: %1 dB", diffLoss), LogLevel.NORMAL);
+            Print(string.Format("[RF Debug] Detected %1 obstructions (using top %2):", numPeaks, MAX_KNIFE_EDGES), LogLevel.NORMAL);
+            int peaksToUse = numPeaks;
+            if (peaksToUse > MAX_KNIFE_EDGES)
+                peaksToUse = MAX_KNIFE_EDGES;
+
+            for (int p = 0; p < peaksToUse; p++)
+            {
+                float h = peakHeights.Get(p);
+                float pd1 = peakD1.Get(p);
+                float pd2 = peakD2.Get(p);
+                int sampleIdx = peakSamples.Get(p);
+                float peakDiffLoss = model.CalculateDiffractionLoss(h, pd1, pd2, horizontalDist, wavelength);
+                diffLoss += peakDiffLoss;
+                Print(string.Format("  Peak %1: Sample %2, h=%3m above LOS, loss=%4 dB", p + 1, sampleIdx, h, peakDiffLoss), LogLevel.NORMAL);
+            }
+            Print(string.Format("[RF Debug] Total Diffraction Loss: %1 dB", diffLoss), LogLevel.NORMAL);
         }
         else
         {
@@ -488,83 +443,40 @@ class IRRU_RFPropagationModel
                 Print(string.Format("[RF Debug] Fresnel Zone Intrusion: %1 dB (clearance %2%%)", fresnelLoss, (clearancePercent * 100.0).ToString(0)), LogLevel.NORMAL);
         }
 
-        Print("[RF Debug] --- Obstacle Raycast (Iterative) ---", LogLevel.NORMAL);
-        vector startPos = playerPos + Vector(0, ANTENNA_HEIGHT, 0);
-        vector endPos = targetPos + Vector(0, ANTENNA_HEIGHT, 0);
-
-        vector traceDir = (endPos - startPos).Normalized();
-        vector currentStart = startPos + traceDir * 1.0;
-
-        float obstLoss = 0.0;
-        int hitCount = 0;
-
-        for (int rayIter = 0; rayIter < MAX_OBSTACLE_ITERATIONS; rayIter++)
-        {
-            float remainingDist = vector.Distance(currentStart, endPos);
-            if (remainingDist < RAYCAST_STEP_OFFSET)
-                break;
-
-            TraceParam trace = new TraceParam();
-            trace.Start = currentStart;
-            trace.End = endPos;
-            trace.Flags = TraceFlags.WORLD | TraceFlags.ENTS;
-            trace.LayerMask = EPhysicsLayerPresets.Projectile;
-
-            float traceResult = world.TraceMove(trace, null);
-
-            if (traceResult >= 1.0)
-            {
-                if (hitCount == 0)
-                    Print("[RF Debug] Raycast: No hit (clear path)", LogLevel.NORMAL);
-                break;
-            }
-
-            hitCount++;
-            vector hitPos = currentStart + (endPos - currentStart) * traceResult;
-            float hitDist = vector.Distance(startPos, hitPos);
-
-            Print(string.Format("[RF Debug] Hit #%1 at %2 m", hitCount, hitDist.ToString(1)), LogLevel.NORMAL);
-
-            float hitLoss = 0.0;
-
-            if (trace.TraceMaterial && trace.TraceMaterial.Length() > 0)
-            {
-                Print(string.Format("[RF Debug]   Material: \"%1\"", trace.TraceMaterial), LogLevel.NORMAL);
-                float matLoss = model.GetMaterialLoss(trace.TraceMaterial);
-                Print(string.Format("[RF Debug]   Material loss: %1 dB", matLoss), LogLevel.NORMAL);
-                hitLoss += matLoss;
-            }
-
-            if (trace.TraceEnt)
-            {
-                string entType = trace.TraceEnt.Type().ToString();
-                string entName = trace.TraceEnt.GetName();
-                Print(string.Format("[RF Debug]   Entity: %1 (%2)", entType, entName), LogLevel.NORMAL);
-
-                float entLoss = model.GetEntityLoss(trace.TraceEnt);
-                Print(string.Format("[RF Debug]   Entity loss: %1 dB", entLoss), LogLevel.NORMAL);
-                hitLoss += entLoss;
-            }
-
-            if (hitLoss <= 0)
-            {
-                hitLoss = 10.0;
-                Print("[RF Debug]   Using default: 10 dB", LogLevel.NORMAL);
-            }
-
-            obstLoss += hitLoss;
-
-            currentStart = hitPos + traceDir * RAYCAST_STEP_OFFSET;
-        }
-
-        Print(string.Format("[RF Debug] Total Obstacle Loss: %1 dB (%2 obstacles)", obstLoss, hitCount), LogLevel.NORMAL);
-
-        float totalLoss = fspl + diffLoss + fresnelLoss + obstLoss;
+        float totalLoss = pathLoss + diffLoss + fresnelLoss;
         float quality = model.LossToQuality(totalLoss);
 
         Print("[RF Debug] === RESULT ===", LogLevel.NORMAL);
         Print(string.Format("[RF Debug] Total Loss: %1 dB", totalLoss), LogLevel.NORMAL);
         Print(string.Format("[RF Debug] Signal Quality: %1 (1.0=perfect, 0.0=no signal)", quality), LogLevel.NORMAL);
         Print("=== END RF DEBUG ===", LogLevel.NORMAL);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected static void DebugInsertPeak(array<float> heights, array<float> d1Arr, array<float> d2Arr, array<int> samples, float h, float d1, float d2, int sampleIdx)
+    {
+        int insertIdx = heights.Count();
+        for (int i = 0; i < heights.Count(); i++)
+        {
+            if (h > heights.Get(i))
+            {
+                insertIdx = i;
+                break;
+            }
+        }
+
+        heights.InsertAt(h, insertIdx);
+        d1Arr.InsertAt(d1, insertIdx);
+        d2Arr.InsertAt(d2, insertIdx);
+        samples.InsertAt(sampleIdx, insertIdx);
+
+        while (heights.Count() > MAX_KNIFE_EDGES)
+        {
+            int lastIdx = heights.Count() - 1;
+            heights.Remove(lastIdx);
+            d1Arr.Remove(lastIdx);
+            d2Arr.Remove(lastIdx);
+            samples.Remove(lastIdx);
+        }
     }
 }
