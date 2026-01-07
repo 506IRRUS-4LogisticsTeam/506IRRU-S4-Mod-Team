@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRUFactions"
+ GUID "684C665FBD20F05E"
+ TITLE "506IRRU - Factions"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}

@@ -1,0 +1,26 @@
+SCR_AIGroup : "{D4293D16F67F383F}Prefabs/AI/Groups/506IRRU/Group_Base_506IRRU.et" {
+ ID "684C795F91053399"
+ components {
+  SCR_EditableEntityComponent "{684D74BB2A101D04}" : "{996046FE206C699A}Prefabs/Editor/Components/Default_SCR_EditableEntityComponent.ct" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "(Group_RifleSquad_506IRRU)"
+    m_Image ""
+    m_aAuthoredLabels {
+    }
+    m_aAutoLabels {
+     ENTITYTYPE_OBJECT SIZE_XL
+    }
+    m_EntityChildrenBudgetCost {
+     SCR_EntityBudgetValue "{684D74BB2B0565ED}" {
+      m_BudgetType AI
+      m_Value 10
+     }
+    }
+   }
+  }
+ }
+ m_faction "506IRRU"
+ m_aUnitPrefabSlots {
+  "{6665617DEEDCB00A}Prefabs/Characters/Core/506IRRU/Character_Base_506IRRU_SL.et" "{5FC6BEF44035FD3A}Prefabs/Characters/Core/506IRRU/Character_Base_506IRRU_Medic.et" "{61A29B2C885A0AC9}Prefabs/Characters/Core/506IRRU/Character_TL_506IRRU.et" "{0BED9062DC581219}Prefabs/Characters/Core/506IRRU/Character_AR_506IRRU.et" "{B0AAF67B5024485E}Prefabs/Characters/Core/506IRRU/Character_Gren_506IRRU.et" "{6C4851EAC3FB637B}Prefabs/Characters/Core/506IRRU/Character_RMN_506IRRU.et" "{61A29B2C885A0AC9}Prefabs/Characters/Core/506IRRU/Character_TL_506IRRU.et" "{0BED9062DC581219}Prefabs/Characters/Core/506IRRU/Character_AR_506IRRU.et" "{B0AAF67B5024485E}Prefabs/Characters/Core/506IRRU/Character_Gren_506IRRU.et" "{6C4851EAC3FB637B}Prefabs/Characters/Core/506IRRU/Character_RMN_506IRRU.et"
+ }
+}

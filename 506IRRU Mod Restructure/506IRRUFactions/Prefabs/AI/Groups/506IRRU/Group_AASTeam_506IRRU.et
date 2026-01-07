@@ -1,0 +1,16 @@
+SCR_AIGroup : "{D4293D16F67F383F}Prefabs/AI/Groups/506IRRU/Group_Base_506IRRU.et" {
+ ID "684C795F91053399"
+ components {
+  SCR_EditableEntityComponent "{684D74BB379307BA}" : "{996046FE206C699A}Prefabs/Editor/Components/Default_SCR_EditableEntityComponent.ct" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "(Group_AASTeam_506IRRU)"
+    m_Image ""
+    m_aAuthoredLabels {
+    }
+    m_aAutoLabels {
+     ENTITYTYPE_OBJECT SIZE_XL
+    }
+   }
+  }
+ }
+}

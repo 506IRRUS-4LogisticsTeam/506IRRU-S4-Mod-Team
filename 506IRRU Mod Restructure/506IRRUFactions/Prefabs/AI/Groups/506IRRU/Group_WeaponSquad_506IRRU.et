@@ -1,0 +1,36 @@
+SCR_AIGroup : "{D4293D16F67F383F}Prefabs/AI/Groups/506IRRU/Group_Base_506IRRU.et" {
+ ID "684C795F91053399"
+ components {
+  SCR_EditableEntityComponent "{684D74BB2B1C9251}" : "{996046FE206C699A}Prefabs/Editor/Components/Default_SCR_EditableEntityComponent.ct" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "(Group_WeaponSquad_506IRRU)"
+    m_Image ""
+    m_aAuthoredLabels {
+    }
+    m_aAutoLabels {
+     ENTITYTYPE_OBJECT SIZE_XL
+    }
+   }
+  }
+  SCR_EditableGroupComponent "{50D291F6C83FA532}" {
+   m_UIInfo SCR_EditableGroupUIInfo "{5298E609432D192D}" {
+    Name "506IRRU Weapon Squad"
+    Icon "{4D6CB4D087CE9A75}Images/506_Icon.edds"
+    m_sFaction "506IRRU"
+    m_aAuthoredLabels + {
+     FACTION_506IRRU
+    }
+   }
+  }
+  SCR_GroupIdentityComponent "{684C795F911A2013}" {
+   m_MilitarySymbol SCR_MilitarySymbol "{684C795F911A2010}" {
+    m_Identity BLUFOR
+    m_Icons 8200
+    m_Amplifier SQUAD
+   }
+  }
+ }
+ m_aUnitPrefabSlots {
+  "{6665617DEEDCB00A}Prefabs/Characters/Core/506IRRU/Character_Base_506IRRU_SL.et" "{5FC6BEF44035FD3A}Prefabs/Characters/Core/506IRRU/Character_Base_506IRRU_Medic.et" "{92A63BA753D123B5}Prefabs/Characters/Core/506IRRU/Character_AAS_506IRRU.et" "{9E36A798F4758CBB}Prefabs/Characters/Core/506IRRU/Character_AssistAAS_506IRRU.et" "{92A63BA753D123B5}Prefabs/Characters/Core/506IRRU/Character_AAS_506IRRU.et" "{9E36A798F4758CBB}Prefabs/Characters/Core/506IRRU/Character_AssistAAS_506IRRU.et" "{59FA4E78B21706FA}Prefabs/Characters/Core/506IRRU/Character_MG_506IRRU.et" "{D7528127836B1446}Prefabs/Characters/Core/506IRRU/Character_AssistMG_506IRRU.et" "{59FA4E78B21706FA}Prefabs/Characters/Core/506IRRU/Character_MG_506IRRU.et" "{D7528127836B1446}Prefabs/Characters/Core/506IRRU/Character_AssistMG_506IRRU.et"
+ }
+}
