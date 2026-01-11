@@ -65,7 +65,9 @@ modded class SCR_VoNComponent : VoNComponent
     protected float GetChannelVolumeForTransceiver(BaseTransceiver transceiver)
     {
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        return settings.GetVolume(transceiver);
+        float volume = settings.GetVolume(transceiver);
+        // Apply exponential curve for better volume sensitivity
+        return Math.Pow(volume, 2.5);
     }
 
     protected float GetSignalQuality(int senderId, int frequencyKHz, vector receiverPos)
