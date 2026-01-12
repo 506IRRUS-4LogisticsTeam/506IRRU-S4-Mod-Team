@@ -4,6 +4,7 @@ class IRRU_ContactViewManager
 
 	protected ref map<int, float> m_mPlayerLastContactTime;
 	protected ref map<int, IRRU_EContactType> m_mPlayerLastContactType;
+	protected ref map<int, float> m_mReplicatedTimeSinceContact;
 
 	//------------------------------------------------------------------------------------------------
 	static IRRU_ContactViewManager GetInstance()
@@ -18,6 +19,7 @@ class IRRU_ContactViewManager
 	{
 		m_mPlayerLastContactTime = new map<int, float>();
 		m_mPlayerLastContactType = new map<int, IRRU_EContactType>();
+		m_mReplicatedTimeSinceContact = new map<int, float>();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -70,8 +72,42 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
+	float GetLastContactTime(int playerId)
+	{
+		if (!m_mPlayerLastContactTime.Contains(playerId))
+			return -1.0;
+
+		return m_mPlayerLastContactTime.Get(playerId);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	void UpdateFromReplicatedData(array<int> playerIds, array<float> timeSinceContact)
+	{
+		if (!playerIds || !timeSinceContact)
+			return;
+
+		m_mReplicatedTimeSinceContact.Clear();
+
+		int count = Math.Min(playerIds.Count(), timeSinceContact.Count());
+		for (int i = 0; i < count; i++)
+		{
+			m_mReplicatedTimeSinceContact.Set(playerIds[i], timeSinceContact[i]);
+		}
+
+		if (IRRU_ContactViewSettings.IsDebugEnabled())
+			Print(string.Format("[ContactView] Updated replicated data for %1 players", count));
+	}
+
+	//------------------------------------------------------------------------------------------------
 	float GetTimeSinceContact(int playerId)
 	{
+		if (Replication.IsRunning() && !Replication.IsServer())
+		{
+			if (m_mReplicatedTimeSinceContact.Contains(playerId))
+				return m_mReplicatedTimeSinceContact.Get(playerId);
+			return -1.0;
+		}
+
 		if (!m_mPlayerLastContactTime.Contains(playerId))
 			return -1.0;
 

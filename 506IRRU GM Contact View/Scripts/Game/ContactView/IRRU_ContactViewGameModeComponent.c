@@ -13,7 +13,31 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 	[Attribute("0", UIWidgets.CheckBox, "Enable debug logging")]
 	protected bool m_bDebugEnabled;
 
+	[Attribute("1", UIWidgets.Slider, "How often to sync data to clients (seconds)", "0.5 5 0.5")]
+	protected float m_fSyncInterval;
+
 	protected bool m_bInitialized = false;
+	protected float m_fTimeSinceSync = 0;
+
+	[RplProp(onRplName: "OnContactDataReceived")]
+	protected ref array<int> m_aPlayerIds;
+
+	[RplProp()]
+	protected ref array<float> m_aContactTimes;
+
+	//------------------------------------------------------------------------------------------------
+	override void OnPostInit(IEntity owner)
+	{
+		super.OnPostInit(owner);
+
+		m_aPlayerIds = new array<int>();
+		m_aContactTimes = new array<float>();
+
+		if (!Replication.IsServer())
+			return;
+
+		SetEventMask(owner, EntityEvent.FRAME);
+	}
 
 	//------------------------------------------------------------------------------------------------
 	override void OnGameModeStart()
@@ -34,14 +58,93 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
+	override void EOnFrame(IEntity owner, float timeSlice)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		m_fTimeSinceSync += timeSlice;
+		if (m_fTimeSinceSync < m_fSyncInterval)
+			return;
+
+		m_fTimeSinceSync = 0;
+		SyncContactData();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void SyncContactData()
+	{
+		IRRU_ContactViewManager manager = IRRU_ContactViewManager.GetInstance();
+		if (!manager)
+			return;
+
+		array<int> playerIds = new array<int>();
+		manager.GetTrackedPlayers(playerIds);
+
+		m_aPlayerIds.Clear();
+		m_aContactTimes.Clear();
+
+		float currentTime = GetCurrentWorldTime();
+
+		foreach (int playerId : playerIds)
+		{
+			float lastContactTime = manager.GetLastContactTime(playerId);
+			if (lastContactTime < 0)
+				continue;
+
+			float timeSinceContact = currentTime - lastContactTime;
+
+			m_aPlayerIds.Insert(playerId);
+			m_aContactTimes.Insert(timeSinceContact);
+		}
+
+		Replication.BumpMe();
+
+		if (m_bDebugEnabled)
+			Print(string.Format("[ContactView] Synced %1 players to clients", m_aPlayerIds.Count()));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void OnContactDataReceived()
+	{
+		if (Replication.IsServer())
+			return;
+
+		IRRU_ContactViewManager manager = IRRU_ContactViewManager.GetInstance();
+		if (!manager)
+			return;
+
+		manager.UpdateFromReplicatedData(m_aPlayerIds, m_aContactTimes);
+
+		if (m_bDebugEnabled)
+			Print(string.Format("[ContactView] Received %1 players from server", m_aPlayerIds.Count()));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected float GetCurrentWorldTime()
+	{
+		ChimeraWorld world = ChimeraWorld.CastFrom(GetGame().GetWorld());
+		if (!world)
+			return 0;
+
+		return world.GetWorldTime() / 1000.0;
+	}
+
+	//------------------------------------------------------------------------------------------------
 	override void OnPlayerConnected(int playerId)
 	{
+		if (!Replication.IsServer())
+			return;
+
 		IRRU_ContactViewManager.GetInstance().OnPlayerJoined(playerId);
 	}
 
 	//------------------------------------------------------------------------------------------------
 	override void OnPlayerDisconnected(int playerId, KickCauseCode cause, int timeout)
 	{
+		if (!Replication.IsServer())
+			return;
+
 		IRRU_ContactViewManager.GetInstance().OnPlayerLeft(playerId);
 	}
 
