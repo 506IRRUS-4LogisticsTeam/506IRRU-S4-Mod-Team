@@ -465,13 +465,21 @@ AudioClass {
    varName "SignalQuality"
    varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
   }
+  VariableClass "108574" {
+   id 108574
+   name "ChannelVolume"
+   version 5
+   tl -59.702 -470.737
+   varName "ChannelVolume"
+   varResource "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf"
+  }
  }
  sounds {
   SoundClass "27657" {
    id 27657
    name "VON_RADIO"
    version 5
-   tl 252.163 -259.453
+   tl 252.735 -263.01
    ins {
     ConnectionsClass "con:1" {
      id 1
@@ -508,7 +516,7 @@ AudioClass {
    id 45065
    name "SOUND_ROGER_BEEP"
    version 5
-   tl 256 0.572
+   tl 256.658 0.572
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -682,7 +690,7 @@ AudioClass {
    id 94215
    name "Routing Bus"
    version 7
-   tl 3.545 -378.293
+   tl 2.675 -380.032
    ins {
     ConnectionsClass "con:2" {
      id 2
@@ -760,6 +768,35 @@ AudioClass {
     3 0
    }
    pu {
+    1 0
+   }
+  }
+  BusClass "107527" {
+   id 107527
+   name "Channel Control Volume"
+   version 7
+   tl -2.57 -243.754
+   ins {
+    ConnectionsClass "con:0" {
+     id 0
+     links {
+      ConnectionClass "108574:65" {
+       id 108574
+       port 65
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "94215:65" {
+       id 94215
+       port 65
+      }
+     }
+    }
+   }
+   pi {
     1 0
    }
   }
@@ -936,13 +973,13 @@ AudioClass {
    id 46098
    name "Shader Radio"
    version 5
-   tl 0.095 -248.758
+   tl -6.805 -117.658
    ins {
     ConnectionsClass "con:64" {
      id 64
      links {
-      ConnectionClass "94215:65" {
-       id 94215
+      ConnectionClass "107527:65" {
+       id 107527
        port 65
       }
      }

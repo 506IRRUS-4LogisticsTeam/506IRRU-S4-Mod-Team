@@ -1,0 +1,9 @@
+SCR_BaseGameMode {
+ ID "56B2B479C6B96951"
+ components {
+  IRRU_ContactViewGameModeComponent "{6857742300D4EA48}" {
+  }
+  IRRU_ContactViewHUDComponent "{68577423073ED0EC}" {
+  }
+ }
+}

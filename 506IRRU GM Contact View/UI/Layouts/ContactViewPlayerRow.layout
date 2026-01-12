@@ -1,0 +1,43 @@
+FrameWidgetClass {
+ Name "rootFrame"
+ Slot LayoutSlot "{685774340B0541D7}" {
+ }
+ {
+  HorizontalLayoutWidgetClass "{6857743407AA1788}" {
+   Name "RowContent"
+   Slot FrameWidgetSlot "{6857743407AA17E3}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 20
+    PositionY 0
+    OffsetTop 0
+    SizeX -1820
+    OffsetRight 0
+    SizeY -1050
+    OffsetBottom 0
+   }
+   {
+    TextWidgetClass "{68577434CEA38D18}" {
+     Name "StatusIcon"
+     Slot LayoutSlot "{68577434CEA38D72}" {
+     }
+     Text "OK"
+    }
+    TextWidgetClass "{68577434CF7449DF}" {
+     Name "PlayerName"
+     Slot LayoutSlot "{68577434CF744931}" {
+      Padding 20 0 0 0
+     }
+     Text "Player Name"
+    }
+    TextWidgetClass "{68577434CC7672D2}" {
+     Name "TimeText"
+     Slot LayoutSlot "{68577434CC7672CA}" {
+      Padding 20 0 0 0
+     }
+     Text "0:00"
+    }
+   }
+  }
+ }
+}

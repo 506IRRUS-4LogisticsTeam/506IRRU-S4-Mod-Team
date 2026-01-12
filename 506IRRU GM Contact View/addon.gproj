@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRUGMContactView"
+ GUID "684E4A9994D415E5"
+ TITLE "506IRRU - GM Contact View"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
