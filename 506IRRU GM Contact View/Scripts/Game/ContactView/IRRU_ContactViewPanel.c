@@ -1,8 +1,3 @@
-//! UI Panel for displaying player contact status by group
-//! Displayed as a collapsible group list for GM viewing
-
-//------------------------------------------------------------------------------------------------
-//! Data class to track group row widget references
 class IRRU_ContactViewGroupRowData
 {
 	int m_iGroupId;
@@ -23,7 +18,6 @@ class IRRU_ContactViewGroupRowData
 //------------------------------------------------------------------------------------------------
 class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 {
-	// Layout resource paths - these need to match your mod's resource path
 	protected static const ResourceName GROUP_ROW_LAYOUT = "{F0B63F7142E79141}UI/Layouts/ContactViewGroupRow.layout";
 	protected static const ResourceName PLAYER_ROW_LAYOUT = "{8B0CD8298F0077A1}UI/Layouts/ContactViewPlayerRow.layout";
 
@@ -31,17 +25,13 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	protected Widget m_wGroupList;
 	protected Widget m_wNoDataLabel;
 	protected TextWidget m_wHeaderStats;
-	protected float m_fUpdateInterval = 1.0; // Update every second
+	protected float m_fUpdateInterval = 1.0;
 	protected float m_fTimeSinceUpdate = 0;
 	protected bool m_bVisible = false;
 
-	// Group data cache - persists expanded state between updates
 	protected ref map<int, bool> m_mGroupExpandedState;
-
-	// Widget references for dynamic list - maps group ID to row data
 	protected ref map<int, ref IRRU_ContactViewGroupRowData> m_mGroupRows;
 
-	// Status colors (ARGB format for SetColorInt)
 	protected static const int COLOR_GREEN_INT = 0xFF00FF00;
 	protected static const int COLOR_YELLOW_INT = 0xFFFFFF00;
 	protected static const int COLOR_RED_INT = 0xFFFF0000;
@@ -89,7 +79,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	//------------------------------------------------------------------------------------------------
 	protected void UpdateGroupList()
 	{
-		// Get group data from manager
 		array<ref IRRU_ContactViewGroupData> groupData = new array<ref IRRU_ContactViewGroupData>();
 		IRRU_ContactViewManager.GetInstance().GetGroupContactData(groupData);
 
@@ -104,17 +93,14 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		if (m_wNoDataLabel)
 			m_wNoDataLabel.SetVisible(false);
 
-		// Update header stats
 		int totalCritical, totalWarning, totalGreen;
 		IRRU_ContactViewManager.GetInstance().GetTotalStatusCounts(totalCritical, totalWarning, totalGreen);
 
 		if (m_wHeaderStats)
 			m_wHeaderStats.SetText(string.Format("%1 Crit | %2 Warn", totalCritical, totalWarning));
 
-		// Track which groups are still valid
 		set<int> validGroupIds = new set<int>();
 
-		// Update or create group rows
 		int zOrder = 0;
 		foreach (IRRU_ContactViewGroupData group : groupData)
 		{
@@ -134,22 +120,18 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 				m_mGroupRows.Set(groupId, rowData);
 			}
 
-			// Update group row content
 			UpdateGroupRowContent(rowData, group);
 
-			// Set Z order for sorting (worst groups at top)
 			if (rowData.m_wRow)
 				rowData.m_wRow.SetZOrder(zOrder);
 			zOrder++;
 
-			// Handle expanded state - show/hide player rows
 			bool isExpanded = IsGroupExpanded(groupId);
 			UpdatePlayerRows(rowData, group, isExpanded, zOrder);
 			if (isExpanded)
 				zOrder += group.GetPlayerCount();
 		}
 
-		// Remove rows for groups that no longer exist
 		array<int> groupsToRemove = new array<int>();
 		for (int i = 0; i < m_mGroupRows.Count(); i++)
 		{
@@ -163,7 +145,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 			RemoveGroupRow(removeId);
 		}
 
-		// Debug output
 		if (IRRU_ContactViewSettings.IsDebugEnabled())
 		{
 			PrintDebugStatus(groupData, totalCritical, totalWarning, totalGreen);
@@ -176,7 +157,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		if (!m_wGroupList)
 			return null;
 
-		// Create widget from layout
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
 		if (!workspace)
 			return null;
@@ -184,7 +164,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		Widget rowWidget = workspace.CreateWidgets(GROUP_ROW_LAYOUT, m_wGroupList);
 		if (!rowWidget)
 		{
-			// Fallback: Create a simple text-based row if layout fails
 			Print(string.Format("[ContactView] Failed to create group row widget for group %1, using fallback", groupId));
 			return CreateFallbackGroupRow(groupId);
 		}
@@ -193,14 +172,12 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		rowData.m_iGroupId = groupId;
 		rowData.m_wRow = rowWidget;
 
-		// Find child widgets
 		rowData.m_wExpandIcon = TextWidget.Cast(rowWidget.FindAnyWidget("ExpandIcon"));
 		rowData.m_wStatusIcon = TextWidget.Cast(rowWidget.FindAnyWidget("StatusIcon"));
 		rowData.m_wGroupName = TextWidget.Cast(rowWidget.FindAnyWidget("GroupName"));
 		rowData.m_wPlayerCount = TextWidget.Cast(rowWidget.FindAnyWidget("PlayerCount"));
 		rowData.m_wTimeText = TextWidget.Cast(rowWidget.FindAnyWidget("TimeText"));
 
-		// Set up click handler
 		SCR_ButtonBaseComponent buttonComp = SCR_ButtonBaseComponent.Cast(rowWidget.FindHandler(SCR_ButtonBaseComponent));
 		if (buttonComp)
 		{
@@ -211,7 +188,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Fallback method if layout creation fails - creates simple text widget
 	protected IRRU_ContactViewGroupRowData CreateFallbackGroupRow(int groupId)
 	{
 		if (!m_wGroupList)
@@ -220,8 +196,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		IRRU_ContactViewGroupRowData rowData = new IRRU_ContactViewGroupRowData();
 		rowData.m_iGroupId = groupId;
 
-		// For fallback, we'll rely on debug output since we can't create widgets
-		// This is a placeholder until layouts work properly
 		return rowData;
 	}
 
@@ -234,7 +208,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		float avgTime = group.GetAverageTimeSinceContact();
 		bool isExpanded = IsGroupExpanded(group.GetGroupId());
 
-		// Update expand icon
 		if (rowData.m_wExpandIcon)
 		{
 			if (isExpanded)
@@ -243,22 +216,18 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 				rowData.m_wExpandIcon.SetText(">");
 		}
 
-		// Update status icon and color
 		if (rowData.m_wStatusIcon)
 		{
 			rowData.m_wStatusIcon.SetText(GetStatusIcon(avgTime));
 			rowData.m_wStatusIcon.SetColorInt(GetStatusColorInt(avgTime));
 		}
 
-		// Update group name
 		if (rowData.m_wGroupName)
 			rowData.m_wGroupName.SetText(group.GetGroupName());
 
-		// Update player count
 		if (rowData.m_wPlayerCount)
 			rowData.m_wPlayerCount.SetText(string.Format("(%1)", group.GetPlayerCount()));
 
-		// Update time text
 		if (rowData.m_wTimeText)
 		{
 			rowData.m_wTimeText.SetText(IRRU_ContactViewManager.FormatTimeSinceContact(avgTime));
@@ -272,7 +241,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		if (!rowData || !m_wGroupList)
 			return;
 
-		// Remove existing player rows
 		foreach (Widget playerRow : rowData.m_aPlayerRows)
 		{
 			if (playerRow)
@@ -283,7 +251,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		if (!isExpanded)
 			return;
 
-		// Create player rows
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
 		if (!workspace)
 			return;
@@ -296,18 +263,15 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 			Widget playerRow = workspace.CreateWidgets(PLAYER_ROW_LAYOUT, m_wGroupList);
 			if (!playerRow)
 			{
-				// Fallback if layout fails - skip widget creation
 				continue;
 			}
 
-			// Get player data
 			string playerName = GetGame().GetPlayerManager().GetPlayerName(playerId);
 			if (playerName.IsEmpty())
 				playerName = string.Format("Player %1", playerId);
 
 			float timeSinceContact = IRRU_ContactViewManager.GetInstance().GetTimeSinceContact(playerId);
 
-			// Update player row widgets
 			TextWidget statusIcon = TextWidget.Cast(playerRow.FindAnyWidget("StatusIcon"));
 			TextWidget nameText = TextWidget.Cast(playerRow.FindAnyWidget("PlayerName"));
 			TextWidget timeText = TextWidget.Cast(playerRow.FindAnyWidget("TimeText"));
@@ -343,14 +307,12 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		IRRU_ContactViewGroupRowData rowData = m_mGroupRows.Get(groupId);
 		if (rowData)
 		{
-			// Remove player rows
 			foreach (Widget playerRow : rowData.m_aPlayerRows)
 			{
 				if (playerRow)
 					playerRow.RemoveFromHierarchy();
 			}
 
-			// Remove group row
 			if (rowData.m_wRow)
 				rowData.m_wRow.RemoveFromHierarchy();
 		}
@@ -374,7 +336,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when a group row is clicked
 	protected void OnGroupRowClicked(SCR_ButtonBaseComponent button)
 	{
 		if (!button)
@@ -384,7 +345,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 		if (!rowWidget)
 			return;
 
-		// Find which group this row belongs to
 		for (int i = 0; i < m_mGroupRows.Count(); i++)
 		{
 			IRRU_ContactViewGroupRowData rowData = m_mGroupRows.GetElement(i);
@@ -397,26 +357,24 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get status icon based on time since contact
 	protected string GetStatusIcon(float timeSinceContact)
 	{
 		float warningThreshold = IRRU_ContactViewSettings.GetWarningThreshold();
 		float criticalThreshold = IRRU_ContactViewSettings.GetCriticalThreshold();
 
 		if (timeSinceContact < 0)
-			return "?"; // Not tracked
+			return "?";
 
 		if (timeSinceContact < warningThreshold)
-			return "OK"; // Green
+			return "OK";
 
 		if (timeSinceContact < criticalThreshold)
-			return "!!"; // Yellow - warning
+			return "!!";
 
-		return "XX"; // Red - critical
+		return "XX";
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get status color (ARGB int) based on time since contact
 	protected int GetStatusColorInt(float timeSinceContact)
 	{
 		float warningThreshold = IRRU_ContactViewSettings.GetWarningThreshold();
@@ -435,27 +393,23 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Check if a group is expanded
 	protected bool IsGroupExpanded(int groupId)
 	{
 		if (m_mGroupExpandedState.Contains(groupId))
 			return m_mGroupExpandedState.Get(groupId);
-		return false; // Default collapsed
+		return false;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Toggle group expanded state
 	void ToggleGroupExpanded(int groupId)
 	{
 		bool currentState = IsGroupExpanded(groupId);
 		m_mGroupExpandedState.Set(groupId, !currentState);
 
-		// Force immediate update
 		m_fTimeSinceUpdate = m_fUpdateInterval;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Expand all groups
 	void ExpandAll()
 	{
 		array<ref IRRU_ContactViewGroupData> groupData = new array<ref IRRU_ContactViewGroupData>();
@@ -470,7 +424,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Collapse all groups
 	void CollapseAll()
 	{
 		m_mGroupExpandedState.Clear();
@@ -502,7 +455,6 @@ class IRRU_ContactViewPanel : ScriptedWidgetEventHandler
 				group.GetPlayerCount(),
 				timeStr));
 
-			// Show individual players if expanded
 			if (isExpanded)
 			{
 				array<int> playerIds = group.GetPlayerIds();

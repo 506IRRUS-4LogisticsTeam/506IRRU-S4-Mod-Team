@@ -1,20 +1,9 @@
-//! Manager singleton that tracks player contact times for GM Contact View
-//! Runs on server, replicates data to clients
-
 class IRRU_ContactViewManager
 {
 	private static ref IRRU_ContactViewManager s_Instance;
 
-	// Map of player ID to their last contact time (world time when they last had contact)
 	protected ref map<int, float> m_mPlayerLastContactTime;
-
-	// Map of player ID to contact type (for display purposes)
 	protected ref map<int, IRRU_EContactType> m_mPlayerLastContactType;
-
-	// TODO: Implement ignored groups functionality
-	// Some groups (like "Ares" command group) should be excluded from tracking
-	// Add: protected ref set<int> m_aIgnoredGroupIds;
-	// Add: void IgnoreGroup(int groupId), void UnignoreGroup(int groupId), bool IsGroupIgnored(int groupId)
 
 	//------------------------------------------------------------------------------------------------
 	static IRRU_ContactViewManager GetInstance()
@@ -32,7 +21,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when a player fires their weapon
 	void OnPlayerFired(int playerId)
 	{
 		if (playerId <= 0)
@@ -47,7 +35,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when a player takes damage from enemy
 	void OnPlayerDamaged(int playerId)
 	{
 		if (playerId <= 0)
@@ -62,7 +49,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when player joins - initialize their contact time to current time
 	void OnPlayerJoined(int playerId)
 	{
 		if (playerId <= 0)
@@ -77,7 +63,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when player leaves - remove from tracking
 	void OnPlayerLeft(int playerId)
 	{
 		m_mPlayerLastContactTime.Remove(playerId);
@@ -85,11 +70,10 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get time since last contact in seconds
 	float GetTimeSinceContact(int playerId)
 	{
 		if (!m_mPlayerLastContactTime.Contains(playerId))
-			return -1.0; // Player not tracked
+			return -1.0;
 
 		float lastContactTime = m_mPlayerLastContactTime.Get(playerId);
 		float currentTime = GetCurrentWorldTime();
@@ -97,7 +81,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get the type of last contact
 	IRRU_EContactType GetLastContactType(int playerId)
 	{
 		if (!m_mPlayerLastContactType.Contains(playerId))
@@ -107,7 +90,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get all tracked player IDs
 	void GetTrackedPlayers(out array<int> playerIds)
 	{
 		if (!playerIds)
@@ -120,26 +102,24 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get the contact status color based on time since last contact
 	static int GetContactStatusColor(float timeSinceContact)
 	{
 		float warningThreshold = IRRU_ContactViewSettings.GetWarningThreshold();
 		float criticalThreshold = IRRU_ContactViewSettings.GetCriticalThreshold();
 
 		if (timeSinceContact < 0)
-			return Color.GRAY; // Not tracked
+			return Color.GRAY;
 
 		if (timeSinceContact < warningThreshold)
-			return Color.GREEN; // Recent contact
+			return Color.GREEN;
 
 		if (timeSinceContact < criticalThreshold)
-			return Color.YELLOW; // Warning - getting bored
+			return Color.YELLOW;
 
-		return Color.RED; // Critical - no contact for too long
+		return Color.RED;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Format time since contact as string
 	static string FormatTimeSinceContact(float timeSinceContact)
 	{
 		if (timeSinceContact < 0)
@@ -158,12 +138,10 @@ class IRRU_ContactViewManager
 		if (!world)
 			return 0;
 
-		return world.GetWorldTime() / 1000.0; // Convert from ms to seconds
+		return world.GetWorldTime() / 1000.0;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get all groups with their aggregated contact data
-	//! \param outGroupData Array to fill with group data objects
 	void GetGroupContactData(out array<ref IRRU_ContactViewGroupData> outGroupData)
 	{
 		if (!outGroupData)
@@ -185,14 +163,10 @@ class IRRU_ContactViewManager
 			if (!playerIds || playerIds.Count() == 0)
 				continue;
 
-			// TODO: Check if group is ignored before processing
-			// if (IsGroupIgnored(group.GetGroupID())) continue;
-
 			IRRU_ContactViewGroupData groupData = new IRRU_ContactViewGroupData();
 			groupData.SetGroupId(group.GetGroupID());
 			groupData.SetGroupName(group.GetCustomName());
 
-			// If no custom name, try to get callsign
 			if (groupData.GetGroupName().IsEmpty())
 			{
 				string company, platoon, squad, character, format;
@@ -221,7 +195,7 @@ class IRRU_ContactViewManager
 
 				float timeSinceContact = GetTimeSinceContact(playerId);
 				if (timeSinceContact < 0)
-					continue; // Player not tracked yet
+					continue;
 
 				validPlayerCount++;
 				totalTime += timeSinceContact;
@@ -248,18 +222,15 @@ class IRRU_ContactViewManager
 			outGroupData.Insert(groupData);
 		}
 
-		// Sort groups by average time (worst first)
 		SortGroupsByTime(outGroupData);
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Sort groups by average time since contact (highest/worst first)
 	protected void SortGroupsByTime(array<ref IRRU_ContactViewGroupData> groups)
 	{
 		if (!groups || groups.Count() < 2)
 			return;
 
-		// Simple bubble sort (good enough for small lists of groups)
 		int count = groups.Count();
 		for (int i = 0; i < count - 1; i++)
 		{
@@ -267,7 +238,6 @@ class IRRU_ContactViewManager
 			{
 				if (groups[j].GetAverageTimeSinceContact() < groups[j + 1].GetAverageTimeSinceContact())
 				{
-					// Swap
 					ref IRRU_ContactViewGroupData temp = groups[j];
 					groups[j] = groups[j + 1];
 					groups[j + 1] = temp;
@@ -277,7 +247,6 @@ class IRRU_ContactViewManager
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get total counts across all groups
 	void GetTotalStatusCounts(out int criticalCount, out int warningCount, out int greenCount)
 	{
 		criticalCount = 0;

@@ -1,6 +1,3 @@
-//! Data class for group contact status in Contact View
-//! Stores aggregated group information for UI display
-
 class IRRU_ContactViewGroupData
 {
 	protected int m_iGroupId;
@@ -138,14 +135,12 @@ class IRRU_ContactViewGroupData
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get the overall status color for the group based on average time
 	int GetGroupStatusColor()
 	{
 		return IRRU_ContactViewManager.GetContactStatusColor(m_fAverageTimeSinceContact);
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Returns true if group has any players in warning or critical state
 	bool HasPlayersNeedingAttention()
 	{
 		return (m_iCriticalCount > 0 || m_iWarningCount > 0);

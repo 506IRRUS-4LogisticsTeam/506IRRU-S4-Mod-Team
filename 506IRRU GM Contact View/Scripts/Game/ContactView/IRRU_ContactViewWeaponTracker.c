@@ -1,6 +1,3 @@
-//! Component that tracks weapon firing for Contact View
-//! Attach to player character entities
-
 class IRRU_ContactViewWeaponTrackerClass : ScriptComponentClass
 {
 }
@@ -18,11 +15,9 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 		if (!Replication.IsServer() && Replication.IsRunning())
 			return;
 
-		// Get the player ID for this character
 		m_iPlayerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner);
 		m_bInitialized = true;
 
-		// Hook into all muzzle effect components on this character
 		HookMuzzleEffects(owner);
 	}
 
@@ -32,7 +27,6 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 		if (!owner)
 			return;
 
-		// Find all SCR_MuzzleEffectComponent components
 		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(owner.FindComponent(SCR_MuzzleEffectComponent));
 		if (muzzleEffect)
 		{
@@ -44,7 +38,6 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Called when muzzle effect component fires
 	void OnMuzzleFired(IEntity effectEntity, BaseMuzzleComponent muzzle, IEntity projectileEntity)
 	{
 		if (!m_bInitialized || m_iPlayerId <= 0)

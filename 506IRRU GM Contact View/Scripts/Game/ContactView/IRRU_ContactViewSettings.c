@@ -1,11 +1,7 @@
-//! Settings for the GM Contact View system
-
 class IRRU_ContactViewSettings
 {
-	// Time thresholds in seconds
-	protected static float s_fWarningThreshold = 300.0;  // 5 minutes - yellow
-	protected static float s_fCriticalThreshold = 600.0; // 10 minutes - red
-
+	protected static float s_fWarningThreshold = 300.0;
+	protected static float s_fCriticalThreshold = 600.0;
 	protected static bool s_bDebugEnabled = false;
 
 	//------------------------------------------------------------------------------------------------

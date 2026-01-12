@@ -1,6 +1,3 @@
-//! Game mode component that initializes and manages the Contact View system
-//! Needs to be attached to gamemode base et
-
 class IRRU_ContactViewGameModeComponentClass : SCR_BaseGameModeComponentClass
 {
 }
@@ -26,12 +23,10 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 
 		m_bInitialized = true;
 
-		// Apply settings
 		IRRU_ContactViewSettings.SetWarningThreshold(m_fWarningThreshold);
 		IRRU_ContactViewSettings.SetCriticalThreshold(m_fCriticalThreshold);
 		IRRU_ContactViewSettings.SetDebugEnabled(m_bDebugEnabled);
 
-		// Initialize manager
 		IRRU_ContactViewManager.GetInstance();
 
 		if (m_bDebugEnabled)
@@ -53,7 +48,6 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 	//------------------------------------------------------------------------------------------------
 	override void OnPlayerSpawnFinalize_S(SCR_SpawnRequestComponent requestComponent, SCR_SpawnHandlerComponent handlerComponent, SCR_SpawnData data, IEntity entity)
 	{
-		// Re-initialize contact time when player spawns
 		int playerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(entity);
 		if (playerId > 0)
 			IRRU_ContactViewManager.GetInstance().OnPlayerJoined(playerId);
