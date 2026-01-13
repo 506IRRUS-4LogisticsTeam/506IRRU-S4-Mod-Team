@@ -1,0 +1,9 @@
+GenericEntity {
+ coords 8589.674 4.616 5652.724
+}
+SCR_ChimeraCharacter : "{967835C05D83CBF1}Prefabs/Characters/LoadoutAI.et" {
+ coords 8588.049 4.595 5650.493
+}
+GenericEntity : "{A2D42CEC3FE02340}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_Base.et" {
+ coords 8590.722 4.553 5650.675
+}

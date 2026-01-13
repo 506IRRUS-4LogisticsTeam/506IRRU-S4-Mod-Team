@@ -1,0 +1,8 @@
+GameProject {
+ ID "506thIRRULoadouts"
+ GUID "66F4AD6038350EB8"
+ TITLE "506thIRRULoadouts"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}

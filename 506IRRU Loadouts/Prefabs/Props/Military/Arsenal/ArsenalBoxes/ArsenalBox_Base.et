@@ -1,0 +1,37 @@
+GenericEntity : "{54986385A6AF77B2}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_Base.et" {
+ ID "56F2C6D6F7C6DAFA"
+ components {
+  ActionsManagerComponent "{56F2C6D1431ADB12}" {
+   additionalActions {
+    Bacon_GunBuilderOpenAction "{685A73397CB53B3E}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{685A73397CB53B68}" {
+      Name "Bacon Loadout Editor"
+     }
+    }
+    Loadout_OpenLoadoutMenuAction "{685A732950F791E4}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{685A732F0C937485}" {
+      Name "Open Loadout Menu"
+     }
+     ActionTitle "Open Loadout Menu"
+     "Sort Priority" 1
+    }
+    Loadout_SaveCurrentFromAiAction "{685A732E0BD2DF00}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{685A732E0EE635BF}" {
+      Name "Save to Preset"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+ }
+ coords 8590.722 4.553 5650.675
+}
