@@ -16,6 +16,12 @@ $grp GenericEntity {
   coords 9952.745 315.167 2281.438
  }
 }
+GenericEntity : "{125D04B16155725A}Prefabs/Weapons/Launchers/M224_Bag.et" {
+ coords 4591.806 18.406 10684.89
+}
+GenericEntity : "{377EB906F591E4BA}Prefabs/Props/Military/Arsenal/AmmoBoxes/US/AmmoBoxArsenal_Weapons_US.et" {
+ coords 4592.784 18.406 10686.192
+}
 $grp Projectile : "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821.et" {
  {
   coords 4583.885 18.43 10691.545
@@ -129,6 +135,25 @@ $grp Projectile : "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M82
   coords 9958.585 315.07 2281.954
  }
 }
+$grp GenericEntity : "{54986385A6AF77B2}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_Base.et" {
+ {
+  coords 4591.265 18.418 10691.463
+ }
+ {
+  coords 4591.92 18.406 10688.822
+ }
+}
+$grp Turret : "{8094D99689ABE241}Prefabs/Weapons/Mortars/M252/Mortar_M252.et" {
+ {
+  coords 4586.908 18.436 10696.561
+ }
+ {
+  coords 9957.577 315.165 2279.94
+ }
+}
+GenericEntity : "{891EF8A5FB7162F1}Prefabs/Props/Military/Arsenal/AmmoBoxes/US/AmmoBoxArsenal_Medical_US.et" {
+ coords 4593.253 18.382 10682.469
+}
 $grp Projectile : "{8AEB3E3846780747}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821_EffectModule.et" {
  {
   coords 4586.635 18.399 10691.383
@@ -137,14 +162,12 @@ $grp Projectile : "{8AEB3E3846780747}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M82
   coords 9957.304 315.128 2274.763
  }
 }
-$grp Turret : "{A5DAAB7A8572166D}Prefabs/Weapons/Mortars/M252/Mortar_M252.et" {
- {
-  coords 4586.908 18.436 10696.561
- }
- {
-  coords 9957.577 315.165 2279.94
- }
+GenericEntity : "{C026AEDDA55DB43C}Prefabs/Props/Military/Arsenal/AmmoBoxes/US/AmmoBoxArsenal_Launcher_US.et" {
+ coords 4590.711 18.404 10683.841
 }
 Projectile : "{DD2065AE34D8DFA9}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_Illum_M853A1.et" {
  coords 4585.969 18.406 10687.82
+}
+GenericEntity : "{E1FD1ACDA98123AE}Prefabs/Props/Military/Arsenal/AmmoBoxes/US/AmmoBoxArsenal_Mortar_US.et" {
+ coords 4593.02 18.405 10683.891
 }
