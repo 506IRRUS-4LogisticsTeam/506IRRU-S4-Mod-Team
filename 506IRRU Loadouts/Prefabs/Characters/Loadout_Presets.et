@@ -1,0 +1,96 @@
+SCR_ChimeraCharacter : "{5228D8F587B5EEDC}Prefabs/Characters/Factions/BLUFOR/US_Army/GreenBerets/Character_US_SF_RTO.et" {
+ ID "520EC961A090B1EE"
+ components {
+  SCR_CommunicationSoundComponent "{54FD05D0C92D071F}" {
+   Filenames + {
+    "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
+   }
+  }
+  SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "Loadout - Presets"
+    m_aAuthoredLabels + {
+     CONTENT_MODDED
+    }
+    m_aAutoLabels {
+     SIZE_M ROLE_RIFLEMAN
+    }
+   }
+  }
+  SCR_CharacterIdentityComponent "{5584CBC63E092DBC}" {
+   Override 1
+   Identity Identity "{5584CBC6363C648B}" {
+    VisualIdentity VisualIdentity "{56E6D9456009D1C4}" {
+     Head "{24644218743CDFBD}Prefabs/Characters/Heads/Head_White_09.et"
+     Body "{0023F898C0FF18AA}Prefabs/Characters/Basebody/CharacterBasebody.et"
+    }
+   }
+   m_IdentityFormatFull "SGT Supply"
+   m_IdentityFormatNoAlias "SGT Supply"
+  }
+  ActionsManagerComponent "{520EA1D2F659CE02}" {
+   additionalActions {
+    Loadout_ApplyRiflemanFromAiAction "{685C873BEA80CEF2}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C87040E7F7281}" {
+      Name "Rifleman"
+     }
+     Duration 0.5
+     "Sort Priority" 1
+    }
+    Loadout_ApplyAutoriflemanFromAiAction "{685C873BE9D9FFF5}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C8704075848B2}" {
+      Name "Autorifleman"
+     }
+     Duration 0.5
+     "Sort Priority" 2
+    }
+    Loadout_ApplyGrenadierFromAiAction "{685C873BED333AFD}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C87041D8BD407}" {
+      Name "Grenadier"
+     }
+     Duration 0.5
+     "Sort Priority" 3
+    }
+    Loadout_ApplyMedicFromAiAction "{685C873BEC342C65}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C87041B305645}" {
+      Name "Medic"
+     }
+     Duration 0.5
+     "Sort Priority" 4
+    }
+    Loadout_ApplyTeamLeaderFromAiAction "{685C873BD30372A5}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C870412222467}" {
+      Name "Team Leader"
+     }
+     Duration 0.5
+     "Sort Priority" 5
+    }
+    Loadout_ApplySquadLeaderFromAiAction "{685C873BD218CB7D}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C873BCB2AC0A8}" {
+      Name "Squad Leader"
+     }
+     Duration 0.5
+     "Sort Priority" 6
+    }
+   }
+  }
+ }
+}

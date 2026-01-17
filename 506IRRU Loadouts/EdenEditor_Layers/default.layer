@@ -1,9 +1,15 @@
 GenericEntity {
  coords 8589.674 4.616 5652.724
 }
-SCR_ChimeraCharacter : "{967835C05D83CBF1}Prefabs/Characters/LoadoutAI.et" {
- coords 8588.049 4.595 5650.493
+SCR_ChimeraCharacter : "{1975B045BDF1C0C3}Prefabs/Characters/Loadout_Share.et" {
+ coords 8585.548 4.271 5649.783
 }
-GenericEntity : "{A2D42CEC3FE02340}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_Base.et" {
- coords 8590.722 4.553 5650.675
+SCR_ChimeraCharacter : "{587E9D0970574C39}Prefabs/Characters/Loadout_Dev.et" {
+ coords 8590.095 4.463 5649.723
+}
+SCR_ChimeraCharacter : "{D636767A555794F7}Prefabs/Characters/Loadout_Menu.et" {
+ coords 8588.508 4.442 5649.827
+}
+SCR_ChimeraCharacter : "{E36A0AB6F35F91AC}Prefabs/Characters/Loadout_Presets.et" {
+ coords 8587.011 4.36 5649.793
 }

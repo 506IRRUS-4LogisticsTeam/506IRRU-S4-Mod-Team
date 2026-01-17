@@ -19,7 +19,7 @@ sealed class Loadout_TransferHelpers {
 		if (!loadContext.ImportFromString(loadoutData))
 			return false;
 
-		Loadout_ApplyRiflemanLoadout.ClearCharacterEquipment(targetEntity);
+		Loadout_ApplyLoadout.ClearCharacterEquipment(targetEntity);
 		return SCR_PlayerArsenalLoadout.ApplyLoadoutString(targetEntity, loadContext);
 	}
 }

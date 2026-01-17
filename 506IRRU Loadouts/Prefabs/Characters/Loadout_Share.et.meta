@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{1975B045BDF1C0C3}Prefabs/Characters/Campaign/Final/BLUFOR/US_army/GreenBerets/Loadout_Share.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

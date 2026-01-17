@@ -1,0 +1,51 @@
+SCR_ChimeraCharacter : "{85261D5B04BFA7EE}Prefabs/Characters/Factions/BLUFOR/US_Army/GreenBerets/Character_US_SF_SL.et" {
+ ID "520EC961A090B1EE"
+ components {
+  SCR_CommunicationSoundComponent "{54FD05D0C92D071F}" {
+   Filenames + {
+    "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
+   }
+  }
+  SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "Loadout - Share"
+    IconSetName "EditableEntity_Character_SquadLeaderALT"
+    m_aAuthoredLabels + {
+     CONTENT_MODDED
+    }
+    m_aAutoLabels {
+     SIZE_M ROLE_RIFLEMAN
+    }
+   }
+  }
+  SCR_CharacterIdentityComponent "{5584CBC63E092DBC}" {
+   Override 1
+   m_IdentityFormatFull "SPC Share"
+   m_IdentityFormatNoAlias "SPC Share"
+  }
+  ActionsManagerComponent "{520EA1D2F659CE02}" {
+   additionalActions {
+    Loadout_CopyAiToPlayerAction "{685C873B77A1222A}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C873B6DD29B7B}" {
+      Name "Take Loadout"
+     }
+     Duration 0.5
+     "Sort Priority" 2
+    }
+    Loadout_CopyPlayerToAiAction "{685C873B752F354C}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C873B7A336774}" {
+      Name "Give Loadout"
+     }
+     Duration 0.5
+     "Sort Priority" 1
+    }
+   }
+  }
+ }
+}

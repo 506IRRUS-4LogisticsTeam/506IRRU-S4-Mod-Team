@@ -1,0 +1,54 @@
+SCR_ChimeraCharacter : "{36E28C628A2F83CB}Prefabs/Characters/Factions/BLUFOR/US_Army/GreenBerets/Character_US_SF.et" {
+ ID "520EC961A090B1EE"
+ components {
+  SCR_CommunicationSoundComponent "{54FD05D0C92D071F}" {
+   Filenames + {
+    "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
+   }
+  }
+  SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
+   m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
+    Name "Loadout - Menu"
+    m_aAuthoredLabels + {
+     CONTENT_MODDED
+    }
+   }
+  }
+  SCR_CharacterIdentityComponent "{5584CBC63E092DBC}" {
+   Override 1
+   Identity Identity "{5584CBC6363C648B}" {
+    VisualIdentity VisualIdentity "{56E6D9456009D1C4}" {
+     Head "{24D28E910BF9F648}Prefabs/Characters/Heads/Head_Asian_02.et"
+     Body "{32B5FE236D152368}Prefabs/Characters/Basebody/CharacterBasebody_Asian_02.et"
+    }
+   }
+   m_IdentityFormatFull "SPC Loadem"
+   m_IdentityFormatNoAlias "SPC Loadem"
+  }
+  ActionsManagerComponent "{520EA1D2F659CE02}" {
+   additionalActions {
+    Loadout_OpenExportLoadoutAction "{685C8704E7848A0F}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C8704D6D65F5D}" {
+      Name "Export Loadout"
+     }
+     Duration 0.5
+     "Sort Priority" 2
+    }
+    Loadout_OpenImportLoadoutAction "{685C8704E5016940}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{685C8704D3BEFEDB}" {
+      Name "Import Loadout"
+     }
+     Duration 0.5
+     "Sort Priority" 1
+    }
+   }
+  }
+ }
+ coords 8588.508 4.442 5649.827
+}

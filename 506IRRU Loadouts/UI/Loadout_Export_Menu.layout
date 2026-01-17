@@ -1,0 +1,63 @@
+FrameWidgetClass {
+ Name "rootFrame"
+ {
+  FrameWidgetClass "{685C87274F962F34}" {
+   Name "Frame0"
+   Slot FrameWidgetSlot "{685C87274F962F0A}" {
+    PositionX 702.935
+    OffsetLeft 702.935
+    PositionY 347.015
+    OffsetTop 347.015
+    SizeX 553.1
+    OffsetRight -1256.04
+    SizeY 438.134
+    OffsetBottom -785.149
+   }
+   {
+    VerticalLayoutWidgetClass "{685C8727A3645659}" {
+     Name "VerticalLayout0"
+     Slot FrameWidgetSlot "{685C8727A36456BC}" {
+      PositionX 2.265
+      OffsetLeft 2.265
+      PositionY 4.019
+      OffsetTop 4.019
+      SizeX 549.639
+      OffsetRight -551.904
+      SizeY 432.37
+      OffsetBottom -436.389
+     }
+     {
+      TextWidgetClass "{685C8727AEEF5BA0}" {
+       Name "Title"
+       Slot LayoutSlot "{685C8727AEEF5BF2}" {
+       }
+       Text "Export Loadout"
+       "Font Size" 48
+       "Horizontal Alignment" Center
+      }
+      EditBoxWidgetClass "{685C87201AE03FBE}" {
+       Name "LoadoutText"
+       Slot LayoutSlot "{685C87201AE03F8D}" {
+        SizeMode Fill
+       }
+      }
+      ButtonWidgetClass "{685C8727FF6BE345}" {
+       Name "CloseButton"
+       Slot LayoutSlot "{685C8727FF6BE396}" {
+       }
+       {
+        TextWidgetClass "{685C8727E2E43FD8}" {
+         Name "CloseLabel"
+         Slot ButtonWidgetSlot "{685C8727E2E4202B}" {
+         }
+         Color 0 0 0 1
+         Text "Close"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

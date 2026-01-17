@@ -38,7 +38,117 @@ sealed class Loadout_ApplyRiflemanFromAiAction : ScriptedUserAction
 		if (!pUserEntity)
 			return;
 
-		Loadout_ApplyRiflemanLoadout.ApplyRiflemanLoadout(pUserEntity);
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "Rifleman");
+	}
+};
+
+sealed class Loadout_ApplyAutoriflemanFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "Autorifleman");
+	}
+};
+
+sealed class Loadout_ApplyGrenadierFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "Grenadier");
+	}
+};
+
+sealed class Loadout_ApplyMedicFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "Medic");
+	}
+};
+
+sealed class Loadout_ApplyTeamLeaderFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "TeamLeader");
+	}
+};
+
+sealed class Loadout_ApplySquadLeaderFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "SquadLeader");
 	}
 };
 
@@ -86,7 +196,7 @@ sealed class Loadout_CopyAiToPlayerAction : ScriptedUserAction
 	}
 };
 
-sealed class Loadout_OpenLoadoutMenuAction : ScriptedUserAction
+sealed class Loadout_OpenExportLoadoutAction : ScriptedUserAction
 {
 	override bool HasLocalEffectOnlyScript() { return true; }
 	override bool CanBroadcastScript() { return false; }
@@ -101,6 +211,25 @@ sealed class Loadout_OpenLoadoutMenuAction : ScriptedUserAction
 		if (!pUserEntity)
 			return;
 
-		Loadout_LoadoutMenu.Open(pUserEntity);
+		Loadout_Export_Menu.Open(pUserEntity);
+	}
+};
+
+sealed class Loadout_OpenImportLoadoutAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return true; }
+	override bool CanBroadcastScript() { return false; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!pUserEntity)
+			return;
+
+		Loadout_Import_Menu.Open(pUserEntity);
 	}
 };
