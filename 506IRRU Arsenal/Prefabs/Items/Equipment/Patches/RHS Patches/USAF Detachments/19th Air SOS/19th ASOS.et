@@ -31,21 +31,21 @@ GameEntity : "{0B201E22AD2DFA7F}Prefabs/Items/Equipment/Accessories/ClothAttachm
       }
      }
     }
-    CommonItemType "RHS_PATCH"
+    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
   MeshObject "{5DB09136B1C985B5}" {
-   Object "{783D7557CCC33E73}USAF Detachments/19th Air SOS/Assets/19th ASOS.xob"
+   Object "{783D7557CCC33E73}Prefabs/Items/Equipment/Patches/Patches_Info/USAF/Assets/19th ASOS.xob"
   }
   ParametricMaterialInstanceComponent "{64A542BA50770C4C}" {
    UserParamAlpha 1
    ApplyPropertiesWhenMeshChanged 1
   }
   BaseLoadoutClothComponent "{5DB09136B1C9859A}" {
-   AreaType RHS_LoadoutMediumVelcroSlotArea "{5DB0A07091EE92E2}" {
+   AreaType GRS_ShirtLowerPatch "{5DB0A07091EE92E2}" {
    }
    WornModel ""
    ItemModel ""
@@ -100,4 +100,5 @@ GameEntity : "{0B201E22AD2DFA7F}Prefabs/Items/Equipment/Accessories/ClothAttachm
    AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
   }
  }
+ coords 0 0 0.003
 }

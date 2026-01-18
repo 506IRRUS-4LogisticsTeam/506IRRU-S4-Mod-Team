@@ -31,21 +31,21 @@ GameEntity : "{0B201E22AD2DFA7F}Prefabs/Items/Equipment/Accessories/ClothAttachm
       }
      }
     }
-    CommonItemType "RHS_PATCH"
+    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
   MeshObject "{5DB09136B1C985B5}" {
-   Object "{27648E2F70DC593E}Unit Patches/Assets/101st Airborne.xob"
+   Object "{27648E2F70DC593E}Prefabs/Items/Equipment/Patches/Patches_Info/Unit Patches/Assets/101st Airborne.xob"
   }
   ParametricMaterialInstanceComponent "{64DB66EA3378DDCC}" {
    UserParamAlpha 1
    ApplyPropertiesWhenMeshChanged 1
   }
   BaseLoadoutClothComponent "{5DB09136B1C9859A}" {
-   AreaType RHS_LoadoutMediumVelcroSlotArea "{5DB0A07091EE92E2}" {
+   AreaType GRS_ShirtLowerPatch "{5DB0A07091EE92E2}" {
    }
    WornModel ""
    ItemModel ""

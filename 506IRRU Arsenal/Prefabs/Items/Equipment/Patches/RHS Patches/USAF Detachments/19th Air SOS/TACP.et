@@ -38,14 +38,14 @@ GameEntity : "{0B201E22AD2DFA7F}Prefabs/Items/Equipment/Accessories/ClothAttachm
    }
   }
   MeshObject "{5DB09136B1C985B5}" {
-   Object "{D9A68770B85FA143}USAF Detachments/19th Air SOS/Assets/TACP.xob"
+   Object "{D9A68770B85FA143}Prefabs/Items/Equipment/Patches/Patches_Info/USAF/Assets/TACP.xob"
   }
   ParametricMaterialInstanceComponent "{64DA364C0AF1E448}" {
    UserParamAlpha 1
    ApplyPropertiesWhenMeshChanged 1
   }
   BaseLoadoutClothComponent "{5DB09136B1C9859A}" {
-   AreaType RHS_LoadoutMediumVelcroSlotArea "{5DB0A07091EE92E2}" {
+   AreaType GRS_ShirtUpperPatch "{5DB0A07091EE92E2}" {
    }
    WornModel ""
    ItemModel ""
