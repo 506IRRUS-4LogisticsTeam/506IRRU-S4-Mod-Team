@@ -201,7 +201,22 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			}
 		}
 
-		if (!m_bReceivingCPR)
+		// Pause timer if receiving CPR, vitals are stable, or epinephrine is active
+		bool healthStable = false;
+		bool hasEpinephrine = false;
+		if (m_CachedDmgManager)
+		{
+			float health = m_CachedDmgManager.GetHealthPercentage();
+			float blood = m_CachedDmgManager.GetBloodPercentage();
+			healthStable = (health > 33.0 && blood > 33.0);
+
+			// Check for active ACE epinephrine effect on resilience hitzone
+			HitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
+			if (resilienceHZ)
+				hasEpinephrine = (m_CachedDmgManager.FindDamageEffectOnHitZone(ACE_Medical_EpinephrineDamageEffect, resilienceHZ) != null);
+		}
+
+		if (!m_bReceivingCPR && !healthStable && !hasEpinephrine)
 			m_fUnconsciousTimer += CHECK_INTERVAL;
 
 		if (m_Rpl && Math.Mod(m_fUnconsciousTimer, REPLICATION_UPDATE_INTERVAL) < CHECK_INTERVAL)
@@ -211,10 +226,19 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		    Math.Mod(m_fUnconsciousTimer, PERIODIC_LOG_INTERVAL) < CHECK_INTERVAL)
 		{
 			float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining",
+			string pauseReason = "";
+			if (m_bReceivingCPR)
+				pauseReason = " (paused: CPR)";
+			else if (healthStable)
+				pauseReason = " (paused: vitals stable)";
+			else if (hasEpinephrine)
+				pauseReason = " (paused: epinephrine)";
+
+			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining%4",
 			                   GetNameStr(owner),
 			                   (bleedoutTime - m_fUnconsciousTimer),
-			                   bleedoutTime));
+			                   bleedoutTime,
+			                   pauseReason));
 		}
 
 		float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
