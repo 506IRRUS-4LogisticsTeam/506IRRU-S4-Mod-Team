@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRUEquipment"
+ GUID "6873532BEEC460DE"
+ TITLE "506IRRUEquipment"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
