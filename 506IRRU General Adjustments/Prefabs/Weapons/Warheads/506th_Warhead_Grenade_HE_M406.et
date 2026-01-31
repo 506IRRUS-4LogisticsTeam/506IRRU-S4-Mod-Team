@@ -7,17 +7,17 @@ GenericEntity : "{7DA2AFFC7B4BE844}Prefabs/Weapons/Warheads/Warhead_Grenade_HE.e
      ExplosionEffects {
       ExplosionFragmentationEffect "{567CBC1D7AB652C7}" : "{0FD6AC4EBAA7A0D2}Prefabs/Weapons/Core/Damage/FragmentationDamageEffect_HE.conf" {
        DamageValue 180
-       DamageFragmentCount 650
+       DamageFragmentCount 750
        GurneyConstant 3600
        CaseWeight 240
        FragMassScale 95
        FragRangeScale 220
-       FragSpeedScale 155
+       FragSpeedScale 185
        FragDamagePower 0.45
        FragRangePower 0.16
       }
      }
-     ChargeWeight 200
+     ChargeWeight 140
      TntEquivalent 1.85
     }
    }
