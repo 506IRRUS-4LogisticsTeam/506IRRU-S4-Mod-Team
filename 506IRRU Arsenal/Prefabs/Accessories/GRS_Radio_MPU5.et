@@ -4,13 +4,19 @@ GenericEntity {
   BaseRadioComponent "{65CC0BEE0F3A76A4}" {
    Transceivers {
     RadioTransceiver "{65CC0BEE0F3A76B4}" {
-     "Frequency resolution" 200
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
     }
     RadioTransceiver "{65CC0BEE0F3A76B2}" {
-     "Frequency resolution" 200
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
     }
     RadioTransceiver "{65CC0BEE0F3A76B0}" {
-     "Frequency resolution" 200
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
     }
    }
   }
