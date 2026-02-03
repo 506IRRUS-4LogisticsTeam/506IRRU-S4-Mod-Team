@@ -1,0 +1,15 @@
+RHS_LightEntity : "{BC02D6EE235EC648}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Iluminator_LightEntity.et" {
+ ID "5CFADC1F39A94BCD"
+ LV 8
+ Radius 30
+ SpotAngle 120
+ SpotAngleAttenuation 0
+ DistanceAttenuation 1.3
+ ShowSource 0
+ VolLightScale 0
+ VolLightIntensity 0
+ m_bCanAdjustLV 1
+ m_fLV 8
+ m_fMinConeAngle 90
+ m_fMaxConeAngle 150
+}

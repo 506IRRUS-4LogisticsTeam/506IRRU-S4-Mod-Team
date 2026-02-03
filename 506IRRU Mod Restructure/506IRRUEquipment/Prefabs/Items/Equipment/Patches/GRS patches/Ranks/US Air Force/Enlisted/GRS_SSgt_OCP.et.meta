@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{0F5A73597C33FDCD}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/US Air Force/Enlisted/GRS_SSgt_OCP.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

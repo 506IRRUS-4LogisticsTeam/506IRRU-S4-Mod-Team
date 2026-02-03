@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{BD499DEAE3B5931E}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Iluminator_Spill_LightEntity.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

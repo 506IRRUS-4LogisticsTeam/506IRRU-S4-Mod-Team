@@ -1,0 +1,35 @@
+GameEntity : "{04591BB4C0BED13E}Prefabs/Weapons/Core/WeaponLightDevice_Base.et" {
+ ID "557E85EEE1B603F1"
+ components {
+  BaseLightManagerComponent "{5EC286A5A0129F80}" {
+   LightSlots {
+    BaseLightSlot "{62B8E966F2EF07C4}" {
+     LightPrefab "{BC02D6EE235EC648}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Iluminator_LightEntity.et"
+     LightRadiusOverride 200
+    }
+    BaseLightSlot "{63235645BA67179E}" {
+     LightFunctional 0
+     LightPositionInfo EntitySlotInfo invis {
+      Offset 0 0.0265 0.0638
+      Enabled 0
+     }
+     LightPrefab "{BC02D6EE235EC648}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Iluminator_LightEntity.et"
+    }
+    BaseLightSlot "{6323565A72CB9713}" {
+     LightType SearchLight
+     LightPositionInfo EntitySlotInfo spill {
+      Offset 0 0.0142 0.1
+     }
+     LightPrefab "{BD499DEAE3B5931E}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Iluminator_Spill_LightEntity.et"
+    }
+   }
+  }
+  RHS_WeaponMountedLightDeviceComponent "{5EC286A42465EF90}" {
+   m_iAvailableLightTypes + {
+    0 10
+   }
+   m_sToggleActionListenerName "RHS_LightDeviceToggleSA"
+   m_sHoldActionListenerName "RHS_LightDeviceHoldSA"
+  }
+ }
+}

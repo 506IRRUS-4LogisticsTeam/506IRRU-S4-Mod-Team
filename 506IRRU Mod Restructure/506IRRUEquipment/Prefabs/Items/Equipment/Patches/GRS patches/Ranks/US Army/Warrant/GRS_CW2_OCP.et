@@ -1,0 +1,32 @@
+GameEntity : "{FBE8D2BB07B1B041}Prefabs/Rectangle_Patches/Rectangle_DemonHunter_Patch_Red.et" {
+ ID "657C17E446464A1E"
+ components {
+  InventoryItemComponent "{657C17E446464A0E}" {
+   Attributes SCR_ItemAttributeCollection "{657C17E446464A0D}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657C17E446464A0A}" {
+     Name "GRS: CW2"
+     Description "GRS: CW2"
+    }
+   }
+  }
+  MeshObject "{657C17E446464A3F}" {
+   Object "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
+   Materials {
+    MaterialAssignClass "{658A2C56FD6F2BD4}" {
+     SourceMaterial "Mat_Patch"
+     AssignedMaterial "{8E68508D3FFA39DA}Data/SPC OCP.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{657C17E446464A39}" {
+   WornModel "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
+   WornMaterialsOverride {
+    "{12BEED174A8B590B}Data/CW2 OCP.emat"
+   }
+   ItemModel "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
+   ItemMaterialsOverride {
+    "{12BEED174A8B590B}Data/CW2 OCP.emat"
+   }
+  }
+ }
+}

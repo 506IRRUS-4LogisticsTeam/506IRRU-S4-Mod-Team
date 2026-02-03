@@ -1,0 +1,21 @@
+Projectile : "{8506EEF15E42FDA1}Prefabs/Ammo/Projectile/Projectile_Base.et" {
+ ID "66DC5CC547374A81"
+ components {
+  CollisionTriggerComponent "{66DC5CC5DA35EB0E}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{66DC5CC4022810A6}" {
+     EffectPrefab "{93A7EE997F0E449F}Prefabs/Ammo/Warheads/Warhead_84mm_HEAT751.et"
+    }
+   }
+  }
+  MissileMoveComponent "{66DC5CC547374AB6}" {
+   Enabled 1
+   ThrustInitTime 0.06
+   ThrustTime 1.5
+   ThrustForce 325
+  }
+  RocketTraceEffectComponent "{66DC5CC5E044EAD8}" {
+   ParticleEffect "{88D879A6A5C91CEC}Particles/Weapon/Trail_MAAWS_RAP.ptc"
+  }
+ }
+}

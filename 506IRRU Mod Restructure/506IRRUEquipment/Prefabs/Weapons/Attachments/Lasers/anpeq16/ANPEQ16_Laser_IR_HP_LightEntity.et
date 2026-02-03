@@ -1,0 +1,4 @@
+RHS_LightEntity : "{90A256F4E00AFBEF}Prefabs/Weapons/Attachments/Lasers/anpeq16/ANPEQ16_Laser_IR_LightEntity.et" {
+ ID "5CFADC1F39A94BCD"
+ VolLightIntensity 5
+}

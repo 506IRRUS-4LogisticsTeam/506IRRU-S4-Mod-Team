@@ -1,0 +1,136 @@
+GenericEntity {
+ ID "66DF35726D685A54"
+ components {
+  SignalsManagerComponent "{66DF35726D685A41}" {
+  }
+  SoundComponent "{66DF35726D685BE7}" {
+   Filenames {
+    "{6FC67D2C9BF229AB}Sounds/Weapons/Ammo/RPG7/Explosion/Weapons_Ammo_Rocket_RPG7.acp"
+   }
+  }
+  BaseTriggerComponent "{66DF35726D685BE9}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{66DF35726D685BEA}" {
+     TriggerOnce 1
+     Enabled 1
+     ExplosionEffects {
+      BaseExplosionDamage "{66DF35726D685BEC}" {
+       DamageValue 1000
+       DamageDistance 10
+       ExplosionEffectSpeed 343
+       DamageFalloffCurve {
+        0 1 0.1 1 0.4 0.4 1 0
+       }
+       DamageEffect {
+        SCR_ExplosionDamageEffect "{66DF35726D685BED}" {
+        }
+       }
+       DamageDistanceCurve {
+        0 1 1 0
+       }
+      }
+      BaseExplosionDamage "{66DF35726D685BEE}" {
+       DamageValue 333.3
+       PerformTraces 0
+       DamageDistance 3
+       ExplosionEffectSpeed 343
+       DamageFalloffCurve {
+        0 1 0.1 1 0.4 0.4 1 0
+       }
+       DamageEffect {
+        SCR_ExplosionDamageEffect "{66DF35726D685BD0}" {
+        }
+       }
+       DamageDistanceCurve {
+        0 1 1 0
+       }
+      }
+      BaseExplosionDamage "{66DF35726D685BD1}" {
+       DamageValue 30
+       DamageType Incendiary
+       DamageDistance 8
+       ExplosionEffectSpeed 330
+       DamageFalloffCurve {
+        0 1 0.125 1 0.4 0.3 1 0
+       }
+       DamageEffect {
+        SCR_IncendiaryDamageEffect "{66DF35726D685BD3}" {
+        }
+       }
+       DamageDistanceCurve {
+        0 1 1 0
+       }
+      }
+      ExplosionImpulseEffect "{66DF35726D685BD5}" {
+       PerformTraces 0
+       DamageDistance 10
+       ExplosionEffectSpeed 343
+       DamageFalloffCurve {
+        0 1 0.1 1 0.4 0.4 1 0
+       }
+       DamageEffect {
+        SCR_BlastForceDamageEffect "{66DF35726D685BD6}" {
+        }
+       }
+       DamageDistanceCurve {
+        0 1 1 0
+       }
+       ExplosionImpulseMultiplier 1000
+      }
+      ExplosionFragmentationEffect "{66DF35726D685BD8}" {
+       DamageValue 16
+       DamageType Fragmentation
+       DamageDistance 25
+       ExplosionEffectSpeed 1000
+       DamageFalloffCurve {
+        0 1 0.05 1 0.55 0.8 1 0
+       }
+       DamageEffect {
+        SCR_FragmentationDamageEffect "{66DF35726D685B38}" {
+        }
+       }
+       DamageDistanceCurve {
+        0 1 1 0
+       }
+       DamageFragmentCount 130
+       GurneyShape CYLINDER
+       GurneyConstant 2800
+       CaseWeight 2000
+       FragMassScale 10
+       FragRangeScale 10
+      }
+     }
+     ChargeWeight 800
+     TntEquivalent 1.7
+    }
+    SubmunitionEffect "{66DF780380755F7B}" {
+     Prefab "{51E5A50767AA534F}Prefabs/Ammo/Spall/Ammo_Spall_84mm_HEAT751_INNER.et"
+     Count 40
+     Dispersion 15
+    }
+    SubmunitionEffect "{66DF35726D685B3A}" {
+     Enabled 1
+     Prefab "{9FB823284C31B2AD}Prefabs/Ammo/Spall/Ammo_Spall_84mm_HEAT751.et"
+     Count 60
+     Dispersion 60
+    }
+    SubmunitionEffect "{66DF35726D685B3C}" {
+     Prefab "{05CCC91E8047C24D}Prefabs/Ammo/Warheads/506th_Warhead_84mm_HEAT751_Penetrator.et"
+    }
+    SpawnDecalEffect "{66DF35726D686A32}" {
+     Scale 2.2
+     Material "{2A3A7B73C1EF6936}Assets/Decals/Logistics/Impact/Data/Decal_Logistics_RPG_01.emat"
+    }
+   }
+   DELETE_ON_TRIGGER 0
+   TRIGGER_ALIVE 1
+   TriggerOffset -0.2
+  }
+  HitEffectComponent "{66DF35726D686A30}" {
+   EnabledOnDedicatedServer 1
+  }
+ }
+ Flags 0 0x3
+ coords 2.937 2.972 3.131
+ scale 0.4
+}

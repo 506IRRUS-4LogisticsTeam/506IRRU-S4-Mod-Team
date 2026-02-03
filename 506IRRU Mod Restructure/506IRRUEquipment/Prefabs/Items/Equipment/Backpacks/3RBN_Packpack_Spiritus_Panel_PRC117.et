@@ -1,0 +1,15 @@
+GenericEntity : "{1EB174F529600A05}Prefabs/Items/Equipment/Backpacks/3RBN_Packpack_Spiritus_Panel_PRC117.et" {
+ ID "508AB2013EEE1E00"
+ components {
+  SCR_UniversalInventoryStorageComponent "{5D30C5CDCBACE06B}" {
+   Attributes SCR_ItemAttributeCollection "{5D34438C176F6F0B}" {
+    ItemPhysAttributes ItemPhysicalAttributes "{5D34438C18C20B8F}" {
+     ItemVolume 250000
+    }
+    CommonItemType "RHS_RADIO_MANPACK"
+   }
+   MaxCumulativeVolume 400000
+   m_fMaxWeight 1000000
+  }
+ }
+}

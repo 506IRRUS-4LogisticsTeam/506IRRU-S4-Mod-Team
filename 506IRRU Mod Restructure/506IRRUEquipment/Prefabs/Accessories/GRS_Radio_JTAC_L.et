@@ -1,0 +1,44 @@
+GenericEntity {
+ ID "65CC0BEF6E20A955"
+ components {
+  BaseRadioComponent "{65CC0BEE0F320941}" {
+   Transceivers {
+    RadioTransceiver "{65CC0BEE0F32095F}" {
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{65CC0BEE0F320951}" {
+     ChannelFrequency 35000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{65CC0BEE0F320952}" {
+     ChannelFrequency 35000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{65CC0BEE0F320957}" {
+     ChannelFrequency 35000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{65CC0BEE0F320948}" {
+     ChannelFrequency 35000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{65CC0BEE0F32094A}" {
+     ChannelFrequency 35000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+   }
+  }
+ }
+}
