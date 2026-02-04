@@ -1,0 +1,22 @@
+GameProject {
+ ID "506IRRUTicketSystem"
+ GUID "68882E246DB4E79D"
+ TITLE "506IRRU Ticket System"
+ Dependencies {
+  "58D0FB3206B6F859" "64C80CD9E208154B"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

@@ -3,6 +3,8 @@ SCR_ChimeraCharacter {
  components {
   IRRU_NoInstantDeathComponent "{661F226EB207A661}" {
   }
+  IRRU_TicketSystemDamageTracker "{688846A6663DB2D7}" {
+  }
   SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
    m_fUnconsciousRegenerationScale 0.6
    m_fMovementDamageMultiplier 1.5

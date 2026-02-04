@@ -1,0 +1,108 @@
+FrameWidgetClass {
+ Name "rootFrame"
+ {
+  FrameWidgetClass "{688846A3A10318CB}" {
+   Name "Frame0"
+   Slot FrameWidgetSlot "{688846A3A1031803}" {
+    Anchor 1 0 1 0
+    PositionX -176
+    OffsetLeft -176
+    PositionY 48
+    OffsetTop 48
+    SizeX 176
+    OffsetRight 0
+    SizeY 112
+    OffsetBottom -160
+   }
+   {
+    HorizontalLayoutWidgetClass "{688846A03D193FEC}" {
+     Name "HorizontalLayout0"
+     Slot FrameWidgetSlot "{688846A03D193F32}" {
+      Anchor 1 0 1 0
+      PositionX -176
+      OffsetLeft -176
+      PositionY 0
+      OffsetTop 0
+      SizeX 176
+      OffsetRight 0
+      SizeY 40
+      OffsetBottom -40
+     }
+     {
+      OverlayWidgetClass "{688846A00C3817FB}" {
+       Name "Header"
+       Slot LayoutSlot "{688846A7169B352F}" {
+        SizeMode Fill
+       }
+       {
+        ImageWidgetClass "{688846A0139D8914}" {
+         Name "Image0"
+         Slot OverlayWidgetSlot "{688846A7169B3570}" {
+          HorizontalAlign 3
+          VerticalAlign 3
+         }
+         Color 0.6235 0.1569 0.1569 1
+        }
+        TextWidgetClass "{688846A0CC95AF68}" {
+         Name "Text0"
+         Slot OverlayWidgetSlot "{688846A7169B3568}" {
+         }
+         Text "TICKET COUNT"
+        }
+       }
+      }
+     }
+    }
+    VerticalLayoutWidgetClass "{688846A54AE2D1CF}" {
+     Name "VerticalLayout0"
+     Slot FrameWidgetSlot "{688846A54AE2D129}" {
+      PositionX 16
+      OffsetLeft 16
+      PositionY 48
+      OffsetTop 48
+      SizeX 136
+      OffsetRight -152
+      SizeY 53.73
+      OffsetBottom -101.73
+     }
+     {
+      TextWidgetClass "{688846A542AE944D}" {
+       Name "TicketCounter"
+       Slot LayoutSlot "{688846A542AE95A8}" {
+        HorizontalAlign 1
+        VerticalAlign 1
+        SizeMode Fill
+       }
+       Text "0"
+       "Font Size" 32
+       "Min Font Size" 32
+      }
+     }
+    }
+    OverlayWidgetClass "{688846A507CEF51E}" {
+     Name "Overlay0"
+     Slot FrameWidgetSlot "{688846A507CEF576}" {
+      PositionX 0
+      OffsetLeft 0
+      PositionY 0
+      OffsetTop 0
+      SizeX 176
+      OffsetRight -176
+      SizeY 112
+      OffsetBottom -112
+     }
+     {
+      ImageWidgetClass "{688846A51D5C99CD}" {
+       Name "Image0"
+       Slot OverlayWidgetSlot "{688846A51D5C9927}" {
+        HorizontalAlign 3
+        VerticalAlign 3
+       }
+       Color 0.0044 0.0044 0.0044 0.3812
+      }
+     }
+    }
+   }
+  }
+ }
+}

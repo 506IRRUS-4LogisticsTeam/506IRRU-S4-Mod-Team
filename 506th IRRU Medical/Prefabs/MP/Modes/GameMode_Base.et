@@ -1,0 +1,11 @@
+SCR_BaseGameMode {
+ ID "56B2B479C6B96951"
+ components {
+  IRRU_TicketSystemGameModeComponent "{688846A78D5E778A}" {
+   m_bDebugEnabled 1
+  }
+  IRRU_TicketSystemHUDComponent "{688846A798EF7959}" {
+   m_sPanelLayout "{A73115C1904A9621}UI/Layouts/TicketCounter.layout"
+  }
+ }
+}
