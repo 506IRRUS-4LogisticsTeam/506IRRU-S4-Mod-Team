@@ -1,0 +1,103 @@
+GenericEntity : "{09D6A1C9543E4A95}Prefabs/Items/Core/Backpack_Base.et" {
+ ID "511E9C6ADE70F798"
+ components {
+  BaseRadioComponent "{6242E7866D1C09D0}" {
+   "Encryption key" "chickenNuggets"
+   "Turned on" 1
+   Transceivers {
+    RadioTransceiver "{6242E786763611F9}" {
+     ChannelFrequency 100000
+     "Transmitting Range" 2000
+     "Min tunable frequency" 100000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6242E786749B1205}" {
+    }
+   }
+  }
+  MeshObject "{511E9C6ADE70F7BD}" {
+   Object "{E4257218F25510D7}Assets/Items/Equipment/Backpacks/511_Rush12_Backpack/rush12_gnd.xob"
+  }
+  SCR_RadioComponent "{6242E78667CE810C}" {
+   m_iRadioCategory MANPACK
+   m_iRadioType ANPRC152A
+  }
+  SCR_UniversalInventoryStorageComponent "{5222CB03A40528FA}" {
+   components {
+    RHS_ClothNodeStorageComponent "{6242E02CDB02DCB7}" {
+     StoragePurpose 64
+    }
+   }
+   Attributes SCR_ItemAttributeCollection "{5222CB039E9715D1}" {
+    ItemDisplayName UIInfo "{5222CB03904B414C}" {
+     Name "6.22 Rush-12 Backpack - MC w/LR"
+     Description "#RHS-Backpack_511rush12_Description"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
+     Weight 1
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 8001
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{52BCBDD2B54658EC}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+   Priority 1
+   UseCapacityCoefficient 0
+   CapacityCoefficient 1.26
+   MaxCumulativeVolume 8000
+   MaxItemSize 20 20 20
+   m_fMaxWeight 40
+  }
+  BaseLoadoutClothComponent "{511E9C6ADE70F7BB}" {
+   Slots {
+    RHS_LoadoutSlotInfo LeftVelcro {
+     PivotID "Spine4"
+     Offset -0.0053 0.2752 -0.3232
+     Angles 20.3145 -177.92371 3.2255
+     InspectionWidgetOffset -0.0605 1.2888 -0.3814
+     AreaType RHS_LoadoutMediumVelcroSlotArea "{6242E02CDB02DF58}" {
+     }
+     DeflatedOffset -0.0624 0.4214 -0.2503
+     DeflatedAngles 37.515 -172.16721 3.6946
+     m_bShouldUseCMorphedMesh 1
+     m_fMorphValue 0.3
+    }
+    RHS_LoadoutSlotInfo RightVelcro {
+     PivotID "Spine4"
+     Offset -0.0057 0.397 -0.2212
+     Angles 26.3852 -179.2227 -3.087
+     InspectionWidgetOffset 0.0605 1.2888 -0.3814
+     AreaType RHS_LoadoutMediumVelcroSlotArea "{6242E02CDB02DF67}" {
+     }
+     DeflatedOffset 0.0488 0.2738 -0.3275
+     DeflatedAngles 35.9233 177.9361 -0.7422
+     m_bShouldUseCMorphedMesh 1
+     m_fMorphValue 0.38
+    }
+   }
+   WornModel "{7E53DE4258A7C2B4}Assets/Items/Equipment/Backpacks/511_Rush12_Backpack/rush12.xob"
+   ItemModel "{E4257218F25510D7}Assets/Items/Equipment/Backpacks/511_Rush12_Backpack/rush12_gnd.xob"
+   SoundInt 830
+   DeflatedModel "{7E53DE4258A7C2B4}Assets/Items/Equipment/Backpacks/511_Rush12_Backpack/rush12.xob"
+   AreaTypeWhenModelChange {
+    LoadoutArmoredVestSlotArea "{6242E02CDB02DF6C}" {
+    }
+   }
+  }
+  ActionsManagerComponent "{511E9C6ADE70F786}" {
+   ActionContexts {
+    UserActionContext "{511E9C6ADE70F788}" {
+     Position PointInfo "{511E9C6ADE70F78D}" {
+      Offset 0 0.1281 0.0436
+     }
+    }
+   }
+  }
+ }
+ coords 617.671 51 2265.783
+}

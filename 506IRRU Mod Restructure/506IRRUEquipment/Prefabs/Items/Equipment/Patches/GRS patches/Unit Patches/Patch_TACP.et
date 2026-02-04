@@ -1,0 +1,22 @@
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "TACP "
+     Description "Patch worn by Qualified TACPs"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornMaterialsOverride {
+    "{877EE08D8B903352}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/TACP.emat"
+   }
+   ItemModel "{D9A68770B85FA143}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Assets/TACP.xob"
+   ItemMaterialsOverride {
+    "{877EE08D8B903352}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/TACP.emat"
+   }
+  }
+ }
+}

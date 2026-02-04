@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{EDCD7653A9C19D3A}Prefabs/Items/Equipment/Backpacks/506_Backpack_Delta_Assault.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

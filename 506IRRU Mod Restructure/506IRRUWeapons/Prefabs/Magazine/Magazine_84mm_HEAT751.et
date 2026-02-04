@@ -1,0 +1,127 @@
+GenericEntity : "{8204D96F3B7AB7A5}Prefabs/Magazine/Magazine_84mm_Base.et" {
+ ID "66DC5CCCD7666E2D"
+ components {
+  AICombatPropertiesComponent "{66DC5CCCD7666E30}" {
+   Priority 100
+   PriorityAgainstVehicles -1
+   UsedAgainst 0xc 0x1
+  }
+  InventoryMagazineComponent "{66DC5CCCD7666E36}" {
+   Attributes SCR_ItemAttributeCollection "{66DC5CCCD7666E35}" {
+    ItemDisplayName UIInfo "{66DC5CCCD76669CB}" {
+     Name "506th 84mm HEAT 751 Round"
+     Description "HEAT 751 anti-armor round featuring a tandem warhead system. The precursor charge defeats reactive armor while the main 150mm shaped charge penetrates up to 500mm RHA. Effective range 500m against armored vehicles. Arming distance 15-20m."
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{66DC5CCB0EC4371D}" {
+     Weight 0.25
+     SizeSetupStrategy Manual
+     ItemDimensions 20 20 20
+     ItemVolume 1800
+    }
+    CustomAttributes {
+     SCR_ItemOfInterestAttribute "{66DC5CCCD76669CA}" {
+      m_InterestType AMMO
+     }
+     PreviewRenderAttributes "{66DC5CC8F165413E}" {
+      CameraPreset Top
+      CameraOrbitAngles 0 180 90
+      CameraDistanceToItem 1
+      CameraOffset 0.04 0 0
+      FOV 5
+     }
+    }
+    m_Size SLOT_2x1
+    m_SlotType SLOT_BACKPACK
+   }
+   WeightPerAmmo 2
+  }
+  MagazineComponent "{66DC5CCCD76669C8}" {
+   MagazineWell MagazineWellMAAWS "{66DC5CC8982E1B68}" {
+   }
+   UIInfo MagazineUIInfo "{66DC5CCCD76669CF}" {
+    Name "HEAT 751"
+    Description "#ICR-Magazine_HEAT_Desc"
+    m_sAmmoType "HEAT-751"
+    m_bShowAmmoTypeText 1
+    m_eAmmoTypeFlags HEAT
+    m_MagIndicator SCR_MagazineIndicatorConfiguration "{5866951DE2665916}" {
+     m_sOutline "rocket-m72a3"
+     m_bProgressBar 0
+    }
+   }
+   MaxAmmo 1
+   AmmoConfig "{802B40AF718C3E0D}Configs/Weapons/Ammo/506th_Ammo_MAAWS.conf"
+   AmmoMapping {
+    6
+   }
+  }
+  MeshObject "{66DC5CCCD76669CC}" {
+   Object "{0E3ABE11FB74ABBD}Assets/Weapons/Ammo/HEAT551/Round/HEAT_551_ROUND.xob"
+  }
+  RigidBody "{66DC5CCCD76669C3}" {
+   LayerPreset "Projectile"
+   Mass 2.6
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{66DC5CCCD76669C1}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{66DC5CCCD76669C5}" {
+     m_sSoundProject "{0026043E3CD828D0}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic_Metallic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{66DC5CCCD76669C4}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{66DC5CCCD766698D}" {
+     m_sSoundProject "{DB06E3D5DFC046B4}Sounds/Weapons/_SharedData/Drop/Weapons_Drop_Rocket.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  ActionsManagerComponent "{66DC5CCCD766698C}" {
+   ActionContexts {
+    UserActionContext "{66DC5CCCD7666983}" {
+     ContextName "default"
+     Position PointInfo "{66DC5CCCD7666982}" {
+      Offset 0 0 0.25
+     }
+     Radius 0.3
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{66DC5CCCD7666980}" {
+     ParentContextList +{
+     }
+     UIInfo SCR_ActionUIInfo "{66DC5CCCD7666987}" {
+      Name "#AR-Inventory_PickUp"
+      m_sIconName "pick-up"
+     }
+    }
+    SCR_AttachItemFromInventoryAction "{66DC5CCCD7666986}" {
+     ParentContextList +{
+     }
+     UIInfo SCR_ActionUIInfo "{66DC5CCCD7666985}" {
+      Name "#AR-UserAction_Attach"
+      m_sIconName "magazine"
+     }
+     CanAggregate 1
+     "Inventory action" 1
+    }
+   }
+  }
+  MagazineAnimationComponent "{66DC7BA4A44A76AD}" {
+   AnimGraph "{6E94E275C76E7E3C}Assets/Weapons/Magazines/workspaces/M249_magazine.agr"
+   AnimInstance "{83FEB7AEDB672CD2}Assets/Weapons/Magazines/workspaces/M249_Magazine.asi"
+   AutoVariablesBind 1
+   AnimatedMesh "{82A10EF1DC51244A}Assets/Weapons/Ammo/AMD 401B/ROUND/ADM401_ROUND.xob"
+   EmptyStateMeshesToHide +{
+   }
+  }
+  RplComponent "{66DC5CCCD766699B}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+ }
+}

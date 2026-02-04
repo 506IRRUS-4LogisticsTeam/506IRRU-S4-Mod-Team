@@ -1,0 +1,12 @@
+Projectile : "{D40A105437369C1D}Prefabs/Weapons/Core/Ammo_GrenadeLauncher_Base.et" {
+ ID "50C6F9656AEFBE8C"
+ components {
+  CollisionTriggerComponent "{5498C573792F6AD9}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{5498C57539368DDA}" {
+     EffectPrefab "{FD3AC34ACBD0D00E}Prefabs/Weapons/Warheads/ 506th_Warhead_Grenade_HE_M406.et"
+    }
+   }
+  }
+ }
+}

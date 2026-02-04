@@ -1,0 +1,24 @@
+GameEntity : "{04591BB4C0BED13E}Prefabs/Weapons/Core/WeaponLightDevice_Base.et" {
+ ID "557E85EEE1B603F6"
+ components {
+  BaseLightManagerComponent "{5EC286A5A0129F80}" {
+   LightSlots {
+    BaseLightSlot "{5EA2EE3095C6E24F}" {
+     LightRadiusOverride 0
+    }
+    BaseLightSlot "{5EA2EE3095C6E24D}" {
+     LightRadiusOverride 110
+    }
+    BaseLightSlot "{5EA2EE3095C6E253}" {
+     LightRadiusOverride 110
+    }
+    BaseLightSlot "{5EA2EE3095C6E252}" {
+     LightRadiusOverride 200
+    }
+    BaseLightSlot "{5EA2EE3095C6E251}" {
+     LightRadiusOverride 200
+    }
+   }
+  }
+ }
+}

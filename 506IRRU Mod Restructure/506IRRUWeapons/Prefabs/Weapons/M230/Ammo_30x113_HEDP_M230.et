@@ -1,0 +1,12 @@
+TracerProjectile : "{B426E89A34CDF3DB}Prefabs/Weapons/Ammo/Ammo_30x113_HEDP_M230.et" {
+ ID "DA5C6308000CDEF2"
+ components {
+  CollisionTriggerComponent "{630ED8BB810680B5}" {
+   PROJECTILE_EFFECTS {
+    ExplosionEffect "{630ED8BBBEE9D552}" {
+     EffectPrefab "{5391178675344005}Prefabs/Weapons/Warheads/M230/Warhead_M230_HEDP.et"
+    }
+   }
+  }
+ }
+}

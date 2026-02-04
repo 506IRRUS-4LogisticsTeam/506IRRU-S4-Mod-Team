@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{802B40AF718C3E0D}Configs/Weapons/Ammo/506th_Ammo_MAAWS.conf"
+ Configurations {
+  CONFResourceClass PC {
+  }
+  CONFResourceClass XBOX_ONE : PC {
+  }
+  CONFResourceClass XBOX_SERIES : PC {
+  }
+  CONFResourceClass PS4 : PC {
+  }
+  CONFResourceClass PS5 : PC {
+  }
+  CONFResourceClass HEADLESS : PC {
+  }
+ }
+}

@@ -1,0 +1,9 @@
+Projectile : "{AC26AB660097633D}Prefabs/Weapons/Ammo/SmallArms/Ammo_556x45_Ball_M855.et" {
+ ID "DA5C6308000CDEF2"
+ components {
+  ShellMoveComponent "{851AA4A2AE0A5691}" {
+   TumblingDamageMultiplier 0.15
+   PenetrationDepth 19.3
+  }
+ }
+}

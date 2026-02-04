@@ -1,0 +1,35 @@
+GenericEntity {
+ ID "66DF46AA2B7E3721"
+ components {
+  SignalsManagerComponent "{66DF46AA2B7E372D}" {
+   Enabled 0
+  }
+  SoundComponent "{66DF46AA2B7E3719}" {
+   Enabled 0
+   DistanceManagement 0
+  }
+  BaseTriggerComponent "{66DF46AA2B7E371B}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{66DF46A9505E9DB3}" {
+     TriggerOnce 1
+     ExplosionEffects {
+      BaseExplosionDamage "{66DF46A92EAFDF1D}" {
+      }
+      ExplosionFragmentationEffect "{66DF46A92104142B}" {
+      }
+      ExplosionImpulseEffect "{66DF46A926181F95}" {
+      }
+     }
+     ChargeWeight 200
+    }
+   }
+   DELETE_ON_TRIGGER 0
+   TRIGGER_ALIVE 1
+   SafetyDistance 1
+  }
+  HitEffectComponent "{66DF46AA2B7E371D}" {
+   EnabledOnDedicatedServer 1
+  }
+ }
+ Flags 0 0x3
+}

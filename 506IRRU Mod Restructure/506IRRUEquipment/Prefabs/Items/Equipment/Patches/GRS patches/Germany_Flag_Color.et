@@ -1,0 +1,21 @@
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "GRS: Patch Germany Flag"
+     Description "GRS: Patch Germany Flag"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornMaterialsOverride {
+    "{F6D7B9E8F8337F79}Assets/Flag_Patches/Data/Flag_Patch_Germany.emat"
+   }
+   ItemMaterialsOverride {
+    "{F6D7B9E8F8337F79}Assets/Flag_Patches/Data/Flag_Patch_Germany.emat"
+   }
+  }
+ }
+}

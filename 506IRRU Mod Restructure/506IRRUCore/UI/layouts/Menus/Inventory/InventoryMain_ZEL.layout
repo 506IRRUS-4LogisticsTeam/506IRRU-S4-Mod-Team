@@ -1,0 +1,36 @@
+FrameWidgetClass "{65F552B08753748E}" : "{3CB494DF8BC8C307}UI/layouts/Menus/Inventory/InventoryMain_ZEL.layout" {
+ {
+  OverlayWidgetClass "{60DCC8DF2787CD32}" {
+   Prefab "{60DCC8DF2787CD32}"
+   {
+    SizeLayoutWidgetClass "{589F049780D13CA5}" {
+     Prefab "{589F049780D13CA5}"
+     {
+      VerticalLayoutWidgetClass "{589F049780D13CA3}" {
+       Prefab "{589F049780D13CA3}"
+       {
+        OverlayWidgetClass "{589F0497F7A00346}" {
+         Prefab "{589F0497F7A00346}"
+         {
+          SizeLayoutWidgetClass "{61DF36232AC80ECF}" {
+           Prefab "{61DF36232AC80ECF}"
+           "Is Visible" 0
+          }
+          SizeLayoutWidgetClass "{61DF36221024A8A7}" {
+           Prefab "{61DF36221024A8A7}"
+           "Is Visible" 0
+          }
+          SizeLayoutWidgetClass "{61DF3622BB28D017}" {
+           Prefab "{61DF3622BB28D017}"
+           "Is Visible" 0
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

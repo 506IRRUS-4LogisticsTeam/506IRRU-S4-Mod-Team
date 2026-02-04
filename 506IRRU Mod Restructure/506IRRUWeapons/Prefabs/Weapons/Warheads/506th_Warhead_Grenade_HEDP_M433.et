@@ -1,0 +1,34 @@
+GenericEntity : "{7DA2AFFC7B4BE844}Prefabs/Weapons/Warheads/Warhead_Grenade_HE.et" {
+ ID "520EA1D2A9E0B759"
+ components {
+  BaseTriggerComponent "{55129E81CBAA1390}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{567CBC1CFBB064A8}" : "{D0C33EDF0621598B}Prefabs/Weapons/Core/Damage/ExplosionContainer_HEDP.conf" {
+     ExplosionEffects {
+      ExplosionFragmentationEffect "{567CBC1D7AB652C7}" : "{9C98DE51B7C51300}Prefabs/Weapons/Core/Damage/FragmentationDamageEffect_HEDP.conf" {
+       DamageValue 65
+       DamageFragmentCount 650
+       GurneyConstant 3600
+       CaseWeight 240
+       FragMassScale 95
+       FragRangeScale 220
+       FragSpeedScale 175
+       FragDamagePower 0.45
+       FragRangePower 0.2
+      }
+     }
+     ChargeWeight 140
+     TntEquivalent 1.75
+    }
+    SubmunitionEffect "{66ED002E7CBE086C}" {
+     Prefab "{675D3E87D5F45FFD}Prefabs/Weapons/Ammo/Ammo_Grenade_HEDP_M433_Penetrator.et"
+    }
+    SubmunitionEffect "{66ED002E7CBE0998}" {
+     Prefab "{EDC9C1FB7F55A32D}Prefabs/Weapons/Ammo/Ammo_Grenade_HEDP_M433_Spall.et"
+     Count 30
+     Dispersion 60
+    }
+   }
+  }
+ }
+}
