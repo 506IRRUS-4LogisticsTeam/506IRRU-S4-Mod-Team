@@ -55,7 +55,6 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 			return;
 		}
 
-		Print("[TicketSystem] Editor manager not yet available, subscribing to init event");
 		core.Event_OnEditorManagerInitOwner.Insert(OnEditorManagerInit);
 	}
 
