@@ -5,28 +5,28 @@ FrameWidgetClass {
    Name "Frame0"
    Slot FrameWidgetSlot "{688846A3A1031803}" {
     Anchor 1 0 1 0
-    PositionX -176
-    OffsetLeft -176
-    PositionY 48
-    OffsetTop 48
-    SizeX 176
+    PositionX -160
+    OffsetLeft -160
+    PositionY 68
+    OffsetTop 68
+    SizeX 160
     OffsetRight 0
     SizeY 112
-    OffsetBottom -160
+    OffsetBottom -180
    }
    {
     HorizontalLayoutWidgetClass "{688846A03D193FEC}" {
      Name "HorizontalLayout0"
      Slot FrameWidgetSlot "{688846A03D193F32}" {
       Anchor 1 0 1 0
-      PositionX -176
-      OffsetLeft -176
+      PositionX -160
+      OffsetLeft -160
       PositionY 0
       OffsetTop 0
-      SizeX 176
+      SizeX 160
       OffsetRight 0
-      SizeY 40
-      OffsetBottom -40
+      SizeY 32
+      OffsetBottom -32
      }
      {
       OverlayWidgetClass "{688846A00C3817FB}" {
@@ -56,12 +56,12 @@ FrameWidgetClass {
     VerticalLayoutWidgetClass "{688846A54AE2D1CF}" {
      Name "VerticalLayout0"
      Slot FrameWidgetSlot "{688846A54AE2D129}" {
-      PositionX 16
-      OffsetLeft 16
+      PositionX 12
+      OffsetLeft 12
       PositionY 48
       OffsetTop 48
       SizeX 136
-      OffsetRight -152
+      OffsetRight -148
       SizeY 53.73
       OffsetBottom -101.73
      }
@@ -86,8 +86,8 @@ FrameWidgetClass {
       OffsetLeft 0
       PositionY 0
       OffsetTop 0
-      SizeX 176
-      OffsetRight -176
+      SizeX 160
+      OffsetRight -160
       SizeY 112
       OffsetBottom -112
      }

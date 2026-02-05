@@ -52,6 +52,31 @@ class IRRU_TicketSystemGameModeComponent : SCR_BaseGameModeComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
+	//! Set tickets to a specific value (server-only, admin command)
+	//! \param value New ticket count
+	//! \param reason Debug reason string
+	void SetTickets(int value, string reason = "")
+	{
+		if (!Replication.IsServer())
+			return;
+
+		m_iTicketCount = value;
+
+		Replication.BumpMe();
+
+		if (m_bDebugEnabled)
+			Print(string.Format("[TicketSystem] Tickets set to %1 (%2)", value, reason));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Reset tickets to zero (server-only, admin command)
+	//! \param reason Debug reason string
+	void ResetTickets(string reason = "")
+	{
+		SetTickets(0, reason);
+	}
+
+	//------------------------------------------------------------------------------------------------
 	bool IsDebugEnabled()
 	{
 		return m_bDebugEnabled;

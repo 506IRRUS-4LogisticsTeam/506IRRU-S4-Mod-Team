@@ -16,7 +16,7 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 {
 	protected const int TICKETS_UNCONSCIOUS = 1;
 	protected const int TICKETS_DEATH = 5;
-	protected const float INVULNERABILITY_WINDOW = 30.0;
+	protected const float INVULNERABILITY_WINDOW = 20.0;
 
 	protected SCR_CharacterControllerComponent m_Ctrl;
 	protected bool m_bWasUnconscious = false;
