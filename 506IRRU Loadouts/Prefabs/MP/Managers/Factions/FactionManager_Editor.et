@@ -1,7 +1,57 @@
 SCR_FactionManager : "{A242612865F2A48E}Prefabs/MP/Managers/Factions/FactionManager_Base.et" {
  ID "56B2B4776E6E4499"
  Factions {
-  SCR_Faction "{56DEAC40D132400B}" : "{D1C711DAFBA64C9A}Configs/Factions/Loadout.conf" {
+  SCR_Faction "{56DEAC40D2DBC8B1}" {
+   m_aEntityCatalogs {
+    SCR_EntityCatalogMultiList "{5C68A0EE815FA292}" {
+     m_aEntityEntryList {
+      SCR_EntityCatalogEntry "{688EC70E2D931903}" {
+       m_sEntityPrefab "{1975B045BDF1C0C3}Prefabs/Characters/Loadout_Share.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{688EC70E7966EA0B}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{688EC70E7FBD085D}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{688EC70E1100C651}" {
+       m_sEntityPrefab "{E36A0AB6F35F91AC}Prefabs/Characters/Loadout_Presets.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{688EC70E6E00F00D}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{688EC70E6D087D12}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{688EC70E10DD3E51}" {
+       m_sEntityPrefab "{D636767A555794F7}Prefabs/Characters/Loadout_Menu.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{688EC70E55BE5290}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{688EC70E54DB36D3}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+       }
+      }
+      SCR_EntityCatalogEntry "{688EC70E023F0C4E}" {
+       m_sEntityPrefab "{587E9D0970574C39}Prefabs/Characters/Loadout_Dev.et"
+       m_aEntityDataList {
+        SCR_EntityCatalogEditorData "{688EC70E5DF8ECEF}" {
+         m_eValidEditorModes 33
+        }
+        SCR_EntityCatalogSpawnerData "{688EC70E5CDD0D19}" {
+         m_eSlotTypes GROUP_SMALL
+        }
+       }
+      }
+     }
+    }
+   }
   }
  }
 }

@@ -152,6 +152,138 @@ sealed class Loadout_ApplySquadLeaderFromAiAction : ScriptedUserAction
 	}
 };
 
+sealed class Loadout_ApplyATGunnerFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "ATGunner");
+	}
+};
+
+sealed class Loadout_ApplyATAssistantrFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "ATAssistant");
+	}
+};
+
+sealed class Loadout_ApplyMGGunnerFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "MGGunner");
+	}
+};
+
+sealed class Loadout_ApplyMGAssistantFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "MGAssistant");
+	}
+};
+
+sealed class Loadout_ApplyOtherOneFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "OtherOne");
+	}
+};
+
+sealed class Loadout_ApplyOtherTwoFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "OtherTwo");
+	}
+};
+
 sealed class Loadout_CopyPlayerToAiAction : ScriptedUserAction
 {
 	override bool HasLocalEffectOnlyScript() { return false; }
@@ -171,6 +303,28 @@ sealed class Loadout_CopyPlayerToAiAction : ScriptedUserAction
 			return;
 
 		Loadout_TransferHelpers.TransferLoadout(pUserEntity, pOwnerEntity);
+	}
+};
+
+sealed class Loadout_ApplyOtherThreeFromAiAction : ScriptedUserAction
+{
+	override bool HasLocalEffectOnlyScript() { return false; }
+	override bool CanBroadcastScript() { return true; }
+
+	override bool CanBePerformedScript(IEntity user)
+	{
+		return user != null;
+	}
+
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
+	{
+		if (!Replication.IsServer())
+			return;
+
+		if (!pUserEntity)
+			return;
+
+		Loadout_ApplyLoadout.ApplyLoadoutByName(pUserEntity, "OtherThree");
 	}
 };
 

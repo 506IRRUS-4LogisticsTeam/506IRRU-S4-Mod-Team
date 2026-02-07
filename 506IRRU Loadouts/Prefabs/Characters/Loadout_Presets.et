@@ -6,6 +6,53 @@ SCR_ChimeraCharacter : "{5228D8F587B5EEDC}Prefabs/Characters/Factions/BLUFOR/US_
     "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
    }
   }
+  SCR_CharacterControllerComponent "{520EA1D2F659CEA5}" {
+   WaitForThrowResetAction 0
+   ChangeWeaponWhenNoGrenades 0
+   LockDownAimInAdjustedStance 0
+   DeathTimer 250
+   AllowLightImpactAnim 0
+   AllowRollAnimation 0
+   HoldInputForRoll 0
+   AllowRagdollEffectorsFromDamage 0
+   m_fDrowningDuration 900
+  }
+  CharacterAimingComponent "{520EA1D2F659CE42}" {
+   ProvideAimingType None
+  }
+  CharacterHeadAimingComponent "{520EA1D2F659CF99}" {
+   ProvideAimingType None
+  }
+  ChimeraAIControlComponent "{520EA1D2DB109F34}" {
+   Enabled 0
+   components {
+    AICharacterAimingComponent "{520EA1D2DB109F0C}" {
+     Enabled 0
+    }
+    AICharacterHeadAimingComponent "{520EA1D2DB109F04}" {
+     Enabled 0
+    }
+    AICharacterMovementComponent "{520EA1D2DB109F01}" {
+     Enabled 0
+    }
+    AIPathfindingComponent "{56349A6F9C02E7A1}" {
+     Enabled 0
+    }
+    PerceptionComponent "{54A2CBC75F06064B}" {
+     Enabled 0
+    }
+    SCR_AICombatComponent "{55A2C9BE343B2EA1}" {
+     Enabled 0
+     m_eAISkillDefault NONE
+    }
+   }
+  }
+  ClimbingDataComponent "{5304A49E934A0758}" {
+   Enabled 0
+  }
+  SCR_CharacterRankComponent "{528E6D4286AA2D8F}" {
+   m_iRank SERGEANT
+  }
   SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
    m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
     Name "Loadout - Presets"
@@ -78,7 +125,7 @@ SCR_ChimeraCharacter : "{5228D8F587B5EEDC}Prefabs/Characters/Factions/BLUFOR/US_
       Name "Team Leader"
      }
      Duration 0.5
-     "Sort Priority" 5
+     "Sort Priority" 19
     }
     Loadout_ApplySquadLeaderFromAiAction "{685C873BD218CB7D}" {
      ParentContextList {
@@ -88,9 +135,80 @@ SCR_ChimeraCharacter : "{5228D8F587B5EEDC}Prefabs/Characters/Factions/BLUFOR/US_
       Name "Squad Leader"
      }
      Duration 0.5
-     "Sort Priority" 6
+     "Sort Priority" 20
+    }
+    Loadout_ApplyATAssistantrFromAiAction "{68625BC01E09C356}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{68625BC049E1E591}" {
+      Name "AT Assistant"
+     }
+     Duration 0.5
+     "Sort Priority" 11
+    }
+    Loadout_ApplyATGunnerFromAiAction "{68625BC01CBB262F}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{68625BC0B1098DB0}" {
+      Name "AT Gunner"
+     }
+     Duration 0.5
+     "Sort Priority" 10
+    }
+    Loadout_ApplyMGAssistantFromAiAction "{68625BC002102671}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{68625BC0AB1F8896}" {
+      Name "MG Assistant"
+     }
+     Duration 0.5
+     "Sort Priority" 14
+    }
+    Loadout_ApplyMGGunnerFromAiAction "{68625BC000CD72BA}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{68625BC0A1EA01B0}" {
+      Name "MG Gunner"
+     }
+     Duration 0.5
+     "Sort Priority" 13
+    }
+    Loadout_ApplyOtherOneFromAiAction "{68626668621511FF}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{686266686E83AF03}" {
+      Name "Other 1"
+     }
+     Duration 2
+     "Sort Priority" 91
+    }
+    Loadout_ApplyOtherTwoFromAiAction "{686266686790C5E4}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{68626668457017B3}" {
+      Name "Other 2"
+     }
+     Duration 2
+     "Sort Priority" 92
+    }
+    Loadout_ApplyOtherThreeFromAiAction "{6862666865B1555A}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo UIInfo "{686266685E4EC5B9}" {
+      Name "Other 3"
+     }
+     Duration 2
+     "Sort Priority" 93
     }
    }
   }
  }
+ coords 8587.011 4.36 5649.793
 }

@@ -1,6 +1,13 @@
 SCR_ChimeraCharacter : "{894628A45793E7A0}Prefabs/Characters/Factions/BLUFOR/US_Army/GreenBerets/Character_US_SF_BaseLoadout.et" {
  ID "520EC961A090B1EE"
  components {
+  SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
+   Enabled 0
+   EnableDamage 0
+  }
+  SCR_CharacterVicinityComponent "{529A70D96D401B33}" {
+   Enabled 0
+  }
   SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
    m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
     Name "Loadout - Dev"

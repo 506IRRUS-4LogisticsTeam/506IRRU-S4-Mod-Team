@@ -30,6 +30,31 @@ sealed class Loadout_Import_Menu : ScriptedWidgetEventHandler
 
 		menu.InitWithRoot(root, playerEntity);
 		s_Instance = menu;
+		
+		Widget focusW = FindFirstFocusable(root);
+		if (focusW)
+			workspace.SetFocusedWidget(focusW, true);
+	}
+	
+	static Widget FindFirstFocusable(Widget w)
+	{
+		if (!w)
+			return null;
+	
+		if (w.IsFocusable())
+			return w;
+	
+		Widget child = w.GetChildren();
+		while (child)
+		{
+			Widget found = FindFirstFocusable(child);
+			if (found)
+				return found;
+	
+			child = child.GetSibling();
+		}
+	
+		return null;
 	}
 
 	void InitWithRoot(Widget root, IEntity playerEntity)

@@ -26,6 +26,10 @@ sealed class Loadout_Export_Menu : ScriptedWidgetEventHandler
 
 		menu.InitWithRoot(root, playerEntity);
 		s_Instance = menu;
+		
+		Widget focusW = FindFirstFocusable(root);
+		if (focusW)
+			workspace.SetFocusedWidget(focusW, true);
 	}
 
 	void InitWithRoot(Widget root, IEntity playerEntity)
@@ -37,6 +41,27 @@ sealed class Loadout_Export_Menu : ScriptedWidgetEventHandler
 		m_CloseButton = ButtonWidget.Cast(m_Root.FindAnyWidget("CloseButton"));
 
 		PopulateLoadoutText();
+	}
+	
+	static Widget FindFirstFocusable(Widget w)
+	{
+		if (!w)
+			return null;
+	
+		if (w.IsFocusable())
+			return w;
+	
+		Widget child = w.GetChildren();
+		while (child)
+		{
+			Widget found = FindFirstFocusable(child);
+			if (found)
+				return found;
+	
+			child = child.GetSibling();
+		}
+	
+		return null;
 	}
 
 	protected void PopulateLoadoutText()
