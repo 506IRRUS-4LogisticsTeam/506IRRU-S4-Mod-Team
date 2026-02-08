@@ -51,7 +51,7 @@ GameEntity {
    }
    ItemModel "{D8346428ECD5CA97}Assets/Patches/101stAirbourne.xob"
    ItemMaterialsOverride {
-    "{2647D80F3E60DA0D}Assets/Patches/Data/Material.emat"
+    "{C97D8BC079142342}Assets/Patches/Data/101st.emat"
    }
   }
   ActionsManagerComponent "{688E96DEB5163AC0}" {
