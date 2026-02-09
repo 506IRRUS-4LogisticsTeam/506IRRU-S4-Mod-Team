@@ -4,7 +4,7 @@ class IRRU_ContactViewGameModeComponentClass : SCR_BaseGameModeComponentClass
 
 class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 {
-	[Attribute("30", UIWidgets.Slider, "Time in seconds until player shows as green (no contact)", "10 3600 5")]
+	[Attribute("600", UIWidgets.Slider, "Time in seconds until player shows as green (no contact)", "10 3600 5")]
 	protected float m_fGreenThreshold;
 
 	[Attribute("1000", UIWidgets.Slider, "How often to sync data to clients (milliseconds)", "500 5000 100")]

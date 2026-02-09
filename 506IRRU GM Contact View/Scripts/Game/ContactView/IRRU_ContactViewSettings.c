@@ -1,6 +1,6 @@
 class IRRU_ContactViewSettings
 {
-	protected static float s_fGreenThreshold = 30.0;
+	protected static float s_fGreenThreshold = 600.0;
 
 	//------------------------------------------------------------------------------------------------
 	static float GetGreenThreshold()

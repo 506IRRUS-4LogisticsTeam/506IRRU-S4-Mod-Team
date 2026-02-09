@@ -24,8 +24,6 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 		if (Replication.IsRunning() && Replication.IsServer())
 			return;
 
-		Print("[TicketSystem] HUD component OnPostInit - client side");
-
 		SetEventMask(owner, EntityEvent.FRAME);
 		TryInitEditorManager();
 	}
@@ -46,8 +44,6 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 			m_bEditorManagerFound = true;
 			m_EditorManager.GetOnOpened().Insert(OnEditorOpened);
 			m_EditorManager.GetOnClosed().Insert(OnEditorClosed);
-
-			Print("[TicketSystem] Editor manager found, subscribed to events");
 
 			if (m_EditorManager.IsOpened())
 				OnEditorOpened();
@@ -70,8 +66,6 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 		SCR_EditorManagerCore core = SCR_EditorManagerCore.Cast(SCR_EditorManagerCore.GetInstance(SCR_EditorManagerCore));
 		if (core)
 			core.Event_OnEditorManagerInitOwner.Remove(OnEditorManagerInit);
-
-		Print("[TicketSystem] Editor manager initialized via callback");
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -79,12 +73,7 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 	{
 		// Only show for full GMs, not limited editor (photo mode)
 		if (m_EditorManager && m_EditorManager.IsLimited())
-		{
-			Print("[TicketSystem] Editor opened but limited - not showing panel");
 			return;
-		}
-
-		Print("[TicketSystem] Editor opened - creating/showing panel");
 
 		if (!m_TicketPanel)
 			InitializePanel();
@@ -95,8 +84,6 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnEditorClosed()
 	{
-		Print("[TicketSystem] Editor closed - hiding panel");
-
 		if (m_TicketPanel)
 			m_TicketPanel.Hide();
 	}
@@ -106,30 +93,17 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 	{
 		WorkspaceWidget workspace = GetGame().GetWorkspace();
 		if (!workspace)
-		{
-			Print("[TicketSystem] ERROR: No workspace available");
 			return;
-		}
 
 		if (m_sPanelLayout.IsEmpty())
-		{
-			Print("[TicketSystem] ERROR: Panel layout is empty - set it on the prefab");
 			return;
-		}
-
-		Print(string.Format("[TicketSystem] Creating panel from layout: %1", m_sPanelLayout));
 
 		m_wPanelRoot = workspace.CreateWidgets(m_sPanelLayout);
 		if (!m_wPanelRoot)
-		{
-			Print("[TicketSystem] ERROR: Failed to create widgets from layout");
 			return;
-		}
 
 		m_TicketPanel = new IRRU_TicketSystemPanel(m_wPanelRoot);
 		m_TicketPanel.Show();
-
-		Print("[TicketSystem] Panel created and shown successfully");
 	}
 
 	//------------------------------------------------------------------------------------------------
