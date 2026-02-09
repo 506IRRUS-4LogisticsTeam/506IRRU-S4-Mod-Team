@@ -6,13 +6,17 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 {
 	protected BaseWeaponManagerComponent m_WeaponManager;
 	protected IEntity m_CurrentWeaponEntity;
+	protected RplComponent m_Rpl;
 
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
 
-		if (!Replication.IsServer() && Replication.IsRunning())
+		m_Rpl = RplComponent.Cast(owner.FindComponent(RplComponent));
+
+		// Only initialize on the owning client (or server in singleplayer)
+		if (m_Rpl && !m_Rpl.IsOwner())
 			return;
 
 		m_WeaponManager = BaseWeaponManagerComponent.Cast(owner.FindComponent(BaseWeaponManagerComponent));
@@ -79,7 +83,24 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 	protected void OnMuzzleFired(IEntity effectEntity, BaseMuzzleComponent muzzle, IEntity projectileEntity)
 	{
 		int playerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(GetOwner());
-		if (playerId > 0)
+		if (playerId <= 0)
+			return;
+
+		// If we're the server, register directly
+		if (Replication.IsServer())
+		{
 			IRRU_ContactViewManager.GetInstance().OnPlayerFired(playerId);
+			return;
+		}
+
+		// Client: send RPC to server
+		Rpc(RpcAsk_PlayerFired, playerId);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	protected void RpcAsk_PlayerFired(int playerId)
+	{
+		IRRU_ContactViewManager.GetInstance().OnPlayerFired(playerId);
 	}
 }

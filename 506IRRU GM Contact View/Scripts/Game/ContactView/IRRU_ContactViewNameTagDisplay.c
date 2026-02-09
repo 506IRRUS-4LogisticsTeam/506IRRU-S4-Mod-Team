@@ -72,9 +72,29 @@ modded class SCR_PlayerEditableEntityUIComponent
 class IRRU_ContactViewHelper
 {
 	//------------------------------------------------------------------------------------------------
+	//! Check if local player has full GM/admin editor access (not limited/photo mode)
+	static bool IsLocalPlayerGM()
+	{
+		SCR_EditorManagerCore core = SCR_EditorManagerCore.Cast(SCR_EditorManagerCore.GetInstance(SCR_EditorManagerCore));
+		if (!core)
+			return false;
+
+		SCR_EditorManagerEntity editorManager = core.GetEditorManager();
+		if (!editorManager)
+			return false;
+
+		return !editorManager.IsLimited();
+	}
+
+	//------------------------------------------------------------------------------------------------
 	//! Get gradient contact color: Red (just contacted) -> Orange -> Yellow -> Green (quiet)
+	//! Returns white for non-GM players
 	static Color GetContactColor(int playerId)
 	{
+		// Only show contact colors to full GMs, not limited editor users
+		if (!IsLocalPlayerGM())
+			return new Color(1.0, 1.0, 1.0, 1.0);
+
 		IRRU_ContactViewManager manager = IRRU_ContactViewManager.GetInstance();
 		if (!manager)
 			return new Color(0.5, 0.5, 0.5, 1.0);

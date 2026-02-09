@@ -77,6 +77,13 @@ class IRRU_TicketSystemHUDComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnEditorOpened()
 	{
+		// Only show for full GMs, not limited editor (photo mode)
+		if (m_EditorManager && m_EditorManager.IsLimited())
+		{
+			Print("[TicketSystem] Editor opened but limited - not showing panel");
+			return;
+		}
+
 		Print("[TicketSystem] Editor opened - creating/showing panel");
 
 		if (!m_TicketPanel)
