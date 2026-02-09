@@ -6,6 +6,40 @@ SCR_ChimeraCharacter : "{85261D5B04BFA7EE}Prefabs/Characters/Factions/BLUFOR/US_
     "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
    }
   }
+  CharacterAimingComponent "{520EA1D2F659CE42}" {
+   ProvideAimingType None
+  }
+  CharacterHeadAimingComponent "{520EA1D2F659CF99}" {
+   ProvideAimingType None
+  }
+  ChimeraAIControlComponent "{520EA1D2DB109F34}" {
+   components {
+    AICharacterAimingComponent "{520EA1D2DB109F0C}" {
+     Enabled 0
+    }
+    AICharacterHeadAimingComponent "{520EA1D2DB109F04}" {
+     Enabled 0
+    }
+    AICharacterMovementComponent "{520EA1D2DB109F01}" {
+     Enabled 0
+    }
+    AIPathfindingComponent "{56349A6F9C02E7A1}" {
+     Enabled 0
+    }
+    PerceptionComponent "{54A2CBC75F06064B}" {
+     Enabled 0
+    }
+   }
+  }
+  SCR_CharacterRankComponent "{528E6D4286AA2D8F}" {
+   m_iRank CORPORAL
+  }
+  SCR_CharacterStaminaComponent "{520EA1D2F659C824}" {
+   Enabled 0
+  }
+  SCR_CharacterVicinityComponent "{529A70D96D401B33}" {
+   Enabled 0
+  }
   SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
    m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
     Name "Loadout - Share"
@@ -33,7 +67,7 @@ SCR_ChimeraCharacter : "{85261D5B04BFA7EE}Prefabs/Characters/Factions/BLUFOR/US_
       Name "Take Loadout"
      }
      Duration 0.5
-     "Sort Priority" 2
+     "Sort Priority" 10
     }
     Loadout_CopyPlayerToAiAction "{685C873B752F354C}" {
      ParentContextList {
@@ -42,10 +76,11 @@ SCR_ChimeraCharacter : "{85261D5B04BFA7EE}Prefabs/Characters/Factions/BLUFOR/US_
      UIInfo UIInfo "{685C873B7A336774}" {
       Name "Give Loadout"
      }
-     Duration 0.5
-     "Sort Priority" 1
+     Duration 2
+     "Sort Priority" 11
     }
    }
   }
  }
+ coords 8585.548 4.271 5649.783
 }

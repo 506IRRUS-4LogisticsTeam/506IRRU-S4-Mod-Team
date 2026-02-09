@@ -22,9 +22,6 @@ sealed class Loadout_ApplyLoadout {
 	static void ClearCharacterEquipment(IEntity characterEntity)
 	{
 		array<BaseInventoryStorageComponent> storages = {};
-		int storagesCount = Bacon_GunBuilderUI_Helpers.GetAllEntityStorages(characterEntity, storages);
-		if (storagesCount < 1)
-			return;
 
 		array<IEntity> items = {};
 		foreach (BaseInventoryStorageComponent storage : storages) {

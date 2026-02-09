@@ -6,6 +6,37 @@ SCR_ChimeraCharacter : "{36E28C628A2F83CB}Prefabs/Characters/Factions/BLUFOR/US_
     "{91D53896F5AD5DB4}Sounds/RadioProtocol/RadioProtocol_CombatPatrol_US.acp"
    }
   }
+  CharacterAimingComponent "{520EA1D2F659CE42}" {
+   ProvideAimingType None
+  }
+  CharacterHeadAimingComponent "{520EA1D2F659CF99}" {
+   ProvideAimingType None
+  }
+  ChimeraAIControlComponent "{520EA1D2DB109F34}" {
+   components {
+    AICharacterAimingComponent "{520EA1D2DB109F0C}" {
+     Enabled 0
+    }
+    AICharacterHeadAimingComponent "{520EA1D2DB109F04}" {
+     Enabled 0
+    }
+    AICharacterMovementComponent "{520EA1D2DB109F01}" {
+     Enabled 0
+    }
+    AIPathfindingComponent "{56349A6F9C02E7A1}" {
+     Enabled 0
+    }
+    PerceptionComponent "{54A2CBC75F06064B}" {
+     Enabled 0
+    }
+    SCR_AICombatComponent "{55A2C9BE343B2EA1}" {
+     Enabled 0
+    }
+   }
+  }
+  SCR_CharacterRankComponent "{528E6D4286AA2D8F}" {
+   m_iRank CORPORAL
+  }
   SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
    m_UIInfo SCR_EditableEntityUIInfo "{5298E609432D192D}" {
     Name "Loadout - Menu"
