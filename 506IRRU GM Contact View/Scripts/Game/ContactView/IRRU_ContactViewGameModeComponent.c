@@ -19,19 +19,10 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 	protected bool m_bInitialized = false;
 	protected float m_fTimeSinceSync = 0;
 
-	[RplProp(onRplName: "OnContactDataReceived")]
-	protected ref array<int> m_aPlayerIds;
-
-	[RplProp()]
-	protected ref array<float> m_aContactTimes;
-
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
-
-		m_aPlayerIds = new array<int>();
-		m_aContactTimes = new array<float>();
 
 		if (!Replication.IsServer())
 			return;
@@ -78,46 +69,46 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 		if (!manager)
 			return;
 
-		array<int> playerIds = new array<int>();
+		array<int> playerIds = {};
 		manager.GetTrackedPlayers(playerIds);
 
-		m_aPlayerIds.Clear();
-		m_aContactTimes.Clear();
+		if (playerIds.Count() == 0)
+			return;
 
+		array<float> contactTimes = {};
 		float currentTime = GetCurrentWorldTime();
 
 		foreach (int playerId : playerIds)
 		{
 			float lastContactTime = manager.GetLastContactTime(playerId);
 			if (lastContactTime < 0)
+			{
+				contactTimes.Insert(-1);
 				continue;
+			}
 
 			float timeSinceContact = currentTime - lastContactTime;
-
-			m_aPlayerIds.Insert(playerId);
-			m_aContactTimes.Insert(timeSinceContact);
+			contactTimes.Insert(timeSinceContact);
 		}
 
-		Replication.BumpMe();
+		Rpc(RpcAll_ReceiveContactData, playerIds, contactTimes);
 
 		if (m_bDebugEnabled)
-			Print(string.Format("[ContactView] Synced %1 players to clients", m_aPlayerIds.Count()));
+			Print(string.Format("[ContactView] Synced %1 players to clients", playerIds.Count()));
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected void OnContactDataReceived()
+	[RplRpc(RplChannel.Reliable, RplRcver.Broadcast)]
+	void RpcAll_ReceiveContactData(array<int> playerIds, array<float> contactTimes)
 	{
-		if (Replication.IsServer())
-			return;
-
 		IRRU_ContactViewManager manager = IRRU_ContactViewManager.GetInstance();
 		if (!manager)
 			return;
 
-		manager.UpdateFromReplicatedData(m_aPlayerIds, m_aContactTimes);
+		manager.UpdateFromReplicatedData(playerIds, contactTimes);
 
 		if (m_bDebugEnabled)
-			Print(string.Format("[ContactView] Received %1 players from server", m_aPlayerIds.Count()));
+			Print(string.Format("[ContactView] Received %1 players from server", playerIds.Count()));
 	}
 
 	//------------------------------------------------------------------------------------------------

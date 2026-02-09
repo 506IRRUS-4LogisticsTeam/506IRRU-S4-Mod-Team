@@ -4,8 +4,8 @@ class IRRU_ContactViewWeaponTrackerClass : ScriptComponentClass
 
 class IRRU_ContactViewWeaponTracker : ScriptComponent
 {
-	protected int m_iPlayerId = -1;
-	protected bool m_bInitialized = false;
+	protected BaseWeaponManagerComponent m_WeaponManager;
+	protected IEntity m_CurrentWeaponEntity;
 
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
@@ -15,43 +15,71 @@ class IRRU_ContactViewWeaponTracker : ScriptComponent
 		if (!Replication.IsServer() && Replication.IsRunning())
 			return;
 
-		m_iPlayerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner);
-		m_bInitialized = true;
+		m_WeaponManager = BaseWeaponManagerComponent.Cast(owner.FindComponent(BaseWeaponManagerComponent));
+		if (!m_WeaponManager)
+			return;
 
-		HookMuzzleEffects(owner);
+		m_WeaponManager.m_OnWeaponChangeCompleteInvoker.Insert(OnWeaponChanged);
+		HookCurrentWeapon();
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected void HookMuzzleEffects(IEntity owner)
+	override void OnDelete(IEntity owner)
 	{
-		if (!owner)
+		if (m_WeaponManager)
+			m_WeaponManager.m_OnWeaponChangeCompleteInvoker.Remove(OnWeaponChanged);
+
+		UnhookCurrentWeapon();
+		super.OnDelete(owner);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void OnWeaponChanged(BaseWeaponComponent newWeapon)
+	{
+		UnhookCurrentWeapon();
+		HookCurrentWeapon();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void HookCurrentWeapon()
+	{
+		if (!m_WeaponManager)
 			return;
 
-		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(owner.FindComponent(SCR_MuzzleEffectComponent));
+		BaseWeaponComponent currentWeapon = m_WeaponManager.GetCurrentWeapon();
+		if (!currentWeapon)
+			return;
+
+		IEntity weaponEntity = currentWeapon.GetOwner();
+		if (!weaponEntity)
+			return;
+
+		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(weaponEntity.FindComponent(SCR_MuzzleEffectComponent));
 		if (muzzleEffect)
 		{
 			muzzleEffect.GetOnWeaponFired().Insert(OnMuzzleFired);
-
-			if (IRRU_ContactViewSettings.IsDebugEnabled())
-				Print(string.Format("[ContactView] Hooked weapon firing for player %1", m_iPlayerId));
+			m_CurrentWeaponEntity = weaponEntity;
 		}
 	}
 
 	//------------------------------------------------------------------------------------------------
-	void OnMuzzleFired(IEntity effectEntity, BaseMuzzleComponent muzzle, IEntity projectileEntity)
+	protected void UnhookCurrentWeapon()
 	{
-		if (!m_bInitialized || m_iPlayerId <= 0)
+		if (!m_CurrentWeaponEntity)
 			return;
 
-		IRRU_ContactViewManager.GetInstance().OnPlayerFired(m_iPlayerId);
+		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(m_CurrentWeaponEntity.FindComponent(SCR_MuzzleEffectComponent));
+		if (muzzleEffect)
+			muzzleEffect.GetOnWeaponFired().Remove(OnMuzzleFired);
 
-		if (IRRU_ContactViewSettings.IsDebugEnabled())
-			Print(string.Format("[ContactView] Player %1 fired weapon", m_iPlayerId));
+		m_CurrentWeaponEntity = null;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	int GetPlayerId()
+	protected void OnMuzzleFired(IEntity effectEntity, BaseMuzzleComponent muzzle, IEntity projectileEntity)
 	{
-		return m_iPlayerId;
+		int playerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(GetOwner());
+		if (playerId > 0)
+			IRRU_ContactViewManager.GetInstance().OnPlayerFired(playerId);
 	}
 }
