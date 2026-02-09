@@ -1,42 +1,16 @@
 class IRRU_ContactViewSettings
 {
-	protected static float s_fWarningThreshold = 300.0;
-	protected static float s_fCriticalThreshold = 600.0;
-	protected static bool s_bDebugEnabled = false;
+	protected static float s_fGreenThreshold = 30.0;
 
 	//------------------------------------------------------------------------------------------------
-	static float GetWarningThreshold()
+	static float GetGreenThreshold()
 	{
-		return s_fWarningThreshold;
+		return s_fGreenThreshold;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	static float GetCriticalThreshold()
+	static void SetGreenThreshold(float seconds)
 	{
-		return s_fCriticalThreshold;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static void SetWarningThreshold(float seconds)
-	{
-		s_fWarningThreshold = seconds;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static void SetCriticalThreshold(float seconds)
-	{
-		s_fCriticalThreshold = seconds;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static bool IsDebugEnabled()
-	{
-		return s_bDebugEnabled;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	static void SetDebugEnabled(bool enabled)
-	{
-		s_bDebugEnabled = enabled;
+		s_fGreenThreshold = seconds;
 	}
 }

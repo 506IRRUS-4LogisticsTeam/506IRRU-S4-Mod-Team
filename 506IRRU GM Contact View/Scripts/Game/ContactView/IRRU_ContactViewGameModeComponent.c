@@ -4,20 +4,13 @@ class IRRU_ContactViewGameModeComponentClass : SCR_BaseGameModeComponentClass
 
 class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 {
-	[Attribute("300", UIWidgets.Slider, "Time in seconds before player shows as warning (yellow)", "60 1800 30")]
-	protected float m_fWarningThreshold;
+	[Attribute("30", UIWidgets.Slider, "Time in seconds until player shows as green (no contact)", "10 3600 5")]
+	protected float m_fGreenThreshold;
 
-	[Attribute("600", UIWidgets.Slider, "Time in seconds before player shows as critical (red)", "120 3600 60")]
-	protected float m_fCriticalThreshold;
-
-	[Attribute("0", UIWidgets.CheckBox, "Enable debug logging")]
-	protected bool m_bDebugEnabled;
-
-	[Attribute("1", UIWidgets.Slider, "How often to sync data to clients (seconds)", "0.5 5 0.5")]
-	protected float m_fSyncInterval;
+	[Attribute("1000", UIWidgets.Slider, "How often to sync data to clients (milliseconds)", "500 5000 100")]
+	protected int m_iSyncIntervalMs;
 
 	protected bool m_bInitialized = false;
-	protected float m_fTimeSinceSync = 0;
 
 	//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
@@ -27,7 +20,7 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 		if (!Replication.IsServer())
 			return;
 
-		SetEventMask(owner, EntityEvent.FRAME);
+		ScheduleSync();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -38,63 +31,51 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 
 		m_bInitialized = true;
 
-		IRRU_ContactViewSettings.SetWarningThreshold(m_fWarningThreshold);
-		IRRU_ContactViewSettings.SetCriticalThreshold(m_fCriticalThreshold);
-		IRRU_ContactViewSettings.SetDebugEnabled(m_bDebugEnabled);
-
+		IRRU_ContactViewSettings.SetGreenThreshold(m_fGreenThreshold);
 		IRRU_ContactViewManager.GetInstance();
-
-		if (m_bDebugEnabled)
-			Print("[ContactView] Game mode component initialized");
 	}
 
 	//------------------------------------------------------------------------------------------------
-	override void EOnFrame(IEntity owner, float timeSlice)
+	protected void ScheduleSync()
 	{
-		if (!Replication.IsServer())
-			return;
-
-		m_fTimeSinceSync += timeSlice;
-		if (m_fTimeSinceSync < m_fSyncInterval)
-			return;
-
-		m_fTimeSinceSync = 0;
-		SyncContactData();
+		GetGame().GetCallqueue().Remove(SyncContactData);
+		GetGame().GetCallqueue().CallLater(SyncContactData, m_iSyncIntervalMs, false);
 	}
 
 	//------------------------------------------------------------------------------------------------
 	protected void SyncContactData()
 	{
+		if (!Replication.IsServer())
+			return;
+
 		IRRU_ContactViewManager manager = IRRU_ContactViewManager.GetInstance();
-		if (!manager)
-			return;
-
-		array<int> playerIds = {};
-		manager.GetTrackedPlayers(playerIds);
-
-		if (playerIds.Count() == 0)
-			return;
-
-		array<float> contactTimes = {};
-		float currentTime = GetCurrentWorldTime();
-
-		foreach (int playerId : playerIds)
+		if (manager)
 		{
-			float lastContactTime = manager.GetLastContactTime(playerId);
-			if (lastContactTime < 0)
-			{
-				contactTimes.Insert(-1);
-				continue;
-			}
+			array<int> playerIds = {};
+			manager.GetTrackedPlayers(playerIds);
 
-			float timeSinceContact = currentTime - lastContactTime;
-			contactTimes.Insert(timeSinceContact);
+			if (playerIds.Count() > 0)
+			{
+				array<float> contactTimes = {};
+				float currentTime = GetCurrentWorldTime();
+
+				foreach (int playerId : playerIds)
+				{
+					float lastContactTime = manager.GetLastContactTime(playerId);
+					if (lastContactTime < 0)
+					{
+						contactTimes.Insert(-1);
+						continue;
+					}
+
+					contactTimes.Insert(currentTime - lastContactTime);
+				}
+
+				Rpc(RpcAll_ReceiveContactData, playerIds, contactTimes);
+			}
 		}
 
-		Rpc(RpcAll_ReceiveContactData, playerIds, contactTimes);
-
-		if (m_bDebugEnabled)
-			Print(string.Format("[ContactView] Synced %1 players to clients", playerIds.Count()));
+		ScheduleSync();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -106,9 +87,6 @@ class IRRU_ContactViewGameModeComponent : SCR_BaseGameModeComponent
 			return;
 
 		manager.UpdateFromReplicatedData(playerIds, contactTimes);
-
-		if (m_bDebugEnabled)
-			Print(string.Format("[ContactView] Received %1 players from server", playerIds.Count()));
 	}
 
 	//------------------------------------------------------------------------------------------------
