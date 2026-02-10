@@ -87,7 +87,7 @@ class IRRU_ContactViewHelper
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get gradient contact color: Red (just contacted) -> Orange -> Yellow -> Green (quiet)
+	//! Get gradient contact color: Red (hot/in contact) -> Purple -> Blue (cold/no contact)
 	//! Returns white for non-GM players
 	static Color GetContactColor(int playerId)
 	{
@@ -109,30 +109,35 @@ class IRRU_ContactViewHelper
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get color along a Red -> Orange -> Yellow -> Green gradient
+	//! Get color along a Red -> Purple -> Blue gradient (hot to cold)
 	protected static Color GetGradientColor(float progress)
 	{
-		float r, g;
+		float r, g, b;
 
 		if (progress < 0.33)
 		{
-			// Red to Orange
+			// Red to Orange/Yellow
 			r = 1.0;
 			g = 0.5 * (progress / 0.33);
+			b = 0.0;
 		}
 		else if (progress < 0.66)
 		{
-			// Orange to Yellow
-			r = 1.0;
-			g = 0.5 + 0.5 * ((progress - 0.33) / 0.33);
+			// Yellow to Purple (reduce green, increase blue)
+			float t = (progress - 0.33) / 0.33;
+			r = 1.0 - 0.5 * t;
+			g = 0.5 - 0.5 * t;
+			b = t;
 		}
 		else
 		{
-			// Yellow to Green
-			r = 1.0 - ((progress - 0.66) / 0.34);
-			g = 1.0;
+			// Purple to Blue
+			float t = (progress - 0.66) / 0.34;
+			r = 0.5 - 0.5 * t;
+			g = 0.0;
+			b = 1.0;
 		}
 
-		return new Color(r, g, 0.0, 1.0);
+		return new Color(r, g, b, 1.0);
 	}
 }
