@@ -58,6 +58,11 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 		if (!Replication.IsServer())
 			return;
 
+		// Only count tickets for real players, not AI or GM-possessed AI
+		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(GetOwner());
+		if (controlType != SCR_ECharacterControlType.PLAYER)
+			return;
+
 		IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
 		if (!ticketSystem)
 			return;
