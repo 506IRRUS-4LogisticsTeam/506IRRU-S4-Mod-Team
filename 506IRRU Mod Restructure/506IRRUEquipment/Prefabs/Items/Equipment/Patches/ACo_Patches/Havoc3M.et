@@ -1,0 +1,26 @@
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "Havoc 3-M"
+     Description "Havoc 3-M"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{D160A6E1318919DD}Assets/Patches/Havoc3M.xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{D160A6E1318919DD}Assets/Patches/Havoc3M.xob"
+   WornMaterialsOverride {
+    "{B44DE7536ABF394E}Assets/Rectangle Patches/Data/24th_Patch.emat"
+   }
+   ItemModel "{D160A6E1318919DD}Assets/Patches/Havoc3M.xob"
+   ItemMaterialsOverride {
+    "{9B5D0C71F0D3A186}Assets/Patches/Data/Havoc3.emat"
+   }
+  }
+ }
+}

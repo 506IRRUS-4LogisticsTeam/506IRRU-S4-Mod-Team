@@ -1,8 +1,24 @@
 GameProject {
  ID "506IRRUWeapons"
  GUID "6873526BC041B39B"
- TITLE "506IRRU Weapons"
+ TITLE "506IRRU - Weapons"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "61C2509A023211FE" "62021EB6163A2698" "6319242B050D1483" "5AB890B71D748750" "5E4F1725CF7FD63A" "6470FD91F0646126"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+  GameProjectConfig Xbox {
+  }
  }
 }

@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{EF616A7A121CCAAF}Worlds/BarzanMapRemake/Barzan_Soldiers.nmn"
+ Configurations {
+  NavMeshResourceClass PC {
+  }
+  NavMeshResourceClass XBOX_ONE : PC {
+  }
+  NavMeshResourceClass XBOX_SERIES : PC {
+  }
+  NavMeshResourceClass PS4 : PC {
+  }
+  NavMeshResourceClass PS5 : PC {
+  }
+  NavMeshResourceClass HEADLESS : PC {
+  }
+  NavMeshResourceClass Xbox : PC {
+  }
+ }
+}

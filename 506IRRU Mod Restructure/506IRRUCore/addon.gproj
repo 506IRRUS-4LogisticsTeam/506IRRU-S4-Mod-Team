@@ -3,6 +3,22 @@ GameProject {
  GUID "688738C5F056304E"
  TITLE "506IRRUCore"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "60C4CE4888FF4621" "655E4A41E1A5B48A" "5DAC39D2C3D4C8CD" "5F268647F8A1A1F4" "6873526BC041B39B" "6873532BEEC460DE"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+  GameProjectConfig Xbox {
+  }
  }
 }

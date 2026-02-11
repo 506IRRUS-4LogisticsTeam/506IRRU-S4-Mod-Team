@@ -1,0 +1,91 @@
+GameEntity {
+ ID "688E96C81C87E1C8"
+ components {
+  Persistence "{688E96C81C87E1C4}" {
+  }
+  SignalsManagerComponent "{688E96C81C87E23D}" {
+  }
+  InventoryItemComponent "{688E96C81C87E231}" {
+   Attributes SCR_ItemAttributeCollection "{688E96C81C87E22A}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{688E96C81C87E22E}" {
+     Name "19th ASOS"
+     Description "19th ASOS"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{688E96C81C87E22D}" {
+     Weight 0.02
+     SizeSetupStrategy Size
+     ItemDimensions 2 2 2
+     RestingUP Forward
+     ActivePhysicalSimulation None
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{688E96C81C87E226}" {
+      CameraDistanceToItem 0.7
+      ItemRenderRotation 20 0 20
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    CommonItemType "GRS_PATCH"
+    m_Size SLOT_1x1
+    m_SlotType SLOT_GADGETS_STORAGE
+    m_bStackable 0
+   }
+  }
+  MeshObject "{688E96C81C87E218}" {
+   Object "{C0AE40AC9B7F9E98}Assets/Patches/19thasos.xob"
+   LODFactors {
+    1 1 1 1
+   }
+  }
+  ParametricMaterialInstanceComponent "{688E96C81C87E21F}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  BaseLoadoutClothComponent "{688E96C81C87E213}" {
+   AreaType GRS_ShirtLowerPatch "{688E96C81C87E211}" {
+   }
+   WornModel "{C0AE40AC9B7F9E98}Assets/Patches/19thasos.xob"
+   WornMaterialsOverride {
+    "{3C7B1AAE79D1E9AD}Assets/SF_Patch/Data/SF_Patch_2.emat"
+   }
+   ItemModel "{C0AE40AC9B7F9E98}Assets/Patches/19thasos.xob"
+   ItemMaterialsOverride {
+    "{5C51F7165453805E}Assets/Patches/Data/19thasos.emat"
+   }
+  }
+  ActionsManagerComponent "{688E96C81C87E214}" {
+   ActionContexts {
+    UserActionContext "{688E96C81C87E20A}" {
+     ContextName "default"
+     Position PointInfo "{688E96C81C87E206}" {
+     }
+     Radius 0.05
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{688E96C81C87E27B}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{688E96C81C87E27E}" {
+      Name "#AR-Inventory_PickUp"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+  BaseItemAnimationComponent "{688E96C81C87E27D}" {
+   AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
+   AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
+  }
+  RplComponent "{688E96C81C87E276}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+   AutoHierarchy 0
+  }
+  Hierarchy "{688E96C81C87E275}" {
+  }
+ }
+ coords 0 0 0
+}
