@@ -2,6 +2,11 @@ Projectile : "{C14C5DE6F97F06F0}Prefabs/Weapons/Ammo/SmallArms/Ammo_762x51_Ball_
  ID "70A3674123B4BC16"
  components {
   ShellMoveComponent "{851AA4A2AE0A5691}" {
+   ProjectileEffects {
+    ProjectileDamage "{5168BBF3DBD79134}" {
+     DamageValue 150
+    }
+   }
    PenetrationDepth 14.72
   }
  }

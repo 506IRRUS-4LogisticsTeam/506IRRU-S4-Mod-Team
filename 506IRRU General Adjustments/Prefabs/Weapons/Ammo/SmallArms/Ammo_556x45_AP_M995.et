@@ -4,7 +4,7 @@ Projectile : "{AC26AB660097633D}Prefabs/Weapons/Ammo/SmallArms/Ammo_556x45_Ball_
   ShellMoveComponent "{851AA4A2AE0A5691}" {
    ProjectileEffects {
     ProjectileDamage "{5168BBF3DBD79134}" {
-     DamageValue 112.6
+     DamageValue 83.2
     }
    }
    PenetrationDepth 14.4

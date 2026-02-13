@@ -4,7 +4,7 @@ Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
   ShellMoveComponent "{851AA4A2AE0A5691}" {
    ProjectileEffects {
     ProjectileDamage "{5168BBF3DBD79134}" {
-     DamageValue 102.4
+     DamageValue 108.8
     }
    }
    PenetrationDepth 12.8
