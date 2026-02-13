@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{80AB427C3A1E3363}Prefabs/Weapons/Ammo/SmallArms/Ammo_762x51_Ball_M80A1.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}
