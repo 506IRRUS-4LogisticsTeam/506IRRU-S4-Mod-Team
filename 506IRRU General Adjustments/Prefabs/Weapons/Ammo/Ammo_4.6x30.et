@@ -1,14 +1,13 @@
-Projectile : "{AC26AB660097633D}Prefabs/Weapons/Ammo/SmallArms/Ammo_556x45_Ball_M855.et" {
+Projectile : "{67FED88E5085F63F}Prefabs/Weapons/Core/Ammo_Bullet_Base.et" {
  ID "DA5C6308000CDEF2"
  components {
   ShellMoveComponent "{851AA4A2AE0A5691}" {
    ProjectileEffects {
     ProjectileDamage "{5168BBF3DBD79134}" {
-     DamageValue 112.6
+     DamageValue 99.8
     }
    }
-   PenetrationDepth 14.4
-   PenetrationSpeed 920
+   PenetrationDepth 12.64
   }
  }
 }

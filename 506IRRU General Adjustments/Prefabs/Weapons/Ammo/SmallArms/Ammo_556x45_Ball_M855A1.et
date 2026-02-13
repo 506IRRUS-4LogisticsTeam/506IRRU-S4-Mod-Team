@@ -2,10 +2,14 @@ Projectile : "{AC26AB660097633D}Prefabs/Weapons/Ammo/SmallArms/Ammo_556x45_Ball_
  ID "DA5C6308000CDEF2"
  components {
   ShellMoveComponent "{851AA4A2AE0A5691}" {
-   TumblingDamageThreshold 120
-   TumblingDamageMultiplier 0.3
-   PenetrationDepth 7
-   PenetrationDensity 12
+   ProjectileEffects {
+    ProjectileDamage "{5168BBF3DBD79134}" {
+     DamageValue 107.5
+    }
+   }
+   PenetrationDepth 13.44
+   PenetrationDensity 7.86
+   PenetrationSpeed 714
   }
  }
 }
