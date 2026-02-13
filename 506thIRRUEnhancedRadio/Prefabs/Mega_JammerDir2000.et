@@ -18,7 +18,7 @@ GenericEntity {
   SCR_EditableEntityComponent "{684832092672BA0D}" {
    m_EntityType SYSTEM
    m_UIInfo SCR_EditableEntityUIInfo "{684832092672BA0F}" {
-    Name "Mega Jammer Dish"
+    Name "Mega Jammer (2000m)"
     Description "Directional 2000m Jammer"
     Icon "{F3471836A05A4DE7}Prefabs/mega jammer.edds"
     m_Image "{F3471836A05A4DE7}Prefabs/mega jammer.edds"
