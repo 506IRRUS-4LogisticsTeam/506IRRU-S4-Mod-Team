@@ -35,13 +35,19 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 		Print("[TicketSystem] DamageTracker EOnInit");
 
 		if (!Replication.IsServer())
+		{
+			Print("[TicketSystem] EOnInit - not server, skipping subscription");
 			return;
+		}
+
+		Print("[TicketSystem] EOnInit - server confirmed, subscribing to life state");
 
 		m_Ctrl = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
 
 		if (m_Ctrl)
 		{
 			m_Ctrl.m_OnLifeStateChanged.Insert(OnLifeStateChanged);
+			Print("[TicketSystem] EOnInit - subscribed to m_OnLifeStateChanged");
 		}
 		else
 		{
@@ -52,6 +58,8 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	override void OnDelete(IEntity owner)
 	{
+		Print("[TicketSystem] DamageTracker OnDelete");
+
 		if (m_Ctrl)
 			m_Ctrl.m_OnLifeStateChanged.Remove(OnLifeStateChanged);
 
@@ -63,17 +71,29 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
+		Print(string.Format("[TicketSystem] OnLifeStateChanged: %1 -> %2", previousLifeState, newLifeState));
+
 		if (!Replication.IsServer())
+		{
+			Print("[TicketSystem] Not server, skipping");
 			return;
+		}
 
 		// Only count tickets for real players, not AI or GM-possessed AI
 		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(GetOwner());
+		Print(string.Format("[TicketSystem] ControlType: %1", controlType));
 		if (controlType != SCR_ECharacterControlType.PLAYER)
+		{
+			Print(string.Format("[TicketSystem] Skipping non-PLAYER entity (type: %1)", controlType));
 			return;
+		}
 
 		IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
 		if (!ticketSystem)
+		{
+			Print("[TicketSystem] WARNING: GameModeComponent instance not found!", LogLevel.WARNING);
 			return;
+		}
 
 		// Player went unconscious
 		if (newLifeState == ECharacterLifeState.INCAPACITATED && previousLifeState == ECharacterLifeState.ALIVE)
