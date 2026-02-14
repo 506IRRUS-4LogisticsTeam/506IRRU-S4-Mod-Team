@@ -32,13 +32,21 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	override void EOnInit(IEntity owner)
 	{
+		Print("[TicketSystem] DamageTracker EOnInit");
+
 		if (!Replication.IsServer())
 			return;
 
 		m_Ctrl = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
 
 		if (m_Ctrl)
+		{
 			m_Ctrl.m_OnLifeStateChanged.Insert(OnLifeStateChanged);
+		}
+		else
+		{
+			Print("[TicketSystem] WARNING: SCR_CharacterControllerComponent not found on character!", LogLevel.WARNING);
+		}
 	}
 
 	//------------------------------------------------------------------------------------------------
