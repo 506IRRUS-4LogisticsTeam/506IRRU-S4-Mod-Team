@@ -15,8 +15,6 @@ MetaFileClass {
     }
     MeshParam w_cannon {
     }
-    MeshParam w_pivot {
-    }
     MeshParam w_trigger {
     }
    }
@@ -24,15 +22,15 @@ MetaFileClass {
     GeometryParam UTM_FireGeometry {
      LayerPreset "FireGeo"
      SurfaceProperties {
-      "{F12BD66D5E2B4906}Common/Materials/Game/Core/metal_base.gamemat"
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
      }
      Mass 0
      Margin 0
     }
     GeometryParam UTM_Geometry {
-     LayerPreset "Building"
+     LayerPreset "Main"
      SurfaceProperties {
-      "{1950188BB10D20EA}Common/Materials/Game/Metal/metal_5mm.gamemat"
+      "{CE9253778DD8FBDE}Common/Materials/Game/metal.gamemat"
      }
      Mass 0
      Margin 0

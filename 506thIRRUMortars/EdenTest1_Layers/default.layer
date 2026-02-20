@@ -87,7 +87,7 @@ $grp Projectile : "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M82
   coords 9956.247 315.236 2277.561
  }
  {
-  coords 9957.443 315.26 2276.679
+  coords 4581.9 18.469 10704.036
  }
  {
   coords 9956.363 315.26 2276.815
@@ -143,9 +143,12 @@ $grp GenericEntity : "{54986385A6AF77B2}Prefabs/Props/Military/Arsenal/ArsenalBo
   coords 4591.92 18.406 10688.822
  }
 }
+Turret : "{7AB538EA9A7DB2F2}Prefabs/Weapons/Mortars/Mortar_M224.et" {
+ coords 4587.228 18.455 10684.93
+}
 $grp Turret : "{8094D99689ABE241}Prefabs/Weapons/Mortars/M252/Mortar_M252.et" {
  {
-  coords 4586.908 18.436 10696.561
+  coords 4590.266 18.436 10687.185
  }
  {
   coords 9957.577 315.165 2279.94

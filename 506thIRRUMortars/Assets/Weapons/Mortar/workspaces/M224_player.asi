@@ -1,0 +1,46 @@
+AnimSetInstanceSource "{614EF5E6CC5342BE}" {
+ Template "{5E69310B47528E10}Assets/Weapons/Mortars/workspaces/M252.ast"
+ Lines {
+  AnimSetInstanceSource_Line "Mortar.Default.Aiming" {
+   Resource "{D8CC6103AFBEAC54}Assets/Weapons/Mortar/ans/anims/p_M224_aiming.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.HighToLow_Step" {
+   Resource "{A60C4C106BCC1CB4}Assets/Weapons/Mortars/M252/anims/anm/p_M252_HighToLow_Transition.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.LowToHigh_Step" {
+   Resource "{518E12980188C1A0}Assets/Weapons/Mortars/M252/anims/anm/p_M252_LowToHigh_Transition.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.FiringAimspace" {
+   Resource "{985E1473853869CF}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_aimspace.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.FiringADD" {
+   Resource "{F46E3500206BCB46}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_ADD.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.FiringEnd" {
+   Resource "{A8CD432927CB8E72}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_end.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.GetIn_Left_Low" {
+   Resource "{522C04448A0759BC}Assets/Weapons/Mortars/M252/anims/anm/p_M252_GetIn_Left_low.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Default.GetIn_Left_High" {
+   Resource "{05DE35DD93345742}Assets/Weapons/Mortars/M252/anims/anm/p_M252_GetIn_Left_high.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Fire_Left.FiringADD" {
+   Resource "{D851C7376A0D3BEC}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_ADD 02.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Fire_Left.FiringAimspace" {
+   Resource "{C0FAA2DA33E673DC}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_aimspace 02.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Fire_Left.FiringEnd" {
+   Resource "{C3047DACC948F1B5}Assets/Weapons/Mortars/M252/anims/anm/p_M252_firing_end 02.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Fire_Left.GetIn_Left_High" {
+   Resource "{C9832D967DAA6361}Assets/Weapons/Mortars/M252/anims/anm/p_M252_GetIn_Left_high 02.anm"
+  }
+  AnimSetInstanceSource_Line "Mortar.Fire_Left.GetIn_Left_Low" {
+   Resource "{1FCC01873A29360B}Assets/Weapons/Mortars/M252/anims/anm/p_M252_GetIn_Left_low 02.anm"
+  }
+ }
+ RBF AnimSetInstanceSourceRBFArray "{614ED5D281986997}" {
+ }
+}

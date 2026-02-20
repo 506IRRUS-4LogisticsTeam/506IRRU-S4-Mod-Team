@@ -6,8 +6,6 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     "{BAFA286ACB945CF7}Sounds/Weapons/Mortars/M252/Weapons_Mortars_M252_Shot.acp" "{1B4D2E3FE51ABC31}Sounds/Weapons/_SharedData/CSW/Weapons_CSW_Deploy.acp"
    }
   }
-  IRRU_MortarArtilleryComputerComponent "{66F55DB2DB71E016}" {
-  }
   LongRangeSoundComponent "{6188B6F21280DC32}" {
    SoundDataName "Weapons_Mortars_M252_Shot"
   }
@@ -303,24 +301,26 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      }
      SightsPointFront PointInfo "{66C8892032ADE058}" {
       PivotID "w_sight"
-      Offset -0.0151 0.0712 0.0125
+      Offset 0 0.2472 0.0939
+      Angles 18.3403 0 0
      }
      SightsPointRear PointInfo "{66C8892032ADE05C}" {
       PivotID "w_sight"
-      Offset -0.0173 0.1329 -0.0351
+      Offset 0 0.2472 0.0181
+      Angles 18.3403 0 0
      }
      m_sReticleTexture "{6111EA6B45BCA0A7}UI/Textures/Sights/M64A1/Reticle_M64A1_UI.edds"
      m_sReticleGlowTexture "{6111EA6B45BCA0A7}UI/Textures/Sights/M64A1/Reticle_M64A1_UI.edds"
      m_ReticleOutlineColor 0.5 1 0 1
-     m_fMagnification 1.5
-     m_fReticleAngularSize 9
-     m_fReticlePortion 0.955
-     m_fReticleBaseZoom 1.5
-     m_fObjectiveFov 17
      m_bShouldHideParentObject 0
      m_bShouldHideParentCharacter 1
      m_fMovementDampingSpeed 4
      m_fMisalignmentScale 0
+     m_fObjectiveFov 17
+     m_fReticleAngularSize 9
+     m_fReticlePortion 0.955
+     m_fReticleBaseZoom 1.5
+     m_fMagnification 1.5
     }
    }
    ikTargets {
@@ -352,14 +352,14 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      MuzzleEndPositions {
       PointInfo "{66C8892032ADE094}" {
        PivotID "w_cannon"
-       Offset 0 1.4 0
+       Offset 0 0.917 -0.0001
        Angles 90 0 0
       }
      }
      ProjectileSpawnPositions {
       PointInfo "{66C8892032ADE088}" {
        PivotID "w_cannon"
-       Offset 0 1.3104 0.0001
+       Offset 0 0.8696 0.0004
        Angles 90 0 0
       }
      }
@@ -374,10 +374,13 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      }
      AmmoTemplate "{38BAE094333E31BF}Prefabs/Weapons/Ammo/Ammo_Shell_81mm_HE_M821.et"
      m_LoaderPosition PointInfo "{616E899C7D83AF11}" {
+      PivotID "operator_idle_02"
+      Offset 0.5527 -0.2344 0
       Angles 90 180 0
      }
      m_LoaderPositionLeft PointInfo "{624C797308DACC95}" {
       PivotID "operator_idle_03"
+      Offset -0.5771 -0.0874 0
       Angles 90 90 -90
      }
     }
@@ -396,36 +399,29 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     UserActionContext "{60D0E9DB069E3C1C}" {
      Position PointInfo "{5D16732A2C5AB707}" {
       PivotID "context_fire"
-      Offset 0 0.9779 -0.883
-      Angles 0 90.2 0
+      Offset 0 0 0
+      Angles 0 90 0
      }
+     VisibilityAngle 118
     }
     UserActionContext "{623CD3E2012B7078}" {
      Position PointInfo "{5D16732A2C5AB707}" {
       PivotID "context_fire"
-      Offset -0.0002 0.9788 -0.8805
+      Offset 0 0 0
       Angles 0 -90 0
      }
+     VisibilityAngle 118
     }
     UserActionContext "{60D0E9DB74356E76}" {
      ContextName "sight"
      Position PointInfo "{5D5727EBCC92A590}" {
       PivotID "w_sight"
-      Offset 0.1096 -0.2181 -0.3649
+      Offset 0.0513 0.2297 0.1133
      }
      Height 0
     }
    }
    additionalActions {
-    IRRU_MortarComputerUserAction "{66F55DB2CAB5540E}" {
-     ParentContextList {
-      "sight"
-     }
-     UIInfo SCR_ActionUIInfo "{66F55DB0004E45C0}" {
-      Name "Mortar Computer"
-     }
-     ActionTitle "Mortar Computer"
-    }
     DisassembleMortarUserAction "{66F6145B74102751}" {
      ParentContextList {
       "default"
@@ -434,17 +430,25 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      Duration 5
      m_ResultPrefab "{125D04B16155725A}Prefabs/Weapons/Launchers/M224_Bag.et"
     }
+    IRRU_MortarComputerUserAction "{68A96400C290956D}" {
+     ParentContextList {
+      "sight"
+     }
+     ActionTitle "Mortar Computer"
+    }
    }
   }
   MortarAnimationComponent "{5242E42C7B4B2CEE}" {
+   Enabled 1
    AnimGraph "{4C9B570B70975AE3}Assets/Weapons/Mortars/workspaces/M252.agr"
-   AnimInstance "{5B120FA840F7BAE9}Assets/Weapons/Mortars/workspaces/M252_weapon.asi"
+   AnimInstance "{588A5FC48AD3E405}Assets/Weapons/Mortar/workspaces/M224_weapon.asi"
    AnimInjection AnimationAttachmentInfo "{5242E42C74AC2BF7}" {
     AnimGraph "{4C9B570B70975AE3}Assets/Weapons/Mortars/workspaces/M252.agr"
-    AnimInstance "{A04C9E99D8F6DE05}Assets/Weapons/Mortars/workspaces/M252_player.asi"
+    AnimInstance "{A3D4CEF512D280E9}Assets/Weapons/Mortar/workspaces/M224_player.asi"
    }
   }
+  IRRU_MortarArtilleryComputerComponent "{68A964008D51B16C}" {
+  }
  }
- coords 3444.674 38.147 2559.921
- angles 2.93 -87.722 -6.124
+ coords 4587.228 18.455 10684.93
 }

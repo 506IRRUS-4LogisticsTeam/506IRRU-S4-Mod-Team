@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{A319CF46AD96C86F}Assets/Weapons/Mortar/ans/anims/w_M224_aiming_2.anm"
+ Configurations {
+  TXAResourceClass PC {
+   SourcePath "M224.blend"
+   SourceProfile "922_Mortar_M252_aiming"
+  }
+  TXAResourceClass XBOX_ONE : PC {
+  }
+  TXAResourceClass XBOX_SERIES : PC {
+  }
+  TXAResourceClass PS4 : PC {
+  }
+  TXAResourceClass PS5 : PC {
+  }
+  TXAResourceClass HEADLESS : PC {
+  }
+ }
+}
