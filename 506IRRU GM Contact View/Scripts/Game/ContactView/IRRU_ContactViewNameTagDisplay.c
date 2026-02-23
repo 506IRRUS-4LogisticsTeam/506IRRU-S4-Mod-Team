@@ -125,16 +125,16 @@ class IRRU_ContactViewHelper
 		{
 			// Yellow to Purple (reduce green, increase blue)
 			float t = (progress - 0.33) / 0.33;
-			r = 1.0 - 0.5 * t;
-			g = 0.5 - 0.5 * t;
+			r = 1.0 - 0.4 * t;
+			g = 0.5 - 0.35 * t;
 			b = t;
 		}
 		else
 		{
 			// Purple to Blue
 			float t = (progress - 0.66) / 0.34;
-			r = 0.5 - 0.5 * t;
-			g = 0.0;
+			r = 0.6 - 0.3 * t;
+			g = 0.15;
 			b = 1.0;
 		}
 
