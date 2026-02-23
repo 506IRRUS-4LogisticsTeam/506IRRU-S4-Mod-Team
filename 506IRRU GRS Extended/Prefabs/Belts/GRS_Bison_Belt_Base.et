@@ -1,0 +1,18 @@
+GenericEntity {
+ ID "65CD429C92ECDDD3"
+ components {
+  BaseLoadoutClothComponent "{65CD429C8E98BBEE}" {
+   Slots {
+    LoadoutSlotInfo LS_Side_Radio {
+     PivotID "Hips"
+     Offset -0.1795 0.0821 0.006
+     Angles 1.0514 -81.3568 6.4642
+     DisablePhysicsInteraction 1
+     DeactivatePhysicsOnAtaching 1
+     AreaType GL_Radio_Pouch "{68AEC4DE24BA959E}" {
+     }
+    }
+   }
+  }
+ }
+}

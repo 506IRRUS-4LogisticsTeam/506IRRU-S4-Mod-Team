@@ -1,0 +1,113 @@
+GenericEntity {
+ ID "68AEC4DC6889B2E1"
+ components {
+  Persistence "{68AEC4DC6889B2D0}" {
+  }
+  SignalsManagerComponent "{68AEC4DC6889B2C4}" {
+  }
+  SoundComponent "{68AEC4DC6889B33B}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+  }
+  GRS_EquipmentStorageComponent "{68AEC4DC6889B33F}" {
+   Attributes SCR_ItemAttributeCollection "{68AEC4DC6889B332}" {
+    ItemDisplayName UIInfo "{68AEC4DC6889B330}" {
+     Name "GRS: Trellisware Radio Pouch - MC"
+     Description "GRS: Trellisware Radio Pouch - MC"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{68AEC4DC6889B334}" {
+     Weight 0.001
+     SizeSetupStrategy Manual
+     ItemDimensions 15 15 15
+     ItemVolume 800
+     DimensionScaler 1
+     RestingAdditiveRotationLS 0 0 0
+     RestingAdditiveOffsetLS 0 0 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{68AEC4DC6889B328}" {
+      CameraOrbitAngles -15 15 0
+      FOV 60
+      AspectRatio 1
+      PreviewWornModel 1
+     }
+    }
+    m_bDraggable 0
+    m_bVisible 0
+    m_bStackable 0
+   }
+   StoragePurpose 0x41 0
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 500
+   MaxItemSize 10 10 10
+   UseVirtualInventoryReplication 0
+   InitialStorageSlots {
+    GRS_RadioStorageSlot Radio {
+     ActivatePhysicsOnDetaching 1
+     AllowedItemTypes {
+      "RADIO"
+     }
+    }
+   }
+  }
+  MeshObject "{68AEC4DC6889B326}" {
+   Object "{3D156A2CFC6B1B49}Assets/Pouches/ANPRC_Pouch_New.xob"
+   InheritVisibility 1
+  }
+  RigidBody "{68AEC4DC6889B324}" {
+   Enabled 0
+   SimState None
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{68AEC4DC6889B31B}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{68AEC4DC6889B31C}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{68AEC4DC6889B312}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{68AEC4DC6889B30E}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{68AEC4DC6889B30C}" {
+   AreaType GL_Radio_Pouch "{68AEC4DC6889B302}" {
+   }
+   WornModel "{3D156A2CFC6B1B49}Assets/Pouches/ANPRC_Pouch_New.xob"
+   ItemModel "{3D156A2CFC6B1B49}Assets/Pouches/ANPRC_Pouch_New.xob"
+  }
+  ActionsManagerComponent "{68AEC4DC6889B300}" {
+   ActionContexts {
+    UserActionContext "{68AEC4DC6889B304}" {
+     ContextName "default"
+     Position PointInfo "{68AEC4DC6889B305}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{68AEC4DC6889B37D}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{68AEC4DC6889B372}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{68AEC4DC6889B376}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{68AEC4DC6889B375}" {
+  }
+ }
+ coords 2.046 -0.146 0.535
+}
