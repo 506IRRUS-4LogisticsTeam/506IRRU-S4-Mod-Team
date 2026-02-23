@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{D6D1BD6676214AAD}Prefabs/Weapon_Parts/Magazines/Box_762x51_MK48_100rnd_4Ball_1Tracer.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

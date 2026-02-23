@@ -1,0 +1,189 @@
+GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames {
+    "{EE56E786799EBECC}Sounds/MachineGuns/AUS_Weapon_MK48_Edit.acp" "{D815ACC8D793A669}Sounds/Weapons/Machineguns/M249/Weapons_Machineguns_M249_Handling.acp" "{D8F675F3468362E2}Sounds/Weapons/_SharedData/Weapons_Sights_Actions.acp" "{68E023371FDD3B12}Sounds/Weapons/_SharedData/Drop/Weapons_Drop_Rifle_WoodMetal.acp" "{07E8D425196745F4}Sounds/Weapons/_SharedData/PickUp/Weapons_PickUp_Rifle_Plastic.acp" "{332983CC95EE1E1E}Sounds/Weapons/_SharedData/Melee/Weapons_Melee_Rifle.acp" "{10C1421961C34D26}Sounds/Weapons/_SharedData/Weapons_Deployment.acp" "{E419B2CF55F4A389}Sounds/Weapons/_SharedData/Melee/Weapons_Melee_Bayonett.acp" "{03F532C8D2333B09}Sounds/Weapons/Rifles/M16A2/Weapons_Rifles_M16A2_Shot_Suppressed_SuperSonic.acp" "{F9B575E37280E5D7}Sounds/Weapons/_SharedData/Drop/Weapons_Drop_Physical_Rifle_WoodMetal.acp"
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{B0DE1FD50230CB6E}Assets/AUS_MK48_Main.xob"
+  }
+  SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
+   Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {
+    ItemDisplayName WeaponUIInfo "{5222CB07CFF6712A}" {
+     Name " 7.62x51mm Mark 48 Mod 2 Machine Gun"
+     Description " 7.62x51mm Mark 48 Mod 2 Machine Gun"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5534745C44D1EFE1}" {
+     ItemDimensions 30 30 30
+     ItemVolume 2000
+     PivotBoneName "barrel_muzzle"
+     RestingAdditiveOffsetLS -0.2 0 0
+    }
+    ItemAnimationAttributes ItemAnimationAttributes "{5284960E1D29F45C}" {
+     AnimationInstance "{60945F10BF15FC09}anims/workspaces/player/player_main_machinegun.asi"
+     AnimationIKPose "{9091BBA8DB3CDF20}Assets/Weapons/MachineGuns/M249/anims/anm/p_M249_ik.anm"
+     AnimIKPoseProneOverride "{5FB5E0B2F0E034D3}Assets/Weapons/MachineGuns/M249/anims/anm/p_m249_pne_ik.anm"
+    }
+    CustomAttributes {
+     SCR_RecoilCameraShakeParams "{58DEF2AB0413E346}" {
+      m_fRecoilTarget 0.0375
+     }
+    }
+   }
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    AttachmentSlotComponent "{5534745C44D1EF58}" {
+     AttachmentSlot LoadoutSlotInfo optics {
+      PivotID "w_topcover"
+      Offset 0 0.0178 -0.13
+      Prefab "{FD75A60672D2755B}Prefabs/5ABD0CB57F7E9EB1/Optics/Optic_XPS3_Magnified.et"
+      InspectionWidgetOffset 0 0.1494 0.0283
+     }
+     AttachmentType AttachmentOpticsRIS1913Medium "{5A5CDB17A85868B7}" {
+     }
+    }
+    AttachmentSlotComponent "{56DE9C900611C1AF}" {
+     Enabled 0
+     AttachmentSlot InventoryStorageSlot Handguard {
+      ChildPivotID "snap_hand_guard"
+      Enabled 0
+      Prefab "{FB1A7F5BC7D935E2}Prefabs/Weapons/Attachments/Handguards/Handguard_M16A2/Handguard_M16.et"
+     }
+    }
+    AttachmentSlotComponent "{5F16E0B4B2D0D72C}" {
+     AttachmentSlot InventoryStorageSlot BayonetSlot {
+      InspectionWidgetOffset 0 0.0486 -0.0182
+     }
+    }
+    AttachmentSlotComponent "{68AE9A23F015FB6B}" {
+     AttachmentSlot InventoryStorageSlot Stock {
+      PivotID "slot_stock"
+      ChildPivotID "snap_stock"
+      Prefab "{FF5108EBDB141CF8}Prefabs/Weapon_Parts/Stock/AUS_Stock_MK48_Collapsing.et"
+      InspectionWidgetOffset 0 0.0602 -0.2676
+     }
+    }
+    AttachmentSlotComponent "{68AE9A2C140DE11A}" {
+     AttachmentSlot LoadoutSlotInfo LeftRail {
+      PivotID "slot_rail_left"
+      ChildPivotID "snap_rail_left"
+      Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
+      InspectionWidgetOffset 0 0.0934 0.2678
+     }
+    }
+    AttachmentSlotComponent "{68AE9A2C305A00EB}" {
+     AttachmentSlot LoadoutSlotInfo RightRail {
+      PivotID "slot_rail_right"
+      ChildPivotID "snap_rail_right"
+      Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
+      InspectionWidgetOffset 0.0423 0.0873 0.282
+     }
+    }
+    SightsComponent "{BB23A637957CFFF8}" {
+     SightsRanges {
+      SightRangeInfo "{584CED30AF80A576}" {
+       Range 0.302 300
+      }
+      SightRangeInfo "{584CED30AF834928}" {
+       Range 0.356 400
+      }
+      SightRangeInfo "{584CED30AF821312}" {
+       Range 0.404 500
+      }
+      SightRangeInfo "{584CED30AF84A542}" {
+       Range 0.475 600
+      }
+      SightRangeInfo "{584CED30AF874F57}" {
+       Range 0.549 700
+      }
+      SightRangeInfo "{584CED30AF8617A6}" {
+       Range 0.64 800
+      }
+      SightRangeInfo "{68AE9A2C97D0477F}" {
+       Range 0.765 900
+      }
+      SightRangeInfo "{68AE9A2C9081F2FA}" {
+       Range 1 1000
+      }
+     }
+     SightsPointFront PointInfo "{5534745C44D1EF08}" {
+      PivotID "Scene_Root"
+      Offset 0 0.1043 0
+     }
+     SightsPointRear PointInfo "{5534745C44D1EF0D}" {
+      Offset -0.0005 0.008 0
+     }
+     SightsSwitchSkip 1
+    }
+    MuzzleComponent "{CA6BE4D6B867541F}" {
+     components {
+      AttachmentSlotComponent "{5D527627CCB8F756}" {
+       AttachmentSlot InventoryStorageSlot Muzzle {
+        ChildPivotID "snap_barrel_muzzle"
+        Prefab "{6288A1F1A5E3AC37}Prefabs/Weapons/Attachments/Muzzle/FlashHider_M16A2/FlashHider_M16.et"
+       }
+      }
+      CaseEjectingEffectComponent "{5122AAD190FCA21D}" {
+       ParticleEffect "{E7ACDE0ACCBCB07A}Particles/Weapon/Casing_Holder.ptc"
+       EffectPosition EntitySlotInfo "{5122BA87B56F471A}" {
+        Offset 0.0298 0.0181 -0.0384
+        Angles -20 90 0
+       }
+      }
+      CaseEjectingEffectComponent "{68AE9A2D80919EEE}" {
+       ParticleEffect "{40C8AD1204EC2629}Particles/Weapon/Smoke_PKM.ptc"
+       EffectPosition EntitySlotInfo smoke {
+        PivotID "barrel_chamber"
+        Offset 0.0298 0.0181 -0.0384
+        Angles -20 90 0
+       }
+      }
+     }
+     ChamberedAmmo 0
+     FireModes {
+      BaseFireMode "{B80A64F4A8EF8333}" {
+       MaxBurst 100
+       BurstType Interruptable
+       UIName "Auto"
+      }
+      BaseFireMode "{619AB45BF76565F3}" {
+       MaxBurst 100
+       BurstType Interruptable
+       UIName "Auto"
+      }
+     }
+     MagazineWell MagazineWellAUS_MK48 "{5534745C44D1EF26}" {
+     }
+     BulletInitSpeedCoef 0.983
+     DispersionRange 265
+     UIInfo MuzzleUIInfo "{2FBBA72C906C627E}" {
+      m_MagIndicator SCR_MagazineIndicatorConfiguration "{565ECB55D6F6D63D}" {
+       m_sOutline "magazine-default-outline"
+       m_sBackground "magazine-default-background"
+       m_sProgress "magazine-default-fill"
+       m_sProgressAlphaMask "magazine-default-alpha"
+      }
+     }
+     MagazineTemplate "{588C047D7C99F34E}Prefabs/Weapon_Parts/Magazines/AUS_Box_762x51_MK48_100rnd_4Ball_1Tracer.et"
+    }
+    WeaponAnimationComponent "{60B4EA76EB15F6E0}" {
+     AnimGraph "{ABDE896F6591AAB7}Animations/workspaces/AUS_MK48/AUS_MK48.agr"
+     AnimInstance "{6E81F9FC139F4E33}Animations/workspaces/AUS_MK48/AUS_MK48_weapon.asi"
+     AnimInjection AnimationAttachmentInfo "{5534745C44D1EF5A}" {
+      AnimGraph "{ABDE896F6591AAB7}Animations/workspaces/AUS_MK48/AUS_MK48.agr"
+      AnimInstance "{95DF68CD8B9E2ADF}Animations/workspaces/AUS_MK48/AUS_MK48_player.asi"
+     }
+    }
+   }
+   obstructionTestCharacterOffset 0 -0.08 0
+   signObstrWeaponConstantOffset 0.1 -0.15 -0.1
+   slightObstrWeaponMaxZOffset 0
+   signiObstrWeaponMaxZOffset 0.15
+   obstructionTestBBScale 0.2 0.1 0.05
+  }
+ }
+ coords 127.904 1.145 123.765
+}
