@@ -1,0 +1,22 @@
+GameProject {
+ ID "506th IRRU - Mk48 Suppressor Upgrade"
+ GUID "68AA505821A8BA85"
+ TITLE "506thIRRUMk48Upgrade"
+ Dependencies {
+  "58D0FB3206B6F859" "5ABD0CB57F7E9EB1" "6470FD91F0646126"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}

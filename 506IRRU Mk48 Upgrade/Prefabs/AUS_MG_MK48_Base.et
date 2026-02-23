@@ -1,0 +1,48 @@
+GenericEntity : "{599A1E833BEF3A43}Prefabs/Weapons/MachineGuns/M249/MG_M249_base.et" {
+ ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames + {
+    "{03F532C8D2333B09}Sounds/Weapons/Rifles/M16A2/Weapons_Rifles_M16A2_Shot_Suppressed_SuperSonic.acp"
+   }
+  }
+  SCR_MeleeWeaponProperties "{5534C496A19A52B7}" {
+   m_fDamage 90
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    AttachmentSlotComponent "{64ACB820FECB1C72}" {
+     AttachmentSlot LoadoutSlotInfo Stock {
+     }
+    }
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     components {
+      AttachmentSlotComponent "{5B28E1674ABA35A7}" {
+       AttachmentSlot InventoryStorageSlot Stock {
+        PivotID "slot_barrel_muzzle"
+        ChildPivotID "snap_weapon"
+       }
+       AttachmentType AttachmentMuzzle762_51 "{68AA50892E294E85}" {
+       }
+       ShowInInspection 1
+      }
+      SCR_MuzzleEffectComponent "{C9B3271BB22CDB68}" {
+       EffectPosition EntitySlotInfo "{C9B3271BB85B5D32}" {
+       }
+      }
+      SuppressorComponent "{68AB68B7F217116E}" {
+       AttachmentSlot InventoryStorageSlot Muzzle {
+        PivotID "slot_barrel_muzzle"
+        ChildPivotID "snap_weapon"
+       }
+       AttachmentType AttachmentMuzzle762_51 "{68AB68B7ED5D7C31}" {
+       }
+       ShowInInspection 1
+      }
+     }
+    }
+   }
+  }
+ }
+ coords 0 0 0
+}
