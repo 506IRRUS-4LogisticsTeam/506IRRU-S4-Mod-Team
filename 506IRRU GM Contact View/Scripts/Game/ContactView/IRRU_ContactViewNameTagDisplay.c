@@ -133,8 +133,8 @@ class IRRU_ContactViewHelper
 		{
 			// Purple to Blue
 			float t = (progress - 0.66) / 0.34;
-			r = 0.6 - 0.3 * t;
-			g = 0.15;
+			r = 0.55 - 0.4 * t;
+			g = 0.1;
 			b = 1.0;
 		}
 
