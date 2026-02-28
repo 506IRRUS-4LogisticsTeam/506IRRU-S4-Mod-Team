@@ -44,6 +44,10 @@ class DisassembleMortarUserAction : ScriptedUserAction
 		if (!pOwnerEntity || !pUserEntity || m_ResultPrefab.IsEmpty())
 			return;
 
+		// Only spawn on server/authority - replication handles syncing to clients
+		if (Replication.IsRunning() && !Replication.IsServer())
+			return;
+
 		World world = pOwnerEntity.GetWorld();
 		if (!world)
 			return;
@@ -52,7 +56,7 @@ class DisassembleMortarUserAction : ScriptedUserAction
 		if (!res)
 		{
 			Print(string.Format(
-				"[DisassembleToGroundUserAction] Failed to load resource '%1'", m_ResultPrefab
+				"[DisassembleMortarUserAction] Failed to load resource '%1'", m_ResultPrefab
 			), LogLevel.ERROR);
 			return;
 		}
@@ -80,12 +84,17 @@ class DisassembleMortarUserAction : ScriptedUserAction
 		if (!resultEntity)
 		{
 			Print(string.Format(
-				"[DisassembleToGroundUserAction] Failed to spawn prefab '%1'", m_ResultPrefab
+				"[DisassembleMortarUserAction] Failed to spawn prefab '%1'", m_ResultPrefab
 			), LogLevel.ERROR);
 			return;
 		}
 
-		delete pOwnerEntity;
+		// Use RplComponent.DeleteRplEntity for proper networked deletion
+		RplComponent rpl = RplComponent.Cast(pOwnerEntity.FindComponent(RplComponent));
+		if (rpl)
+			RplComponent.DeleteRplEntity(pOwnerEntity, false);
+		else
+			delete pOwnerEntity;
 	}
 
 	override bool HasLocalEffectOnlyScript()

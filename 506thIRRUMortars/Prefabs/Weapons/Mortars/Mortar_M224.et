@@ -6,11 +6,13 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
     "{BAFA286ACB945CF7}Sounds/Weapons/Mortars/M252/Weapons_Mortars_M252_Shot.acp" "{1B4D2E3FE51ABC31}Sounds/Weapons/_SharedData/CSW/Weapons_CSW_Deploy.acp"
    }
   }
+  IRRU_MortarArtilleryComputerComponent "{68A964008D51B16C}" {
+  }
   LongRangeSoundComponent "{6188B6F21280DC32}" {
    SoundDataName "Weapons_Mortars_M252_Shot"
   }
   MeshObject "{51ACD09C4E0B7D16}" {
-   Object "{401CBB84726B19FE}Assets/Weapons/Mortar/M224.xob"
+   Object "{8D8079616D19137C}Assets/Weapons/Mortars/M252/M252.xob"
    LODFactors {
     4 2 1 0.05 0.01
    }
@@ -344,7 +346,7 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      components {
       SCR_MuzzleEffectComponent "{5D56BC114BFAB75F}" {
        EffectPosition EntitySlotInfo EffectPosition {
-        PivotID "w_pivot"
+        PivotID "w_cannon"
         Offset 0 1.4462 0
        }
       }
@@ -434,6 +436,9 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
      ParentContextList {
       "sight"
      }
+     UIInfo UIInfo "{68B24648882AE209}" {
+      Name "Mortar Computer"
+     }
      ActionTitle "Mortar Computer"
     }
    }
@@ -441,13 +446,11 @@ Turret : "{89BB7489D53FBB6C}Prefabs/Weapons/Core/Mortar_Base.et" {
   MortarAnimationComponent "{5242E42C7B4B2CEE}" {
    Enabled 1
    AnimGraph "{4C9B570B70975AE3}Assets/Weapons/Mortars/workspaces/M252.agr"
-   AnimInstance "{588A5FC48AD3E405}Assets/Weapons/Mortar/workspaces/M224_weapon.asi"
+   AnimInstance "{5B120FA840F7BAE9}Assets/Weapons/Mortars/workspaces/M252_weapon.asi"
    AnimInjection AnimationAttachmentInfo "{5242E42C74AC2BF7}" {
     AnimGraph "{4C9B570B70975AE3}Assets/Weapons/Mortars/workspaces/M252.agr"
-    AnimInstance "{A3D4CEF512D280E9}Assets/Weapons/Mortar/workspaces/M224_player.asi"
+    AnimInstance "{A04C9E99D8F6DE05}Assets/Weapons/Mortars/workspaces/M252_player.asi"
    }
-  }
-  IRRU_MortarArtilleryComputerComponent "{68A964008D51B16C}" {
   }
  }
  coords 4587.228 18.455 10684.93

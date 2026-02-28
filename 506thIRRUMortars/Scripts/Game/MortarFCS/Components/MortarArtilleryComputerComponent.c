@@ -1,5 +1,5 @@
 [EntityEditorProps(category: "GameScripted/Weapons", description: "Mortar artillery computer component")]
-class IRRU_MortarArtilleryComputerComponentClass : ScriptComponentClass 
+class IRRU_MortarArtilleryComputerComponentClass : ScriptComponentClass
 {
 }
 
@@ -26,7 +26,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected bool m_bAutoAimSystemEnabled = false;
     protected vector m_vTargetAngles = vector.Zero;
     protected vector m_vCurrentAngles = vector.Zero;
-    
+
     protected const float MIN_ELEVATION_MILS = 800.0;
     protected const float MAX_ELEVATION_MILS = 1515.0;
     protected const float MILS_TO_DEGREES = 360.0 / 6400.0;
@@ -48,7 +48,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
     [Attribute(defvalue: "45.0", desc: "Vertical rotation speed in degrees per second")]
     protected float m_fVerticalRotationSpeed;
-    
+
     //------------------------------------------------------------------------------------------------
     override void OnPostInit(IEntity owner)
     {
@@ -58,7 +58,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         m_bAutoAimSystemEnabled = m_bDefaultAutoAimEnabled;
         MortarBallisticTables.Initialize();
     }
-    
+
     //------------------------------------------------------------------------------------------------
     string GetSelectedAmmoType()
     {
@@ -158,7 +158,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         SCR_HintManagerComponent.ShowCustomHint(controlHint, "Mortar Computer", 12.0, false);
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     void OpenComputer(SCR_MapEntity mapEntity, IEntity user)
@@ -193,7 +193,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         SetEventMask(m_Owner, EntityEvent.POSTFRAME);
     }
-    
+
     //------------------------------------------------------------------------------------------------
     void ShowBSOD()
     {
@@ -257,11 +257,11 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     {
         if (!m_bMapOpen)
             return;
-            
+
         GetGame().GetMenuManager().CloseMenuByPreset(ChimeraMenuPreset.MapMenu);
         m_bMapOpen = false;
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void OnMapOpen(MapConfiguration config)
@@ -307,7 +307,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         vector targetPos = Vector(worldX, heightAtPos, worldY);
         vector mortarPos = m_Owner.GetOrigin();
-        
+
         vector toTarget = targetPos - mortarPos;
         float horizontalDistance = Math.Sqrt(toTarget[0] * toTarget[0] + toTarget[2] * toTarget[2]);
 
@@ -318,7 +318,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         string ammoType = GetSelectedAmmoType();
         float minRange, maxRange;
         MortarBallisticTables.GetMinMaxRange(ammoType, minRange, maxRange);
-        
+
         if (horizontalDistance < minRange)
         {
             DisplayRangeError(true, minRange, maxRange, horizontalDistance);
@@ -333,7 +333,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
 
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void OnMapClose(MapConfiguration config)
@@ -356,7 +356,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         m_bHintShown = false;
         m_bMapOpen = false;
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void CalculateAndDisplaySolution(string ammoType, float horizontalDistance, vector toTarget, vector targetPos, vector mortarPos, float azimuth)
@@ -377,17 +377,17 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             charge = m_iSelectedCharge;
             solutionFound = MortarBallisticTables.CalculateSolutionForCharge(ammoType, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection);
         }
-        
+
         if (!solutionFound)
         {
             DisplayNoSolutionHint(horizontalDistance);
             return;
         }
-        
+
         float elevationDifference = targetPos[1] - mortarPos[1];
         elevationMils = ApplyAltitudeCorrection(elevationMils, elevationDifference, dElevCorrection);
         elevationMils = ClampElevation(elevationMils);
-        
+
         DisplayFiringSolution(ammoType, horizontalDistance, toTarget, azimuth, elevationMils, elevationDifference, charge, timeOfFlight);
 
         if (m_TurretComponent && m_bAutoAimSystemEnabled)
@@ -422,13 +422,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             m_bAutoAimActive = true;
         }
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void DisplayRangeError(bool tooClose, float minRange, float maxRange, float distance)
     {
         string hint;
-        
+
         if (tooClose)
         {
             hint = string.Format(
@@ -445,21 +445,21 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
                 distance.ToString(0)
             );
         }
-        
+
         SCR_HintManagerComponent.ShowCustomHint(hint, "Range Error", 8.0, false);
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected float ApplyAltitudeCorrection(float elevationMils, float elevationDifference, int dElevCorrection)
     {
         if (dElevCorrection <= 0 || elevationDifference == 0)
             return elevationMils;
-            
+
         float altitudeCorrection = (elevationDifference / ALTITUDE_CORRECTION_FACTOR) * dElevCorrection;
         return elevationMils - altitudeCorrection;
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected float ClampElevation(float elevationMils)
@@ -470,7 +470,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             return MAX_ELEVATION_MILS;
         return elevationMils;
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void DisplayFiringSolution(string ammoType, float horizontalDistance, vector toTarget, float azimuth, float elevationMils, float elevationDifference, int charge, float timeOfFlight)
@@ -478,7 +478,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         float elevationDegrees = elevationMils * MILS_TO_DEGREES;
         float slantDistance = toTarget.Length();
         float azimuthMils = azimuth * DEGREES_TO_MILS;
-        
+
         string hint1 = string.Format(
             "FIRING SOLUTION - %1\n\nRange: %2m\nSlant Range: %3m\nElev Diff: %4m\nAzimuth: %5 mils (%6°)",
             ammoType,
@@ -488,7 +488,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             azimuthMils.ToString(0),
             azimuth.ToString(1)
         );
-        
+
         string hint2 = string.Format(
             "\nElevation: %1 mils (%2°)\n\nCharge: %3 rings\nTime of Flight: %4 sec",
             elevationMils.ToString(0),
@@ -496,11 +496,11 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             charge.ToString(),
             timeOfFlight.ToString(1)
         );
-        
+
         SCR_HintManagerComponent.ShowCustomHint(hint1 + hint2, "Mortar Computer", 30.0, false);
         m_bHintShown = true;
     }
-    
+
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
     protected void DisplayNoSolutionHint(float distance)

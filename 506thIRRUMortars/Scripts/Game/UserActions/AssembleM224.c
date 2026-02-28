@@ -41,6 +41,10 @@ class AssembleMortarUserAction : ScriptedUserAction
 		if (!pOwnerEntity || m_TargetPrefab.IsEmpty())
 			return;
 
+		// Only spawn on server/authority - replication handles syncing to clients
+		if (Replication.IsRunning() && !Replication.IsServer())
+			return;
+
 		World world = pOwnerEntity.GetWorld();
 		if (!world)
 			return;
@@ -49,7 +53,7 @@ class AssembleMortarUserAction : ScriptedUserAction
 		if (!res)
 		{
 			Print(string.Format(
-				"[ConvertToStaticPrefabUserAction] Failed to load resource '%1'", m_TargetPrefab
+				"[AssembleMortarUserAction] Failed to load resource '%1'", m_TargetPrefab
 			), LogLevel.ERROR);
 			return;
 		}
@@ -70,12 +74,17 @@ class AssembleMortarUserAction : ScriptedUserAction
 		if (!newEntity)
 		{
 			Print(string.Format(
-				"[ConvertToStaticPrefabUserAction] Failed to spawn prefab '%1'", m_TargetPrefab
+				"[AssembleMortarUserAction] Failed to spawn prefab '%1'", m_TargetPrefab
 			), LogLevel.ERROR);
 			return;
 		}
 
-		delete pOwnerEntity;
+		// Use RplComponent.DeleteRplEntity for proper networked deletion
+		RplComponent rpl = RplComponent.Cast(pOwnerEntity.FindComponent(RplComponent));
+		if (rpl)
+			RplComponent.DeleteRplEntity(pOwnerEntity, false);
+		else
+			delete pOwnerEntity;
 	}
 
 	//------------------------------------------------------------------------------------------------
