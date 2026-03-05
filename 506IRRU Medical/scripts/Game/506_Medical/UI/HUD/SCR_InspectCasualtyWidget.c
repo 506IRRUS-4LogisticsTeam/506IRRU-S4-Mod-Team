@@ -21,6 +21,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	protected RichTextWidget m_wDetailedStatus;
 	protected TextWidget m_wBleedoutTimerText;
 	protected TextWidget m_wCPRStatusText;
+	protected TextWidget m_wPneumothoraxText;
 
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
@@ -33,6 +34,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			m_wDetailedStatus = RichTextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DetailedStatus"));
 			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
 			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
+			m_wPneumothoraxText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("PneumothoraxText"));
 		}
 
 		DisableWidget();
@@ -522,6 +524,33 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			else
 			{
 				m_wCPRStatusText.SetVisible(false);
+			}
+		}
+
+		// Pneumothorax status - only visible when inspecting another casualty
+		if (m_wPneumothoraxText)
+		{
+			IRRU_PneumothoraxComponent pneumo = IRRU_PneumothoraxComponent.Cast(
+				character.FindComponent(IRRU_PneumothoraxComponent));
+
+			if (pneumo && pneumo.HasPneumothorax())
+			{
+				int stage = pneumo.GetStage();
+				if (stage == IRRU_EPneumothoraxStage.TENSION)
+				{
+					m_wPneumothoraxText.SetText("PNEUMOTHORAX - TENSION");
+					m_wPneumothoraxText.SetColor(Color.FromSRGBA(255, 0, 0, 255));
+				}
+				else
+				{
+					m_wPneumothoraxText.SetText("PNEUMOTHORAX");
+					m_wPneumothoraxText.SetColor(Color.FromSRGBA(255, 165, 0, 255));
+				}
+				m_wPneumothoraxText.SetVisible(true);
+			}
+			else
+			{
+				m_wPneumothoraxText.SetVisible(false);
 			}
 		}
 	}
