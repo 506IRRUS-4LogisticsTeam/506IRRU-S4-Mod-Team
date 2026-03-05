@@ -270,12 +270,10 @@ modded class SCR_CharacterDamageManagerComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Intercept damage to detect chest hits for pneumothorax
 	override protected void OnDamage(notnull BaseDamageContext damageContext)
 	{
 		super.OnDamage(damageContext);
 
-		// Only trigger on server, only on actual damage (not healing)
 		if (Replication.IsRunning() && !Replication.IsServer())
 			return;
 
@@ -285,7 +283,6 @@ modded class SCR_CharacterDamageManagerComponent
 		if (damageContext.damageType == EDamageType.HEALING || damageContext.damageType == EDamageType.REGENERATION)
 			return;
 
-		// Check if the struck hitzone is in the chest group
 		SCR_CharacterHitZone charHZ = SCR_CharacterHitZone.Cast(damageContext.struckHitZone);
 		if (!charHZ)
 			return;
@@ -293,7 +290,6 @@ modded class SCR_CharacterDamageManagerComponent
 		if (charHZ.GetHitZoneGroup() != ECharacterHitZoneGroup.UPPERTORSO)
 			return;
 
-		// Chest hit confirmed - try to trigger pneumothorax
 		IEntity owner = GetOwner();
 		if (!owner)
 			return;

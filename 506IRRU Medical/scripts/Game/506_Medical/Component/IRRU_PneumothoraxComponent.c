@@ -1,6 +1,3 @@
-//! Pneumothorax (collapsed lung) injury component
-//! Triggers on chest damage with configurable chance, progresses through two stages
-
 enum IRRU_EPneumothoraxStage
 {
 	NONE,
@@ -14,7 +11,6 @@ class IRRU_PneumothoraxComponentClass : ScriptComponentClass
 {
 }
 
-//! Manages pneumothorax state, progression, and effects
 class IRRU_PneumothoraxComponent : ScriptComponent
 {
 	protected const float UPDATE_INTERVAL = 1.0;
@@ -62,9 +58,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Attempt to trigger pneumothorax from chest damage
-	//! Called from SCR_CharacterDamageManagerComponent.OnDamage when chest is hit
-	//! \return true if pneumothorax was triggered
 	bool TryTriggerPneumothorax()
 	{
 		if (!Replication.IsServer() && Replication.IsRunning())
@@ -106,7 +99,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Server-side update loop for progression and effects
 	protected void UpdateProgression()
 	{
 		if (!Replication.IsServer() && Replication.IsRunning())
@@ -119,7 +111,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		if (!owner)
 			return;
 
-		// Check if character is dead - stop processing
 		SCR_CharacterControllerComponent ctrl = SCR_CharacterControllerComponent.Cast(
 			owner.FindComponent(SCR_CharacterControllerComponent));
 		if (ctrl && ctrl.GetLifeState() == ECharacterLifeState.DEAD)
@@ -134,7 +125,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 		int currentStage = m_iPneumothoraxStage;
 
-		// Stage 1: progress timer toward Stage 2
 		if (currentStage == IRRU_EPneumothoraxStage.SIMPLE)
 		{
 			m_fProgressionTimer += UPDATE_INTERVAL;
@@ -155,11 +145,9 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 			}
 		}
 
-		// Apply effects based on current stage
 		if (isConscious)
 			ApplyConsciousEffects(currentStage);
 
-		// Periodic replication bump
 		m_fTimeSinceLastBump += UPDATE_INTERVAL;
 		if (m_fTimeSinceLastBump >= REPLICATION_BUMP_INTERVAL)
 		{
@@ -168,15 +156,12 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 				Replication.BumpMe();
 		}
 
-		// Reschedule
 		GetGame().GetCallqueue().CallLater(UpdateProgression, UPDATE_INTERVAL * 1000, false);
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Apply effects while the character is conscious
 	protected void ApplyConsciousEffects(int stage)
 	{
-		// Stamina drain (both stages, worse in Stage 2)
 		if (m_CachedStamina)
 		{
 			float staminaDrain;
@@ -188,7 +173,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 			m_CachedStamina.AddStamina(-staminaDrain);
 		}
 
-		// Resilience drain (Stage 2 only)
 		if (stage == IRRU_EPneumothoraxStage.TENSION && m_CachedResilienceHZ)
 		{
 			float drainRate = IRRU_PneumothoraxSettings.GetResilienceDrainRate();
@@ -197,7 +181,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Treat pneumothorax - called from needle decompression action
 	void Treat()
 	{
 		if (!Replication.IsServer() && Replication.IsRunning())
@@ -222,7 +205,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Clear all pneumothorax state
 	protected void ClearPneumothorax()
 	{
 		m_iPneumothoraxStage = IRRU_EPneumothoraxStage.NONE;
@@ -236,34 +218,29 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Callback when pneumothorax state replicates to clients
 	protected void OnPneumothoraxStateChanged()
 	{
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Whether this character currently has pneumothorax
 	bool HasPneumothorax()
 	{
 		return m_iPneumothoraxStage != IRRU_EPneumothoraxStage.NONE;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get current pneumothorax stage
 	int GetStage()
 	{
 		return m_iPneumothoraxStage;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get time elapsed in current stage
 	float GetProgressionTimer()
 	{
 		return m_fProgressionTimer;
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get progression percentage (0-100) from Stage 1 to Stage 2
 	float GetProgressionPercentage()
 	{
 		if (m_iPneumothoraxStage != IRRU_EPneumothoraxStage.SIMPLE)
@@ -277,7 +254,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Get player/entity name for debug logging
 	protected string GetNameStr()
 	{
 		IEntity owner = GetOwner();

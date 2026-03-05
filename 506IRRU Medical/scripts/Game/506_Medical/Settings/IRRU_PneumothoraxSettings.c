@@ -1,5 +1,3 @@
-//! Settings configuration for pneumothorax system
-
 [BaseContainerProps(configRoot: true)]
 class IRRU_PneumothoraxSettings
 {

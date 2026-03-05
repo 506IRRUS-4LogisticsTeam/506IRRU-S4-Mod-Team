@@ -1,5 +1,3 @@
-//! Needle decompression user action for treating pneumothorax
-
 class IRRU_NeedleDecompressionAction : ScriptedUserAction
 {
 	protected static const float TREATMENT_DURATION = 8.0;
@@ -24,7 +22,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 		if (!owner)
 			return false;
 
-		// Don't show on self
 		if (user == owner)
 			return false;
 
@@ -33,7 +30,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 		if (!pneumo || !pneumo.HasPneumothorax())
 			return false;
 
-		// Distance check
 		float distance = vector.Distance(user.GetOrigin(), owner.GetOrigin());
 		if (distance > MAX_DISTANCE)
 			return false;
@@ -60,7 +56,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 			return false;
 		}
 
-		// If treatment already active, only the performer can continue
 		if (m_bTreatmentActive)
 		{
 			PlayerManager pm = GetGame().GetPlayerManager();
@@ -126,14 +121,12 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 
 		int playerId = pm.GetPlayerIdFromControlledEntity(pUserEntity);
 
-		// If treatment is active and this is the performer clicking again, complete it
 		if (m_bTreatmentActive && m_iPerformingPlayerId == playerId)
 		{
 			CompleteTreatment(pOwnerEntity, pUserEntity);
 			return;
 		}
 
-		// Start treatment
 		m_iPerformingPlayerId = playerId;
 		m_bTreatmentActive = true;
 		m_fTreatmentStartTime = GetGame().GetWorld().GetWorldTime();
@@ -142,7 +135,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 		{
 			Replication.BumpMe();
 
-			// Schedule auto-completion
 			GetGame().GetCallqueue().CallLater(AutoCompleteTreatment, TREATMENT_DURATION * 1000, false);
 		}
 
@@ -154,7 +146,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Auto-complete treatment after duration expires
 	protected void AutoCompleteTreatment()
 	{
 		if (!m_bTreatmentActive)
@@ -164,7 +155,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 		if (!owner)
 			return;
 
-		// Find performer entity
 		PlayerManager pm = GetGame().GetPlayerManager();
 		IEntity performer = null;
 		if (pm && m_iPerformingPlayerId > 0)
@@ -174,7 +164,6 @@ class IRRU_NeedleDecompressionAction : ScriptedUserAction
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Complete the treatment - cure pneumothorax
 	protected void CompleteTreatment(IEntity patient, IEntity performer)
 	{
 		if (!Replication.IsServer() && Replication.IsRunning())
