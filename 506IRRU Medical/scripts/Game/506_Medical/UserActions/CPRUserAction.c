@@ -51,7 +51,11 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(owner);
 		if (!character)
 			return false;
-		
+
+		CharacterControllerComponent ctrl = character.GetCharacterController();
+		if (ctrl && ctrl.GetLifeState() == ECharacterLifeState.DEAD)
+			return false;
+
 		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
 		if (!nid || !nid.IsUnconscious())
 			return false;

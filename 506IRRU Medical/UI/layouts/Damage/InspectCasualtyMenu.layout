@@ -33,6 +33,21 @@ FrameWidgetClass {
                 }
                }
               }
+              HorizontalLayoutWidgetClass "{68CA4C6F9B722871}" {
+               Name "HorizontalPneumothoraxLayout"
+               Slot LayoutSlot "{66173CF8A2367A01}" {
+               }
+               {
+                TextWidgetClass "{68CA4C6F9B722872}" {
+                 Name "PneumothoraxText"
+                 Slot LayoutSlot "{66173CF8B0CB6CF0}" {
+                 }
+                 "Is Visible" 0
+                 "Font Size" 20
+                 "Min Font Size" 20
+                }
+               }
+              }
               HorizontalLayoutWidgetClass "{65D6F3557A158383}" {
                Name "HorizontalResilienceLayout"
                Slot LayoutSlot "{65D6F3557A15830D}" {

@@ -3,6 +3,8 @@ SCR_ChimeraCharacter {
  components {
   IRRU_NoInstantDeathComponent "{661F226EB207A661}" {
   }
+  IRRU_PneumothoraxComponent "{68CA4C6FF60BFE17}" {
+  }
   SCR_CharacterDamageManagerComponent "{55872AD7B4E959F2}" {
    m_fUnconsciousRegenerationScale 0.6
    m_fMovementDamageMultiplier 1.5
@@ -19,6 +21,12 @@ SCR_ChimeraCharacter {
      }
      VisibilityRange 1.5
      Duration 1
+    }
+    IRRU_NeedleDecompressionAction "{68CA4C6FDA62DFFD}" {
+     UIInfo UIInfo "{68CA4C6FDFE9DA22}" {
+      Name "Perform Needle Decompression"
+     }
+     "Sort Priority" 1
     }
    }
   }

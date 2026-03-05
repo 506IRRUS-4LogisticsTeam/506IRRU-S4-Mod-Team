@@ -52,8 +52,7 @@ class IRRU_PneumothoraxSettings
 	{
 		if (!s_Instance)
 		{
-			// TODO: Update GUID after creating .conf in Workbench
-			Resource holder = BaseContainerTools.LoadContainer("{00000000000000000}Configs/IRRU_PneumothoraxSettings.conf");
+			Resource holder = BaseContainerTools.LoadContainer("{3853A4CFFC42A99E}Configs/IRRU_PneumothoraxSettings.conf");
 			if (holder && holder.GetResource())
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
