@@ -1,13 +1,13 @@
 [BaseContainerProps(configRoot: true)]
 class IRRU_PneumothoraxSettings
 {
-	protected const float DEFAULT_TRIGGER_CHANCE = 1.0;
+	protected const float DEFAULT_TRIGGER_CHANCE = 0.20;
 	protected const float DEFAULT_PROGRESSION_TIME = 90.0;
 	protected const float DEFAULT_RESILIENCE_DRAIN_RATE = 2.0;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE1 = 0.04;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE2 = 0.12;
 
-	[Attribute(defvalue: "1.0", desc: "Chance (0-1) of pneumothorax on chest damage", category: "Pneumothorax",
+	[Attribute(defvalue: "0.20", desc: "Chance (0-1) of pneumothorax on chest damage", category: "Pneumothorax",
 		uiwidget: UIWidgets.Slider, params: "0 1 0.01")]
 	float m_fTriggerChance;
 
@@ -72,7 +72,7 @@ class IRRU_PneumothoraxSettings
 				s_Instance.m_fResilienceDrainRate = DEFAULT_RESILIENCE_DRAIN_RATE;
 				s_Instance.m_fStaminaDrainStage1 = DEFAULT_STAMINA_DRAIN_STAGE1;
 				s_Instance.m_fStaminaDrainStage2 = DEFAULT_STAMINA_DRAIN_STAGE2;
-				s_Instance.m_bDebugEnabled = true;
+				s_Instance.m_bDebugEnabled = false;
 			}
 
 			if (!s_bInitialized)
