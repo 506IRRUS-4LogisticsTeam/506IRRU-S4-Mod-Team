@@ -23,6 +23,9 @@ SCR_ChimeraCharacter {
      Duration 1
     }
     IRRU_NeedleDecompressionAction "{68CA4C6FDA62DFFD}" {
+     ParentContextList {
+      "Chest"
+     }
      UIInfo UIInfo "{68CA4C6FDFE9DA22}" {
       Name "Perform Needle Decompression"
      }

@@ -70,14 +70,7 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		float roll = Math.RandomFloat(0.0, 1.0);
 
 		if (roll > chance)
-		{
-			if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-			{
-				Print(string.Format("[Pneumothorax] %1: chest hit, roll %2 > %3, no pneumothorax",
-					GetNameStr(), roll, chance));
-			}
 			return false;
-		}
 
 		m_iPneumothoraxStage = IRRU_EPneumothoraxStage.SIMPLE;
 		m_fProgressionTimer = 0.0;
@@ -88,12 +81,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 		GetGame().GetCallqueue().Remove(UpdateProgression);
 		GetGame().GetCallqueue().CallLater(UpdateProgression, UPDATE_INTERVAL * 1000, false);
-
-		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-		{
-			Print(string.Format("[Pneumothorax] %1: TRIGGERED (roll %2 <= %3) - Stage 1 started, progression in %4s",
-				GetNameStr(), roll, chance, IRRU_PneumothoraxSettings.GetProgressionTime()));
-		}
 
 		return true;
 	}
@@ -136,17 +123,13 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 				if (m_Rpl)
 					Replication.BumpMe();
-
-				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-				{
-					Print(string.Format("[Pneumothorax] %1: progressed to TENSION (Stage 2) after %2s",
-						GetNameStr(), m_fProgressionTimer));
-				}
 			}
 		}
 
 		if (isConscious)
 			ApplyConsciousEffects(currentStage);
+		else
+			ApplyUnconsciousEffects(currentStage);
 
 		m_fTimeSinceLastBump += UPDATE_INTERVAL;
 		if (m_fTimeSinceLastBump >= REPLICATION_BUMP_INTERVAL)
@@ -176,8 +159,20 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		if (stage == IRRU_EPneumothoraxStage.TENSION && m_CachedResilienceHZ)
 		{
 			float drainRate = IRRU_PneumothoraxSettings.GetResilienceDrainRate();
-			m_CachedResilienceHZ.HandleDamage(drainRate * UPDATE_INTERVAL, EDamageType.TRUE, null);
+			float drainAmount = drainRate * UPDATE_INTERVAL;
+			m_CachedResilienceHZ.HandleDamage(drainAmount, EDamageType.TRUE, null);
 		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void ApplyUnconsciousEffects(int stage)
+	{
+		if (!m_CachedResilienceHZ)
+			return;
+
+		float drainRate = IRRU_PneumothoraxSettings.GetResilienceDrainRate() * 0.5;
+		float drainAmount = drainRate * UPDATE_INTERVAL;
+		m_CachedResilienceHZ.HandleDamage(drainAmount, EDamageType.TRUE, null);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -189,19 +184,7 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		if (!HasPneumothorax())
 			return;
 
-		int previousStage = m_iPneumothoraxStage;
 		ClearPneumothorax();
-
-		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-		{
-			string stageStr;
-			if (previousStage == IRRU_EPneumothoraxStage.TENSION)
-				stageStr = "TENSION";
-			else
-				stageStr = "SIMPLE";
-
-			Print(string.Format("[Pneumothorax] %1: TREATED (was %2)", GetNameStr(), stageStr));
-		}
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -253,18 +236,4 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		return (m_fProgressionTimer / progressionTime) * 100.0;
 	}
 
-	//------------------------------------------------------------------------------------------------
-	protected string GetNameStr()
-	{
-		IEntity owner = GetOwner();
-		if (!owner)
-			return "UnknownEntity";
-
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
-			owner.FindComponent(IRRU_NoInstantDeathComponent));
-		if (nid)
-			return nid.GetNameStr(owner);
-
-		return owner.ToString();
-	}
 }

@@ -1,13 +1,13 @@
 [BaseContainerProps(configRoot: true)]
 class IRRU_PneumothoraxSettings
 {
-	protected const float DEFAULT_TRIGGER_CHANCE = 0.20;
+	protected const float DEFAULT_TRIGGER_CHANCE = 1.0;
 	protected const float DEFAULT_PROGRESSION_TIME = 90.0;
 	protected const float DEFAULT_RESILIENCE_DRAIN_RATE = 2.0;
-	protected const float DEFAULT_STAMINA_DRAIN_STAGE1 = 0.01;
-	protected const float DEFAULT_STAMINA_DRAIN_STAGE2 = 0.03;
+	protected const float DEFAULT_STAMINA_DRAIN_STAGE1 = 0.04;
+	protected const float DEFAULT_STAMINA_DRAIN_STAGE2 = 0.12;
 
-	[Attribute(defvalue: "0.20", desc: "Chance (0-1) of pneumothorax on chest damage", category: "Pneumothorax",
+	[Attribute(defvalue: "1.0", desc: "Chance (0-1) of pneumothorax on chest damage", category: "Pneumothorax",
 		uiwidget: UIWidgets.Slider, params: "0 1 0.01")]
 	float m_fTriggerChance;
 
@@ -19,12 +19,12 @@ class IRRU_PneumothoraxSettings
 		uiwidget: UIWidgets.Slider, params: "0.5 10 0.1")]
 	float m_fResilienceDrainRate;
 
-	[Attribute(defvalue: "0.01", desc: "Stamina drained per second in Stage 1 (0-1 scale)", category: "Pneumothorax",
-		uiwidget: UIWidgets.Slider, params: "0 0.1 0.001")]
+	[Attribute(defvalue: "0.04", desc: "Stamina drained per second in Stage 1 (0-1 scale)", category: "Pneumothorax",
+		uiwidget: UIWidgets.Slider, params: "0 0.2 0.001")]
 	float m_fStaminaDrainStage1;
 
-	[Attribute(defvalue: "0.03", desc: "Stamina drained per second in Stage 2 (0-1 scale)", category: "Pneumothorax",
-		uiwidget: UIWidgets.Slider, params: "0 0.1 0.001")]
+	[Attribute(defvalue: "0.12", desc: "Stamina drained per second in Stage 2 (0-1 scale)", category: "Pneumothorax",
+		uiwidget: UIWidgets.Slider, params: "0 0.2 0.001")]
 	float m_fStaminaDrainStage2;
 
 	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "Pneumothorax",
