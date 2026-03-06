@@ -22,14 +22,15 @@ SCR_ChimeraCharacter {
      VisibilityRange 1.5
      Duration 1
     }
-    IRRU_NeedleDecompressionAction "{68CA4C6FDA62DFFD}" {
+    IRRU_ChestSealUserAction "{68CC32692D3BF942}" {
      ParentContextList {
       "Chest"
      }
-     UIInfo UIInfo "{68CA4C6FDFE9DA22}" {
-      Name "Perform Needle Decompression"
+     UIInfo SCR_ActionUIInfo "{68CC32692013FEA6}" {
+      Name "Apply Chest Seal"
      }
-     "Sort Priority" 1
+     m_eHitZoneGroup UPPERTORSO
+     m_eConsumableType IRRU_CHEST_SEAL
     }
    }
   }
