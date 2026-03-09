@@ -1,0 +1,16 @@
+MatPBRBasic {
+ Emissive 0.13 0.188 0.027 0
+ EmissiveLV 5.5
+ AlphaTest 1.522
+ AlphaMul 3.676
+ BlendMode AlphaBlend
+ CrossFade 0
+ AllowUserAlphaBias 1
+ DisableUserAphaInShadow 1
+ AOScale 0.669
+ DielectricReflectance 0.039
+ CavityFromAO 0.294
+ EmissiveMap "{506B21A230518A57}Assets/Weapons/Attachments/Lasers/Laser_ANPEQ16/data/rhs_anpeq16_body_EM.edds"
+ BCRMap "{A4697CBA54DDF642}Assets/rhs_peq16_body_blk.edds"
+ NMOMap "{A1FDD352DE4DE6A9}Assets/Weapons/Attachments/Lasers/Laser_ANPEQ16/data/rhs_anpeq16_body_NMO.edds"
+}

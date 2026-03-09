@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{2F0DAED26BEB0779}Assets/Weapons/Attachments/Lasers/Laser_ANPEQ16/data/peq16_blk.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+ }
+}
