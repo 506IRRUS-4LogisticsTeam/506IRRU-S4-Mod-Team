@@ -1,0 +1,28 @@
+GenericEntity : "{901FACECB5D049B1}Prefabs/Props/Agriculture/Beehive_01/Beehive_01_small_base.et" {
+ ID "F0DBA538AC2A0552"
+ components {
+  MeshObject "{5872F0EB7FA40561}" {
+   Object "{5B17ED5C7BAD34EF}Assets/FA18/FA18D.xob"
+  }
+  RigidBody "{5872F0EB7DFB5A9D}" {
+   ResponseIndex "TinyDestructible"
+  }
+  SCR_DestructionMultiPhaseComponent "{5624A88D86EFE8BA}" {
+   Enabled 0
+   m_DestroySpawnObjects {
+    SCR_DebrisSpawnable "{55EA83E4AC2639A6}" {
+    }
+   }
+  }
+  SCR_EditableEntityComponent "{68D2A0AD814558A6}" {
+   m_EntityType ITEM
+   m_UIInfo SCR_UIInfo "{68D2A0ADF2EBBF28}" {
+    Name "F/A-18D"
+    Description "F/A-18D"
+   }
+   m_bAutoRegister ALWAYS
+   m_Flags PLACEABLE
+  }
+ }
+ coords 0 0 0
+}

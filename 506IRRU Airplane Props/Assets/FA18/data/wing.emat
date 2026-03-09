@@ -1,0 +1,6 @@
+MatPBRBasic {
+ Emissive 0 0 0 1
+ BCRMap "{FC028CBE20F00989}Assets/FA18/data/wing_co.edds"
+ OpacityMap "{0F63CE3511A4ECED}Assets/FA18/data/wing_smdi.edds"
+ NMOMap "{E91C94E2A53D8C01}Assets/FA18/data/wing_nohq.edds"
+}

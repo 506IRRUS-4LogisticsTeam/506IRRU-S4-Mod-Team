@@ -1,0 +1,5 @@
+MatPBRBasic {
+ Emissive 0 0 0 1
+ BCRMap "{777060D51E57A6B2}Assets/FA18/data/cockpit_co.edds"
+ NMOMap "{804EA21F2DA5AC9F}Assets/FA18/data/cockpit_nohq.edds"
+}

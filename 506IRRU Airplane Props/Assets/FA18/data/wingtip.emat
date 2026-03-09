@@ -1,0 +1,4 @@
+MatPBRBasic {
+ Emissive 0 0 0 1
+ BCRMap "{FC028CBE20F00989}Assets/FA18/data/wing_co.edds"
+}

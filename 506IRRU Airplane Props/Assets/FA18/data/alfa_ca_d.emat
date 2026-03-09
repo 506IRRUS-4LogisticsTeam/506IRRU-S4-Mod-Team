@@ -1,0 +1,4 @@
+MatPBRBasic {
+ Emissive 0 0 0 1
+ BCRMap "{1DD63DF846A56434}Assets/FA18/data/black.edds"
+}
