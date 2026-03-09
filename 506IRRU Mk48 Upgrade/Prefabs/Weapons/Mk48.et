@@ -16,6 +16,7 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
      Description " 7.62x51mm Mark 48 Mod 2 Machine Gun"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{5534745C44D1EFE1}" {
+     Weight 6.9
      ItemDimensions 30 30 30
      ItemVolume 2000
      PivotBoneName "barrel_muzzle"
@@ -27,6 +28,31 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
      AnimIKPoseProneOverride "{5FB5E0B2F0E034D3}Assets/Weapons/MachineGuns/M249/anims/anm/p_m249_pne_ik.anm"
     }
     CustomAttributes {
+     AimingModifierAttributes "{566C7D15A071B88E}" {
+      DeploymentPoints {
+       PivotPointInfoItem "{5A8ABE3D0B1123A8}" {
+        "Point info" DeploymentPointInfo dp {
+         Offset 0 0.0234 0.4142
+        }
+       }
+       PivotPointInfoItem "{68B83AFA6B157DDE}" {
+        "Point info" DeploymentPointInfo pivot {
+         PivotID "w_bipod"
+        }
+        SystemIdentifier 2
+        StabilizationPoints {
+         DeploymentPointInfo sp_left {
+          PivotID "w_bipodleg_left"
+          Offset 0 0.0009 0.2841
+         }
+         DeploymentPointInfo sp_right {
+          PivotID "w_bipodleg_right"
+          Offset 0 0 0.282
+         }
+        }
+       }
+      }
+     }
      SCR_RecoilCameraShakeParams "{58DEF2AB0413E346}" {
       m_fRecoilTarget 0.0375
      }
@@ -65,6 +91,8 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
       Prefab "{FF5108EBDB141CF8}Prefabs/Weapon_Parts/Stock/AUS_Stock_MK48_Collapsing.et"
       InspectionWidgetOffset 0 0.0602 -0.2676
      }
+     AttachmentType AttachmentAUS_MK48Stock "{68B62B385453DE9F}" {
+     }
     }
     AttachmentSlotComponent "{68AE9A2C140DE11A}" {
      AttachmentSlot LoadoutSlotInfo LeftRail {
@@ -73,6 +101,8 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
       Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
       InspectionWidgetOffset 0 0.0934 0.2678
      }
+     AttachmentType AttachmentRIS1913Short "{68B62B3846F750A7}" {
+     }
     }
     AttachmentSlotComponent "{68AE9A2C305A00EB}" {
      AttachmentSlot LoadoutSlotInfo RightRail {
@@ -80,6 +110,8 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
       ChildPivotID "snap_rail_right"
       Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
       InspectionWidgetOffset 0.0423 0.0873 0.282
+     }
+     AttachmentType AttachmentRIS1913Short "{68B62B384A3B5E52}" {
      }
     }
     SightsComponent "{BB23A637957CFFF8}" {
@@ -183,6 +215,16 @@ GenericEntity : "{C63227C0E70EA62E}Prefabs/Weapons/Rifles/M16/Rifle_M16A2_base.e
    slightObstrWeaponMaxZOffset 0
    signiObstrWeaponMaxZOffset 0.15
    obstructionTestBBScale 0.2 0.1 0.05
+  }
+  ActionsManagerComponent "{A29AE67FF4D82B0F}" {
+   ActionContexts {
+    UserActionContext "{5956E32BAAADE657}" {
+     Position PointInfo "{5956E329E6B11261}" {
+      PivotID "w_bipodleg_left"
+      Offset 0 0 0
+     }
+    }
+   }
   }
  }
  coords 127.904 1.145 123.765

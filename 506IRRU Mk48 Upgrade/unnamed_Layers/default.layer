@@ -1,0 +1,6 @@
+GenericEntity : "{1526E12F183D980E}Prefabs/Weapons/Mk48.et" {
+ coords 20.65 1.554 232.161
+}
+GenericEntity : "{BE83F2E4035EAC15}Prefabs/Weapons/AUS_MG_MK48_Base.et" {
+ coords 20.452 1.163 231.764
+}

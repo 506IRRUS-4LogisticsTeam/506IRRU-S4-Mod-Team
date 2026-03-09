@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{BE83F2E4035EAC15}Prefabs/AUS_MG_MK48_Base.et"
+ Name "{7983A0F9A034F6DC}Prefabs/Weapon_Parts/Box_762x51_MK48_100rnd_4Ball_1NonTracer.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
