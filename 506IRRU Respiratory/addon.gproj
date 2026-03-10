@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRURespiratory"
+ GUID "68D57C8C43FB48FD"
+ TITLE "506IRRU Respiratory"
+ Dependencies {
+  "64C80CD9E208154B" "58D0FB3206B6F859"
+ }
+}
