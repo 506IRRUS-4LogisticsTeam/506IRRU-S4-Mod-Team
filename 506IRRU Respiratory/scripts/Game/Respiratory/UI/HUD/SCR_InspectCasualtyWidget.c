@@ -2,6 +2,17 @@
 
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 {
+	protected TextWidget m_wPneumothoraxText;
+
+	//------------------------------------------------------------------------------------------------
+	override void DisplayStartDraw(IEntity owner)
+	{
+		super.DisplayStartDraw(owner);
+
+		if (m_wCasualtyInspectWidget)
+			m_wPneumothoraxText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("PneumothoraxText"));
+	}
+
 	//------------------------------------------------------------------------------------------------
 	override protected void UpdateWidgetData()
 	{

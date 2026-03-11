@@ -21,7 +21,6 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	protected RichTextWidget m_wDetailedStatus;
 	protected TextWidget m_wBleedoutTimerText;
 	protected TextWidget m_wCPRStatusText;
-	protected TextWidget m_wPneumothoraxText;
 
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
@@ -34,7 +33,6 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			m_wDetailedStatus = RichTextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DetailedStatus"));
 			m_wBleedoutTimerText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedoutTimerText"));
 			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
-			m_wPneumothoraxText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("PneumothoraxText"));
 		}
 
 		DisableWidget();
