@@ -28,6 +28,9 @@ modded class SCR_CharacterDamageManagerComponent
 		if (!owner)
 			return;
 
+		if (!GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner))
+			return;
+
 		IRRU_PneumothoraxComponent pneumo = IRRU_PneumothoraxComponent.Cast(
 			owner.FindComponent(IRRU_PneumothoraxComponent));
 		if (pneumo)
