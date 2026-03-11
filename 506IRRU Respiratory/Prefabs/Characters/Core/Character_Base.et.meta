@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{EB5644926AB49C47}Prefabs/Items/Medicine/FieldDressing_01/ChestSeal_Base.et"
+ Name "{37578B1666981FCE}Prefabs/Characters/Core/Character_Base.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }

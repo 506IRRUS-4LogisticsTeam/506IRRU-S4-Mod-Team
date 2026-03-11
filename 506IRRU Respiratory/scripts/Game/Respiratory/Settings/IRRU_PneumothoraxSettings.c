@@ -27,7 +27,7 @@ class IRRU_PneumothoraxSettings
 		uiwidget: UIWidgets.Slider, params: "0 0.2 0.001")]
 	float m_fStaminaDrainStage2;
 
-	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "Pneumothorax",
+	[Attribute(defvalue: "0", desc: "Enable verbose debug output to the RPT log", category: "Pneumothorax",
 		uiwidget: UIWidgets.CheckBox)]
 	bool m_bDebugEnabled;
 
@@ -50,7 +50,7 @@ class IRRU_PneumothoraxSettings
 	{
 		if (!s_Instance)
 		{
-			Resource holder = BaseContainerTools.LoadContainer("{3853A4CFFC42A99E}Configs/IRRU_PneumothoraxSettings.conf");
+			Resource holder = BaseContainerTools.LoadContainer("{589D7846AC92C00A}Configs/IRRU_PneumothoraxSettings.conf");
 			if (holder && holder.GetResource())
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();

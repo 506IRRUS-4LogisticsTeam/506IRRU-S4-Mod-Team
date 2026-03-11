@@ -5,7 +5,7 @@ GenericEntity : "{C95E11C60810F432}Prefabs/Items/Core/Item_Base.et" {
    Attributes SCR_ItemAttributeCollection "{5222EB4D0A2B466B}" {
     ItemDisplayName SCR_InventoryUIInfo "{5222EB4D07D865FA}" {
      m_aItemHints {
-      SCR_InventoryItemHintUIInfo "{68CC326F9E10D4C9}" {
+      SCR_InventoryItemHintUIInfo "{68D602D47FFC7900}" {
        Name "#AR-InfoWidget_Bandage"
        Icon "{B9199157B90D6216}UI/Textures/InventoryIcons/Medical/Medical-icons.imageset"
        IconSetName "Blood_UI"
@@ -21,11 +21,11 @@ GenericEntity : "{C95E11C60810F432}Prefabs/Items/Core/Item_Base.et" {
      RestingAdditiveRotationLS 0 0 0
      RestingAdditiveOffsetLS 0 0 0
     }
-    ItemAnimationAttributes ItemAnimationAttributes "{68CC326F9E10D45E}" {
+    ItemAnimationAttributes ItemAnimationAttributes "{68D602D47FFC797E}" {
      AnimationInstance "{4FCBEA45CAEBC9C0}anims/workspaces/player/player_main_1h.asi"
      AnimationIKPose "{3E5C93E85F05C6B5}Assets/Weapons/Grenades/RGD5/anims/anm/p_rgd5_ik.anm"
      AnimationAttachments {
-      AnimationAttachmentInfo "{68CC326F9E10D45F}" {
+      AnimationAttachmentInfo "{68D602D47FFC797F}" {
        AnimGraph "{883777E45A6C4DA1}Assets/Items/Medicine/Workspaces/Gauze_01.agr"
        AnimInstance "{79BD98038DD60F88}Assets/Items/Medicine/Workspaces/Gauze_01_player.asi"
        BindingName "Gadget"
@@ -33,24 +33,24 @@ GenericEntity : "{C95E11C60810F432}Prefabs/Items/Core/Item_Base.et" {
      }
     }
     CustomAttributes {
-     ItemActionAnimAttributes "{68CC326F9E10D443}" {
+     ItemActionAnimAttributes "{68D602D47FFC7962}" {
       AnimationGraphTemplate "{DFFC0A34A77ADCB4}anims/workspaces/player/player_main.agr"
       ActionAnimationCommandName "CMD_HealSelf"
       AllowMovementDuringAction 1
      }
-     CharacterModifierAttributes "{68CC326F9E10D444}" {
+     CharacterModifierAttributes "{68D602D47FFC7963}" {
       SpeedLimitItemPrimaryAction 0.5
      }
-     SCR_ItemOfInterestAttribute "{68CC326F9E10D446}" {
+     SCR_ItemOfInterestAttribute "{68D602D47FFC7964}" {
       m_InterestType BANDAGE
      }
-     SCR_SelectionMenuPreviewAttributes "{68CC326F9E10D447}" {
+     SCR_SelectionMenuPreviewAttributes "{68D602D47FFC7965}" {
       m_bShowMedicalColor 1
      }
-     SCR_AlternativeModel "{68CC326F9E10D448}" {
+     SCR_AlternativeModel "{68D602D47FFC7966}" {
       m_sAlternativeModel "{9EF00D573FC5604A}Assets/Items/Medicine/Gauze_01/Gauze_01_packed.xob"
      }
-     PreviewRenderAttributes "{68CC326F9E10D44A}" {
+     PreviewRenderAttributes "{68D602D47FFC7967}" {
       CameraPreset Top
       FOV 10
       AspectRatio 1
@@ -59,18 +59,18 @@ GenericEntity : "{C95E11C60810F432}Prefabs/Items/Core/Item_Base.et" {
     CommonItemType "BANDAGE"
    }
   }
-  MeshObject "{68CC326F9E10D44C}" {
+  MeshObject "{68D602D47FFC796A}" {
   }
-  RigidBody "{68CC326F9E10D44E}" {
+  RigidBody "{68D602D47FFC796D}" {
    Mass 1
    LinearDamping 0.5
    AngularDamping 0.5
    ModelGeometry 1
   }
-  SCR_ConsumableItemComponent "{68CC326F9E10D5B1}" {
+  SCR_ConsumableItemComponent "{68D602D47FFC7950}" {
    m_eAnimVariable ADRIANOV
    m_eUseMask 7
-   m_ConsumableEffect IRRU_ConsumableChestSeal "{68CC326ED10180A7}" {
+   m_ConsumableEffect IRRU_ConsumableChestSeal "{68D602D47FFC7951}" {
    }
    m_bAlternativeModelOnAction 1
   }
