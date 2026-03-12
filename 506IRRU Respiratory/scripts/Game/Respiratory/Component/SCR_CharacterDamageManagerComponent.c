@@ -13,6 +13,10 @@ modded class SCR_CharacterDamageManagerComponent
 
 		if (damageContext.damageValue <= 0)
 			return;
+		
+		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(GetOwner());
+		if (controlType == SCR_ECharacterControlType.AI || controlType == SCR_ECharacterControlType.POSSESSED_AI)
+			return;
 
 		if (damageContext.damageType == EDamageType.HEALING || damageContext.damageType == EDamageType.REGENERATION)
 			return;
@@ -26,9 +30,6 @@ modded class SCR_CharacterDamageManagerComponent
 
 		IEntity owner = GetOwner();
 		if (!owner)
-			return;
-
-		if (!GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner))
 			return;
 
 		IRRU_PneumothoraxComponent pneumo = IRRU_PneumothoraxComponent.Cast(
