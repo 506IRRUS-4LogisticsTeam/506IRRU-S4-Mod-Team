@@ -4,6 +4,7 @@
 class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 {
 	protected static const string VIGNETTE_WIDGET_NAME = "IRRU_Medical_BlackFlash";
+	protected static const float MIN_OPACITY = 0.1;
 	protected static const float MAX_OPACITY = 0.87;
 	protected static const float MAX_MASK_PROGRESS = 0.4;
 	protected static const float PULSE_AMPLITUDE = 0.05;
@@ -33,6 +34,10 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 
 		// Find pneumothorax component on new character
 		m_PneumoComp = IRRU_PneumothoraxComponent.Cast(to.FindComponent(IRRU_PneumothoraxComponent));
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[PneumoEffect] DisplayControlledEntityChanged - Widget: %1 | PneumoComp: %2", m_wVignette, m_PneumoComp));
+
 		if (!m_PneumoComp)
 			return;
 
@@ -72,7 +77,11 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 		if (!m_bEffectActive)
 		{
 			if (m_PneumoComp.HasPneumothorax())
+			{
+				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+					Print(string.Format("[PneumoEffect] Detected pneumothorax start - Stage: %1 | ProgTimer: %2", m_PneumoComp.GetStage(), m_PneumoComp.GetProgressionTimer()));
 				UpdatePneumoEffectState();
+			}
 			return;
 		}
 
@@ -87,7 +96,7 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 
 		if (stage == IRRU_EPneumothoraxStage.SIMPLE)
 		{
-			// Exponential ramp (t^2) from 0 to MAX_OPACITY over progression time
+			// Exponential ramp (t^1.5) from MIN_OPACITY to MAX_OPACITY over progression time
 			m_fEffectTimer += timeSlice;
 
 			float progressionTime = IRRU_PneumothoraxSettings.GetProgressionTime();
@@ -98,7 +107,8 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 			if (t > 1.0)
 				t = 1.0;
 
-			opacity = t * t * MAX_OPACITY;
+			float ramp = Math.Pow(t, 1.5);
+			opacity = MIN_OPACITY + ramp * (MAX_OPACITY - MIN_OPACITY);
 		}
 		else
 		{
@@ -173,6 +183,9 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 
 				// Sync timer with current progression so ramp is accurate
 				m_fEffectTimer = m_PneumoComp.GetProgressionTimer();
+
+				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+					Print(string.Format("[PneumoEffect] Effect STARTED - SyncTimer: %1 | Stage: %2", m_fEffectTimer, m_PneumoComp.GetStage()));
 			}
 		}
 		else
