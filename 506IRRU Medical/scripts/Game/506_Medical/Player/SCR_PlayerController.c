@@ -1,5 +1,3 @@
-//! Player controller extension for medical system initialization
-
 modded class SCR_PlayerController : SCR_PlayerController
 {
 	override void OnControlledEntityChanged(IEntity from, IEntity to)
@@ -12,8 +10,7 @@ modded class SCR_PlayerController : SCR_PlayerController
 		if (!to || IsPossessing())
 			return;
 
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(
-			to.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(to.FindComponent(IRRU_NoInstantDeathComponent));
 		if (nid)
 			nid.Initialize();
 	}

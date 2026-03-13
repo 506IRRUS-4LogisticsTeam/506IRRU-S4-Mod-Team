@@ -1,6 +1,5 @@
 modded class SCR_InspectCasualtyUserAction : ScriptedUserAction
 {
-	//------------------------------------------------------------------------------------------------
 	override bool CanBeShownScript(IEntity user)
 	{
 		ChimeraCharacter userChar = ChimeraCharacter.Cast(user);
