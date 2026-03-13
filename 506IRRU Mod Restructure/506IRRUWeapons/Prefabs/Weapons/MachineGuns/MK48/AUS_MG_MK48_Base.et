@@ -1,3 +1,202 @@
 GenericEntity : "{599A1E833BEF3A43}Prefabs/Weapons/MachineGuns/M249/MG_M249_base.et" {
  ID "CFBAA4B725411E45"
+ components {
+  WeaponSoundComponent "{5A8685198A9AEEDD}" {
+   Filenames {
+    "{EE56E786799EBECC}Sounds/MachineGuns/AUS_Weapon_MK48_Edit.acp" "{D815ACC8D793A669}Sounds/Weapons/Machineguns/M249/Weapons_Machineguns_M249_Handling.acp" "{E08211071D0175E2}Sounds/Weapons/_SharedData/PickUp/Weapons_PickUp_LMG.acp" "{D8F675F3468362E2}Sounds/Weapons/_SharedData/Weapons_Sights_Actions.acp" "{214445E9606EFCD0}Sounds/Weapons/_SharedData/Melee/Weapons_Melee_LMG.acp" "{5DB34B1BB17CA63B}Sounds/Weapons/_SharedData/Drop/Weapons_Drop_LMG.acp" "{10C1421961C34D26}Sounds/Weapons/_SharedData/Weapons_Deployment.acp"
+   }
+  }
+  MeshObject "{CFBAA4B701F95D69}" {
+   Object "{B0DE1FD50230CB6E}Assets/AUS_MK48_Main.xob"
+  }
+  SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
+   Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {
+    ItemDisplayName WeaponUIInfo "{5222CB07E1D123E9}" {
+     Name "MK48 Medium Machine Gun"
+     Description "Mark 48 Mod 1 Machine Gun"
+    }
+    CustomAttributes {
+     AimingModifierAttributes "{566C7D15A071B88E}" {
+      DeploymentPoints {
+       PivotPointInfoItem "{5AA6F54D19746722}" {
+        "Point info" DeploymentPointInfo ppii {
+         Offset 0 0.0234 0.4142
+        }
+       }
+       PivotPointInfoItem "{5AA6F54D19087496}" {
+        StabilizationPoints {
+         DeploymentPointInfo sp_left {
+          Offset 0 0.0009 0.2841
+         }
+         DeploymentPointInfo sp_right {
+          Offset 0 0 0.282
+         }
+        }
+       }
+       PivotPointInfoItem "{68C46A013C0B9A38}" {
+        "Point info" DeploymentPointInfo Point {
+         PivotID "Scene_Root"
+         Offset 0 0.0234 0.4142
+        }
+        StabilizationSize 0.07 0.15 0.4
+       }
+      }
+     }
+    }
+   }
+  }
+  WeaponComponent "{CFBAA4B706BA66E8}" {
+   components {
+    AttachmentSlotComponent "{68B62B3808A989A2}" {
+     AttachmentSlot LoadoutSlotInfo Stock {
+      PivotID "slot_stock"
+      ChildPivotID "snap_stock"
+      Prefab "{59549940928F27FC}Prefabs/Weapon_Parts/Stock/AUS_Stock_MK48_Fixed.et"
+      InspectionWidgetOffset 0 0.0602 -0.2676
+     }
+     AttachmentType AttachmentAUS_MK48Stock "{68B62B3808A98A7D}" {
+     }
+     ShowInInspection 1
+    }
+    AttachmentSlotComponent "{68B62B3808A98A6A}" {
+     AttachmentSlot LoadoutSlotInfo LeftRailSlot {
+      PivotID "slot_rail_left"
+      ChildPivotID "snap_rail_left"
+      Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
+      InspectionWidgetOffset -0.0459 0.0934 0.2678
+     }
+     AttachmentType AttachmentRIS1913Short "{68B62B3808A98A69}" {
+     }
+     ShowInInspection 1
+    }
+    AttachmentSlotComponent "{68B62B3808A98A6E}" {
+     AttachmentSlot LoadoutSlotInfo Optic {
+      PivotID "w_topcover"
+      Offset 0 0.0178 -0.0663
+      Prefab "{FD75A60672D2755B}Prefabs/5ABD0CB57F7E9EB1/Optics/Optic_XPS3_Magnified.et"
+      InspectionWidgetOffset 0 0.1494 -0.0182
+     }
+     AttachmentType AttachmentOpticsRIS1913Medium "{68B62B3808A98A6C}" {
+     }
+     ShowInInspection 1
+    }
+    AttachmentSlotComponent "{68B62B3808A98A73}" {
+     AttachmentSlot LoadoutSlotInfo RightRailSlot {
+      PivotID "slot_rail_right"
+      ChildPivotID "snap_rail_right"
+      Prefab "{DAE69F151DC5780B}Prefabs/Weapon_Parts/Heat_Shield/AUS_RailCover_MK48.et"
+      InspectionWidgetOffset 0.0423 0.0873 0.282
+     }
+     AttachmentType AttachmentRIS1913Short "{68B62B3808A98A74}" {
+     }
+     ShowInInspection 1
+    }
+    SightsComponent "{BB23A637957CFFF8}" {
+     SightsPosition PointInfo "{BB23A63796688E69}" {
+     }
+     SightsRanges {
+      SightRangeInfo "{594AD81905F4BD76}" {
+       WeaponPosition PointInfo "{594AD81908FE4D41}" {
+        PivotID "eye"
+        Angles 0 0 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECEB40DD0}" {
+       WeaponPosition PointInfo "{590ACA5ECEB40DEB}" {
+        PivotID "eye"
+        Offset 0 -0.002 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECEB69B98}" {
+       WeaponPosition PointInfo "{590ACA5ECEB69B90}" {
+        Offset 0 -0.0037 0
+        Angles 0.34 0 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECE885841}" {
+       WeaponPosition PointInfo "{590ACA5ECE885857}" {
+        Offset 0 -0.0045 0
+        Angles 0.44 0 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECE891366}" {
+       WeaponPosition PointInfo "{590ACA5ECE891379}" {
+        Offset 0 -0.0059 0
+        Angles 0.56 0 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECE8AD6EE}" {
+       WeaponPosition PointInfo "{590ACA5ECE8AD6FF}" {
+        Offset 0 -0.0072 0
+        Angles 0.62 0 0
+       }
+      }
+      SightRangeInfo "{590ACA5ECE8BA81F}" {
+       WeaponPosition PointInfo "{590ACA5ECE8BA814}" {
+        Offset 0 -0.0082 0
+        Angles 0.7 0 0
+       }
+      }
+     }
+     SightsSwitchSkip 1
+     m_iOpticDOFDistanceScale 28
+    }
+    MuzzleComponent "{50F64C4591CD7AA6}" {
+     components {
+      AttachmentSlotComponent "{5B28E1674ABA35A7}" {
+       Enabled 0
+       AttachmentSlot InventoryStorageSlot Stock {
+        Enabled 0
+       }
+      }
+      CaseEjectingEffectComponent "{5122AAD190FCA21D}" {
+       ParticleEffect "{6A0F068A792EA37C}Particles/Weapon/Casing_762x51.ptc"
+       EffectPosition EntitySlotInfo "{513A938439231378}" {
+        Offset 0.016 -0.0278 -0.0219
+       }
+      }
+      CaseEjectingEffectComponent "{56D2F5D94257244A}" {
+       EffectPosition EntitySlotInfo casing_holder {
+        Offset 0.0298 0.0181 -0.0384
+       }
+      }
+      SCR_MuzzleEffectComponent "{C9B3271BB22CDB68}" {
+       ParticleEffect "{A81E34DA3B2711F0}particles/MuzzleFlash/AUS_MK48_4Prong_Flashhider.ptc"
+       EffectPosition EntitySlotInfo "{C9B3271BB85B5D32}" {
+        Offset 0 0 -0.0327
+       }
+      }
+     }
+     MagazineWell MagazineWellAUS_MK48 "{5534C496A19A521F}" {
+     }
+     MagazinePosition InventoryStorageSlot "{B80A64F4C834E9CB}" {
+      ChildPivotID "snap_magazine"
+     }
+     MagazineTemplate "{588C047D7C99F34E}Prefabs/Weapon_Parts/Magazines/AUS_Box_762x51_MK48_100rnd_4Ball_1Tracer.et"
+    }
+    WeaponAnimationComponent "{60B4EA76EB15F6E0}" {
+     AnimGraph "{ABDE896F6591AAB7}Animations/workspaces/AUS_MK48/AUS_MK48.agr"
+     AnimInstance "{6E81F9FC139F4E33}Animations/workspaces/AUS_MK48/AUS_MK48_weapon.asi"
+     AnimInjection AnimationAttachmentInfo "{5534C496A19A52D7}" {
+      AnimGraph "{ABDE896F6591AAB7}Animations/workspaces/AUS_MK48/AUS_MK48.agr"
+      AnimInstance "{95DF68CD8B9E2ADF}Animations/workspaces/AUS_MK48/AUS_MK48_player.asi"
+     }
+    }
+   }
+   UIInfo WeaponUIInfo "{CC3BA6A2C42F09F4}" {
+    Name "MK48 Medium Machine Gun"
+    Description "Mark 48 Mod 1 Machine Gun"
+   }
+  }
+  ActionsManagerComponent "{A29AE67FF4D82B0F}" {
+   ActionContexts {
+    UserActionContext "{5086F9ADF588DCA4}" {
+     Position PointInfo "{5086F9ADE97650DF}" {
+      Offset 0 -0.0109 -0.0129
+     }
+    }
+   }
+  }
+ }
+ coords 0.62 -0.244 0.199
 }

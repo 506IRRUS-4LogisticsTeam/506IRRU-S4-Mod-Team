@@ -1,0 +1,48 @@
+GenericEntity : "{06D722FC2666EB83}Prefabs/Weapons/Magazines/Box_556x45_M249_200rnd_4Ball_1Tracer.et" {
+ ID "CA6BE4D6BB2D1077"
+ components {
+  AICombatPropertiesComponent "{59CE86D96C332DDF}" {
+   UsedAgainst 0x17 0
+  }
+  InventoryMagazineComponent "{51EED12B803954CC}" {
+   Attributes SCR_ItemAttributeCollection "{51EED12B86960275}" {
+    ItemDisplayName UIInfo "{51FEE38527BFEA5B}" {
+     Name " MK48 100rnd Box 4B/1T"
+     Description ""
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{548A9B044280695E}" {
+     Weight 0.7
+    }
+   }
+   WeightPerAmmo 0.021
+  }
+  MagazineComponent "{CA6BE4D6B4DAFD69}" {
+   MagazineWell MagazineWellAUS_MK48 "{548A9B0442806949}" {
+   }
+   UIInfo MagazineUIInfo "{57126733AA401586}" {
+    Name " MK48 100rnd Box 4B/1T"
+    Description ""
+    m_sAmmoCaliber "#AR-AmmunitionID_762x51mm"
+    m_sAmmoType "#AR-AmmoType_M60_FMJTracer"
+   }
+   ItemModel "{3270FB6329BC4934}Assets/Magazines/AUS_Magazine_100rnd_MK48_Item.xob"
+   MaxAmmo 100
+   AmmoConfig "{3B3B3FA41A5AC516}Configs/Weapons/Ammo/Ammo_762x51_M80A1.conf"
+   AmmoMapping {
+    0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1
+   }
+  }
+  MeshObject "{CA6BE4D6A23F8EF0}" {
+   Object "{5643624AA2EBF666}Assets/Magazines/AUS_Magazine_100rnd_MK48.xob"
+  }
+  MagazineAnimationComponent "{569C9107F417EDBC}" {
+   AnimGraph "{782A1A32D4F5E2C0}Animations/workspaces/AUS_MK48/AUS_MK48_100rnd_magazine.agr"
+   AnimInstance "{95404FE9C8FCB02E}Animations/workspaces/AUS_MK48/AUS_MK48_100rnd_Magazine.asi"
+   AnimatedMesh "{5643624AA2EBF666}Assets/Magazines/AUS_Magazine_100rnd_MK48.xob"
+   BulletMeshesToHide {
+    "" "" "w_bullet_01" "w_bullet_02" "w_bullet_03" "w_bullet_04" "w_bullet_05" "w_bullet_06" "w_bullet_07" "w_bullet_08" "w_bullet_09" "w_bullet_10" "w_bullet_11"
+   }
+  }
+ }
+ coords 124.296 1.158 122.691
+}
