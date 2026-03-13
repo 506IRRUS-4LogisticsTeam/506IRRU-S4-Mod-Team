@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{92AC78568F071625}Prefabs/Items/Equipment/Patches/GRS patches/Ranks/US Army/Enlisted/GRS_SFC_MC.et"
+ Configurations {
+  EntityTemplateResourceClass PC {
+  }
+  EntityTemplateResourceClass XBOX_ONE : PC {
+  }
+  EntityTemplateResourceClass XBOX_SERIES : PC {
+  }
+  EntityTemplateResourceClass PS4 : PC {
+  }
+  EntityTemplateResourceClass PS5 : PC {
+  }
+  EntityTemplateResourceClass HEADLESS : PC {
+  }
+ }
+}

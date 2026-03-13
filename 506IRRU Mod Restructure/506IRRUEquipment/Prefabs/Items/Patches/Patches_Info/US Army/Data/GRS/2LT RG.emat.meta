@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{21BE3FC75236F5FE}Prefabs/Items/Patches/Patches_Info/US Army/Data/GRS/2LT RG.emat"
+ Configurations {
+  EMATResourceClass PC {
+  }
+  EMATResourceClass XBOX_ONE : PC {
+  }
+  EMATResourceClass XBOX_SERIES : PC {
+  }
+  EMATResourceClass PS4 : PC {
+  }
+  EMATResourceClass PS5 : PC {
+  }
+  EMATResourceClass HEADLESS : PC {
+  }
+  EMATResourceClass Xbox : PC {
+  }
+ }
+}
