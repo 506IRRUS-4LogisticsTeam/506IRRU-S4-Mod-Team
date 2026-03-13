@@ -1,0 +1,27 @@
+FrameWidgetClass {
+ {
+  ImageWidgetClass "{68D954938947DB40}" {
+   Name "IRRU_Medical_BlackFlash"
+   Slot FrameWidgetSlot "{68D954938947F571}" {
+    Anchor 0 0 1 1
+    PositionX 0
+    OffsetLeft 0
+    PositionY 0
+    OffsetTop 0
+    SizeX -1820
+    OffsetRight 0
+    SizeY -1050
+    OffsetBottom 0
+   }
+   "Is Enabled" 0
+   "Is Visible" 0
+   Color 0 0 0 1
+   Mask "{F9A089690539F728}UI/Textures/ScreenEffects/Suppression/supressionVignette10.edds"
+   "Transition width" 0.5
+  }
+  ImageWidgetClass "{5E101C4F4DF051FE}" {
+   Prefab "{5E101C4F4DF051FE}"
+   Color 1 1 1 1
+  }
+ }
+}

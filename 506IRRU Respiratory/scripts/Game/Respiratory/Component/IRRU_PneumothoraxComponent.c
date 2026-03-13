@@ -15,7 +15,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 {
 	protected const float UPDATE_INTERVAL = 1.0;
 	protected const float REPLICATION_BUMP_INTERVAL = 2.0;
-
 	[RplProp(onRplName: "OnPneumothoraxStateChanged")]
 	protected int m_iPneumothoraxStage = 0;
 
@@ -27,8 +26,11 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	protected SCR_CharacterResilienceHitZone m_CachedResilienceHZ;
 	protected RplComponent m_Rpl;
 	protected float m_fTimeSinceLastBump = 0.0;
+	protected bool m_bClientDrainActive = false;
+	protected bool m_bIsLocalPlayer = false;
+	protected bool m_bOwnershipChecked = false;
 
-	//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 	override void OnPostInit(IEntity owner)
 	{
 		super.OnPostInit(owner);
@@ -47,22 +49,78 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		if (m_CachedDmgManager)
 			m_CachedResilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
 
-		Print(string.Format("[Pneumothorax] EOnInit - Owner: %1 | Rpl: %2 | DmgMgr: %3 | Stamina: %4 | ResilienceHZ: %5 | IsServer: %6",
-			owner,
-			m_Rpl,
-			m_CachedDmgManager,
-			m_CachedStamina,
-			m_CachedResilienceHZ,
-			Replication.IsServer()));
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[Pneumothorax] EOnInit - Owner: %1 | Rpl: %2 | DmgMgr: %3 | Stamina: %4 | ResilienceHZ: %5 | IsServer: %6",
+				owner,
+				m_Rpl,
+				m_CachedDmgManager,
+				m_CachedStamina,
+				m_CachedResilienceHZ,
+				Replication.IsServer()));
+		}
+
+		// Schedule ownership check - can't determine at init time in MP
+		if (Replication.IsRunning())
+			GetGame().GetCallqueue().CallLater(IRRU_CheckLocalOwnership, 500, false);
 	}
 
 	//------------------------------------------------------------------------------------------------
 	override void OnDelete(IEntity owner)
 	{
-		if (Replication.IsServer())
-			GetGame().GetCallqueue().Remove(UpdateProgression);
-
+		GetGame().GetCallqueue().Remove(UpdateProgression);
+		GetGame().GetCallqueue().Remove(IRRU_UpdateClientStaminaDrain);
+		GetGame().GetCallqueue().Remove(IRRU_CheckLocalOwnership);
 		super.OnDelete(owner);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_CheckLocalOwnership()
+	{
+		if (m_bOwnershipChecked)
+			return;
+
+		IEntity owner = GetOwner();
+		if (!owner)
+			return;
+
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
+		{
+			// Retry once if player controller not ready yet
+			GetGame().GetCallqueue().CallLater(IRRU_CheckLocalOwnership, 500, false);
+			return;
+		}
+
+		int localPlayerId = pc.GetPlayerId();
+		PlayerManager pm = GetGame().GetPlayerManager();
+		if (!pm)
+			return;
+
+		int ownerPlayerId = pm.GetPlayerIdFromControlledEntity(owner);
+
+		if (ownerPlayerId <= 0)
+		{
+			// Entity not yet assigned to a player, retry once
+			GetGame().GetCallqueue().CallLater(IRRU_CheckLocalOwnership, 500, false);
+			return;
+		}
+
+		m_bOwnershipChecked = true;
+		m_bIsLocalPlayer = (localPlayerId == ownerPlayerId);
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+		{
+			Print(string.Format("[Pneumothorax] Ownership check - LocalId: %1 | OwnerId: %2 | IsLocal: %3",
+				localPlayerId, ownerPlayerId, m_bIsLocalPlayer));
+		}
+
+		// If pneumothorax is already active when we confirm ownership (late join/replication), start client drain
+		if (m_bIsLocalPlayer && HasPneumothorax())
+		{
+			if (!m_bClientDrainActive)
+				IRRU_StartClientStaminaDrain();
+		}
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -79,7 +137,8 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 		if (roll > chance)
 		{
-			Print(string.Format("[Pneumothorax] TryTrigger FAILED roll - Roll: %1, Chance: %2", roll, chance));
+			if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+				Print(string.Format("[Pneumothorax] TryTrigger FAILED roll - Roll: %1, Chance: %2", roll, chance));
 			return false;
 		}
 
@@ -87,7 +146,8 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		m_fProgressionTimer = 0.0;
 		m_fTimeSinceLastBump = 0.0;
 
-		Print(string.Format("[Pneumothorax] TryTrigger SUCCESS - Stage set to SIMPLE | Owner: %1 | Rpl: %2", GetOwner(), m_Rpl));
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[Pneumothorax] TryTrigger SUCCESS - Stage set to SIMPLE | Owner: %1", GetOwner()));
 
 		if (m_Rpl)
 			Replication.BumpMe();
@@ -95,41 +155,26 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		GetGame().GetCallqueue().Remove(UpdateProgression);
 		GetGame().GetCallqueue().CallLater(UpdateProgression, UPDATE_INTERVAL * 1000, false);
 
-		Print("[Pneumothorax] TryTrigger - UpdateProgression scheduled");
-
 		return true;
 	}
 
 	//------------------------------------------------------------------------------------------------
 	protected void UpdateProgression()
 	{
-		Print(string.Format("[Pneumothorax] UpdateProgression CALLED - IsServer: %1 | IsRunning: %2 | Stage: %3 | Timer: %4",
-			Replication.IsServer(), Replication.IsRunning(), m_iPneumothoraxStage, m_fProgressionTimer));
-
 		if (!Replication.IsServer() && Replication.IsRunning())
-		{
-			Print("[Pneumothorax] UpdateProgression SKIPPED - Not server in MP");
 			return;
-		}
 
 		if (!HasPneumothorax())
-		{
-			Print("[Pneumothorax] UpdateProgression SKIPPED - No pneumothorax");
 			return;
-		}
 
 		IEntity owner = GetOwner();
 		if (!owner)
-		{
-			Print("[Pneumothorax] UpdateProgression SKIPPED - No owner");
 			return;
-		}
 
 		SCR_CharacterControllerComponent ctrl = SCR_CharacterControllerComponent.Cast(
 			owner.FindComponent(SCR_CharacterControllerComponent));
 		if (ctrl && ctrl.GetLifeState() == ECharacterLifeState.DEAD)
 		{
-			Print("[Pneumothorax] UpdateProgression - Character DEAD, clearing");
 			ClearPneumothorax();
 			return;
 		}
@@ -140,9 +185,6 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 		int currentStage = m_iPneumothoraxStage;
 
-		Print(string.Format("[Pneumothorax] UpdateProgression - Stage: %1 | Conscious: %2 | LifeState: %3",
-			currentStage, isConscious, ctrl.GetLifeState()));
-
 		if (currentStage == IRRU_EPneumothoraxStage.SIMPLE)
 		{
 			m_fProgressionTimer += UPDATE_INTERVAL;
@@ -151,7 +193,9 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 			if (m_fProgressionTimer >= progressionTime)
 			{
 				m_iPneumothoraxStage = IRRU_EPneumothoraxStage.TENSION;
-				Print(string.Format("[Pneumothorax] PROGRESSED to TENSION at %1s (threshold: %2s)", m_fProgressionTimer, progressionTime));
+
+				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+					Print(string.Format("[Pneumothorax] PROGRESSED to TENSION at %1s (threshold: %2s)", m_fProgressionTimer, progressionTime));
 
 				if (m_Rpl)
 					Replication.BumpMe();
@@ -177,26 +221,26 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void ApplyConsciousEffects(int stage)
 	{
-		Print(string.Format("[Pneumothorax] ApplyConsciousEffects - Stage: %1 | HasStamina: %2 | HasResilienceHZ: %3",
-			stage, m_CachedStamina != null, m_CachedResilienceHZ != null));
-
-		if (m_CachedStamina)
+		// Stamina drain: client-side in MP, server-side in SP
+		if (!Replication.IsRunning())
 		{
-			float staminaDrain;
-			if (stage == IRRU_EPneumothoraxStage.TENSION)
-				staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage2();
-			else
-				staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage1();
+			// Singleplayer: server IS the client, drain stamina directly
+			if (m_CachedStamina)
+			{
+				float staminaDrain;
+				if (stage == IRRU_EPneumothoraxStage.TENSION)
+					staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage2();
+				else
+					staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage1();
 
-			Print(string.Format("[Pneumothorax] Stamina BEFORE drain: (draining %1)", staminaDrain));
-			m_CachedStamina.AddStamina(-staminaDrain);
-			Print("[Pneumothorax] Stamina drain applied");
-		}
-		else
-		{
-			Print("[Pneumothorax] WARNING: m_CachedStamina is NULL - cannot drain stamina!");
+				m_CachedStamina.AddStamina(-staminaDrain);
+
+				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+					Print(string.Format("[Pneumothorax] SP Stamina drain: %1 | Stamina: %2", staminaDrain, m_CachedStamina.GetStamina()));
+			}
 		}
 
+		// Resilience drain: always server-side (replicates via hitzone system)
 		if (stage == IRRU_EPneumothoraxStage.TENSION)
 		{
 			if (m_CachedResilienceHZ)
@@ -204,14 +248,13 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 				float drainRate = IRRU_PneumothoraxSettings.GetResilienceDrainRate();
 				float drainAmount = drainRate * UPDATE_INTERVAL;
 				float healthBefore = m_CachedResilienceHZ.GetHealth();
-				m_CachedResilienceHZ.HandleDamage(drainAmount, EDamageType.TRUE, null);
-				float healthAfter = m_CachedResilienceHZ.GetHealth();
-				Print(string.Format("[Pneumothorax] Resilience drain - Rate: %1 | Amount: %2 | Before: %3 | After: %4",
-					drainRate, drainAmount, healthBefore, healthAfter));
-			}
-			else
-			{
-				Print("[Pneumothorax] WARNING: m_CachedResilienceHZ is NULL - cannot drain resilience!");
+				float newHealth = healthBefore - drainAmount;
+				if (newHealth < 0)
+					newHealth = 0;
+				m_CachedResilienceHZ.SetHealth(newHealth);
+
+				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+					Print(string.Format("[Pneumothorax] Resilience drain - Amount: %1 | Before: %2 | After: %3", drainAmount, healthBefore, m_CachedResilienceHZ.GetHealth()));
 			}
 		}
 	}
@@ -219,49 +262,41 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void ApplyUnconsciousEffects(int stage)
 	{
-		Print(string.Format("[Pneumothorax] ApplyUnconsciousEffects - Stage: %1 | HasResilienceHZ: %2", stage, m_CachedResilienceHZ != null));
-
 		if (!m_CachedResilienceHZ)
-		{
-			Print("[Pneumothorax] WARNING: m_CachedResilienceHZ is NULL in unconscious effects!");
 			return;
-		}
 
 		float drainRate = IRRU_PneumothoraxSettings.GetResilienceDrainRate() * 0.5;
 		float drainAmount = drainRate * UPDATE_INTERVAL;
 		float healthBefore = m_CachedResilienceHZ.GetHealth();
-		m_CachedResilienceHZ.HandleDamage(drainAmount, EDamageType.TRUE, null);
-		float healthAfter = m_CachedResilienceHZ.GetHealth();
-		Print(string.Format("[Pneumothorax] Unconscious resilience drain - Amount: %1 | Before: %2 | After: %3",
-			drainAmount, healthBefore, healthAfter));
+		float newHealth = healthBefore - drainAmount;
+		if (newHealth < 0)
+			newHealth = 0;
+		m_CachedResilienceHZ.SetHealth(newHealth);
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[Pneumothorax] Unconscious resilience drain - Amount: %1 | Before: %2 | After: %3", drainAmount, healthBefore, m_CachedResilienceHZ.GetHealth()));
 	}
 
 	//------------------------------------------------------------------------------------------------
 	void Treat()
 	{
-		Print(string.Format("[Pneumothorax] Treat() called - IsServer: %1 | IsRunning: %2 | HasPneumo: %3",
-			Replication.IsServer(), Replication.IsRunning(), HasPneumothorax()));
-
 		if (!Replication.IsServer() && Replication.IsRunning())
-		{
-			Print("[Pneumothorax] Treat() SKIPPED - Not server in MP");
 			return;
-		}
 
 		if (!HasPneumothorax())
-		{
-			Print("[Pneumothorax] Treat() SKIPPED - No pneumothorax to treat");
 			return;
-		}
 
-		Print("[Pneumothorax] Treat() - Clearing pneumothorax");
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print("[Pneumothorax] Treat() - Clearing pneumothorax");
+
 		ClearPneumothorax();
 	}
 
 	//------------------------------------------------------------------------------------------------
 	protected void ClearPneumothorax()
 	{
-		Print(string.Format("[Pneumothorax] ClearPneumothorax - Was stage: %1", m_iPneumothoraxStage));
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[Pneumothorax] ClearPneumothorax - Was stage: %1", m_iPneumothoraxStage));
 
 		m_iPneumothoraxStage = IRRU_EPneumothoraxStage.NONE;
 		m_fProgressionTimer = 0.0;
@@ -271,15 +306,102 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 
 		if (m_Rpl)
 			Replication.BumpMe();
-
-		Print("[Pneumothorax] ClearPneumothorax - DONE, stage reset to NONE");
 	}
 
 	//------------------------------------------------------------------------------------------------
 	protected void OnPneumothoraxStateChanged()
 	{
-		Print(string.Format("[Pneumothorax] OnPneumothoraxStateChanged (CLIENT) - New stage: %1 | Timer: %2",
-			m_iPneumothoraxStage, m_fProgressionTimer));
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[Pneumothorax] OnPneumothoraxStateChanged (CLIENT) - New stage: %1 | IsLocal: %2", m_iPneumothoraxStage, m_bIsLocalPlayer));
+
+		if (!m_bIsLocalPlayer || !Replication.IsRunning())
+			return;
+
+		if (HasPneumothorax())
+		{
+			if (!m_bClientDrainActive)
+				IRRU_StartClientStaminaDrain();
+		}
+		else
+		{
+			IRRU_StopClientStaminaDrain();
+		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_StartClientStaminaDrain()
+	{
+		if (m_bClientDrainActive)
+			return;
+
+		m_bClientDrainActive = true;
+		GetGame().GetCallqueue().Remove(IRRU_UpdateClientStaminaDrain);
+		GetGame().GetCallqueue().CallLater(IRRU_UpdateClientStaminaDrain, UPDATE_INTERVAL * 1000, false);
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print("[Pneumothorax] Client stamina drain STARTED");
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_StopClientStaminaDrain()
+	{
+		m_bClientDrainActive = false;
+		GetGame().GetCallqueue().Remove(IRRU_UpdateClientStaminaDrain);
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print("[Pneumothorax] Client stamina drain STOPPED");
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_UpdateClientStaminaDrain()
+	{
+		if (!m_bClientDrainActive || !m_bIsLocalPlayer)
+			return;
+
+		if (!HasPneumothorax())
+		{
+			IRRU_StopClientStaminaDrain();
+			return;
+		}
+
+		IEntity owner = GetOwner();
+		if (!owner)
+			return;
+
+		// Skip stamina drain if dead or unconscious
+		SCR_CharacterControllerComponent ctrl = SCR_CharacterControllerComponent.Cast(
+			owner.FindComponent(SCR_CharacterControllerComponent));
+		if (ctrl)
+		{
+			int lifeState = ctrl.GetLifeState();
+			if (lifeState == ECharacterLifeState.DEAD)
+			{
+				IRRU_StopClientStaminaDrain();
+				return;
+			}
+			if (lifeState != ECharacterLifeState.ALIVE)
+			{
+				// Unconscious - skip stamina drain but keep loop running
+				GetGame().GetCallqueue().CallLater(IRRU_UpdateClientStaminaDrain, UPDATE_INTERVAL * 1000, false);
+				return;
+			}
+		}
+
+		if (m_CachedStamina)
+		{
+			float staminaDrain;
+			if (m_iPneumothoraxStage == IRRU_EPneumothoraxStage.TENSION)
+				staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage2();
+			else
+				staminaDrain = IRRU_PneumothoraxSettings.GetStaminaDrainStage1();
+
+			m_CachedStamina.AddStamina(-staminaDrain);
+
+			if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+				Print(string.Format("[Pneumothorax] Client stamina drain - Stage: %1 | Drain: %2 | Stamina: %3", m_iPneumothoraxStage, staminaDrain, m_CachedStamina.GetStamina()));
+		}
+
+		GetGame().GetCallqueue().CallLater(IRRU_UpdateClientStaminaDrain, UPDATE_INTERVAL * 1000, false);
 	}
 
 	//------------------------------------------------------------------------------------------------
