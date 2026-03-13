@@ -163,7 +163,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	override bool GetActionNameScript(out string outName)
 	{
-		IEntity user = GetGame().GetPlayerController().GetControlledEntity();
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
+			return true;
+		IEntity user = pc.GetControlledEntity();
 		if (user)
 		{
 			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(user);

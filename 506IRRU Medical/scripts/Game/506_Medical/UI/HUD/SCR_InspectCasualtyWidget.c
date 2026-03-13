@@ -556,7 +556,13 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 
 		FrameSlot.SetPos(m_wCasualtyInspectWidget.GetChildren(), pos[0], pos[1]);
 
-		float dist = vector.Distance(GetGame().GetPlayerController().GetControlledEntity().GetOrigin(), WPPos);
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc || !pc.GetControlledEntity())
+		{
+			DisableWidget();
+			return;
+		}
+		float dist = vector.Distance(pc.GetControlledEntity().GetOrigin(), WPPos);
 		if (dist >= 4)
 		{
 			DisableWidget();

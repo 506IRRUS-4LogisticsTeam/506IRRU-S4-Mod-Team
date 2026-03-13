@@ -8,31 +8,19 @@ class IRRU_AnimationHelpersConfig
 	//------------------------------------------------------------------------------------------------
 	ResourceName GetPrefabName(IRRU_EAnimationHelperID id)
 	{
-		Print(string.Format("[DEBUG][AnimConfig] GetPrefabName called for ID: %1", id), LogLevel.WARNING);
-		
 		if (!m_aEntries)
 		{
-			Print("[DEBUG][AnimConfig] ERROR: m_aEntries is null! Config not loaded properly!", LogLevel.ERROR);
+			Print("[AnimConfig] m_aEntries is null - config not loaded properly", LogLevel.ERROR);
 			return "";
 		}
-		
-		Print(string.Format("[DEBUG][AnimConfig] Config has %1 entries", m_aEntries.Count()), LogLevel.WARNING);
-		
-		int index = 0;
+
 		foreach (IRRU_AnimationHelperConfigEntry entry : m_aEntries)
 		{
-			Print(string.Format("[DEBUG][AnimConfig] Entry %1: ID=%2, Prefab=%3", index, entry.GetID(), entry.GetPrefabName()), LogLevel.WARNING);
-			
 			if (entry.GetID() == id)
-			{
-				ResourceName prefabName = entry.GetPrefabName();
-				Print(string.Format("[DEBUG][AnimConfig] Found matching entry! Returning prefab: %1", prefabName), LogLevel.WARNING);
-				return prefabName;
-			}
-			index++;
+				return entry.GetPrefabName();
 		}
-		
-		Print(string.Format("[DEBUG][AnimConfig] ERROR: No entry found for ID %1!", id), LogLevel.ERROR);
+
+		Print(string.Format("[AnimConfig] No entry found for ID %1", id), LogLevel.ERROR);
 		return "";
 	}
 }
