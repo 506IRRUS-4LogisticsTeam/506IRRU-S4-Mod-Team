@@ -264,7 +264,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (!dmgManager)
 			return;
 
-		if (dmgManager.GetHealthPercentage() < 33.0)
+		if (dmgManager.IRRU_GetHealthPercentage() < 33.0)
 			return;
 
 		SCR_CharacterResilienceHitZone resilienceHZ = dmgManager.GetResilienceHitZone();

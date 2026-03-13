@@ -53,11 +53,11 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		if (!m_wCasualtyInspectWidget)
 			return false;
 
-		ChimeraCharacter char = ChimeraCharacter.Cast(targetCharacter);
-		if (!char)
+		ChimeraCharacter ch = ChimeraCharacter.Cast(targetCharacter);
+		if (!ch)
 			return false;
 
-		if (!char.GetCharacterController())
+		if (!ch.GetCharacterController())
 			return false;
 
 		UpdateTarget();
@@ -73,11 +73,11 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			return;
 		}
 
-		ChimeraCharacter char = ChimeraCharacter.Cast(m_Target);
-		if (!char)
+		ChimeraCharacter ch = ChimeraCharacter.Cast(m_Target);
+		if (!ch)
 			return;
 
-		CharacterControllerComponent controller = char.GetCharacterController();
+		CharacterControllerComponent controller = ch.GetCharacterController();
 		if (controller.GetLifeState() == ECharacterLifeState.DEAD)
 		{
 			DisableWidget();
@@ -86,7 +86,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		UpdateWidgetData();
 	}
 
-	protected Color GetHealthStatusColor(float healthPercent)
+	protected Color IRRU_GetHealthStatusColor(float healthPercent)
 	{
 		if (healthPercent >= 75)
 			return Color.FromSRGBA(255, 255, 0, 255);
@@ -97,7 +97,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return Color.FromSRGBA(255, 0, 0, 255);
 	}
 
-	protected Color GetBloodStatusColor(float bloodPercent)
+	protected Color IRRU_GetBloodStatusColor(float bloodPercent)
 	{
 		if (bloodPercent >= 60)
 			return Color.FromSRGBA(255, 255, 0, 255);
@@ -108,7 +108,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return Color.FromSRGBA(255, 0, 0, 255);
 	}
 
-	protected string GetTriageLevel(float percentRemaining)
+	protected string IRRU_GetTriageLevel(float percentRemaining)
 	{
 		if (percentRemaining > 70) return "DELAYED";
 		else if (percentRemaining > 50) return "PRIORITY";
@@ -117,7 +117,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return "IMMEDIATE";
 	}
 
-	protected Color GetTriageColor(float percentRemaining)
+	protected Color IRRU_GetTriageColor(float percentRemaining)
 	{
 		if (percentRemaining > 70)
 			return Color.FromSRGBA(0, 255, 100, 255);
@@ -130,7 +130,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return Color.FromSRGBA(255, 0, 0, 255);
 	}
 
-	protected string GetTriageRGBA(float percentRemaining)
+	protected string IRRU_GetTriageRGBA(float percentRemaining)
 	{
 		if (percentRemaining > 70) return "0,255,100,255";
 		else if (percentRemaining > 50) return "255,255,0,255";
@@ -166,7 +166,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 
 		float healthPercent, bloodPercent, resiliencePercent, bleedingRateMLs, bleedoutTimeRemaining;
 		bool hasResilience, isUnconscious, isBleedingOut;
-		damageMan.GetDetailedMedicalStatus(healthPercent, bloodPercent, resiliencePercent,
+		damageMan.IRRU_GetDetailedMedicalStatus(healthPercent, bloodPercent, resiliencePercent,
 			hasResilience, bleedingRateMLs, isUnconscious, bleedoutTimeRemaining, isBleedingOut);
 
 		string damageIntensityText;
@@ -229,7 +229,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			string timeText;
 			if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 			{
-				timeText = GetTriageLevel(percentRemaining);
+				timeText = IRRU_GetTriageLevel(percentRemaining);
 				if (nid && nid.IsReceivingCPR())
 					timeText = timeText + " - CPR";
 			}
@@ -240,7 +240,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
 			}
 
-			sName = string.Format("%1 [<color rgba='%2'>%3</color>]", sName, GetTriageRGBA(percentRemaining), timeText);
+			sName = string.Format("%1 [<color rgba='%2'>%3</color>]", sName, IRRU_GetTriageRGBA(percentRemaining), timeText);
 		}
 		else if (isUnconscious)
 		{
@@ -286,7 +286,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			{
 				TextWidget damageText = TextWidget.Cast(damageTextWidget);
 				if (damageText)
-					damageText.SetColor(GetHealthStatusColor(healthPercent));
+					damageText.SetColor(IRRU_GetHealthStatusColor(healthPercent));
 			}
 
 			Widget bleedingTextWidget = m_wCasualtyInspectWidget.FindAnyWidget("BleedingInfo_text");
@@ -294,7 +294,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			{
 				TextWidget bleedingText = TextWidget.Cast(bleedingTextWidget);
 				if (bleedingText)
-					bleedingText.SetColor(GetBloodStatusColor(bloodPercent));
+					bleedingText.SetColor(IRRU_GetBloodStatusColor(bloodPercent));
 			}
 		}
 
@@ -342,7 +342,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 
 				string timeText;
 				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
-					timeText = string.Format("Condition: %1", GetTriageLevel(percentRemaining));
+					timeText = string.Format("Condition: %1", IRRU_GetTriageLevel(percentRemaining));
 				else
 				{
 					int minutes = Math.Floor(bleedoutTimeRemaining / 60);
@@ -351,7 +351,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				}
 
 				m_wBleedoutTimerText.SetText(timeText);
-				m_wBleedoutTimerText.SetColor(GetTriageColor(percentRemaining));
+				m_wBleedoutTimerText.SetColor(IRRU_GetTriageColor(percentRemaining));
 				m_wBleedoutTimerText.SetVisible(true);
 			}
 			else

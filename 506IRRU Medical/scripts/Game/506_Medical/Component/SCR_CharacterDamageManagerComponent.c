@@ -3,7 +3,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 
-	float GetHealthPercentage()
+	float IRRU_GetHealthPercentage()
 	{
 		array<HitZone> hitZones = {};
 		GetAllHitZones(hitZones);
@@ -21,7 +21,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return 100.0;
 	}
 
-	float GetBloodPercentage()
+	float IRRU_GetBloodPercentage()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
 		if (!bloodHZ)
@@ -32,7 +32,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return (bloodHZ.GetHealth() / maxBlood) * 100.0;
 	}
 
-	float GetResiliencePercentage()
+	float IRRU_GetResiliencePercentage()
 	{
 		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
 		if (!resilienceHZ)
@@ -43,12 +43,12 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return (resilienceHZ.GetHealth() / maxResilience) * 100.0;
 	}
 
-	bool HasResilienceSystem()
+	bool IRRU_HasResilienceSystem()
 	{
 		return GetResilienceHitZone() != null;
 	}
 
-	float GetBleedingRateMLPerSecond()
+	float IRRU_GetBleedingRateMLPerSecond()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
 		if (!bloodHZ)
@@ -56,7 +56,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return bloodHZ.GetTotalBleedingAmount();
 	}
 
-	void GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
+	void IRRU_GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
 	{
 		IEntity owner = GetOwner();
 		IRRU_NoInstantDeathComponent nid = null;
@@ -160,16 +160,16 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			m_pPainHitZone.HandleDamage(damage * ARMOR_HIT_PAIN_SCALE, type, instigator);
 	}
 
-	void GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent,
+	void IRRU_GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent,
 		out float resiliencePercent, out bool hasResilience,
 		out float bleedingRateMLs, out bool isUnconscious,
 		out float bleedoutTimeRemaining, out bool isBleedingOut)
 	{
-		healthPercent = GetHealthPercentage();
-		bloodPercent = GetBloodPercentage();
-		resiliencePercent = GetResiliencePercentage();
-		hasResilience = HasResilienceSystem();
-		bleedingRateMLs = GetBleedingRateMLPerSecond();
+		healthPercent = IRRU_GetHealthPercentage();
+		bloodPercent = IRRU_GetBloodPercentage();
+		resiliencePercent = IRRU_GetResiliencePercentage();
+		hasResilience = IRRU_HasResilienceSystem();
+		bleedingRateMLs = IRRU_GetBleedingRateMLPerSecond();
 
 		IEntity owner = GetOwner();
 		IRRU_NoInstantDeathComponent nid = null;
@@ -178,10 +178,10 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		isUnconscious = (nid && nid.IsUnconscious());
 
 		float totalTime;
-		GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
+		IRRU_GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
 	}
 
-	string GetHealthColorCode(float percentage)
+	string IRRU_GetHealthColorCode(float percentage)
 	{
 		if (percentage >= 75) return "00FF00";
 		else if (percentage >= 50) return "FFFF00";
@@ -189,21 +189,21 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		else return "FF0000";
 	}
 
-	float GetLimbHealthPercentage(ECharacterHitZoneGroup limb)
+	float IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup limb)
 	{
 		return GetGroupHealthScaled(limb) * 100.0;
 	}
 
-	void GetAllLimbHealthPercentages(out float head, out float chest, out float abdomen,
+	void IRRU_GetAllLimbHealthPercentages(out float head, out float chest, out float abdomen,
 		out float leftArm, out float rightArm, out float leftLeg, out float rightLeg)
 	{
-		head = GetLimbHealthPercentage(ECharacterHitZoneGroup.HEAD);
-		chest = GetLimbHealthPercentage(ECharacterHitZoneGroup.UPPERTORSO);
-		abdomen = GetLimbHealthPercentage(ECharacterHitZoneGroup.LOWERTORSO);
-		leftArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTARM);
-		rightArm = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
-		leftLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
-		rightLeg = GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
+		head = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.HEAD);
+		chest = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.UPPERTORSO);
+		abdomen = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LOWERTORSO);
+		leftArm = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTARM);
+		rightArm = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
+		leftLeg = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
+		rightLeg = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
 	}
 
 	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones)

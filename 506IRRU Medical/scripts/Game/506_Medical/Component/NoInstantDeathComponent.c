@@ -97,7 +97,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled() && m_CachedDmgManager)
 		{
 			Print(string.Format("[NoInstantDeath] %1: unconscious - Health: %2%%, Blood: %3%%, Resilience: %4%%",
-				GetNameStr(GetOwner()), m_CachedDmgManager.GetHealthPercentage(), m_CachedDmgManager.GetBloodPercentage(), m_CachedDmgManager.GetResiliencePercentage()));
+				GetNameStr(GetOwner()), m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
 		}
 
 		MakeUnconscious(GetOwner());
@@ -164,7 +164,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		bool hasEpinephrine = false;
 		if (m_CachedDmgManager)
 		{
-			healthStable = (m_CachedDmgManager.GetHealthPercentage() > 33.0 && m_CachedDmgManager.GetBloodPercentage() > 33.0);
+			healthStable = (m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0);
 			HitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
 			if (resilienceHZ)
 				hasEpinephrine = (m_CachedDmgManager.FindDamageEffectOnHitZone(ACE_Medical_EpinephrineDamageEffect, resilienceHZ) != null);
