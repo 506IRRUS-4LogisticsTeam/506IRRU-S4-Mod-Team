@@ -126,7 +126,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			return Color.FromSRGBA(255, 255, 0, 255); // Yellow
 		else if (bloodPercent >= 40)
 			return Color.FromSRGBA(255, 200, 0, 255); // Yellow-orange
-		else if (bloodPercent >= 34)
+		else if (bloodPercent >= 33)
 			return Color.FromSRGBA(255, 150, 0, 255); // Orange
 		else
 			return Color.FromSRGBA(255, 0, 0, 255); // Red
@@ -219,7 +219,7 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			bloodStatus = "Lost a lot of blood";
 		}
-		else if (bloodPercent >= 34)
+		else if (bloodPercent >= 33)
 		{
 			bloodStatus = "Massive blood loss";
 		}
