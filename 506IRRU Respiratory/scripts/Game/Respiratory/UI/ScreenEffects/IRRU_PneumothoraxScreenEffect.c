@@ -35,9 +35,6 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 		// Find pneumothorax component on new character
 		m_PneumoComp = IRRU_PneumothoraxComponent.Cast(to.FindComponent(IRRU_PneumothoraxComponent));
 
-		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-			Print(string.Format("[PneumoEffect] DisplayControlledEntityChanged - Widget: %1 | PneumoComp: %2", m_wVignette, m_PneumoComp));
-
 		if (!m_PneumoComp)
 			return;
 
@@ -78,9 +75,7 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 		{
 			if (m_PneumoComp.HasPneumothorax())
 			{
-				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-					Print(string.Format("[PneumoEffect] Detected pneumothorax start - Stage: %1 | ProgTimer: %2", m_PneumoComp.GetStage(), m_PneumoComp.GetProgressionTimer()));
-				UpdatePneumoEffectState();
+					UpdatePneumoEffectState();
 			}
 			return;
 		}
@@ -183,9 +178,6 @@ class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 
 				// Sync timer with current progression so ramp is accurate
 				m_fEffectTimer = m_PneumoComp.GetProgressionTimer();
-
-				if (IRRU_PneumothoraxSettings.IsDebugEnabled())
-					Print(string.Format("[PneumoEffect] Effect STARTED - SyncTimer: %1 | Stage: %2", m_fEffectTimer, m_PneumoComp.GetStage()));
 			}
 		}
 		else

@@ -76,13 +76,7 @@ class IRRU_PneumothoraxSettings
 			}
 
 			if (!s_bInitialized)
-			{
 				s_bInitialized = true;
-				Print(string.Format("[Pneumothorax] Settings initialized - Chance: %1%%, Progression: %2s, ResDrain: %3/s",
-					s_Instance.m_fTriggerChance * 100,
-					s_Instance.m_fProgressionTime,
-					s_Instance.m_fResilienceDrainRate));
-			}
 		}
 
 		return s_Instance;

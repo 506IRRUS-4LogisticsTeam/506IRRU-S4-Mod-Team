@@ -4,6 +4,20 @@ modded class SCR_CharacterDamageManagerComponent
     : SCR_CharacterDamageManagerComponent
 {
 	//------------------------------------------------------------------------------------------------
+	override void FullHeal(bool ignoreHealingDOT = true)
+	{
+		super.FullHeal(ignoreHealingDOT);
+
+		IEntity owner = GetOwner();
+		if (!owner)
+			return;
+
+		IRRU_PneumothoraxComponent pneumo = IRRU_PneumothoraxComponent.Cast(
+			owner.FindComponent(IRRU_PneumothoraxComponent));
+		if (pneumo)
+			pneumo.Treat();
+	}
+
 	override protected void OnDamage(notnull BaseDamageContext damageContext)
 	{
 		super.OnDamage(damageContext);
