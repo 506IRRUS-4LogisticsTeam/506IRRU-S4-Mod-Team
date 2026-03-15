@@ -1,0 +1,91 @@
+GameEntity {
+ ID "68DE741ADF683C18"
+ components {
+  Persistence "{68DE741ADF683C08}" {
+  }
+  SignalsManagerComponent "{68DE741ADF6827C0}" {
+  }
+  InventoryItemComponent "{68DE741ADF68283B}" {
+   Attributes SCR_ItemAttributeCollection "{68DE741ADF68283C}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{68DE741ADF682833}" {
+     Name "AFSOC"
+     Description "AFSOC"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{68DE741ADF682834}" {
+     Weight 0.02
+     SizeSetupStrategy Size
+     ItemDimensions 2 2 2
+     RestingUP Forward
+     ActivePhysicalSimulation None
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{68DE741ADF68282E}" {
+      CameraDistanceToItem 0.7
+      ItemRenderRotation 20 0 20
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    CommonItemType "GRS_PATCH"
+    m_Size SLOT_1x1
+    m_SlotType SLOT_GADGETS_STORAGE
+    m_bStackable 0
+   }
+  }
+  MeshObject "{68DE741ADF682827}" {
+   Object "{F311B117BC1D9C4F}Assets/Patches/AFSOC.xob"
+   LODFactors {
+    1 1 1 1
+   }
+  }
+  ParametricMaterialInstanceComponent "{68DE741ADF682825}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  BaseLoadoutClothComponent "{68DE741ADF682818}" {
+   AreaType GRS_ShirtLowerPatch "{68DE741ADF68281C}" {
+   }
+   WornModel "{F311B117BC1D9C4F}Assets/Patches/AFSOC.xob"
+   WornMaterialsOverride {
+    "{3C7B1AAE79D1E9AD}Assets/SF_Patch/Data/SF_Patch_2.emat"
+   }
+   ItemModel "{F311B117BC1D9C4F}Assets/Patches/AFSOC.xob"
+   ItemMaterialsOverride {
+    ""
+   }
+  }
+  ActionsManagerComponent "{68DE741ADF682813}" {
+   ActionContexts {
+    UserActionContext "{68DE741ADF68280A}" {
+     ContextName "default"
+     Position PointInfo "{68DE741ADF6FD0D3}" {
+     }
+     Radius 0.05
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{68DE741ADF6FD0CC}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{68DE741ADF6FD0C3}" {
+      Name "#AR-Inventory_PickUp"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+  BaseItemAnimationComponent "{68DE741ADF6FD13A}" {
+   AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
+   AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
+  }
+  RplComponent "{68DE741ADF6FD13E}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+   AutoHierarchy 0
+  }
+  Hierarchy "{68DE741ADF6FD13D}" {
+  }
+ }
+ coords 0 0 0
+}
