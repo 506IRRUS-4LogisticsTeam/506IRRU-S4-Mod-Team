@@ -1,0 +1,13 @@
+GameEntity : "{0FFFB0BCE1A21A2E}Prefabs/Weapons/Attachments/Lasers/anpeq16/Laser_ANPEQ16.et" {
+ ID "557E85EEE1B603F1"
+ components {
+  MeshObject "{557E85EE39CED921}" {
+   Materials {
+    MaterialAssignClass "{68B86519688BF373}" {
+     SourceMaterial "body"
+     AssignedMaterial "{2F0DAED26BEB0779}Assets/peq16_blk.emat"
+    }
+   }
+  }
+ }
+}
