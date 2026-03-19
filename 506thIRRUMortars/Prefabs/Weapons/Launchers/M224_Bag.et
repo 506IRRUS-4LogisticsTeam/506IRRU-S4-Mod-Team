@@ -8,6 +8,12 @@ GenericEntity : "{37F022D0CDC84C11}Prefabs/Weapons/Launchers/M72/Launcher_M72A3_
   MeshObject "{CFBAA4B701F95D69}" {
    Object "{204CA9293215699F}Assets/Weapons/Mortar/M224_Bag.xob"
   }
+  RigidBody "{5534C502C356F3FB}" {
+   Mass 8
+  }
+  SCR_ArsenalComponent "{686237D47316A97D}" {
+   m_eSupportedArsenalItemTypes RIFLE
+  }
   SCR_WeaponAttachmentsStorageComponent "{51F080D5CE45A1A2}" {
    Attributes SCR_ItemAttributeCollection "{51F080D5C64F12C5}" {
     ItemDisplayName WeaponUIInfo "{5222CB047B845168}" {
@@ -43,9 +49,6 @@ GenericEntity : "{37F022D0CDC84C11}Prefabs/Weapons/Launchers/M72/Launcher_M72A3_
      m_ActionName "Assemble Mortar"
     }
    }
-  }
-  SCR_ArsenalComponent "{686237D47316A97D}" {
-   m_eSupportedArsenalItemTypes RIFLE
   }
  }
  coords 4591.806 18.406 10684.89

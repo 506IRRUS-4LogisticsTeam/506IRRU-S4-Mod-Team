@@ -35,7 +35,7 @@ Projectile : "{EEF8495A9A6787A6}Prefabs/Weapons/Core/Ammo_MortarShell_Base.et" {
      Description "#AR-Magazine_M821_Description"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{60AC94417B58CB7F}" {
-     Weight 0.25
+     Weight 1
      ItemDimensions 8 8 18
      ItemVolume 500
     }

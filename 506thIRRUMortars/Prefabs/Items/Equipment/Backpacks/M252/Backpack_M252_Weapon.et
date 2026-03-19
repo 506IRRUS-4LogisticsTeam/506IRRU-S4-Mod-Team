@@ -9,7 +9,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
      Description "#AR-Backpack_ALICE_Medium_Description"
     }
     ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
-     Weight 5.0
+     Weight 5
      SizeSetupStrategy Volume
      ItemVolume 5000
     }
@@ -33,7 +33,7 @@ GenericEntity : "{841162A79157C494}Prefabs/Items/Equipment/Backpacks/Backpack_AL
      Description ""
     }
     ItemPhysAttributes ItemPhysicalAttributes PhysicalAttributes {
-     Weight 5
+     Weight 8
      SizeSetupStrategy Manual
      ItemDimensions 20 20 20
      ItemVolume 0
