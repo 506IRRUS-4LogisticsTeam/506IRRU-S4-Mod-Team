@@ -112,7 +112,10 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	bool TryTriggerPneumothorax()
+	//! Try to trigger pneumothorax based on chest damage ratio (0-1 of hitzone max health)
+	//! Damage below the minimum threshold is ignored.
+	//! Chance scales linearly from MinTriggerChance at threshold to MaxTriggerChance at 100% damage.
+	bool TryTriggerPneumothorax(float damageRatio = 0.0)
 	{
 		if (!Replication.IsServer() && Replication.IsRunning())
 			return false;
@@ -120,8 +123,27 @@ class IRRU_PneumothoraxComponent : ScriptComponent
 		if (HasPneumothorax())
 			return false;
 
-		float chance = IRRU_PneumothoraxSettings.GetTriggerChance();
+		// Gate: damage must exceed minimum threshold
+		float minThreshold = IRRU_PneumothoraxSettings.GetMinDamageThreshold();
+		if (damageRatio < minThreshold)
+			return false;
+
+		// Scale chance linearly from min to max based on damage ratio
+		float minChance = IRRU_PneumothoraxSettings.GetMinTriggerChance();
+		float maxChance = IRRU_PneumothoraxSettings.GetMaxTriggerChance();
+
+		float scaleFactor = 0.0;
+		if (1.0 - minThreshold > 0)
+			scaleFactor = (damageRatio - minThreshold) / (1.0 - minThreshold);
+		if (scaleFactor > 1.0)
+			scaleFactor = 1.0;
+
+		float chance = minChance + scaleFactor * (maxChance - minChance);
+
 		float roll = Math.RandomFloat(0.0, 1.0);
+
+		if (IRRU_PneumothoraxSettings.IsDebugEnabled())
+			Print(string.Format("[Pneumothorax] DamageRatio: %1, Chance: %2, Roll: %3", damageRatio, chance, roll));
 
 		if (roll > chance)
 			return false;

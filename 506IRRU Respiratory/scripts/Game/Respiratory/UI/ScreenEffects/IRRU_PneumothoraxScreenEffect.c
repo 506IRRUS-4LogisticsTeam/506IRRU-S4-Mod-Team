@@ -4,11 +4,11 @@
 class IRRU_PneumothoraxScreenEffect : SCR_BaseScreenEffect
 {
 	protected static const string VIGNETTE_WIDGET_NAME = "IRRU_Medical_BlackFlash";
-	protected static const float MIN_OPACITY = 0.1;
-	protected static const float MAX_OPACITY = 0.87;
-	protected static const float MAX_MASK_PROGRESS = 0.4;
-	protected static const float PULSE_AMPLITUDE = 0.05;
-	protected static const float PULSE_PERIOD = 4.0;
+	protected static const float MIN_OPACITY = 0.2;
+	protected static const float MAX_OPACITY = 0.95;
+	protected static const float MAX_MASK_PROGRESS = 0.55;
+	protected static const float PULSE_AMPLITUDE = 0.08;
+	protected static const float PULSE_PERIOD = 3.5;
 	protected static const float FADEOUT_SPEED = 0.3;
 
 	protected ImageWidget m_wVignette;

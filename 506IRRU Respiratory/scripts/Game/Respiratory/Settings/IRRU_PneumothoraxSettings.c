@@ -1,15 +1,25 @@
 [BaseContainerProps(configRoot: true)]
 class IRRU_PneumothoraxSettings
 {
-	protected const float DEFAULT_TRIGGER_CHANCE = 0.20;
+	protected const float DEFAULT_MIN_DAMAGE_THRESHOLD = 0.10;
+	protected const float DEFAULT_MIN_TRIGGER_CHANCE = 0.30;
+	protected const float DEFAULT_MAX_TRIGGER_CHANCE = 0.50;
 	protected const float DEFAULT_PROGRESSION_TIME = 90.0;
 	protected const float DEFAULT_RESILIENCE_DRAIN_RATE = 2.0;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE1 = 0.04;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE2 = 0.12;
 
-	[Attribute(defvalue: "0.20", desc: "Chance (0-1) of pneumothorax on chest damage", category: "Pneumothorax",
+	[Attribute(defvalue: "0.10", desc: "Minimum chest damage ratio (0-1) required to trigger pneumothorax", category: "Pneumothorax",
 		uiwidget: UIWidgets.Slider, params: "0 1 0.01")]
-	float m_fTriggerChance;
+	float m_fMinDamageThreshold;
+
+	[Attribute(defvalue: "0.30", desc: "Trigger chance at minimum damage threshold", category: "Pneumothorax",
+		uiwidget: UIWidgets.Slider, params: "0 1 0.01")]
+	float m_fMinTriggerChance;
+
+	[Attribute(defvalue: "0.50", desc: "Maximum trigger chance at heavy damage", category: "Pneumothorax",
+		uiwidget: UIWidgets.Slider, params: "0 1 0.01")]
+	float m_fMaxTriggerChance;
 
 	[Attribute(defvalue: "90", desc: "Seconds before Stage 1 progresses to Stage 2", category: "Pneumothorax",
 		uiwidget: UIWidgets.Slider, params: "60 120 1")]
@@ -37,8 +47,12 @@ class IRRU_PneumothoraxSettings
 	//------------------------------------------------------------------------------------------------
 	void IRRU_PneumothoraxSettings()
 	{
-		if (m_fTriggerChance <= 0)
-			m_fTriggerChance = DEFAULT_TRIGGER_CHANCE;
+		if (m_fMinDamageThreshold <= 0)
+			m_fMinDamageThreshold = DEFAULT_MIN_DAMAGE_THRESHOLD;
+		if (m_fMinTriggerChance <= 0)
+			m_fMinTriggerChance = DEFAULT_MIN_TRIGGER_CHANCE;
+		if (m_fMaxTriggerChance <= 0)
+			m_fMaxTriggerChance = DEFAULT_MAX_TRIGGER_CHANCE;
 		if (m_fProgressionTime <= 0)
 			m_fProgressionTime = DEFAULT_PROGRESSION_TIME;
 		if (m_fResilienceDrainRate <= 0)
@@ -67,7 +81,9 @@ class IRRU_PneumothoraxSettings
 					Print("[Pneumothorax] Config not found, using defaults", LogLevel.WARNING);
 
 				s_Instance = new IRRU_PneumothoraxSettings();
-				s_Instance.m_fTriggerChance = DEFAULT_TRIGGER_CHANCE;
+				s_Instance.m_fMinDamageThreshold = DEFAULT_MIN_DAMAGE_THRESHOLD;
+				s_Instance.m_fMinTriggerChance = DEFAULT_MIN_TRIGGER_CHANCE;
+				s_Instance.m_fMaxTriggerChance = DEFAULT_MAX_TRIGGER_CHANCE;
 				s_Instance.m_fProgressionTime = DEFAULT_PROGRESSION_TIME;
 				s_Instance.m_fResilienceDrainRate = DEFAULT_RESILIENCE_DRAIN_RATE;
 				s_Instance.m_fStaminaDrainStage1 = DEFAULT_STAMINA_DRAIN_STAGE1;
@@ -92,12 +108,30 @@ class IRRU_PneumothoraxSettings
 	}
 
 	//------------------------------------------------------------------------------------------------
-	static float GetTriggerChance()
+	static float GetMinDamageThreshold()
 	{
 		IRRU_PneumothoraxSettings settings = GetInstance();
 		if (settings)
-			return Math.Clamp(settings.m_fTriggerChance, 0.0, 1.0);
-		return DEFAULT_TRIGGER_CHANCE;
+			return Math.Clamp(settings.m_fMinDamageThreshold, 0.0, 1.0);
+		return DEFAULT_MIN_DAMAGE_THRESHOLD;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	static float GetMinTriggerChance()
+	{
+		IRRU_PneumothoraxSettings settings = GetInstance();
+		if (settings)
+			return Math.Clamp(settings.m_fMinTriggerChance, 0.0, 1.0);
+		return DEFAULT_MIN_TRIGGER_CHANCE;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	static float GetMaxTriggerChance()
+	{
+		IRRU_PneumothoraxSettings settings = GetInstance();
+		if (settings)
+			return Math.Clamp(settings.m_fMaxTriggerChance, 0.0, 1.0);
+		return DEFAULT_MAX_TRIGGER_CHANCE;
 	}
 
 	//------------------------------------------------------------------------------------------------

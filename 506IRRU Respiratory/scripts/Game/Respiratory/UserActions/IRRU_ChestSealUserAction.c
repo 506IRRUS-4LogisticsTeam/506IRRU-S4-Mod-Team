@@ -3,10 +3,14 @@ class IRRU_ChestSealUserAction : SCR_HealingUserAction
 	//------------------------------------------------------------------------------------------------
 	override bool CanBeShownScript(IEntity user)
 	{
-		if (!user || user == GetOwner())
+		if (!user)
 			return false;
 
-		ChimeraCharacter targetCharacter = ChimeraCharacter.Cast(GetOwner());
+		// Determine target: self-treatment if user is the owner, otherwise treat the owner
+		IEntity targetEntity = GetOwner();
+		bool isSelfTreatment = (user == targetEntity);
+
+		ChimeraCharacter targetCharacter = ChimeraCharacter.Cast(targetEntity);
 		if (!targetCharacter)
 			return false;
 
@@ -19,6 +23,10 @@ class IRRU_ChestSealUserAction : SCR_HealingUserAction
 			return false;
 
 		if (userCharacter.IsInVehicle() && !HealingAllowedFromSeat(userCharacter))
+			return false;
+
+		// Self-treatment: user must be conscious
+		if (isSelfTreatment && userController.GetLifeState() != ECharacterLifeState.ALIVE)
 			return false;
 
 		SCR_ConsumableItemComponent consumableComponent = GetConsumableComponent(userCharacter);
