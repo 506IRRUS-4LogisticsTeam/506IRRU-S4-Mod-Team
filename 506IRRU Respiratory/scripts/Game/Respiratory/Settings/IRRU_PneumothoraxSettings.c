@@ -5,7 +5,7 @@ class IRRU_PneumothoraxSettings
 	protected const float DEFAULT_MIN_TRIGGER_CHANCE = 0.30;
 	protected const float DEFAULT_MAX_TRIGGER_CHANCE = 0.50;
 	protected const float DEFAULT_PROGRESSION_TIME = 90.0;
-	protected const float DEFAULT_RESILIENCE_DRAIN_RATE = 2.0;
+	protected const float DEFAULT_RESILIENCE_DRAIN_RATE = 2.5;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE1 = 0.04;
 	protected const float DEFAULT_STAMINA_DRAIN_STAGE2 = 0.12;
 
