@@ -13,6 +13,7 @@ class IRRU_TicketSystemGameModeComponent : SCR_BaseGameModeComponent
 	[RplProp(onRplName: "OnTicketCountChanged")]
 	protected int m_iTicketCount = 0;
 
+	protected int m_iPreviousTicketCount = 0;
 	protected static IRRU_TicketSystemGameModeComponent s_Instance;
 
 	//------------------------------------------------------------------------------------------------
@@ -37,12 +38,13 @@ class IRRU_TicketSystemGameModeComponent : SCR_BaseGameModeComponent
 		if (!Replication.IsServer())
 			return;
 
+		int previousCount = m_iTicketCount;
 		m_iTicketCount = m_iTicketCount + amount;
 
 		Replication.BumpMe();
 
 		if (m_bDebugEnabled)
-			Print(string.Format("[TicketSystem] +%1 tickets (%2) - Total: %3", amount, reason, m_iTicketCount));
+			Print(string.Format("[TicketSystem] +%1 tickets (%2) - Total: %3 (was %4)", amount, reason, m_iTicketCount, previousCount));
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -60,12 +62,13 @@ class IRRU_TicketSystemGameModeComponent : SCR_BaseGameModeComponent
 		if (!Replication.IsServer())
 			return;
 
+		int previousCount = m_iTicketCount;
 		m_iTicketCount = value;
 
 		Replication.BumpMe();
 
 		if (m_bDebugEnabled)
-			Print(string.Format("[TicketSystem] Tickets set to %1 (%2)", value, reason));
+			Print(string.Format("[TicketSystem] Tickets set to %1 (was %2) (%3)", value, previousCount, reason));
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -85,8 +88,13 @@ class IRRU_TicketSystemGameModeComponent : SCR_BaseGameModeComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnTicketCountChanged()
 	{
+		if (m_iTicketCount < m_iPreviousTicketCount)
+			Print(string.Format("[TicketSystem] WARNING: Ticket count DECREASED from %1 to %2!", m_iPreviousTicketCount, m_iTicketCount), LogLevel.WARNING);
+
 		if (m_bDebugEnabled)
-			Print(string.Format("[TicketSystem] Ticket count updated: %1", m_iTicketCount));
+			Print(string.Format("[TicketSystem] Ticket count updated: %1 (was %2)", m_iTicketCount, m_iPreviousTicketCount));
+
+		m_iPreviousTicketCount = m_iTicketCount;
 	}
 
 	//------------------------------------------------------------------------------------------------
