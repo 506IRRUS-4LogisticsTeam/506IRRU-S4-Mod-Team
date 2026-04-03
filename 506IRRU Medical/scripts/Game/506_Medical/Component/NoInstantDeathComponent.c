@@ -187,7 +187,9 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			else if (hasEpinephrine)
 				pauseReason = " (paused: epinephrine)";
 
-			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining%4", GetNameStr(owner), (bleedoutTime - m_fUnconsciousTimer), bleedoutTime, pauseReason));
+			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining%4 - Health: %5%%, Blood: %6%%, Resilience: %7%%",
+				GetNameStr(owner), (bleedoutTime - m_fUnconsciousTimer), bleedoutTime, pauseReason,
+				m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
 		}
 
 		float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
