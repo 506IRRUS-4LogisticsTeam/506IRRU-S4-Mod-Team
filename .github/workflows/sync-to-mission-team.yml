@@ -9,6 +9,10 @@ on:
       - '.github/workflows/sync-to-mission-team.yml'
   workflow_dispatch:
 
+concurrency:
+  group: sync-to-mission-team
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -34,15 +38,16 @@ jobs:
         run: |
           git clone "https://x-access-token:${GH_PAT}@github.com/506IRRUS-4LogisticsTeam/mission-team.git" mission-team
 
-      - name: Sync 506IRRUMissionTemplates contents to mission-team root
+      - name: Sync 506IRRUMissionTemplates into mission-team folder
         run: |
+          if [ ! -d "./506IRRUMissionTemplates" ]; then
+            echo "Source folder ./506IRRUMissionTemplates not found."
+            exit 1
+          fi
+
+          mkdir -p mission-team/506IRRUMissionTemplates
           rsync -av --delete \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='README.md' \
-            --exclude='.gitignore' \
-            --exclude='.gitattributes' \
-            506IRRUMissionTemplates/ mission-team/
+            506IRRUMissionTemplates/ mission-team/506IRRUMissionTemplates/
 
       - name: Commit and push changes
         run: |
