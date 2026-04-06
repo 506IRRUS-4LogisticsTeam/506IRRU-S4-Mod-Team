@@ -2,67 +2,57 @@ name: Sync Mission Templates to Mission Team
 
 on:
   push:
+    branches:
+      - main
     paths:
       - '506IRRUMissionTemplates/**'
+      - '.github/workflows/sync-to-mission-team.yml'
+  workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # future-proof Node.js 24
+permissions:
+  contents: read
 
 jobs:
-  sync:
-    if: github.actor != 'github-actions[bot]'  # prevent workflow loops
+  sync-to-mission-team:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[skip sync]')
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout main repo
-      - name: Checkout main repo
+      - name: Checkout mod-team repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2. Configure Git
       - name: Configure Git
         run: |
-          git config user.name "sync-bot"
-          git config user.email "actions@github.com"
+          git config --global user.name "506IRRU sync bot"
+          git config --global user.email "actions@github.com"
 
-      # 3. Create a subtree split
-      - name: Create subtree split
-        run: |
-          git subtree split --prefix="506IRRUMissionTemplates" -b split-branch
-
-      # 4. Clone mission-team repo into a guaranteed folder
       - name: Clone mission-team repo
+        env:
+          GH_PAT: ${{ secrets.PAT }}
         run: |
-          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git mission-team
-          # Debug: ensure folder exists
-          ls -la
-          if [ ! -d "mission-team" ]; then
-            echo "mission-team folder does not exist!"
-            exit 1
+          git clone "https://x-access-token:${GH_PAT}@github.com/506IRRUS-4LogisticsTeam/mission-team.git" mission-team
+
+      - name: Sync 506IRRUMissionTemplates contents to mission-team root
+        run: |
+          rsync -av --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='README.md' \
+            --exclude='.gitignore' \
+            --exclude='.gitattributes' \
+            506IRRUMissionTemplates/ mission-team/
+
+      - name: Commit and push changes
+        run: |
+          cd mission-team
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to sync."
+            exit 0
           fi
 
-      # 5. Rebuild folder structure in the team repo
-      - name: Rebuild folder structure
-        run: |
-          # Clean the team repo but keep .git
-          find mission-team -mindepth 1 ! -name '.git' -exec rm -rf {} +
-
-          # Ensure required folder exists
-          mkdir -p mission-team/506IRRUMissionTemplates
-
-          # Export subtree contents into a temporary folder
-          mkdir temp
-          git --git-dir=.git checkout split-branch -- .
-          mv * temp/ 2>/dev/null || true
-
-          # Move files into correct folder
-          mv temp/* mission-team/506IRRUMissionTemplates/ 2>/dev/null || true
-
-      # 6. Commit and push to main branch of the team repo
-      - name: Commit and push
-        run: |
-          ls -la mission-team  # debug check
-          cd mission-team
-          git checkout main || git checkout -b main
-          git add .
-          git commit -m "Sync from main (wrapped folder)" || echo "No changes"
-          git push origin main --force
+          git add -A
+          git commit -m "Sync from 506IRRUMissionTemplates [skip sync]"
+          git push origin main
