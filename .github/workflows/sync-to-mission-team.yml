@@ -5,46 +5,61 @@ on:
     paths:
       - '506IRRUMissionTemplates/**'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # future-proof Node.js 24
+
 jobs:
   sync:
+    if: github.actor != 'github-actions[bot]'  # prevent workflow loops
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout main repo
       - name: Checkout main repo
         uses: actions/checkout@v4
 
-      - name: Configure git
+      # 2. Configure Git
+      - name: Configure Git
         run: |
           git config user.name "sync-bot"
           git config user.email "actions@github.com"
 
+      # 3. Create a subtree split from the mission templates folder
       - name: Create subtree split
         run: |
           git subtree split --prefix="506IRRUMissionTemplates" -b split-branch
 
+      # 4. Clone the mission-team repo
       - name: Clone mission-team repo
         run: |
-          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git mission-team
 
+      # 5. Rebuild the folder structure
       - name: Rebuild folder structure
         run: |
-          # Clean mission-team repo
+          # Clean mission-team repo (but keep .git)
           find mission-team -mindepth 1 ! -name '.git' -exec rm -rf {} +
 
-          # Create required folder
+          # Ensure the required folder exists
           mkdir -p mission-team/506IRRUMissionTemplates
 
-          # Export subtree contents
+          # Export subtree content into a temporary folder
           mkdir temp
           git --git-dir=.git checkout split-branch -- .
           mv * temp/ 2>/dev/null || true
 
-          # Move into correct folder
+          # Move files into proper folder
           mv temp/* mission-team/506IRRUMissionTemplates/ 2>/dev/null || true
 
+      # 6. Commit and push to main branch
       - name: Commit and push
         run: |
           cd mission-team
+
+          # Ensure we are on main
+          git checkout main || git checkout -b main
+
           git add .
           git commit -m "Sync from main (wrapped folder)" || echo "No changes"
-          git push
+
+          git push origin main --force
