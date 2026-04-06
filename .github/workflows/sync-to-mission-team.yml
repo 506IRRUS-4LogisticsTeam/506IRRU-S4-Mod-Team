@@ -24,42 +24,45 @@ jobs:
           git config user.name "sync-bot"
           git config user.email "actions@github.com"
 
-      # 3. Create a subtree split from the mission templates folder
+      # 3. Create a subtree split
       - name: Create subtree split
         run: |
           git subtree split --prefix="506IRRUMissionTemplates" -b split-branch
 
-      # 4. Clone the mission-team repo
+      # 4. Clone mission-team repo into a guaranteed folder
       - name: Clone mission-team repo
         run: |
           git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git mission-team
+          # Debug: ensure folder exists
+          ls -la
+          if [ ! -d "mission-team" ]; then
+            echo "mission-team folder does not exist!"
+            exit 1
+          fi
 
-      # 5. Rebuild the folder structure
+      # 5. Rebuild folder structure in the team repo
       - name: Rebuild folder structure
         run: |
-          # Clean mission-team repo (but keep .git)
+          # Clean the team repo but keep .git
           find mission-team -mindepth 1 ! -name '.git' -exec rm -rf {} +
 
-          # Ensure the required folder exists
+          # Ensure required folder exists
           mkdir -p mission-team/506IRRUMissionTemplates
 
-          # Export subtree content into a temporary folder
+          # Export subtree contents into a temporary folder
           mkdir temp
           git --git-dir=.git checkout split-branch -- .
           mv * temp/ 2>/dev/null || true
 
-          # Move files into proper folder
+          # Move files into correct folder
           mv temp/* mission-team/506IRRUMissionTemplates/ 2>/dev/null || true
 
-      # 6. Commit and push to main branch
+      # 6. Commit and push to main branch of the team repo
       - name: Commit and push
         run: |
+          ls -la mission-team  # debug check
           cd mission-team
-
-          # Ensure we are on main
           git checkout main || git checkout -b main
-
           git add .
           git commit -m "Sync from main (wrapped folder)" || echo "No changes"
-
           git push origin main --force
