@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout main repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure git
         run: |
@@ -24,30 +24,27 @@ jobs:
 
       - name: Clone mission-team repo
         run: |
-          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git teamrepo
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git
 
-      - name: Rebuild correct folder structure
+      - name: Rebuild folder structure
         run: |
-          cd teamrepo
-
-          # Clear repo safely
-          find . -mindepth 1 ! -name '.git' -exec rm -rf {} +
+          # Clean mission-team repo
+          find mission-team -mindepth 1 ! -name '.git' -exec rm -rf {} +
 
           # Create required folder
-          mkdir 506IRRUMissionTemplates
+          mkdir -p mission-team/506IRRUMissionTemplates
 
-          # Pull split content into temp
-          cd ..
+          # Export subtree contents
           mkdir temp
           git --git-dir=.git checkout split-branch -- .
           mv * temp/ 2>/dev/null || true
 
           # Move into correct folder
-          mv temp/* teamrepo/506IRRUMissionTemplates/ 2>/dev/null || true
+          mv temp/* mission-team/506IRRUMissionTemplates/ 2>/dev/null || true
 
       - name: Commit and push
         run: |
-          cd teamrepo
+          cd mission-team
           git add .
           git commit -m "Sync from main (wrapped folder)" || echo "No changes"
           git push
