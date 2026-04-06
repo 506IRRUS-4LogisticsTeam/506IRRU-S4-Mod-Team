@@ -13,7 +13,12 @@ jobs:
       - name: Checkout main repo
         uses: actions/checkout@v3
 
-      - name: Split subtree
+      - name: Configure git
+        run: |
+          git config user.name "sync-bot"
+          git config user.email "actions@github.com"
+
+      - name: Create subtree split
         run: |
           git subtree split --prefix="506IRRUMissionTemplates" -b split-branch
 
@@ -21,15 +26,28 @@ jobs:
         run: |
           git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git teamrepo
 
-      - name: Rebuild folder structure
+      - name: Rebuild correct folder structure
         run: |
           cd teamrepo
-          rm -rf *
+
+          # Clear repo safely
+          find . -mindepth 1 ! -name '.git' -exec rm -rf {} +
+
+          # Create required folder
           mkdir 506IRRUMissionTemplates
 
-          git --git-dir=../.git checkout split-branch -- .
-          mv * 506IRRUMissionTemplates/ 2>/dev/null || true
+          # Pull split content into temp
+          cd ..
+          mkdir temp
+          git --git-dir=.git checkout split-branch -- .
+          mv * temp/ 2>/dev/null || true
 
+          # Move into correct folder
+          mv temp/* teamrepo/506IRRUMissionTemplates/ 2>/dev/null || true
+
+      - name: Commit and push
+        run: |
+          cd teamrepo
           git add .
-          git commit -m "Sync from main (wrapped)" || echo "No changes"
+          git commit -m "Sync from main (wrapped folder)" || echo "No changes"
           git push
