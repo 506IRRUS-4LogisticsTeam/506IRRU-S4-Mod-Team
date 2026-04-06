@@ -1,0 +1,35 @@
+name: Sync Mission Templates to Mission Team
+
+on:
+  push:
+    paths:
+      - '506IRRUMissionTemplates/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v3
+
+      - name: Split subtree
+        run: |
+          git subtree split --prefix="506IRRUMissionTemplates" -b split-branch
+
+      - name: Clone mission-team repo
+        run: |
+          git clone https://x-access-token:${{ secrets.PAT }}@github.com/506IRRUS-4LogisticsTeam/mission-team.git teamrepo
+
+      - name: Rebuild folder structure
+        run: |
+          cd teamrepo
+          rm -rf *
+          mkdir 506IRRUMissionTemplates
+
+          git --git-dir=../.git checkout split-branch -- .
+          mv * 506IRRUMissionTemplates/ 2>/dev/null || true
+
+          git add .
+          git commit -m "Sync from main (wrapped)" || echo "No changes"
+          git push
