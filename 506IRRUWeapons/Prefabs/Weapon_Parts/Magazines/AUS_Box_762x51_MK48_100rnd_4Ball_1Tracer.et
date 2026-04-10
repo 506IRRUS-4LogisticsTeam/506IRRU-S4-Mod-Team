@@ -1,0 +1,12 @@
+GenericEntity : "{06D722FC2666EB83}Prefabs/Weapons/Magazines/Box_556x45_M249_200rnd_4Ball_1Tracer.et" {
+ ID "CA6BE4D6BB2D1077"
+ components {
+  InventoryMagazineComponent "{51EED12B803954CC}" {
+   Attributes SCR_ItemAttributeCollection "{51EED12B86960275}" {
+    ItemPhysAttributes ItemPhysicalAttributes "{548A9B044280695E}" {
+     Weight 0.7
+    }
+   }
+  }
+ }
+}

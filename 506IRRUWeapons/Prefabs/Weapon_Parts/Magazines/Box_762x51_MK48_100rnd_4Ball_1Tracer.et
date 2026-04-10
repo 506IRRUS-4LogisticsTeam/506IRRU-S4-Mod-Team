@@ -11,7 +11,7 @@ GenericEntity : "{06D722FC2666EB83}Prefabs/Weapons/Magazines/Box_556x45_M249_200
      Description ""
     }
     ItemPhysAttributes ItemPhysicalAttributes "{548A9B044280695E}" {
-     Weight 0.7
+     Weight 1.4
     }
    }
    WeightPerAmmo 0.021
