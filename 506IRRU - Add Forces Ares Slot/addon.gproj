@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRUAddForcesAresSlot"
+ GUID "6918545EF43E20C7"
+ TITLE "506IRRU - Add Forces Ares Slot"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}
