@@ -16,33 +16,33 @@ class RHS_SGC_ANPEQ16ComponentClass : RHS_LightDeviceClass
 class RHS_SGC_ANPEQ16Component : RHS_LightDevice
 {
 	[Attribute(RHS_ANPEQ16_Modes.OFF.ToString(), UIWidgets.ComboBox, "Which mode should be set for ANPEQ by default - overrides Selected Light Type value", "", ParamEnumArray.FromEnum(RHS_ANPEQ16_Modes))]
-	private RHS_ANPEQ16_Modes m_eCurrentMode;
+	protected RHS_ANPEQ16_Modes m_eCurrentMode;
 
 	// light arrays
-	private const ref array<int> OLA = {};
-	private const ref array<int> DLA = {6, 0, 1};
-	private const ref array<int> LLA = {6, 0};
-	private const ref array<int> ALA = {1};
-	private const ref array<int> ALLA = {2};
-	private const ref array<int> DLLA = {2, 3};
-	private const ref array<int> AHLA = {4};
-	private const ref array<int> DHLA = {4, 5};
-	private const ref array<int> SPOTLIGHTS = {0, 3, 5, 6};
+	protected const ref array<int> OLA = {};
+	protected const ref array<int> DLA = {0, 1};
+	protected const ref array<int> LLA = {0};
+	protected const ref array<int> ALA = {1};
+	protected const ref array<int> ALLA = {2};
+	protected const ref array<int> DLLA = {2, 3};
+	protected const ref array<int> AHLA = {4};
+	protected const ref array<int> DHLA = {4, 5};
+	protected const ref array<int> SPOTLIGHTS = {0, 3, 5};
 
-	private const int s_iMaxSpotAngle = 35;
-	private const int s_iMinSpotAngle = 15;
+	protected const int s_iMaxSpotAngle = 35;
+	protected const int s_iMinSpotAngle = 15;
 
 	// the anpeq switches off automatically after 5 minutes
-	private int m_iSwitchOnTimeoutMinutes = 5;
+	protected int m_iSwitchOnTimeoutMinutes = 5;
 
 	// the pulse setting for the IR Illuminator. 0 is continuous and the rest are number of pulses per second. The LED light mirrors this behavior.
-	private int m_iPulsePerSecond = 0;
+	protected int m_iPulsePerSecond = 0;
 
-	private ParametricMaterialInstanceComponent m_ParamMatInstComponent;
-	private SignalsManagerComponent m_SignalManagerComponent;
-	private int m_iKnobAnimationSignal = -1;
-	private int m_iSpotAngle = 25; // 25 15
-	private bool m_bIsAdjustingAngle = false;
+	protected ParametricMaterialInstanceComponent m_ParamMatInstComponent;
+	protected SignalsManagerComponent m_SignalManagerComponent;
+	protected int m_iKnobAnimationSignal = -1;
+	protected int m_iSpotAngle = 25;
+	protected bool m_bIsAdjustingAngle = false;
 
 	bool IsAdjustingAngle()
 	{
@@ -89,7 +89,7 @@ class RHS_SGC_ANPEQ16Component : RHS_LightDevice
 			m_CharacterRpcManager.AskAuthorityToSyncLightType(this, m_eCurrentMode);
 	}
 
-	void SetMode(RHS_ANPEQ16_Modes mode)
+	void SetMode(RHS_ANPEQ16_Modes mode, bool playSound = true)
 	{
 		m_eCurrentMode = mode;
 
@@ -108,7 +108,9 @@ class RHS_SGC_ANPEQ16Component : RHS_LightDevice
 		if (m_iKnobAnimationSignal > -1)
 		{
 			m_SignalManagerComponent.SetSignalValue(m_iKnobAnimationSignal, mode);
-			PlaySound("SOUND_KNOB_CLICK");
+			
+			if(playSound)
+				PlaySound("SOUND_KNOB_CLICK");
 		}
 
 		if (m_eCurrentMode == RHS_ANPEQ16_Modes.DUALLOW || m_eCurrentMode == RHS_ANPEQ16_Modes.DUALHIGH)
@@ -312,7 +314,7 @@ class RHS_SGC_ANPEQ16Component : RHS_LightDevice
 		if (!super.OnPlayerControllerReady())
 			return false;
 
-		SetMode(m_eCurrentMode);
+		SetMode(m_eCurrentMode, false);
 		return true;
 	}
 

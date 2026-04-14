@@ -2,7 +2,7 @@ RHS_LightEntity : "{BC02D6EE235EC648}Prefabs/Weapons/Attachments/Lasers/anpeq16/
  ID "5CFADC1F39A94BCD"
  LV 4
  Radius 100
- DistanceAttenuation 0.5
+ DistanceAttenuation 1.35
  m_fLV 4
  m_bCanAdjustConeAngle 1
 }
