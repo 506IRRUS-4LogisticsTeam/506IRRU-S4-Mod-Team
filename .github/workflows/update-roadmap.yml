@@ -70,7 +70,8 @@ jobs:
               }
             `;
 
-            const projectClient = github.getOctokit(process.env.PROJECT_PAT);
+            const { getOctokit } = require('@actions/github');
+            const projectClient = getOctokit(process.env.PROJECT_PAT);
             let allItems = [];
             let cursor = null;
 
