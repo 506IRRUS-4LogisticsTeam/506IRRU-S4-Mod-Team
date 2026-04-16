@@ -121,24 +121,69 @@ jobs:
               return aOrder - bOrder;
             });
 
-            let table = '| Status | Item | Assignee |\n';
-            table += '|--------|------|----------|\n';
+            // Group items by status
+            const groups = {};
+            for (const s of visibleStatuses) {
+              groups[s.toLowerCase()] = [];
+            }
 
-            if (roadmapItems.length === 0) {
-              table += '| _No active roadmap items_ | | |\n';
-            } else {
-              for (const item of roadmapItems) {
-                const status = item.fieldValueByName?.name || '—';
+            for (const item of roadmapItems) {
+              const status = item.fieldValueByName?.name || '';
+              const key = status.toLowerCase();
+              if (groups[key]) {
                 const title = item.content?.title || 'Draft';
-
                 const assignees = item.content?.assignees?.nodes;
                 const assignee = assignees && assignees.length > 0
                   ? assignees.map(a => a.login).join(', ')
                   : '—';
-
-                table += `| **${status}** | ${title} | ${assignee} |\n`;
+                groups[key].push({ title, assignee });
               }
             }
+
+            let output = '';
+
+            // In Progress
+            const inProgress = groups['in progress'];
+            if (inProgress.length > 0) {
+              output += '### 🔧 In Progress\n\n';
+              output += '| Item | Assignee |\n';
+              output += '|------|----------|\n';
+              for (const item of inProgress) {
+                output += `| ${item.title} | ${item.assignee} |\n`;
+              }
+              output += '\n';
+            }
+
+            // In S-4 Review
+            const inReview = groups['in s-4 review'];
+            if (inReview.length > 0) {
+              output += '### 🔍 In S-4 Review\n\n';
+              output += '| Item | Assignee |\n';
+              output += '|------|----------|\n';
+              for (const item of inReview) {
+                output += `| ${item.title} | ${item.assignee} |\n`;
+              }
+              output += '\n';
+            }
+
+            // Complete — collapsible
+            const complete = groups['complete and implemented'];
+            if (complete.length > 0) {
+              output += '<details>\n';
+              output += '<summary><strong>✅ Complete and Implemented</strong> (' + complete.length + ' items)</summary>\n\n';
+              output += '| Item | Assignee |\n';
+              output += '|------|----------|\n';
+              for (const item of complete) {
+                output += `| ${item.title} | ${item.assignee} |\n`;
+              }
+              output += '\n</details>\n';
+            }
+
+            if (inProgress.length === 0 && inReview.length === 0 && complete.length === 0) {
+              output += '_No active roadmap items._\n';
+            }
+
+            const table = output;
 
             const startMarker = '<!-- ROADMAP:START - Do not remove or modify this section -->';
             const endMarker = '<!-- ROADMAP:END - Do not remove or modify this section -->';
