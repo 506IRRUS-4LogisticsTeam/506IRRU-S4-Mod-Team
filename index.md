@@ -16,7 +16,68 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 <!-- ROADMAP:START - Do not remove or modify this section -->
 | Status | Item | Assignee |
 |--------|------|----------|
-| _No active roadmap items_ | | |
+| **In progress** | Custom 506IRRU Arsenal | FlannelDev |
+| **In progress** | JLTV/Vehicle Inventories | FlannelDev |
+| **In progress** | [MOD UPDATE] 506IRRU General Adjustments | FlannelDev |
+| **In progress** | Medical - Down, Treat, Up, Down | fedoraman737, MaximusDecimusAnthemus |
+| **In progress** | [MOD REQUEST] DarcChopper | fedoraman737 |
+| **In S-4 review** | [MOD REQUEST] Realistic Combat Drones - RHS and/or WCS | MaximusDecimusAnthemus |
+| **In S-4 review** | [EQUIPMENT] Adjust M7 Mag Placement in pouches/placards | fedoraman737, SHS-Lucalis |
+| **Complete and Implemented** | 506 Mortar System | FlannelDev |
+| **Complete and Implemented** | Fix Radio Backpacks | FlannelDev |
+| **Complete and Implemented** | [MOD REQUEST] vPad | FoxtrotNovember03 |
+| **Complete and Implemented** | [MEDICAL] Increase soldier resilience + Reduce armor passthrough damage | fedoraman737 |
+| **Complete and Implemented** | Mod Updates for Deployment (Operation Dust Devil) | FlannelDev |
+| **Complete and Implemented** | Split Radios | FlannelDev, fedoraman737, Toastyx34 |
+| **Complete and Implemented** | Medical System | FlannelDev, fedoraman737 |
+| **Complete and Implemented** | Patches (Assigned 5th March) | TheTermifailure |
+| **Complete and Implemented** | GM Budgets broken | FlannelDev |
+| **Complete and Implemented** | Backpack | TheTermifailure |
+| **Complete and Implemented** | Review Results of Mortar Testing 01AUG25 | fedoraman737 |
+| **Complete and Implemented** | Bug fix | fedoraman737 |
+| **Complete and Implemented** | MEDICAL - Gameplay Enhancements and Realism Improvements | fedoraman737 |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | MEDICAL - System Testing | MaximusDecimusAnthemus |
+| **Complete and Implemented** | WEAPON - Increase MAAWS Lethality | fedoraman737, FoxtrotNovember03 |
+| **Complete and Implemented** | [MOD REQUEST] <GRS - Bundle> | FoxtrotNovember03 |
+| **Complete and Implemented** | [MOD REQUEST] <BMR LAUNCHER PACK> | fedoraman737, FoxtrotNovember03 |
+| **Complete and Implemented** | [MOD REQUEST] AT-4 | MaximusDecimusAnthemus |
+| **Complete and Implemented** | [MOD REQUEST] Custom Player Names | MaximusDecimusAnthemus |
+| **Complete and Implemented** | [MORTARS] Artillery Computer Enhancements | fedoraman737 |
+| **Complete and Implemented** | [MOD REQUEST] <Mod Name> | hackerjaeger |
+| **Complete and Implemented** | RADIO - ACE Radio Implementation | fedoraman737 |
+| **Complete and Implemented** | [WEAPON] Increase Apache Autocannon Lethality | FlannelDev, fedoraman737 |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | [CustomNames] Replication issues when loading | fedoraman737 |
+| **Complete and Implemented** | [MEDICAL] Remove exact % for health, blood, resilience. -> Use color coding on all with descriptive text | fedoraman737 |
+| **Complete and Implemented** | [MOD REQUEST] SPEAR EXTENDED | MaximusDecimusAnthemus, FoxtrotNovember03 |
+| **Complete and Implemented** | [MEDICAL] Remove Exact %  from blood and health | fedoraman737 |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | [EQUIPMENT] IHPS Helmets | fedoraman737, MaximusDecimusAnthemus |
+| **Complete and Implemented** | [MOD REQUEST] Shrapnel 1.2 | MaximusDecimusAnthemus |
+| **Complete and Implemented** | GRS Radios | — |
+| **Complete and Implemented** | [WEAPON] Critical Bug/Deficiencies - AT4 | fedoraman737 |
+| **Complete and Implemented** | [MOD CREATION] IHPS Helmet | fedoraman737, MaximusDecimusAnthemus |
+| **Complete and Implemented** | [MEDICAL] - Medical Version 2.1.7 | fedoraman737 |
+| **Complete and Implemented** | [MEDICAL] - Pneumothorax System | benringrose, fedoraman737 |
+| **Complete and Implemented** | [MOD REQUEST] SHS Custom Smoke | MaximusDecimusAnthemus, FoxtrotNovember03 |
+| **Complete and Implemented** | [EQUIPMENT] - Model Mortar Backpack | benringrose, fedoraman737, SHS-Lucalis |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | [VEHICLE] - Fix Littlebird Audio Issues | fedoraman737 |
+| **Complete and Implemented** | [ENHANCEMENT?] Tall Grass reduction | — |
+| **Complete and Implemented** | Draft | — |
+| **Complete and Implemented** | [WEAPON] NGSW Fixes and Adjustments | fedoraman737, MaximusDecimusAnthemus |
+| **Complete and Implemented** | [AMMO] Increase HE and HEDP lethality | — |
+| **Complete and Implemented** | [MOD REQUEST] Improved Blood Effect | — |
+| **Complete and Implemented** | [AMMO] Nerf HEAT-751 penetration values | — |
+| **Complete and Implemented** | [CRITICAL] Bacon Loadout Editor Save Corruption | fedoraman737, MaximusDecimusAnthemus, SHS-Lucalis, FoxtrotNovember03 |
+| **Complete and Implemented** | [MOD REQUEST] Fastroping Mod | fedoraman737, MaximusDecimusAnthemus, FoxtrotNovember03 |
+| **Complete and Implemented** | [MOD REQUEST] Bolt Rack System | — |
+| **Complete and Implemented** | [SYSTEM] Ticket System - GM | — |
+| **Complete and Implemented** | Mod Test - CAPS WEAPON PACK | fedoraman737 |
+| **Complete and Implemented** | [MOD REQUEST] Winternize Terrain | fedoraman737 |
+| **Complete and Implemented** | [MOD REQUEST] Atmospheric Weather Mod | fedoraman737, MaximusDecimusAnthemus |
 <!-- ROADMAP:END - Do not remove or modify this section -->
 
 **How to read the status:**
