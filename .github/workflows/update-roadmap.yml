@@ -70,12 +70,12 @@ jobs:
               }
             `;
 
-            const octokit = github.getOctokit(process.env.PROJECT_PAT);
+            const projectClient = github.getOctokit(process.env.PROJECT_PAT);
             let allItems = [];
             let cursor = null;
 
             while (true) {
-              const result = await octokit.graphql(query, {
+              const result = await projectClient.graphql(query, {
                 org,
                 number: projectNumber,
                 cursor,
