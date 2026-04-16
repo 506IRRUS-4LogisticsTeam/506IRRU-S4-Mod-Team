@@ -1,19 +1,17 @@
-# 506th Infantry Regiment Realism Unit — S-4 Mod Team
-
-<p align="center">
-  <strong>Custom Arma Reforger Mods for the 506th IRRU</strong><br><br>
-  <a href="https://www.506thir.net/">506th IRRU Website</a>
-</p>
-
+---
+layout: default
+title: 506th IRRU — S-4 Mod Team
 ---
 
 The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger mods used by the 506th IRRU. This page is your one-stop reference for what we've built, what we're currently working on, and who's behind it.
+
+[506th IRRU Website](https://www.506thir.net/){: .btn }
 
 ---
 
 ## Roadmap
 
-> Items below are automatically pulled from active issues. Labels indicate status.
+> Items below are automatically pulled from active development issues.
 
 <!-- ROADMAP:START - Do not remove or modify this section -->
 | Status | Issue | Mod | Assignee |
@@ -92,13 +90,11 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 |------|--------|
 | | |
 
-> *Update this section with current S-4 Mod Team members.*
-
 ---
 
 ## Feedback
 
-Have a bug to report or a feature to suggest? Reach out through official unit channels or open a request using the issue templates on this project.
+Have a bug to report or a feature to suggest? Reach out through official unit channels.
 
 ---
 

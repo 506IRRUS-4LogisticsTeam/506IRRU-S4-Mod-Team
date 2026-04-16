@@ -1,0 +1,113 @@
+name: Update Roadmap
+
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled, assigned, unassigned, closed, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  update-roadmap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate roadmap from issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            const statusLabels = ['in-progress', 'planned', 'under-review'];
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const roadmapIssues = issues.filter(issue =>
+              !issue.pull_request &&
+              issue.labels.some(l => statusLabels.includes(l.name.toLowerCase()))
+            );
+
+            const statusOrder = { 'in-progress': 0, 'under-review': 1, 'planned': 2 };
+
+            roadmapIssues.sort((a, b) => {
+              const aStatus = a.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
+              const bStatus = b.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
+              const aOrder = aStatus ? (statusOrder[aStatus.name.toLowerCase()] ?? 99) : 99;
+              const bOrder = bStatus ? (statusOrder[bStatus.name.toLowerCase()] ?? 99) : 99;
+              return aOrder - bOrder;
+            });
+
+            let table = '| Status | Issue | Mod | Assignee |\n';
+            table += '|--------|-------|-----|----------|\n';
+
+            if (roadmapIssues.length === 0) {
+              table += '| _No active roadmap items_ | | | |\n';
+            } else {
+              for (const issue of roadmapIssues) {
+                const statusLabel = issue.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
+                const status = statusLabel ? statusLabel.name : '—';
+
+                const modLabel = issue.labels.find(l =>
+                  !statusLabels.includes(l.name.toLowerCase()) && l.name.toLowerCase() !== 'mod' && l.name.toLowerCase() !== 'bug'
+                );
+                const mod = modLabel ? modLabel.name : '—';
+
+                const assignee = issue.assignees.length > 0
+                  ? issue.assignees.map(a => a.login).join(', ')
+                  : '—';
+
+                table += `| **${status}** | ${issue.title} | ${mod} | ${assignee} |\n`;
+              }
+            }
+
+            const readme = fs.readFileSync('README.md', 'utf8');
+            const startMarker = '<!-- ROADMAP:START - Do not remove or modify this section -->';
+            const endMarker = '<!-- ROADMAP:END - Do not remove or modify this section -->';
+
+            const startIdx = readme.indexOf(startMarker);
+            const endIdx = readme.indexOf(endMarker);
+
+            if (startIdx === -1 || endIdx === -1) {
+              core.setFailed('Could not find ROADMAP markers in README.md');
+              return;
+            }
+
+            const updated = readme.substring(0, startIdx + startMarker.length) +
+              '\n' + table +
+              readme.substring(endIdx);
+
+            fs.writeFileSync('README.md', updated);
+
+            // Also update index.md (GitHub Pages source)
+            const indexPath = 'index.md';
+            if (fs.existsSync(indexPath)) {
+              const index = fs.readFileSync(indexPath, 'utf8');
+              const iStart = index.indexOf(startMarker);
+              const iEnd = index.indexOf(endMarker);
+              if (iStart !== -1 && iEnd !== -1) {
+                const updatedIndex = index.substring(0, iStart + startMarker.length) +
+                  '\n' + table +
+                  index.substring(iEnd);
+                fs.writeFileSync(indexPath, updatedIndex);
+              }
+            }
+
+            core.info(`Updated roadmap with ${roadmapIssues.length} items`);
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md index.md
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update roadmap from issues [skip ci]"
+          git push
