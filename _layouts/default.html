@@ -6,9 +6,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title }}</title>
   <link rel="stylesheet" href="https://pages-themes.github.io/slate/assets/css/style.css">
-  <!--[if lt IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <![endif]-->
+  <style>
+    /* Header customization */
+    #header_wrap {
+      background: linear-gradient(to top, #373737, #212121);
+      border-top: 4px solid #4a7a2e;
+    }
+    #project_title {
+      font-size: 2.2em;
+      letter-spacing: 0.02em;
+    }
+    #project_tagline {
+      color: #b5bdc8;
+      font-style: normal;
+      font-size: 1.1em;
+    }
+
+    /* Status badges in roadmap */
+    table strong {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.85em;
+      white-space: nowrap;
+    }
+
+    /* Section separators */
+    h2 {
+      border-bottom: 2px solid #4a7a2e;
+      padding-bottom: 8px;
+    }
+    h3 {
+      color: #b5e655;
+      margin-top: 1.5em;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+    }
+    table th {
+      background: #2a2a2a;
+      color: #b5e655;
+      text-transform: uppercase;
+      font-size: 0.8em;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+    }
+    table td {
+      padding: 10px 12px;
+    }
+    table tr:hover td {
+      background: rgba(74, 122, 46, 0.08);
+    }
+
+    /* Button */
+    a.btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: #4a7a2e;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9em;
+      letter-spacing: 0.03em;
+      margin-top: 4px;
+    }
+    a.btn:hover {
+      background: #5c9a38;
+    }
+
+    /* Blockquote */
+    blockquote {
+      border-left: 3px solid #4a7a2e;
+    }
+
+    /* Footer */
+    #footer_wrap {
+      background: #212121;
+      border-top: 1px solid #333;
+    }
+    #footer_wrap p {
+      color: #666;
+      font-size: 0.85em;
+    }
+
+    /* Status legend */
+    ul li strong {
+      color: #b5e655;
+    }
+  </style>
 </head>
 <body>
   <div id="header_wrap" class="outer">
