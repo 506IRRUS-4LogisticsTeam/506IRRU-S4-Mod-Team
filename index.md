@@ -14,15 +14,15 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 > Items below are automatically pulled from active development issues.
 
 <!-- ROADMAP:START - Do not remove or modify this section -->
-| Status | Issue | Mod | Assignee |
-|--------|-------|-----|----------|
-| _No active roadmap items_ | | | |
+| Status | Item | Assignee |
+|--------|------|----------|
+| _No active roadmap items_ | | |
 <!-- ROADMAP:END - Do not remove or modify this section -->
 
 **How to read the status:**
 - **In Progress** — Actively being worked on
-- **Planned** — Approved and queued for development
-- **Under Review** — In testing or awaiting final review before release
+- **In S-4 Review** — Under internal review by the mod team
+- **Complete and Implemented** — Finished and deployed
 
 ---
 

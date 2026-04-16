@@ -16,15 +16,15 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 > Items below are automatically pulled from active issues. Labels indicate status.
 
 <!-- ROADMAP:START - Do not remove or modify this section -->
-| Status | Issue | Mod | Assignee |
-|--------|-------|-----|----------|
-| _No active roadmap items_ | | | |
+| Status | Item | Assignee |
+|--------|------|----------|
+| _No active roadmap items_ | | |
 <!-- ROADMAP:END - Do not remove or modify this section -->
 
 **How to read the status:**
 - **In Progress** — Actively being worked on
-- **Planned** — Approved and queued for development
-- **Under Review** — In testing or awaiting final review before release
+- **In S-4 Review** — Under internal review by the mod team
+- **Complete and Implemented** — Finished and deployed
 
 ---
 
@@ -34,10 +34,10 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 
 | Mod | Description |
 |-----|-------------|
-| **506IRRU Core** | Core utility framework — inventory restoration, group name preservation, and shared services used by other mods |
+| **506IRRU Core** | Core utility framework |
 | **506IRRU All in One** | Meta-mod that bundles all 506th mods as dependencies into a single package for easy loading |
 | **506IRRU Factions** | Faction definitions, configurations, and squad leader map marker visibility controls |
-| **506IRRU Conflict** | Conflict scenario addon with arsenal box spawn logging |
+| **506IRRU Conflict** | Custom Conflict Edits |
 | **506IRRU Mission Templates** | Mission and world templates with customizable GM budget controls |
 
 ### Medical & Injuries

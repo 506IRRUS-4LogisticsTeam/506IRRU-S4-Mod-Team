@@ -1,13 +1,12 @@
 name: Update Roadmap
 
 on:
-  issues:
-    types: [opened, edited, labeled, unlabeled, assigned, unassigned, closed, reopened]
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
   workflow_dispatch:
 
 permissions:
   contents: write
-  issues: read
 
 jobs:
   update-roadmap:
@@ -16,78 +15,142 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate roadmap from issues
+      - name: Generate roadmap from project board
         uses: actions/github-script@v7
+        env:
+          PROJECT_PAT: ${{ secrets.PROJECT_PAT }}
         with:
           script: |
             const fs = require('fs');
 
-            const statusLabels = ['in-progress', 'planned', 'under-review'];
+            const org = '506IRRUS-4LogisticsTeam';
+            const projectNumber = 6;
 
-            const { data: issues } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              per_page: 100,
-            });
+            // Statuses to show on the roadmap (in display order)
+            // Excludes: Out of Date, Complete and Implemented
+            const visibleStatuses = [
+              'In Progress',
+              'In S-4 Review',
+              'Complete and Implemented',
+            ];
 
-            const roadmapIssues = issues.filter(issue =>
-              !issue.pull_request &&
-              issue.labels.some(l => statusLabels.includes(l.name.toLowerCase()))
-            );
+            const statusOrder = {};
+            visibleStatuses.forEach((s, i) => statusOrder[s.toLowerCase()] = i);
 
-            const statusOrder = { 'in-progress': 0, 'under-review': 1, 'planned': 2 };
+            // Query the project board via GraphQL
+            const query = `
+              query($org: String!, $number: Int!, $cursor: String) {
+                organization(login: $org) {
+                  projectV2(number: $number) {
+                    items(first: 100, after: $cursor) {
+                      pageInfo { hasNextPage endCursor }
+                      nodes {
+                        fieldValueByName(name: "Status") {
+                          ... on ProjectV2ItemFieldSingleSelectValue {
+                            name
+                          }
+                        }
+                        content {
+                          ... on Issue {
+                            title
+                            assignees(first: 5) {
+                              nodes { login }
+                            }
+                            labels(first: 10) {
+                              nodes { name }
+                            }
+                          }
+                          ... on DraftIssue {
+                            title
+                            assignees(first: 5) {
+                              nodes { login }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
 
-            roadmapIssues.sort((a, b) => {
-              const aStatus = a.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
-              const bStatus = b.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
-              const aOrder = aStatus ? (statusOrder[aStatus.name.toLowerCase()] ?? 99) : 99;
-              const bOrder = bStatus ? (statusOrder[bStatus.name.toLowerCase()] ?? 99) : 99;
-              return aOrder - bOrder;
-            });
+            // Use PROJECT_PAT which needs project read scope
+            const octokit = github.getOctokit(process.env.PROJECT_PAT);
+            let allItems = [];
+            let cursor = null;
 
-            let table = '| Status | Issue | Mod | Assignee |\n';
-            table += '|--------|-------|-----|----------|\n';
+            // Paginate through all items
+            while (true) {
+              const result = await octokit.graphql(query, {
+                org,
+                number: projectNumber,
+                cursor,
+              });
 
-            if (roadmapIssues.length === 0) {
-              table += '| _No active roadmap items_ | | | |\n';
-            } else {
-              for (const issue of roadmapIssues) {
-                const statusLabel = issue.labels.find(l => statusLabels.includes(l.name.toLowerCase()));
-                const status = statusLabel ? statusLabel.name : '—';
+              const items = result.organization.projectV2.items;
+              allItems.push(...items.nodes);
 
-                const modLabel = issue.labels.find(l =>
-                  !statusLabels.includes(l.name.toLowerCase()) && l.name.toLowerCase() !== 'mod' && l.name.toLowerCase() !== 'bug'
-                );
-                const mod = modLabel ? modLabel.name : '—';
-
-                const assignee = issue.assignees.length > 0
-                  ? issue.assignees.map(a => a.login).join(', ')
-                  : '—';
-
-                table += `| **${status}** | ${issue.title} | ${mod} | ${assignee} |\n`;
+              if (items.pageInfo.hasNextPage) {
+                cursor = items.pageInfo.endCursor;
+              } else {
+                break;
               }
             }
 
-            const readme = fs.readFileSync('README.md', 'utf8');
+            // Filter to visible statuses only
+            const roadmapItems = allItems.filter(item => {
+              const status = item.fieldValueByName?.name;
+              return status && visibleStatuses.some(s => s.toLowerCase() === status.toLowerCase());
+            });
+
+            // Sort by status order
+            roadmapItems.sort((a, b) => {
+              const aStatus = a.fieldValueByName?.name || '';
+              const bStatus = b.fieldValueByName?.name || '';
+              const aOrder = statusOrder[aStatus.toLowerCase()] ?? 99;
+              const bOrder = statusOrder[bStatus.toLowerCase()] ?? 99;
+              return aOrder - bOrder;
+            });
+
+            // Build markdown table
+            let table = '| Status | Item | Assignee |\n';
+            table += '|--------|------|----------|\n';
+
+            if (roadmapItems.length === 0) {
+              table += '| _No active roadmap items_ | | |\n';
+            } else {
+              for (const item of roadmapItems) {
+                const status = item.fieldValueByName?.name || '—';
+                const title = item.content?.title || 'Draft';
+
+                const assignees = item.content?.assignees?.nodes;
+                const assignee = assignees && assignees.length > 0
+                  ? assignees.map(a => a.login).join(', ')
+                  : '—';
+
+                table += `| **${status}** | ${title} | ${assignee} |\n`;
+              }
+            }
+
+            // Update README.md
             const startMarker = '<!-- ROADMAP:START - Do not remove or modify this section -->';
             const endMarker = '<!-- ROADMAP:END - Do not remove or modify this section -->';
 
-            const startIdx = readme.indexOf(startMarker);
-            const endIdx = readme.indexOf(endMarker);
+            const readme = fs.readFileSync('README.md', 'utf8');
+            const rStart = readme.indexOf(startMarker);
+            const rEnd = readme.indexOf(endMarker);
 
-            if (startIdx === -1 || endIdx === -1) {
+            if (rStart === -1 || rEnd === -1) {
               core.setFailed('Could not find ROADMAP markers in README.md');
               return;
             }
 
-            const updated = readme.substring(0, startIdx + startMarker.length) +
+            const updatedReadme = readme.substring(0, rStart + startMarker.length) +
               '\n' + table +
-              readme.substring(endIdx);
+              readme.substring(rEnd);
+            fs.writeFileSync('README.md', updatedReadme);
 
-            fs.writeFileSync('README.md', updated);
-
-            // Also update index.md (GitHub Pages source)
+            // Update index.md
             const indexPath = 'index.md';
             if (fs.existsSync(indexPath)) {
               const index = fs.readFileSync(indexPath, 'utf8');
@@ -100,6 +163,17 @@ jobs:
                 fs.writeFileSync(indexPath, updatedIndex);
               }
             }
+
+            core.info(`Updated roadmap with ${roadmapItems.length} items`);
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md index.md
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update roadmap from project board [skip ci]"
+          git push
 
             core.info(`Updated roadmap with ${roadmapIssues.length} items`);
 
