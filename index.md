@@ -31,7 +31,7 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 | [MOD REQUEST] Realistic Combat Drones - RHS and/or WCS | MaximusDecimusAnthemus |
 | [EQUIPMENT] Adjust M7 Mag Placement in pouches/placards | fedoraman737, SHS-Lucalis |
 
-<details>
+<details markdown="1">
 <summary><strong>✅ Complete and Implemented</strong> (55 items)</summary>
 
 | Item | Assignee |

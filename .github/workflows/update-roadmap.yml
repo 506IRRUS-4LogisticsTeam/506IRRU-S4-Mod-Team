@@ -169,7 +169,7 @@ jobs:
             // Complete — collapsible
             const complete = groups['complete and implemented'];
             if (complete.length > 0) {
-              output += '<details>\n';
+              output += '<details markdown="1">\n';
               output += '<summary><strong>✅ Complete and Implemented</strong> (' + complete.length + ' items)</summary>\n\n';
               output += '| Item | Assignee |\n';
               output += '|------|----------|\n';
