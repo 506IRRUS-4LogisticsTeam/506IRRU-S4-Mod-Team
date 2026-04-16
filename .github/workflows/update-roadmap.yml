@@ -2,7 +2,7 @@ name: Update Roadmap
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PROJECT_PAT }}
 
       - name: Generate roadmap from project board
         uses: actions/github-script@v7
@@ -26,8 +28,6 @@ jobs:
             const org = '506IRRUS-4LogisticsTeam';
             const projectNumber = 6;
 
-            // Statuses to show on the roadmap (in display order)
-            // Excludes: Out of Date, Complete and Implemented
             const visibleStatuses = [
               'In Progress',
               'In S-4 Review',
@@ -37,7 +37,6 @@ jobs:
             const statusOrder = {};
             visibleStatuses.forEach((s, i) => statusOrder[s.toLowerCase()] = i);
 
-            // Query the project board via GraphQL
             const query = `
               query($org: String!, $number: Int!, $cursor: String) {
                 organization(login: $org) {
@@ -56,9 +55,6 @@ jobs:
                             assignees(first: 5) {
                               nodes { login }
                             }
-                            labels(first: 10) {
-                              nodes { name }
-                            }
                           }
                           ... on DraftIssue {
                             title
@@ -74,12 +70,10 @@ jobs:
               }
             `;
 
-            // Use PROJECT_PAT which needs project read scope
             const octokit = github.getOctokit(process.env.PROJECT_PAT);
             let allItems = [];
             let cursor = null;
 
-            // Paginate through all items
             while (true) {
               const result = await octokit.graphql(query, {
                 org,
@@ -97,13 +91,11 @@ jobs:
               }
             }
 
-            // Filter to visible statuses only
             const roadmapItems = allItems.filter(item => {
               const status = item.fieldValueByName?.name;
               return status && visibleStatuses.some(s => s.toLowerCase() === status.toLowerCase());
             });
 
-            // Sort by status order
             roadmapItems.sort((a, b) => {
               const aStatus = a.fieldValueByName?.name || '';
               const bStatus = b.fieldValueByName?.name || '';
@@ -112,7 +104,6 @@ jobs:
               return aOrder - bOrder;
             });
 
-            // Build markdown table
             let table = '| Status | Item | Assignee |\n';
             table += '|--------|------|----------|\n';
 
@@ -132,7 +123,6 @@ jobs:
               }
             }
 
-            // Update README.md
             const startMarker = '<!-- ROADMAP:START - Do not remove or modify this section -->';
             const endMarker = '<!-- ROADMAP:END - Do not remove or modify this section -->';
 
@@ -150,7 +140,6 @@ jobs:
               readme.substring(rEnd);
             fs.writeFileSync('README.md', updatedReadme);
 
-            // Update index.md
             const indexPath = 'index.md';
             if (fs.existsSync(indexPath)) {
               const index = fs.readFileSync(indexPath, 'utf8');
@@ -174,14 +163,5 @@ jobs:
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update roadmap from project board [skip ci]"
           git push
-
-            core.info(`Updated roadmap with ${roadmapIssues.length} items`);
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md index.md
-          git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update roadmap from issues [skip ci]"
           git push
