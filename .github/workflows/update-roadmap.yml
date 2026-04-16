@@ -132,6 +132,8 @@ jobs:
               const key = status.toLowerCase();
               if (groups[key]) {
                 const title = item.content?.title || 'Draft';
+                // Skip MOD REQUEST and MOD VALIDATION items
+                if (/MOD REQUEST|MOD VALIDATION/i.test(title)) continue;
                 const assignees = item.content?.assignees?.nodes;
                 const assignee = assignees && assignees.length > 0
                   ? assignees.map(a => a.login).join(', ')

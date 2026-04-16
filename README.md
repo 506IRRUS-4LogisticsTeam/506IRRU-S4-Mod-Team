@@ -24,23 +24,20 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 | JLTV/Vehicle Inventories | FlannelDev |
 | [MOD UPDATE] 506IRRU General Adjustments | FlannelDev |
 | Medical - Down, Treat, Up, Down | fedoraman737, MaximusDecimusAnthemus |
-| [MOD REQUEST] DarcChopper | fedoraman737 |
 
 ### 🔍 In S-4 Review
 
 | Item | Assignee |
 |------|----------|
-| [MOD REQUEST] Realistic Combat Drones - RHS and/or WCS | MaximusDecimusAnthemus |
 | [EQUIPMENT] Adjust M7 Mag Placement in pouches/placards | fedoraman737, SHS-Lucalis |
 
 <details markdown="1">
-<summary><strong>✅ Complete and Implemented</strong> (55 items)</summary>
+<summary><strong>✅ Complete and Implemented</strong> (39 items)</summary>
 
 | Item | Assignee |
 |------|----------|
 | 506 Mortar System | FlannelDev |
 | Fix Radio Backpacks | FlannelDev |
-| [MOD REQUEST] vPad | FoxtrotNovember03 |
 | [MEDICAL] Increase soldier resilience + Reduce armor passthrough damage | fedoraman737 |
 | Mod Updates for Deployment (Operation Dust Devil) | FlannelDev |
 | Split Radios | FlannelDev, fedoraman737, Toastyx34 |
@@ -54,29 +51,21 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 | Draft | — |
 | MEDICAL - System Testing | MaximusDecimusAnthemus |
 | WEAPON - Increase MAAWS Lethality | fedoraman737, FoxtrotNovember03 |
-| [MOD REQUEST] <GRS - Bundle> | FoxtrotNovember03 |
-| [MOD REQUEST] <BMR LAUNCHER PACK> | fedoraman737, FoxtrotNovember03 |
-| [MOD REQUEST] AT-4 | MaximusDecimusAnthemus |
-| [MOD REQUEST] Custom Player Names | MaximusDecimusAnthemus |
 | [MORTARS] Artillery Computer Enhancements | fedoraman737 |
-| [MOD REQUEST] <Mod Name> | hackerjaeger |
 | RADIO - ACE Radio Implementation | fedoraman737 |
 | [WEAPON] Increase Apache Autocannon Lethality | FlannelDev, fedoraman737 |
 | Draft | — |
 | [CustomNames] Replication issues when loading | fedoraman737 |
 | [MEDICAL] Remove exact % for health, blood, resilience. -> Use color coding on all with descriptive text | fedoraman737 |
-| [MOD REQUEST] SPEAR EXTENDED | MaximusDecimusAnthemus, FoxtrotNovember03 |
 | [MEDICAL] Remove Exact %  from blood and health | fedoraman737 |
 | Draft | — |
 | Draft | — |
 | [EQUIPMENT] IHPS Helmets | fedoraman737, MaximusDecimusAnthemus |
-| [MOD REQUEST] Shrapnel 1.2 | MaximusDecimusAnthemus |
 | GRS Radios | — |
 | [WEAPON] Critical Bug/Deficiencies - AT4 | fedoraman737 |
 | [MOD CREATION] IHPS Helmet | fedoraman737, MaximusDecimusAnthemus |
 | [MEDICAL] - Medical Version 2.1.7 | fedoraman737 |
 | [MEDICAL] - Pneumothorax System | benringrose, fedoraman737 |
-| [MOD REQUEST] SHS Custom Smoke | MaximusDecimusAnthemus, FoxtrotNovember03 |
 | [EQUIPMENT] - Model Mortar Backpack | benringrose, fedoraman737, SHS-Lucalis |
 | Draft | — |
 | [VEHICLE] - Fix Littlebird Audio Issues | fedoraman737 |
@@ -84,15 +73,10 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 | Draft | — |
 | [WEAPON] NGSW Fixes and Adjustments | fedoraman737, MaximusDecimusAnthemus |
 | [AMMO] Increase HE and HEDP lethality | — |
-| [MOD REQUEST] Improved Blood Effect | — |
 | [AMMO] Nerf HEAT-751 penetration values | — |
 | [CRITICAL] Bacon Loadout Editor Save Corruption | fedoraman737, MaximusDecimusAnthemus, SHS-Lucalis, FoxtrotNovember03 |
-| [MOD REQUEST] Fastroping Mod | fedoraman737, MaximusDecimusAnthemus, FoxtrotNovember03 |
-| [MOD REQUEST] Bolt Rack System | — |
 | [SYSTEM] Ticket System - GM | — |
 | Mod Test - CAPS WEAPON PACK | fedoraman737 |
-| [MOD REQUEST] Winternize Terrain | fedoraman737 |
-| [MOD REQUEST] Atmospheric Weather Mod | fedoraman737, MaximusDecimusAnthemus |
 
 </details>
 <!-- ROADMAP:END - Do not remove or modify this section -->
@@ -159,11 +143,38 @@ The **S-4 Mod Team** develops, maintains, and updates all custom Arma Reforger m
 
 ## The Team
 
+### S-4 Logistics HQ
+
 | Role | Member |
 |------|--------|
-| | |
+| S-4 Logistics Officer | CPT Drumheller |
+| S-4 Logistics Chief | 1LT C. Mitchell |
 
-> *Update this section with current S-4 Mod Team members.*
+### Missions Team
+
+| Role | Member |
+|------|--------|
+| Missions Chief | CW4 I. Steves |
+| Missions Specialist (2IC) | **OPEN** |
+| Missions Specialist | SSG Anthem |
+| Missions Specialist | **OPEN** |
+| Missions Specialist | **OPEN** |
+| Missions Specialist [Floater] | **OPEN** |
+| Missions Specialist [CACTF, Floater] | **OPEN** |
+
+### Mod Team
+
+| Role | Member |
+|------|--------|
+| Mod Chief | 1LT C. Mitchell |
+| Research and Development Specialist | 2LT Campbell |
+| Research and Development Specialist | CW3 Fraser |
+| Research and Development Specialist | SPC Fanning |
+| Testing and Validation Specialist | SSG Anthem |
+| Testing and Validation Specialist | SSG Gosse |
+| Testing and Validation Specialist | SSG Halkett |
+| Testing and Validation Specialist | SPC Fanning |
+| Mod Specialist | 1SG Rainey |
 
 ---
 
