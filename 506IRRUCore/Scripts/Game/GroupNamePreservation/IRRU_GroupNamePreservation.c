@@ -12,7 +12,11 @@ modded class SCR_HUDGroupUIComponent
 
 	protected void IRRU_PreserveGroupNameTick()
 	{
-		if (!m_wRoot || !m_Group)
+		if (!m_wRoot)
+			return;
+
+		SCR_AIGroup group = IRRU_GetLocalPlayerGroup();
+		if (!group)
 			return;
 
 		TextWidget groupNameWidget = IRRU_FindGroupNameWidget();
@@ -22,7 +26,7 @@ modded class SCR_HUDGroupUIComponent
 		string currentName = groupNameWidget.GetText();
 		currentName.Trim();
 
-		string groupKey = IRRU_BuildGroupKey(m_Group);
+		string groupKey = IRRU_BuildGroupKey(group);
 		if (groupKey.IsEmpty())
 			return;
 
@@ -41,6 +45,19 @@ modded class SCR_HUDGroupUIComponent
 
 		if (groupNameWidget.GetText() != preservedName)
 			groupNameWidget.SetText(preservedName);
+	}
+
+	protected SCR_AIGroup IRRU_GetLocalPlayerGroup()
+	{
+		SCR_GroupsManagerComponent groupsManager = SCR_GroupsManagerComponent.GetInstance();
+		if (!groupsManager)
+			return null;
+
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
+			return null;
+
+		return groupsManager.GetPlayerGroup(pc.GetPlayerId());
 	}
 
 	protected TextWidget IRRU_FindGroupNameWidget()
