@@ -28,7 +28,7 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	override void EOnInit(IEntity owner)
 	{
-		if (!Replication.IsServer())
+		if (!Replication.IsServer() && Replication.IsRunning())
 			return;
 
 		m_Ctrl = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
@@ -59,7 +59,7 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
-		if (!Replication.IsServer())
+		if (!Replication.IsServer() && Replication.IsRunning())
 			return;
 
 		// Start invulnerability window on revive

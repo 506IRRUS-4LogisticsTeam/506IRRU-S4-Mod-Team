@@ -18,8 +18,8 @@ modded class IRRU_NoInstantDeathComponent : IRRU_NoInstantDeathComponent
 	{
 		super.MakeUnconscious(owner);
 
-		//if (!Replication.IsServer())
-		//	return;
+		if (!Replication.IsServer() && Replication.IsRunning())
+			return;
 
 		IRRU_AwardCasualtyTickets(owner, IRRU_TICKETS_UNCONSCIOUS, "unconscious", true);
 	}
@@ -29,8 +29,8 @@ modded class IRRU_NoInstantDeathComponent : IRRU_NoInstantDeathComponent
 	{
 		super.KillCharacter(owner);
 
-		//if (!Replication.IsServer())
-		//	return;
+		if (!Replication.IsServer() && Replication.IsRunning())
+			return;
 
 		IRRU_AwardCasualtyTickets(owner, IRRU_TICKETS_DEATH, "died", false);
 	}
