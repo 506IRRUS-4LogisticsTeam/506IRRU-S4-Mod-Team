@@ -2,9 +2,15 @@
 //! Commands (Ares/Zeus only):
 //!   ticketreset - Reset tickets to 0
 //!   ticketset X - Set tickets to X
+//!
+//! Every successful admin change is appended to $profile:irru_tickets_audit.log
+//! for after-action review. Format per line:
+//!   [<unix>] <PlayerName>#<id> <command> <before>-><after>
 
 modded class SCR_ChatComponent : BaseChatComponent
 {
+	protected static const string IRRU_TICKET_AUDIT_LOG_PATH = "$profile:irru_tickets_audit.log";
+
 	//------------------------------------------------------------------------------------------------
 	override void OnNewMessage(string msg, int channelId, int senderId)
 	{
@@ -109,7 +115,10 @@ modded class SCR_ChatComponent : BaseChatComponent
 		if (ticketSystem)
 		{
 			string playerName = GetPlayerName(senderId);
+			int before = ticketSystem.GetTicketCount();
 			ticketSystem.ResetTickets(string.Format("reset by %1", playerName));
+			int after = ticketSystem.GetTicketCount();
+			WriteAuditEntry(playerName, senderId, "ticketreset", before, after);
 			Print(string.Format("[TicketSystem] Tickets reset by %1", playerName));
 		}
 	}
@@ -132,9 +141,35 @@ modded class SCR_ChatComponent : BaseChatComponent
 		if (ticketSystem)
 		{
 			string playerName = GetPlayerName(senderId);
+			int before = ticketSystem.GetTicketCount();
 			ticketSystem.SetTickets(value, string.Format("set by %1", playerName));
+			int after = ticketSystem.GetTicketCount();
+			WriteAuditEntry(playerName, senderId, string.Format("ticketset %1", value), before, after);
 			Print(string.Format("[TicketSystem] Tickets set to %1 by %2", value, playerName));
 		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Append a single audit line to $profile:irru_tickets_audit.log. Server only.
+	//! Uses the APPEND-then-WRITE fallback so a missing file is created on first use.
+	protected void WriteAuditEntry(string playerName, int playerId, string command, int before, int after)
+	{
+		int unix = System.GetUnixTime();
+		string line = string.Format("[%1] %2#%3 %4 %5->%6", unix, playerName, playerId, command, before, after);
+
+		FileHandle file = FileIO.OpenFile(IRRU_TICKET_AUDIT_LOG_PATH, FileMode.APPEND);
+		if (!file)
+		{
+			file = FileIO.OpenFile(IRRU_TICKET_AUDIT_LOG_PATH, FileMode.WRITE);
+			if (!file)
+			{
+				Print(string.Format("[TicketSystem] ERROR: Failed to open audit log at %1", IRRU_TICKET_AUDIT_LOG_PATH), LogLevel.ERROR);
+				return;
+			}
+		}
+
+		file.WriteLine(line);
+		file.Close();
 	}
 
 	//------------------------------------------------------------------------------------------------
