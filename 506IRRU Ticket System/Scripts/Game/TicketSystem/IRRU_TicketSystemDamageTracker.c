@@ -16,10 +16,9 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 {
 	protected const int TICKETS_UNCONSCIOUS = 1;
 	protected const int TICKETS_DEATH = 5;
-	protected const float INVULNERABILITY_WINDOW = 20.0;
+	protected const float INVULNERABILITY_WINDOW = 30.0;
 
 	protected SCR_CharacterControllerComponent m_Ctrl;
-	protected bool m_bWasUnconscious = false;
 	protected bool m_bInvulnerable = false;
 
 	//------------------------------------------------------------------------------------------------
@@ -84,8 +83,6 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 		// Player went unconscious
 		if (newLifeState == ECharacterLifeState.INCAPACITATED && previousLifeState == ECharacterLifeState.ALIVE)
 		{
-			m_bWasUnconscious = true;
-
 			if (m_bInvulnerable)
 			{
 				if (ticketSystem.IsDebugEnabled())
@@ -100,13 +97,11 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 		if (newLifeState == ECharacterLifeState.DEAD)
 		{
 			ticketSystem.AddTickets(TICKETS_DEATH, string.Format("%1 died", GetPlayerName()));
-			m_bWasUnconscious = false;
 		}
 
 		// Player revived - start invulnerability window
 		if (newLifeState == ECharacterLifeState.ALIVE && previousLifeState == ECharacterLifeState.INCAPACITATED)
 		{
-			m_bWasUnconscious = false;
 			m_bInvulnerable = true;
 
 			GetGame().GetCallqueue().Remove(ClearInvulnerability);
