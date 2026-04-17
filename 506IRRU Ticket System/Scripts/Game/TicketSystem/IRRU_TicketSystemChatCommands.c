@@ -3,9 +3,11 @@
 //!   ticketreset - Reset tickets to 0
 //!   ticketset X - Set tickets to X
 //!
-//! Every successful admin change is appended to $profile:irru_tickets_audit.log
-//! for after-action review. Format per line:
-//!   [<unix>] <PlayerName>#<id> <command> <before>-><after>
+//! Every server-side command event is appended to $profile:irru_tickets_audit.log
+//! for after-action review. Both successful changes AND denied attempts (no
+//! editor access, bad value) are logged. Format per line:
+//!   Success: [<unix>] <PlayerName>#<id> <command> <before>-><after>
+//!   Denied:  [<unix>] <PlayerName>#<id> DENIED <command> (<reason>)
 
 modded class SCR_ChatComponent : BaseChatComponent
 {
@@ -104,21 +106,23 @@ modded class SCR_ChatComponent : BaseChatComponent
 		if (!Replication.IsServer())
 			return;
 
+		string playerName = GetPlayerName(senderId);
+
 		// Verify sender has editor access on server side
 		if (!ServerVerifyEditorAccess(senderId))
 		{
 			Print(string.Format("[TicketSystem] Player %1 attempted ticketreset without permission", senderId), LogLevel.WARNING);
+			WriteAuditLine(string.Format("%1#%2 DENIED ticketreset (no editor access)", playerName, senderId));
 			return;
 		}
 
 		IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
 		if (ticketSystem)
 		{
-			string playerName = GetPlayerName(senderId);
 			int before = ticketSystem.GetTicketCount();
 			ticketSystem.ResetTickets(string.Format("reset by %1", playerName));
 			int after = ticketSystem.GetTicketCount();
-			WriteAuditEntry(playerName, senderId, "ticketreset", before, after);
+			WriteAuditLine(string.Format("%1#%2 ticketreset %3->%4", playerName, senderId, before, after));
 			Print(string.Format("[TicketSystem] Tickets reset by %1", playerName));
 		}
 	}
@@ -130,32 +134,43 @@ modded class SCR_ChatComponent : BaseChatComponent
 		if (!Replication.IsServer())
 			return;
 
+		string playerName = GetPlayerName(senderId);
+
 		// Verify sender has editor access on server side
 		if (!ServerVerifyEditorAccess(senderId))
 		{
 			Print(string.Format("[TicketSystem] Player %1 attempted ticketset without permission", senderId), LogLevel.WARNING);
+			WriteAuditLine(string.Format("%1#%2 DENIED ticketset %3 (no editor access)", playerName, senderId, value));
+			return;
+		}
+
+		// Server-side bounds check (client validates too, but don't trust the client)
+		if (value < 0)
+		{
+			Print(string.Format("[TicketSystem] Player %1 attempted ticketset with invalid value %2", senderId, value), LogLevel.WARNING);
+			WriteAuditLine(string.Format("%1#%2 DENIED ticketset %3 (negative value)", playerName, senderId, value));
 			return;
 		}
 
 		IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
 		if (ticketSystem)
 		{
-			string playerName = GetPlayerName(senderId);
 			int before = ticketSystem.GetTicketCount();
 			ticketSystem.SetTickets(value, string.Format("set by %1", playerName));
 			int after = ticketSystem.GetTicketCount();
-			WriteAuditEntry(playerName, senderId, string.Format("ticketset %1", value), before, after);
+			WriteAuditLine(string.Format("%1#%2 ticketset %3 %4->%5", playerName, senderId, value, before, after));
 			Print(string.Format("[TicketSystem] Tickets set to %1 by %2", value, playerName));
 		}
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Append a single audit line to $profile:irru_tickets_audit.log. Server only.
+	//! Append one audit line to $profile:irru_tickets_audit.log. Server only.
 	//! Uses the APPEND-then-WRITE fallback so a missing file is created on first use.
-	protected void WriteAuditEntry(string playerName, int playerId, string command, int before, int after)
+	//! The caller supplies the content; this helper prepends the unix timestamp.
+	protected void WriteAuditLine(string content)
 	{
 		int unix = System.GetUnixTime();
-		string line = string.Format("[%1] %2#%3 %4 %5->%6", unix, playerName, playerId, command, before, after);
+		string line = string.Format("[%1] %2", unix, content);
 
 		FileHandle file = FileIO.OpenFile(IRRU_TICKET_AUDIT_LOG_PATH, FileMode.APPEND);
 		if (!file)
