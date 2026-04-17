@@ -1,11 +1,10 @@
-//! Per-character component that detects unconscious and death state transitions
-//! and reports ticket costs to the game mode component.
+//! Per-character component that tracks ticket invulnerability after a revive.
 //!
-//! Ticket costs:
-//!   Unconscious: +1 ticket
-//!   Death:       +5 tickets
-//!
-//! A 30-second invulnerability window after revival prevents double-dipping.
+//! The medical mod's IRRU_NoInstantDeathComponent is the authoritative source
+//! for casualty events - see IRRU_TicketSystemMedicalHook.c. This tracker
+//! exists solely to expose an invulnerability flag that the medical hook
+//! checks before awarding +1 tickets, so a player revived from unconscious
+//! can't immediately be re-counted as a casualty within the 30s window.
 
 [ComponentEditorProps(category: "GameScripted/Misc", description: "Tracks player state for ticket system")]
 class IRRU_TicketSystemDamageTrackerClass : ScriptComponentClass
@@ -14,8 +13,6 @@ class IRRU_TicketSystemDamageTrackerClass : ScriptComponentClass
 
 class IRRU_TicketSystemDamageTracker : ScriptComponent
 {
-	protected const int TICKETS_UNCONSCIOUS = 1;
-	protected const int TICKETS_DEATH = 5;
 	protected const float INVULNERABILITY_WINDOW = 30.0;
 
 	protected SCR_CharacterControllerComponent m_Ctrl;
@@ -37,13 +34,9 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 		m_Ctrl = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
 
 		if (m_Ctrl)
-		{
 			m_Ctrl.m_OnLifeStateChanged.Insert(OnLifeStateChanged);
-		}
 		else
-		{
 			Print("[TicketSystem] WARNING: SCR_CharacterControllerComponent not found on character!", LogLevel.WARNING);
-		}
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -58,48 +51,18 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
+	bool IsTicketInvulnerable()
+	{
+		return m_bInvulnerable;
+	}
+
+	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
 		if (!Replication.IsServer())
 			return;
 
-		// Only count tickets for real players, not AI or GM-possessed AI
-		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(GetOwner());
-		if (controlType == SCR_ECharacterControlType.AI || controlType == SCR_ECharacterControlType.POSSESSED_AI || controlType == SCR_ECharacterControlType.UNKNOWN)
-		{
-			IRRU_TicketSystemGameModeComponent dbgTicketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
-			if (dbgTicketSystem && dbgTicketSystem.IsDebugEnabled())
-				Print(string.Format("[TicketSystem] Skipping entity (controlType: %1)", controlType));
-			return;
-		}
-
-		IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
-		if (!ticketSystem)
-		{
-			Print("[TicketSystem] WARNING: GameModeComponent instance not found!", LogLevel.WARNING);
-			return;
-		}
-
-		// Player went unconscious
-		if (newLifeState == ECharacterLifeState.INCAPACITATED && previousLifeState == ECharacterLifeState.ALIVE)
-		{
-			if (m_bInvulnerable)
-			{
-				if (ticketSystem.IsDebugEnabled())
-					Print(string.Format("[TicketSystem] %1: went unconscious but invulnerable - no ticket", GetPlayerName()));
-				return;
-			}
-
-			ticketSystem.AddTickets(TICKETS_UNCONSCIOUS, string.Format("%1 unconscious", GetPlayerName()));
-		}
-
-		// Player died
-		if (newLifeState == ECharacterLifeState.DEAD)
-		{
-			ticketSystem.AddTickets(TICKETS_DEATH, string.Format("%1 died", GetPlayerName()));
-		}
-
-		// Player revived - start invulnerability window
+		// Start invulnerability window on revive
 		if (newLifeState == ECharacterLifeState.ALIVE && previousLifeState == ECharacterLifeState.INCAPACITATED)
 		{
 			m_bInvulnerable = true;
@@ -107,7 +70,8 @@ class IRRU_TicketSystemDamageTracker : ScriptComponent
 			GetGame().GetCallqueue().Remove(ClearInvulnerability);
 			GetGame().GetCallqueue().CallLater(ClearInvulnerability, INVULNERABILITY_WINDOW * 1000, false);
 
-			if (ticketSystem.IsDebugEnabled())
+			IRRU_TicketSystemGameModeComponent ticketSystem = IRRU_TicketSystemGameModeComponent.GetInstance();
+			if (ticketSystem && ticketSystem.IsDebugEnabled())
 				Print(string.Format("[TicketSystem] %1: revived - %2s ticket invulnerability started", GetPlayerName(), INVULNERABILITY_WINDOW));
 		}
 	}
