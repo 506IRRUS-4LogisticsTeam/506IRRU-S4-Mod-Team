@@ -174,8 +174,6 @@ modded class SCR_ChatComponent : BaseChatComponent
 	//------------------------------------------------------------------------------------------------
 	protected void SendTicketChatFeedback(string message)
 	{
-		SCR_ChatComponent chatComp = SCR_ChatComponent.Cast(this);
-		if (chatComp)
-			chatComp.ShowMessage(string.Format("[Tickets] %1", message));
+		ShowMessage(string.Format("[Tickets] %1", message));
 	}
 }
