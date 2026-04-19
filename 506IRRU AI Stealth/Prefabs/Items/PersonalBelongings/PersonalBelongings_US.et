@@ -1,0 +1,44 @@
+GenericEntity : "{B260126B778C842A}Prefabs/Items/PersonalBelongings/PersonalBelongings_base.et" {
+ ID "5256876839A05289"
+ components {
+  SCR_IdentityInventoryItemComponent "{5EF0BA9A1F1072AB}" {
+   Attributes SCR_IdentityItemAttributeCollection "{5222EB4D0A2B466B}" {
+    ItemDisplayName SCR_IdentityItemInventoryUIInfo "{5222EB4D07D865FA}" {
+     Name "Secret Identification Papers"
+     Description "CLASSIFIED DOCUMENTS! DO NOT LOSE THEM"
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5E0282EAD947229C}" {
+      CameraOrbitAngles 0 195 0
+      CameraDistanceToItem 0.2
+      CameraOffset 0 0.015 0
+      ItemRenderRotation 90 0 0
+      PreviewPrefab "{6676FF9B716402CC}Prefabs/Items/PersonalBelongings/PersonalBelongings_US.et"
+     }
+    }
+   }
+  }
+ }
+ coords 124.656 1 136.494
+ {
+  GenericEntity : "{2155742A61D1FA0E}Prefabs/Props/PersonalBelongings/Photos/Pictures_Personal_Single_US_02.et" {
+   ID "692642D95BC91E69"
+   coords 0.068 0.005 -0.012
+   angles 0 167.127 0
+  }
+  GenericEntity : "{4D0140CADD157520}Prefabs/Props/PersonalBelongings/Photos/Pictures_Personal_Single_US_01.et" {
+   ID "692642D95BC91E6B"
+   coords 0.058 0 0.07
+   angles 0 152.548 0
+  }
+  GenericEntity : "{6B75B63C065F5F6C}Prefabs/Props/PersonalBelongings/Dogtags/Dogtags_US.et" {
+   ID "692642D95BC91E6D"
+   coords 0 0.008 0
+   angles 0 -179.95 0.399
+  }
+  GenericEntity : "{A735A93A8AD4077A}Prefabs/Props/PersonalBelongings/Papers/Papers_Personal_US.et" {
+   ID "692642D95BC91E6E"
+   coords 0.022 0 -0.002
+  }
+ }
+}

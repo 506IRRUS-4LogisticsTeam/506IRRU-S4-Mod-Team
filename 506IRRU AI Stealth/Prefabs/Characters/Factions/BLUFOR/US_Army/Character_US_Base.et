@@ -1,0 +1,7 @@
+SCR_ChimeraCharacter : "{37578B1666981FCE}Prefabs/Characters/Core/Character_Base.et" {
+ ID "520EC961A090BBD5"
+ components {
+  IRRU_StealthComponent "{692642D9D8A20068}" {
+  }
+ }
+}
