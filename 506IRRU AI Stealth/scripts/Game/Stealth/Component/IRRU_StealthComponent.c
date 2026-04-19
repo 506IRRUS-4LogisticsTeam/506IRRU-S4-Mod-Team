@@ -1,4 +1,4 @@
-[ComponentEditorProps(category: "GameScripted/AIStealth", description: "Drops the character's perceivable state to 'disarmed' when they carry the stealth item and no AI is within the detection range, causing AI group perception to skip registering them as targets.")]
+[ComponentEditorProps(category: "GameScripted/AIStealth", description: "Drops the character's perceivable state to 'disarmed' when they carry the stealth item and no AI is within the detection range, causing AI group perception to skip registering them as targets. Firing a weapon breaks stealth for a configurable period.")]
 class IRRU_StealthComponentClass : ScriptComponentClass
 {
 }
@@ -13,6 +13,15 @@ class IRRU_StealthComponent : ScriptComponent
 	protected PerceivableComponent m_Perceivable;
 	protected SCR_CharacterControllerComponent m_Ctrl;
 	protected bool m_bScanScheduled = false;
+
+	// Server-authoritative suppression timer. Set on weapon fire (via RPC from owning
+	// client or directly on server). Decremented each tick. While > 0, stealth is forced off.
+	protected float m_fSuppressionRemainingSec = 0;
+
+	// Weapon tracking — owning client hooks muzzle fire events and RPCs to server.
+	protected BaseWeaponManagerComponent m_WeaponManager;
+	protected IEntity m_CurrentWeaponEntity;
+	protected bool m_bWeaponHooksInitialized = false;
 
 	// Sphere-query scratch state. Enfusion QueryEntitiesBySphere callbacks don't carry
 	// context, so the callback reads this static state. The component tick is single-
@@ -37,9 +46,20 @@ class IRRU_StealthComponent : ScriptComponent
 		m_Perceivable = PerceivableComponent.Cast(owner.FindComponent(PerceivableComponent));
 		m_Ctrl = SCR_CharacterControllerComponent.Cast(owner.FindComponent(SCR_CharacterControllerComponent));
 
-		if (!Replication.IsServer() && Replication.IsRunning())
-			return;
+		// Server drives the stealth state and its tick loop.
+		if (!Replication.IsRunning() || Replication.IsServer())
+			InitServerSide(owner);
 
+		// Weapon fire detection: server hooks directly, clients wait for ownership.
+		if (Replication.IsServer())
+			InitWeaponHooks();
+		else
+			GetGame().GetCallqueue().CallLater(TryInitWeaponHooksAsOwner, 500, true);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void InitServerSide(IEntity owner)
+	{
 		if (!m_StorageManager)
 		{
 			if (IRRU_StealthSettings.IsDebugEnabled())
@@ -61,6 +81,12 @@ class IRRU_StealthComponent : ScriptComponent
 	override void OnDelete(IEntity owner)
 	{
 		GetGame().GetCallqueue().Remove(UpdateStealthState);
+		GetGame().GetCallqueue().Remove(TryInitWeaponHooksAsOwner);
+
+		if (m_WeaponManager)
+			m_WeaponManager.m_OnWeaponChangeCompleteInvoker.Remove(OnWeaponChanged);
+
+		UnhookCurrentWeapon();
 		super.OnDelete(owner);
 	}
 
@@ -92,6 +118,15 @@ class IRRU_StealthComponent : ScriptComponent
 		if (Replication.IsRunning() && !Replication.IsServer())
 			return;
 
+		// Decrement suppression timer using this tick's interval.
+		float tickSec = IRRU_StealthSettings.GetCheckIntervalMs() / 1000.0;
+		if (m_fSuppressionRemainingSec > 0)
+		{
+			m_fSuppressionRemainingSec -= tickSec;
+			if (m_fSuppressionRemainingSec < 0)
+				m_fSuppressionRemainingSec = 0;
+		}
+
 		// Only drive disarmed state while alive. SCR_CharacterPerceivableComponent's own
 		// life-state handler manages disarmed on incap/death; stepping on that would undo
 		// its work.
@@ -106,7 +141,8 @@ class IRRU_StealthComponent : ScriptComponent
 		if (hasItem)
 			hasAINearby = HasAINearby(owner, IRRU_StealthSettings.GetDetectionRange());
 
-		bool shouldBeStealth = hasItem && !hasAINearby;
+		bool isSuppressed = (m_fSuppressionRemainingSec > 0);
+		bool shouldBeStealth = hasItem && !hasAINearby && !isSuppressed;
 
 		if (shouldBeStealth != m_bStealthActive)
 		{
@@ -125,6 +161,8 @@ class IRRU_StealthComponent : ScriptComponent
 					reason = "item present, no AI within range";
 				else if (!hasItem)
 					reason = "no item";
+				else if (isSuppressed)
+					reason = string.Format("fire suppression (%1s remaining)", m_fSuppressionRemainingSec);
 				else
 					reason = "AI within range";
 
@@ -211,6 +249,130 @@ class IRRU_StealthComponent : ScriptComponent
 
 		s_bQueryFoundAI = true;
 		return false;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	// Weapon fire detection (client-side listener → RPC to server). Pattern adapted from
+	// IRRU_ContactViewWeaponTracker in 506IRRU GM Contact View.
+
+	//------------------------------------------------------------------------------------------------
+	protected void TryInitWeaponHooksAsOwner()
+	{
+		IEntity owner = GetOwner();
+		if (!owner)
+		{
+			GetGame().GetCallqueue().Remove(TryInitWeaponHooksAsOwner);
+			return;
+		}
+
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
+			return;
+
+		int localPlayerId = pc.GetPlayerId();
+		int entityPlayerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner);
+
+		if (entityPlayerId != localPlayerId)
+		{
+			GetGame().GetCallqueue().Remove(TryInitWeaponHooksAsOwner);
+			return;
+		}
+
+		GetGame().GetCallqueue().Remove(TryInitWeaponHooksAsOwner);
+		InitWeaponHooks();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void InitWeaponHooks()
+	{
+		if (m_bWeaponHooksInitialized)
+			return;
+
+		IEntity owner = GetOwner();
+		if (!owner)
+			return;
+
+		m_WeaponManager = BaseWeaponManagerComponent.Cast(owner.FindComponent(BaseWeaponManagerComponent));
+		if (!m_WeaponManager)
+			return;
+
+		m_WeaponManager.m_OnWeaponChangeCompleteInvoker.Insert(OnWeaponChanged);
+		HookCurrentWeapon();
+		m_bWeaponHooksInitialized = true;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void OnWeaponChanged(BaseWeaponComponent newWeapon)
+	{
+		UnhookCurrentWeapon();
+		HookCurrentWeapon();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void HookCurrentWeapon()
+	{
+		if (!m_WeaponManager)
+			return;
+
+		BaseWeaponComponent currentWeapon = m_WeaponManager.GetCurrentWeapon();
+		if (!currentWeapon)
+			return;
+
+		IEntity weaponEntity = currentWeapon.GetOwner();
+		if (!weaponEntity)
+			return;
+
+		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(weaponEntity.FindComponent(SCR_MuzzleEffectComponent));
+		if (muzzleEffect)
+		{
+			muzzleEffect.GetOnWeaponFired().Insert(OnMuzzleFired);
+			m_CurrentWeaponEntity = weaponEntity;
+		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void UnhookCurrentWeapon()
+	{
+		if (!m_CurrentWeaponEntity)
+			return;
+
+		SCR_MuzzleEffectComponent muzzleEffect = SCR_MuzzleEffectComponent.Cast(m_CurrentWeaponEntity.FindComponent(SCR_MuzzleEffectComponent));
+		if (muzzleEffect)
+			muzzleEffect.GetOnWeaponFired().Remove(OnMuzzleFired);
+
+		m_CurrentWeaponEntity = null;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void OnMuzzleFired(IEntity effectEntity, BaseMuzzleComponent muzzle, IEntity projectileEntity)
+	{
+		if (Replication.IsServer())
+		{
+			ApplyFireSuppression();
+			return;
+		}
+
+		Rpc(RpcAsk_FireSuppression);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
+	protected void RpcAsk_FireSuppression()
+	{
+		ApplyFireSuppression();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void ApplyFireSuppression()
+	{
+		float duration = IRRU_StealthSettings.GetFireSuppressionSec();
+		if (duration <= 0)
+			return;
+
+		m_fSuppressionRemainingSec = duration;
+
+		if (IRRU_StealthSettings.IsDebugEnabled())
+			Print(string.Format("[AIStealth] %1: fire suppression armed for %2s", GetDebugName(GetOwner()), duration));
 	}
 
 	//------------------------------------------------------------------------------------------------
