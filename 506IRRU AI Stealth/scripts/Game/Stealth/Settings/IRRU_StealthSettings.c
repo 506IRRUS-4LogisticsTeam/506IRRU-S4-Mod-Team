@@ -27,13 +27,11 @@ class IRRU_StealthSettings
 	protected static bool s_Initialized = false;
 
 	//------------------------------------------------------------------------------------------------
-	// TODO: Replace {STEALTH_SETTINGS_CONF_GUID} below with the GUID Workbench assigns to
-	// Configs/IRRU_StealthSettings.conf after you create it in the IDE.
 	static IRRU_StealthSettings GetInstance()
 	{
 		if (!s_Instance)
 		{
-			Resource holder = BaseContainerTools.LoadContainer("{STEALTH_SETTINGS_CONF_GUID}Configs/IRRU_StealthSettings.conf");
+			Resource holder = BaseContainerTools.LoadContainer("{38BD5C4E1076D380}Configs/IRRU_StealthSettings.conf");
 			if (holder && holder.GetResource())
 			{
 				BaseContainer container = holder.GetResource().ToBaseContainer();
