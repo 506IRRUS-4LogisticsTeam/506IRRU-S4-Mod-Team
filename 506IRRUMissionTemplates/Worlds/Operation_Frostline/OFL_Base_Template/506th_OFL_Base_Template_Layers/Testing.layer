@@ -1,0 +1,261 @@
+SCR_DestructibleBuildingEntity : "{00FA32092619BD40}Prefabs/Structures/Military/Houses/Barracks_01/Barracks_USSR_01_headquarters.et" {
+ coords 5389.365 -0 3823.527
+ angles 0 84 0
+}
+GenericEntity : "{0CC1728766796614}Prefabs/Props/Garbage/Generic/LitterInterior_01/Single/LitterInterior_USSR_01_document_V6.et" {
+ coords 5176.636 36.311 3886.992
+ angles 0 111 0
+}
+SCR_IndestructibleEnvironmentalEntity : "{1200EAC7C79003AF}Prefabs/Rocks/Granite/GraniteRock_03_V2.et" {
+ coords 5440.672 32.678 3781.22
+ angles 0 170 0
+}
+GenericEntity : "{13123C110DC1DBFB}Prefabs/Props/CustomItems/MobilePhone.et" {
+ coords 5176.573 36.311 3887.493
+ angles 0 -97 0
+}
+GenericEntity : "{13AF831D352526F8}Prefabs/BBOC-MissionProps/Server2.et" {
+ coords 5173.196 35.408 3883.395
+}
+SCR_IndestructibleEnvironmentalEntity : "{1FFB6B5828D2B35F}Prefabs/Rocks/Granite/GraniteRock_03.et" {
+ coords 5425.048 33.259 3773.668
+ angles 0 106 0
+}
+GenericEntity : "{28E51A5F836136AE}Prefabs/Props/Military/Fortification/BarbedTape_KnifeRest.et" {
+ coords 5245.181 35.232 3913.169
+ angles 0 -61 0
+}
+GenericEntity : "{3001B0C35F835714}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Wall_BarbedWire_USSR_01.et" {
+ coords 5249.913 35.315 3909.77
+ angles 0 25 0
+}
+GenericEntity : "{32DE30B02A04B844}Prefabs/Compositions/Misc/SubCompositions/Fortifications/Sandbag_Corner_BarbedWire_USSR_01.et" {
+ coords 5253.217 35.363 3906.827
+ angles 0 83 0
+}
+$grp GenericEntity : "{41FED15A066D06EC}Prefabs/GM_Props/GuardTower1_GM.et" {
+ {
+  coords 5437.508 34.977 3795.895
+  angles 0 -9 0
+ }
+ {
+  coords 5425.355 34.907 3869.939
+  angles 0 -9 0
+ }
+}
+SCR_DestructibleBuildingEntity : "{4D62E2F38A755750}Prefabs/Structures/Military/Houses/Barracks_01/Barracks_01_military_camo.et" {
+ coords 5183.121 -0 3884.615
+ angles 0 -90.059 0
+}
+$grp SCR_DestructibleBuildingEntity : "{525700C0EC3BA75C}Prefabs/Structures/Industrial/Sheds/ShedMetal_02/ShedMetal_02_short_base.et" {
+ {
+  coords 5215.811 0 3846.215
+  angles 0 0 0
+ }
+ {
+  coords 5231.881 -0.16 3846.215
+  angles 0 0 0
+ }
+}
+SCR_DestructibleBuildingEntity : "{5342309CE7F2058B}Prefabs/Structures/Military/Houses/HospitalMilitary_E_01/HospitalMilitary_USSR_01_brick.et" {
+ coords 5451.989 37.625 3746.003
+ angles 0 80 0
+}
+$grp SCR_DestructibleBuildingEntity : "{5C387E2D60F58592}Prefabs/Compositions/Misc/CustomEntities/DestructionEntities/BigHescos_1.et" {
+ {
+  coords 5397.224 0 3851.376
+  angles 0 82 0
+ }
+ {
+  coords 5403.46 0 3852.252
+  angles 0 82 0
+ }
+ {
+  coords 5408.688 0 3841.919
+  angles 0 47.527 0
+ }
+ {
+  coords 5176.204 0 3855.68
+  angles 0 0 0
+ }
+ {
+  coords 5176.204 0.031 3862.007
+  angles 0 0 0
+ }
+}
+GenericEntity : "{60954667DABDE93A}Prefabs/Props/Garbage/Generic/LitterInterior_01/Single/LitterInterior_USSR_01_document_V5.et" {
+ coords 5176.707 36.311 3887.172
+ angles 0 -98 0
+}
+$grp GenericEntity : "{6F5479FC075F2C13}Prefabs/Props/PropsHeine/ConcreteBarrier.et" {
+ {
+  coords 5243.278 35.12 3920.309
+ }
+ {
+  coords 5248.174 35.125 3921.009
+ }
+}
+GenericEntity : "{73C2A7008B434B5C}Prefabs/Compositions/Misc/SubCompositions/CanvasCover_Cluttered_USSR_03.et" {
+ coords 5373.51 34.906 3840.821
+ angles 0 88 0
+}
+$grp GenericEntity : "{7492BAA88AFCEDCE}Prefabs/Compositions/Slotted/SlotFlatSmall/Bunker_S_USSR_01.et" {
+ {
+  coords 5441.16 34.961 3820.449
+  angles 0 81 0
+ }
+ {
+  coords 5407.807 32.526 3992.282
+ }
+}
+GenericEntity : "{79B06351DC9A7237}Prefabs/Compositions/Misc/SubCompositions/Furniture/Table_Desk_US_10_Logistics.et" {
+ coords 5173.281 35.408 3888.705
+ angles 0 -180 0
+}
+GenericEntity : "{7A32336CED936A26}Prefabs/Compositions/Misc/SubCompositions/CanvasCover_Cluttered_USSR_01.et" {
+ coords 5392.842 34.906 3846.094
+ angles 0 -97 0
+}
+GenericEntity : "{85090A9ED6587E51}Prefabs/Props/Garbage/Generic/LitterInterior_01/Single/LitterInterior_USSR_01_document_V4.et" {
+ coords 5176.855 36.311 3887.172
+ angles 0 64 0
+}
+$grp GenericEntity : "{8BE153775299BA55}Prefabs/Compositions/Misc/SubCompositions/PalletFuel_Cluttered_US_01.et" {
+ {
+  coords 5370.772 34.906 3791.612
+  angles 0 -8 0
+ }
+ {
+  coords 5370.453 34.906 3793.885
+  angles 0 -8 0
+ }
+ {
+  coords 5363.395 34.906 3795.18
+  angles 0 -8 0
+ }
+ {
+  coords 5369.822 34.906 3798.376
+  angles 0 -8 0
+ }
+}
+GenericEntity : "{8D6DABA6D4A7F875}Prefabs/nogm/ArmoredLaptop.et" {
+ coords 5176.838 36.311 3887.646
+ angles 0 -116 0
+}
+$grp GenericEntity : "{92BE346D5E0BD792}Prefabs/Props/Military/Fuel/MobileWaterTank_USSR_01_fuel.et" {
+ {
+  coords 5366.756 34.906 3806.578
+  angles 0 88 0
+ }
+ {
+  coords 5366.844 34.906 3804.076
+  angles 0 88 0
+ }
+}
+$grp GenericEntity : "{937999008F178E82}Prefabs/Props/Military/Sandbags/Sandbag_01_short_high_burlap.et" {
+ {
+  coords 5176.729 35.408 3883.966
+  angles 0 90 0
+ }
+ {
+  coords 5176.729 35.408 3885.226
+  angles 0 90 0
+ }
+ {
+  coords 5176.729 36.488 3885.226
+  angles 0 90 0
+ }
+ {
+  coords 5176.729 36.491 3883.966
+  angles 0 90 0
+ }
+}
+GenericEntity : "{9929962FE17CDDB7}Prefabs/Props/PropsHeine/HardDrive_External.et" {
+ coords 5176.595 36.311 3888.107
+ angles 0 -111 0
+}
+SCR_DestructibleBuildingEntity : "{A76A76EBBD55CAAC}Prefabs/Structures/Military/Houses/GuardHouse_06/Guardhouse_USSR_06.et" {
+ coords 5426.009 0 3834.34
+ angles 0 174 0
+}
+GenericEntity : "{B040FFB16A472A5D}PrefabsEditable/Auto/Compositions/Misc/SubCompositions/Furniture/E_Table_Desk_USSR_06_Logistics.et" {
+ coords 5175.195 35.408 3891.092
+ angles 0 -178.763 0
+}
+StaticModelEntity : "{C289F5D866F0E46E}Prefabs/Structures/Walls/BarbedWire/BarbedTape_01/BarbedTape_01_base.et" {
+ coords 5243.68 0 3915.701
+ angles 0 -14 0
+}
+$grp SCR_DestructibleBuildingEntity : "{C604699791656656}Prefabs/Structures/Industrial/Containers/FuelTanks/FuelTank_01/FuelTank_01_Base.et" {
+ {
+  coords 5361.52 0.001 3792.009
+ }
+ {
+  coords 5360.806 0.001 3797.377
+ }
+ {
+  coords 5359.972 -0 3803.502
+ }
+}
+$grp GenericEntity : "{CC66836BF4E211F9}Prefabs/Props/Military/Camps/Duckboard_01.et" {
+ {
+  coords 5175.089 37.055 3892.06
+  angles 0 90 90
+ }
+ {
+  coords 5171.634 37.055 3892.06
+  angles 0 90 90
+ }
+}
+GenericEntity : "{CE10C9CC2D347072}Prefabs/Props/PropsHeine/RoadClosedBarrier.et" {
+ coords 5239.26 35.057 3926.333
+ angles 0 -11 0
+}
+$grp GenericEntity : "{D39AEC6AFE6F8EC9}Prefabs/Compositions/Misc/CustomEntities/CompositionDecals/Trench_Bunker_Cover1.et" {
+ {
+  coords 5234.069 35.145 3914.76
+  angles -0.744 -99.013 1.024
+ }
+ {
+  coords 5464.246 33.602 3803.498
+  angles 0 -101 0
+ }
+}
+SCR_DestructibleBuildingEntity : "{D85AB5883F48F24F}Prefabs/Structures/Military/Training/WatchtowerRange_USSR_01/WatchtowerRange_USSR_01.et" {
+ coords 5357.411 0 3831.131
+ angles 0 83.68 0
+}
+$grp SCR_DestructibleBuildingEntity : "{DAC148D18C3835B9}Prefabs/Structures/Military/Bunkers/ShelterMilitary_E_01/ShelterMilitary_E_01_long.et" {
+ {
+  coords 5380.716 0 3795.53
+  angles 0 -7 0
+ }
+ {
+  coords 5391.545 0 3796.859
+  angles 0 -7 0
+ }
+}
+$grp StaticModelEntity : "{E4DD0292A16CEC49}Prefabs/Structures/Military/Fortifications/Trenches/TrenchOld_03/TrenchOld_03_6m_wood_base.et" {
+ {
+  coords 5441.097 -0.314 3948.955
+  angles 0 171.601 0
+ }
+ {
+  coords 5435.167 -0.313 3948.079
+  angles 0 171.601 0
+ }
+}
+GenericEntity : "{F633CFE439C0B193}Prefabs/BBOC-MissionProps/Server3.et" {
+ coords 5170.277 35.408 3888.865
+ angles 0 90 0
+}
+$grp GenericEntity : "{FA764BF451297122}Prefabs/Props/CustomItems/Documents.et" {
+ {
+  coords 5176.776 36.311 3887.323
+  angles 0 2 0
+ }
+ {
+  coords 5176.966 36.311 3887.283
+  angles 0 -57 0
+ }
+}

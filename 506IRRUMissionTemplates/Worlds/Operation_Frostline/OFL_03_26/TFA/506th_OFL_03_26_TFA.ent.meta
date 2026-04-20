@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{85F7A650ABF406E8}Worlds/Operation_Frostline/OFL_03_26/TFA/506th_OFL_03_26_TFA.ent"
+ Configurations {
+  ENTResourceClass PC {
+  }
+  ENTResourceClass XBOX_ONE : PC {
+  }
+  ENTResourceClass XBOX_SERIES : PC {
+  }
+  ENTResourceClass PS4 : PC {
+  }
+  ENTResourceClass PS5 : PC {
+  }
+  ENTResourceClass HEADLESS : PC {
+  }
+  ENTResourceClass Xbox : PC {
+  }
+ }
+}
