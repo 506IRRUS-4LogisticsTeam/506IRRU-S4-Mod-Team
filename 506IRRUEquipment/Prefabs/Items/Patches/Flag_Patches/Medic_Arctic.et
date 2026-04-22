@@ -4,20 +4,20 @@ GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
   InventoryItemComponent "{657B0C0AEEF49C10}" {
    Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
     ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
-     Name "ALO"
-     Description "ALO"
+     Name "Medic - Arctic"
+     Description "Medic - Arctic"
     }
    }
   }
   MeshObject "{657B0C0AEEEB7DCB}" {
-   Object "{C87AC74D17EF6859}Assets/Patches/ALO.xob"
+   Object "{FEE096BC05233083}Assets/Patches/MedicArctic.xob"
   }
   BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   WornModel "{C87AC74D17EF6859}Assets/Patches/ALO.xob"
+   WornModel "{FEE096BC05233083}Assets/Patches/MedicArctic.xob"
    WornMaterialsOverride {
     "{B44DE7536ABF394E}Assets/Rectangle Patches/Data/24th_Patch.emat"
    }
-   ItemModel "{C87AC74D17EF6859}Assets/Patches/ALO.xob"
+   ItemModel "{FEE096BC05233083}Assets/Patches/MedicArctic.xob"
    ItemMaterialsOverride {
     ""
    }

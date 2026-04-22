@@ -3,9 +3,9 @@ MetaFileClass {
  Configurations {
   FBXResourceClass PC {
    MaterialAssigns {
-    MaterialAssignClass "{68908EC7AECB1D5D}" {
-     SourceMaterial "OtherPatch"
-     AssignedMaterial "{9DAF88608EC9DB00}Assets/Patches/Data/OtherPatch.emat"
+    MaterialAssignClass "{692CBA8AB8FD9180}" {
+     SourceMaterial "PATCH4"
+     AssignedMaterial "{7C10FB5F2641EE33}Assets/Patches/Data/PATCH4.emat"
     }
    }
    MeshParams {
