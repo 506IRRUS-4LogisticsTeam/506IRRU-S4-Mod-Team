@@ -1,0 +1,19 @@
+MetaFileClass {
+ Name "{9F98C79D4008833D}Worlds/Operation_Frostline/OFL_Base_Template_V2/506th_OFL_Base_Template_V2.ent"
+ Configurations {
+  ENTResourceClass PC {
+  }
+  ENTResourceClass XBOX_ONE : PC {
+  }
+  ENTResourceClass XBOX_SERIES : PC {
+  }
+  ENTResourceClass PS4 : PC {
+  }
+  ENTResourceClass PS5 : PC {
+  }
+  ENTResourceClass HEADLESS : PC {
+  }
+  ENTResourceClass Xbox : PC {
+  }
+ }
+}

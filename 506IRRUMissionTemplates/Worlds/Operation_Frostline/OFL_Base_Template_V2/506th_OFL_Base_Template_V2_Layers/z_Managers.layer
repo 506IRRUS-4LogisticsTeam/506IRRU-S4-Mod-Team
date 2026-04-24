@@ -1,0 +1,69 @@
+SCR_MapEntity MapEntity : "{731564B66F91B107}Prefabs/World/Game/MapEntity.et" {
+ coords 5058.233 32.522 5041.417
+ "Map Geometry Data" "{44EC6C97A2F17CA7}worlds/2dMap/GameMaster.topo"
+ "Satellite background image" "{FCFCD2F7F900F95D}worlds/2dMap/GameMaster.edds"
+ {
+  CommentEntity {
+   coords 0 1 0
+   m_Comment "MapEntity: "\
+   "Set up map textures"
+   m_Color 0 0 0
+   m_FaceCamera 1
+   m_TextBackground 1
+   m_BackgroundColor 1 0.6 0
+   m_BackgroundTransparency 0
+  }
+ }
+}
+SCR_AIWorld SCR_AIWorld : "{E0A05C76552E7F58}Prefabs/AI/SCR_AIWorld.et" {
+ coords 5058.233 32.507 5040.417
+ {
+  CommentEntity {
+   coords 0 1 0
+   m_Comment "SCR_AIWorld: "\
+   "Configure navigation mesh"
+   m_Color 0 0 0
+   m_FaceCamera 1
+   m_TextBackground 1
+   m_BackgroundColor 1 0.6 0
+   m_BackgroundTransparency 0
+  }
+ }
+}
+PerceptionManager PerceptionManager : "{028DAEAD63E056BE}Prefabs/World/Game/PerceptionManager.et" {
+ coords 5058.233 32.487 5039.417
+}
+SCR_GameModeEditor GameMode_Editor_Full : "{DA3986AF1B5032B7}Prefabs/MP/Modes/Editor/GameMode_Editor_Full.et" {
+ coords 5058.233 32.472 5038.417
+ {
+  SCR_FactionManager {
+   ID "56E685E92F1B7E7A"
+   Factions {
+    SCR_Faction "{56DEAC40D2DBC8B1}" {
+     m_bIsPlayable 1
+    }
+    SCR_Faction "{56DEAC40D3C2E623}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{56DEAC40D132400B}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{5978B9CE6585BBE8}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{5CC8DE37E1FF0F7A}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{623962205CE2B89C}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{64A63C4E81B95E03}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+    SCR_Faction "{64A4889588103E8B}" {
+     m_bShowInWelcomeScreenIfNonPlayable 0
+    }
+   }
+  }
+ }
+}
