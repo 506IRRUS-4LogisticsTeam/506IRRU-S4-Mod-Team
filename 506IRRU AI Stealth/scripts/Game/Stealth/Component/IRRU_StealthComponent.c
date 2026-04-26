@@ -385,9 +385,15 @@ class IRRU_StealthComponent : ScriptComponent
 		if (duration <= 0)
 			return;
 
+		//dont spam the logs if the player doesn't have the stealth item
+		if (!HasStealthItem())
+			return;
+
+		bool wasArmed = (m_fSuppressionRemainingSec > 0);
 		m_fSuppressionRemainingSec = duration;
 
-		if (IRRU_StealthSettings.IsDebugEnabled())
+		//also only log on-off transition, we don't need anything else - its dumb
+		if (!wasArmed && IRRU_StealthSettings.IsDebugEnabled())
 			Print(string.Format("[AIStealth] %1: fire suppression armed for %2s", GetDebugName(GetOwner()), duration));
 	}
 
