@@ -23,6 +23,11 @@ class IRRU_StealthComponent : ScriptComponent
 	protected IEntity m_CurrentWeaponEntity;
 	protected bool m_bWeaponHooksInitialized = false;
 
+	// Local-only HUD indicator: small blue dot bottom-right while stealth is active.
+	protected static const ResourceName INDICATOR_LAYOUT = "{38BD5C4E20000001}UI/layouts/IRRU_StealthIndicator.layout";
+	protected Widget m_wIndicatorRoot;
+	protected bool m_bIndicatorInitialized = false;
+
 	// Sphere-query scratch state. Enfusion QueryEntitiesBySphere callbacks don't carry
 	// context, so the callback reads this static state. The component tick is single-
 	// threaded, so concurrent access isn't a concern.
@@ -55,6 +60,11 @@ class IRRU_StealthComponent : ScriptComponent
 			InitWeaponHooks();
 		else
 			GetGame().GetCallqueue().CallLater(TryInitWeaponHooksAsOwner, 500, true);
+
+		// HUD indicator runs on every peer that has a local player. The ownership
+		// check inside filters out dedicated servers (no PlayerController) and
+		// other players' characters.
+		GetGame().GetCallqueue().CallLater(TryInitIndicatorAsOwner, 500, true);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -82,11 +92,13 @@ class IRRU_StealthComponent : ScriptComponent
 	{
 		GetGame().GetCallqueue().Remove(UpdateStealthState);
 		GetGame().GetCallqueue().Remove(TryInitWeaponHooksAsOwner);
+		GetGame().GetCallqueue().Remove(TryInitIndicatorAsOwner);
 
 		if (m_WeaponManager)
 			m_WeaponManager.m_OnWeaponChangeCompleteInvoker.Remove(OnWeaponChanged);
 
 		UnhookCurrentWeapon();
+		DestroyIndicator();
 		super.OnDelete(owner);
 	}
 
@@ -153,6 +165,10 @@ class IRRU_StealthComponent : ScriptComponent
 
 			if (m_Rpl)
 				Replication.BumpMe();
+
+			// RplProp callbacks fire on receivers only, so the host (server == local
+			// player) never gets OnStealthStateChanged. Refresh the local HUD here.
+			UpdateIndicatorVisibility();
 
 			if (IRRU_StealthSettings.IsDebugEnabled())
 			{
@@ -378,6 +394,79 @@ class IRRU_StealthComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnStealthStateChanged()
 	{
+		UpdateIndicatorVisibility();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	// Local HUD indicator. Same ownership-poll pattern as TryInitWeaponHooksAsOwner —
+	// at OnPostInit time, RplComponent.IsOwner() and GetPlayerController() aren't yet
+	// reliable, so we poll until ownership is established.
+	protected void TryInitIndicatorAsOwner()
+	{
+		IEntity owner = GetOwner();
+		if (!owner)
+		{
+			GetGame().GetCallqueue().Remove(TryInitIndicatorAsOwner);
+			return;
+		}
+
+		PlayerController pc = GetGame().GetPlayerController();
+		if (!pc)
+			return;
+
+		int localPlayerId = pc.GetPlayerId();
+		int entityPlayerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner);
+
+		if (entityPlayerId != localPlayerId)
+		{
+			GetGame().GetCallqueue().Remove(TryInitIndicatorAsOwner);
+			return;
+		}
+
+		GetGame().GetCallqueue().Remove(TryInitIndicatorAsOwner);
+		InitIndicator();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void InitIndicator()
+	{
+		if (m_bIndicatorInitialized)
+			return;
+
+		WorkspaceWidget ws = GetGame().GetWorkspace();
+		if (!ws)
+			return;
+
+		m_wIndicatorRoot = ws.CreateWidgets(INDICATOR_LAYOUT);
+		if (!m_wIndicatorRoot)
+		{
+			if (IRRU_StealthSettings.IsDebugEnabled())
+				Print("[AIStealth] Failed to load stealth indicator layout", LogLevel.WARNING);
+			return;
+		}
+
+		m_bIndicatorInitialized = true;
+		UpdateIndicatorVisibility();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void UpdateIndicatorVisibility()
+	{
+		if (!m_wIndicatorRoot)
+			return;
+
+		m_wIndicatorRoot.SetVisible(m_bStealthActive);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void DestroyIndicator()
+	{
+		if (m_wIndicatorRoot)
+		{
+			m_wIndicatorRoot.RemoveFromHierarchy();
+			m_wIndicatorRoot = null;
+		}
+		m_bIndicatorInitialized = false;
 	}
 
 	//------------------------------------------------------------------------------------------------
