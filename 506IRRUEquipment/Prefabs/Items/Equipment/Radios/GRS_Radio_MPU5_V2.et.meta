@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{3FCD48DA9C54866C}Prefabs/Pouches/Base/M84_Filbe_Pouch.et"
+ Name "{6177AD2B232FDA30}Prefabs/Accessories/GRS_Radio_MPU5_V2.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

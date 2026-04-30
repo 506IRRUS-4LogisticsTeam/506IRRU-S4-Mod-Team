@@ -1,0 +1,109 @@
+GenericEntity {
+ ID "693B6D51170A19DA"
+ components {
+  Persistence "{693B6D51170A19C8}" {
+  }
+  SignalsManagerComponent "{693B6D51170A1A3E}" {
+  }
+  SoundComponent "{693B6D51170A1A3D}" {
+   Filenames {
+    "{927BE973F8A2D7FA}Sounds/Items/_SharedData/PickUp/Items_PickUp_Cloth.acp" "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+   }
+  }
+  MeshObject "{693B6D51170A1A30}" {
+   Object "{3A12BCAEEB90CD6C}Assets/Attachments/ExtraLongAntenna.xob"
+   LODFactors {
+   }
+   InheritVisibility 1
+  }
+  RigidBody "{693B6D51170A1A34}" {
+   Enabled 0
+   ModelGeometry 1
+  }
+  SCR_SoundDataComponent "{693B6D51170A1A2A}" {
+   m_aAudioSourceConfiguration {
+    SCR_AudioSourceConfiguration "{693B6D51170A1A2F}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_PICK_UP"
+    }
+    SCR_AudioSourceConfiguration "{693B6D51170A1A22}" {
+     m_sSoundProject "{12A94705DF2BFD25}Sounds/Items/_SharedData/PickUp/Items_PickUp_Generic.acp"
+     m_sSoundEventName "SOUND_EQUIP"
+     m_eFlags 0
+    }
+    SCR_AudioSourceConfiguration "{693B6D51170A1A20}" {
+     m_sSoundProject "{F62001ED6E9FA253}Sounds/Items/_SharedData/Drop/Items_Drop_Clothes.acp"
+     m_sSoundEventName "SOUND_DROP"
+    }
+   }
+  }
+  SCR_UniversalInventoryStorageComponent "{693B6D51170A1A24}" {
+   Attributes SCR_ItemAttributeCollection "{693B6D51170A1A18}" {
+    ItemDisplayName UIInfo "{693B6D51170A1A1E}" {
+     Name "TACP Antenna"
+     Description "TACP Antenna"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{693B6D51170A1A1D}" {
+     Weight 0.001
+     SizeSetupStrategy Manual
+     ItemDimensions 15 15 15
+     ItemVolume 100
+     DimensionScaler 1
+     RestingAdditiveRotationLS 0 0 0
+     RestingAdditiveOffsetLS 0 0 0
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{693B6D51170A1A06}" {
+      CameraOrbitAngles -15 15 0
+      CameraDistanceToItem 0.25
+      FOV 60
+      AspectRatio 1
+      PreviewModel "{75D2A7F32687C866}Assets/Accessories/Back_Antenna.xob"
+     }
+    }
+    m_bDraggable 0
+    m_bVisible 0
+    m_bStackable 0
+   }
+   Priority 40
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 100
+   MaxItemSize 15 15 15
+   m_fMaxWeight 100
+   m_aSlotsToShow {
+   }
+  }
+  BaseLoadoutClothComponent "{693B6D51170A1A79}" {
+   AreaType GL_Bag_SlotArea_Antenna "{693B6D51170A1A7C}" {
+   }
+   WornModel "{3A12BCAEEB90CD6C}Assets/Attachments/ExtraLongAntenna.xob"
+   ItemModel "{3A12BCAEEB90CD6C}Assets/Attachments/ExtraLongAntenna.xob"
+  }
+  ActionsManagerComponent "{693B6D51170A1A70}" {
+   ActionContexts {
+    UserActionContext "{693B6D51170A1A77}" {
+     ContextName "default"
+     Position PointInfo "{693B6D51170A1A6A}" {
+     }
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{693B6D51170A1A6E}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{693B6D51170A1A6D}" {
+      Name "#AR-Inventory_PickUp"
+     }
+    }
+   }
+  }
+  RplComponent "{693B6D51170A1A60}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+  }
+  Hierarchy "{693B6D51170A1A64}" {
+  }
+ }
+ coords -0.341 -0.187 -0.156
+}

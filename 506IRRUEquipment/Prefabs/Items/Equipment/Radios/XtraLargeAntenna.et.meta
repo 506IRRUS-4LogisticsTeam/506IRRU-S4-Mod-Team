@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{0BA64BFCC1B6B59A}Prefabs/Pouches/Base/M84_Pouch.et"
+ Name "{F9068B7ED5AEAAC9}Prefabs/Accessories/XtraLargeAntenna.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

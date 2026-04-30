@@ -1,29 +1,38 @@
 GenericEntity {
- ID "65CC0BEF6202882A"
+ ID "69264DDD0CE31052"
  components {
-  BaseRadioComponent "{65CC0BEE0F3A76A4}" {
+  BaseRadioComponent "{69264DDD0CE31061}" {
    Transceivers {
-    RadioTransceiver "{65CC0BEE0F3A76B4}" {
+    RadioTransceiver "{69264DDD0CE3106F}" {
+     ChannelFrequency 32100
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
     }
-    RadioTransceiver "{65CC0BEE0F3A76B2}" {
+    RadioTransceiver "{69264DDD0CE3106D}" {
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
     }
-    RadioTransceiver "{65CC0BEE0F3A76B0}" {
+    RadioTransceiver "{69264DDD0CE31069}" {
+     ChannelFrequency 70000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
     }
-    RadioTransceiver "{693B6D5EE15E09D3}" {
+    RadioTransceiver "{693B6D5D39F543D1}" {
      ChannelFrequency 38000
      "Transmitting Range" 50000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
+    }
+   }
+  }
+  InventoryItemComponent "{69264DDD0CE31194}" {
+   Attributes SCR_ItemAttributeCollection "{69264DDD0CE31192}" {
+    ItemPhysAttributes ItemPhysicalAttributes "{69264DDD0CE3119E}" {
+     Weight 0.1
     }
    }
   }

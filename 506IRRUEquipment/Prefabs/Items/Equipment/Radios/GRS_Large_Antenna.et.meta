@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{ED97A510AA0A46C5}Prefabs/Weapons/Grenades/Grenade_Stun.et"
+ Name "{BC5C9481C4135B5E}Prefabs/Accessories/GRS_Large_Antenna.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }
