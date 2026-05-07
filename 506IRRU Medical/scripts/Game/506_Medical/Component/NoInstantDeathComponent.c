@@ -161,16 +161,16 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		}
 
 		bool healthStable = false;
-		bool hasEpinephrine = false;
+		// bool hasEpinephrine = false;
 		if (m_CachedDmgManager)
 		{
 			healthStable = (m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0);
-			HitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
-			if (resilienceHZ)
-				hasEpinephrine = (m_CachedDmgManager.FindDamageEffectOnHitZone(ACE_Medical_EpinephrineDamageEffect, resilienceHZ) != null);
+			// HitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
+			// if (resilienceHZ)
+			// 	hasEpinephrine = (m_CachedDmgManager.FindDamageEffectOnHitZone(ACE_Medical_EpinephrineDamageEffect, resilienceHZ) != null);
 		}
 
-		if (!m_bReceivingCPR && !healthStable && !hasEpinephrine)
+		if (!m_bReceivingCPR && !healthStable /* && !hasEpinephrine */)
 			m_fUnconsciousTimer += CHECK_INTERVAL;
 
 		if (m_Rpl)
@@ -184,8 +184,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 				pauseReason = " (paused: CPR)";
 			else if (healthStable)
 				pauseReason = " (paused: vitals stable)";
-			else if (hasEpinephrine)
-				pauseReason = " (paused: epinephrine)";
+			// else if (hasEpinephrine)
+			// 	pauseReason = " (paused: epinephrine)";
 
 			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining%4 - Health: %5%%, Blood: %6%%, Resilience: %7%%",
 				GetNameStr(owner), (bleedoutTime - m_fUnconsciousTimer), bleedoutTime, pauseReason,
