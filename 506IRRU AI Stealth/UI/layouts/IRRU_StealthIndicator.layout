@@ -5,16 +5,16 @@ FrameWidgetClass {
    Name "IRRU_StealthDot"
    Slot FrameWidgetSlot "{38BD5C4E20000003}" {
     Anchor 1 1 1 1
-    PositionX -48
-    OffsetLeft -48
-    PositionY -184
-    OffsetTop -184
-    SizeX 28
-    OffsetRight 20
-    SizeY 28
-    OffsetBottom 156
+    PositionX -164
+    OffsetLeft -164
+    PositionY -14
+    OffsetTop -14
+    SizeX 8
+    OffsetRight 156
+    SizeY 8
+    OffsetBottom 6
    }
-   Color 0.0865 0.4755 1 0.9
+   Color 1 1 1 0.5
   }
  }
 }
