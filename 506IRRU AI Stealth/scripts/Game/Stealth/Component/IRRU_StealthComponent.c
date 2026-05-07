@@ -233,8 +233,10 @@ class IRRU_StealthComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Sphere query around the player for any AI character (SCR_AICombatComponent).
-	//! Returns true if any AI is within threshold, meaning stealth should break.
+	//! Sphere query around the player for any AI-controlled character within threshold.
+	//! Player-controlled and GM-possessed characters are ignored — they share the same
+	//! prefab as AI bots and so all carry SCR_AICombatComponent, but they don't represent
+	//! "AI detection" for stealth purposes.
 	protected bool HasAINearby(notnull IEntity owner, float threshold)
 	{
 		s_vQueryOrigin = owner.GetOrigin();
@@ -261,6 +263,12 @@ class IRRU_StealthComponent : ScriptComponent
 
 		SCR_AICombatComponent combat = SCR_AICombatComponent.Cast(e.FindComponent(SCR_AICombatComponent));
 		if (!combat)
+			return true;
+
+		// SCR_AICombatComponent is present on player characters too (shared prefab).
+		// Only count entities that are actually AI-driven.
+		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(e);
+		if (controlType != SCR_ECharacterControlType.AI)
 			return true;
 
 		s_bQueryFoundAI = true;
