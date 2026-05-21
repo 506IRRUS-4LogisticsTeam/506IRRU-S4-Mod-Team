@@ -1,0 +1,12 @@
+GenericEntity : "{64DF2CF0411465EF}Prefabs/Ammo/Warheads/Warhead_84mm_Base.et" {
+ ID "624D326B3D44C7B4"
+ components {
+  BaseTriggerComponent "{624D326B3D44C7A5}" {
+   PROJECTILE_EFFECTS {
+    ExplosionDamageContainer "{66DC7BB597F4BD9E}" {
+     ChargeWeight 800
+    }
+   }
+  }
+ }
+}
