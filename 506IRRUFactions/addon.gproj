@@ -3,6 +3,20 @@ GameProject {
  GUID "684C665FBD20F05E"
  TITLE "506IRRU - Factions"
  Dependencies {
-  "58D0FB3206B6F859"
+  "58D0FB3206B6F859" "689B29681CC429D8"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
  }
 }

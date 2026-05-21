@@ -1,0 +1,15 @@
+GenericEntity : "{C62D15B74E2FB00A}Prefabs/Backpanels/GRS_Modular_Backpanel_Base.et" {
+ ID "65CD429FE6DF99B3"
+ components {
+  BaseLoadoutClothComponent "{65CD429FDC9C44A2}" {
+   Slots {
+    LoadoutSlotInfo Pouches_LEGACY {
+     Prefab "{47020028E0268E4C}Prefabs/Pouches/Backpack_Pouches/GRS_Backpanel_RG_RU.et"
+    }
+    LoadoutSlotInfo Pouch_Setup {
+     Enabled 0
+    }
+   }
+  }
+ }
+}
