@@ -1,0 +1,13 @@
+Projectile : "{8506EEF15E42FDA1}Prefabs/Ammo/Projectile/Projectile_Base.et" {
+ ID "66DC5CC547374A81"
+ components {
+  MissileMoveComponent "{66DC5CC547374AB6}" {
+   InitSpeed 255
+   Mass 2.1
+   ThrustInitTime 0.06
+   ThrustTime 1.5
+   ThrustForce 325
+   ForwardAirFriction 0.1
+  }
+ }
+}
