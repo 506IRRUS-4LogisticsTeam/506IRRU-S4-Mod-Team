@@ -40,7 +40,7 @@ modded class CSI_UIHelper
 		if (!faction)
 			return name;
 
-		string rank = faction.GetRankName(rankEnum);
+		string rank = faction.GetRanks().GetRankNameShort(rankEnum);
 
 		if (rank.IsEmpty())
 			return name;
