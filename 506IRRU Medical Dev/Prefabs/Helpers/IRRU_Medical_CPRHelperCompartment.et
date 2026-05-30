@@ -1,0 +1,14 @@
+IRRU_CPRHelperCompartment : "{0D226790BE615DC7}Prefabs/Helpers/ACE_AnimationHelperCompartment.et" {
+ ID "604E93B236B19A2A"
+ components {
+  VehicleAnimationComponent "{50B812962B17E60B}" {
+   AnimGraph "{2CC66B5ABFCF56E9}Assets/Helpers/workspaces/ACE_Medical_CPRHelperCompartment.agr"
+   AnimInstance "{C1AC3E81A3C60407}Assets/Helpers/workspaces/ACE_Medical_CPRHelperCompartment.asi"
+   AnimInjection AnimationAttachmentInfo "{50B812961A339FD2}" {
+    AnimGraph "{2CC66B5ABFCF56E9}Assets/Helpers/workspaces/ACE_Medical_CPRHelperCompartment.agr"
+    AnimInstance "{C1AC3E81A3C60407}Assets/Helpers/workspaces/ACE_Medical_CPRHelperCompartment.asi"
+   }
+  }
+ }
+ m_eLifeStateChangedGetOutType TELEPORT
+}

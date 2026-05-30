@@ -1,0 +1,80 @@
+FrameWidgetClass {
+ {
+  FrameWidgetClass "{5D8CD8E0B7ECD7DE}" {
+   Prefab "{5D8CD8E0B7ECD7DE}"
+   {
+    SizeLayoutWidgetClass "{5D8CD8E0B7ECD7CF}" {
+     Prefab "{5D8CD8E0B7ECD7CF}"
+     {
+      FrameWidgetClass "{5D8CD8E0B7ECD7F5}" {
+       Prefab "{5D8CD8E0B7ECD7F5}"
+       {
+        OverlayWidgetClass "{5D8CD8E0B7ECD7FC}" {
+         Prefab "{5D8CD8E0B7ECD7FC}"
+         {
+          VerticalLayoutWidgetClass "{5D8EBD44CE264FE8}" {
+           Prefab "{5D8EBD44CE264FE8}"
+           {
+            VerticalLayoutWidgetClass "{5D8EBD44CE264F96}" {
+             Prefab "{5D8EBD44CE264F96}"
+             {
+              HorizontalLayoutWidgetClass "{66173CF8A2367DE4}" {
+               Name "HorizontalCPRLayout"
+               Slot LayoutSlot "{66173CF8A2367A01}" {
+               }
+               {
+                TextWidgetClass "{66173CF8B0CB6CBB}" {
+                 Name "CPRStatusText"
+                 Slot LayoutSlot "{66173CF8B0CB6CF0}" {
+                 }
+                 "Is Visible" 0
+                 "Font Size" 20
+                 "Min Font Size" 20
+                }
+               }
+              }
+              HorizontalLayoutWidgetClass "{68CA4C6F9B722871}" {
+               Name "HorizontalPneumothoraxLayout"
+               Slot LayoutSlot "{66173CF8A2367A01}" {
+               }
+               {
+                TextWidgetClass "{68CA4C6F9B722872}" {
+                 Name "PneumothoraxText"
+                 Slot LayoutSlot "{66173CF8B0CB6CF0}" {
+                 }
+                 "Is Visible" 0
+                 "Font Size" 20
+                 "Min Font Size" 20
+                }
+               }
+              }
+              HorizontalLayoutWidgetClass "{65D6F3557A158383}" {
+               Name "HorizontalResilienceLayout"
+               Slot LayoutSlot "{65D6F3557A15830D}" {
+               }
+               {
+                TextWidgetClass "{65D6F3555887B1A3}" {
+                 Name "ResilienceText"
+                 Slot LayoutSlot "{65D6F3555887B198}" {
+                 }
+                 "Is Visible" 0
+                 Text "Resilience: 100%"
+                 "Font Size" 20
+                 "Min Font Size" 20
+                }
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
