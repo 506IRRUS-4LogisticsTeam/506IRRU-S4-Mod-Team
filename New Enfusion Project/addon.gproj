@@ -1,0 +1,22 @@
+GameProject {
+ ID "506IRRU Respiratory Dev"
+ GUID "697D087073738D62"
+ TITLE "506IRRU Respiratory Dev"
+ Dependencies {
+  "697D0079F3B8F170" "58D0FB3206B6F859"
+ }
+ Configurations {
+  GameProjectConfig PC {
+  }
+  GameProjectConfig XBOX_ONE {
+  }
+  GameProjectConfig XBOX_SERIES {
+  }
+  GameProjectConfig PS4 {
+  }
+  GameProjectConfig PS5 {
+  }
+  GameProjectConfig HEADLESS {
+  }
+ }
+}
