@@ -1,0 +1,36 @@
+GenericEntity : "{AE340AEFA10BCBEB}Prefabs/Items/Medicine/ChestSeal/ChestSeal_Base.et" {
+ ID "508AB2013EEE1E00"
+ components {
+  InventoryItemComponent "{5222EB4D0C73006B}" {
+   Attributes SCR_ItemAttributeCollection "{5222EB4D0A2B466B}" {
+    ItemDisplayName SCR_InventoryUIInfo "{5222EB4D07D865FA}" {
+     Name "Chest seal"
+     Description "Chest seal package with a needle decompression kit to treat pneumothorax"
+    }
+    CustomAttributes {
+     SCR_AlternativeModel "{68D602D47FFC7966}" {
+      m_sAlternativeModel "{A85D414EF4DCC2AC}Assets/Items/Medicine/Gauze_02/Gauze_02_bandage.xob"
+     }
+     PreviewRenderAttributes "{68D602D47FFC7967}" {
+      CameraDistanceToItem 0.75
+     }
+    }
+   }
+  }
+  MeshObject "{68D602D47FFC796A}" {
+   Object "{4B7F315DD3774443}Assets/Items/Medicine/FieldDressing_01/FieldDressing_US_01/FieldDressing_US_01.xob"
+   Materials {
+    MaterialAssignClass "{68D6101A51313EDE}" {
+     SourceMaterial "FieldDressing_01"
+     AssignedMaterial "{22D50D511C52ADAE}Assets/Items/Medicine/Aspirin_01/Data/Aspirin_01.emat"
+    }
+   }
+  }
+  SCR_ConsumableItemComponent "{68D602D47FFC7950}" {
+   m_ConsumableEffect IRRU_ConsumableChestSeal "{68D602D47FFC7951}" {
+    m_fApplyToSelfDuration 10
+    m_fApplyToOtherDuration 5
+   }
+  }
+ }
+}
