@@ -1,6 +1,10 @@
 GameEntity {
  ID "688E96C81C87E1C8"
  components {
+  ParametricMaterialInstanceComponent "{688E96C81C87E21F}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
   Persistence "{688E96C81C87E1C4}" {
   }
   SignalsManagerComponent "{688E96C81C87E23D}" {
@@ -38,12 +42,8 @@ GameEntity {
     1 1 1 1
    }
   }
-  ParametricMaterialInstanceComponent "{688E96C81C87E21F}" {
-   UserParamAlpha 1
-   ApplyPropertiesWhenMeshChanged 1
-  }
   BaseLoadoutClothComponent "{688E96C81C87E213}" {
-   AreaType GRS_ShirtLowerPatch "{688E96C81C87E211}" {
+   AreaType GRS_Patch "{69861B329BC24C08}" {
    }
    WornModel "{C0AE40AC9B7F9E98}Assets/Patches/19thasos.xob"
    WornMaterialsOverride {

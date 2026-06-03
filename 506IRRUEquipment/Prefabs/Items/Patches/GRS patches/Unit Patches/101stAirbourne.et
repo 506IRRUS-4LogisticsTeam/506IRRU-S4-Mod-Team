@@ -1,6 +1,10 @@
 GameEntity {
  ID "688E96DEB51608EA"
  components {
+  ParametricMaterialInstanceComponent "{688E96DEB5163AD4}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
   Persistence "{688E96DEB51608D6}" {
   }
   SignalsManagerComponent "{688E96DEB5163AF1}" {
@@ -8,8 +12,8 @@ GameEntity {
   InventoryItemComponent "{688E96DEB5163AEA}" {
    Attributes SCR_ItemAttributeCollection "{688E96DEB5163AEF}" {
     ItemDisplayName SCR_ItemHintUIInfo "{688E96DEB5163AE2}" {
-     Name "101st Airbourne"
-     Description "101st Airbourne"
+     Name "101st Airborne"
+     Description "101st Airborne"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{688E96DEB5163AE7}" {
      Weight 0.02
@@ -26,7 +30,7 @@ GameEntity {
       PreviewWornModel 1
      }
     }
-    CommonItemType "GRS_PATCH"
+    CommonItemType "GRS_CIRCLE_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
@@ -38,12 +42,8 @@ GameEntity {
     1 1 1 1
    }
   }
-  ParametricMaterialInstanceComponent "{688E96DEB5163AD4}" {
-   UserParamAlpha 1
-   ApplyPropertiesWhenMeshChanged 1
-  }
   BaseLoadoutClothComponent "{688E96DEB5163ACB}" {
-   AreaType GRS_ShirtLowerPatch "{688E96DEB5163ACF}" {
+   AreaType GRS_Patch "{69861B32BFCC41A4}" {
    }
    WornModel "{D8346428ECD5CA97}Assets/Patches/101stAirbourne.xob"
    WornMaterialsOverride {

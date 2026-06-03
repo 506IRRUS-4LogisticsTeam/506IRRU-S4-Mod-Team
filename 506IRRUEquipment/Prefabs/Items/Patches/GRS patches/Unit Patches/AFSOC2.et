@@ -13,7 +13,7 @@ GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
    Object "{DF8625443F62283E}Assets/Patches/AFSOC_2.xob"
   }
   BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   AreaType GRS_ShirtLowerPatch "{657CE76F58F283CC}" {
+   AreaType GRS_Patch "{69861B3289227622}" {
    }
    WornModel "{DF8625443F62283E}Assets/Patches/AFSOC_2.xob"
    WornMaterialsOverride {

@@ -1,6 +1,10 @@
 GameEntity {
  ID "68DE741ADF683C18"
  components {
+  ParametricMaterialInstanceComponent "{68DE741ADF682825}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
   Persistence "{68DE741ADF683C08}" {
   }
   SignalsManagerComponent "{68DE741ADF6827C0}" {
@@ -38,12 +42,8 @@ GameEntity {
     1 1 1 1
    }
   }
-  ParametricMaterialInstanceComponent "{68DE741ADF682825}" {
-   UserParamAlpha 1
-   ApplyPropertiesWhenMeshChanged 1
-  }
   BaseLoadoutClothComponent "{68DE741ADF682818}" {
-   AreaType GRS_ShirtLowerPatch "{68DE741ADF68281C}" {
+   AreaType GRS_Patch "{69861B32913467A6}" {
    }
    WornModel "{F311B117BC1D9C4F}Assets/Patches/AFSOC.xob"
    WornMaterialsOverride {

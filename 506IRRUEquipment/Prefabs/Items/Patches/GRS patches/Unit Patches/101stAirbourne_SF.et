@@ -1,6 +1,10 @@
 GameEntity {
  ID "688E96DE94A664FC"
  components {
+  ParametricMaterialInstanceComponent "{688E96DE94A664CC}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
   Persistence "{688E96DE94A664EB}" {
   }
   SignalsManagerComponent "{688E96DE94A664E5}" {
@@ -8,8 +12,8 @@ GameEntity {
   InventoryItemComponent "{688E96DE94A664D9}" {
    Attributes SCR_ItemAttributeCollection "{688E96DE94A664DE}" {
     ItemDisplayName SCR_ItemHintUIInfo "{688E96DE94A664DC}" {
-     Name "101st Airbourne SF"
-     Description "101st Airbourne SF"
+     Name "101st Airborne SF"
+     Description "101st Airborne SF"
     }
     ItemPhysAttributes ItemPhysicalAttributes "{688E96DE94A664D0}" {
      Weight 0.02
@@ -38,12 +42,8 @@ GameEntity {
     1 1 1 1
    }
   }
-  ParametricMaterialInstanceComponent "{688E96DE94A664CC}" {
-   UserParamAlpha 1
-   ApplyPropertiesWhenMeshChanged 1
-  }
   BaseLoadoutClothComponent "{688E96DE94A664C2}" {
-   AreaType GRS_ShirtLowerPatch "{688E96DE94A664C1}" {
+   AreaType GRS_Patch "{69861B32AE65575A}" {
    }
    WornModel "{85BCF84F87BA5859}Assets/Patches/101stAirbourne_SF.xob"
    WornMaterialsOverride {
