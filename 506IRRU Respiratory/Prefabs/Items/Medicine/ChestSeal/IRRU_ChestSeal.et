@@ -11,6 +11,9 @@ GenericEntity : "{AE340AEFA10BCBEB}Prefabs/Items/Medicine/ChestSeal/ChestSeal_Ba
      SCR_AlternativeModel "{68D602D47FFC7966}" {
       m_sAlternativeModel "{A85D414EF4DCC2AC}Assets/Items/Medicine/Gauze_02/Gauze_02_bandage.xob"
      }
+     PreviewRenderAttributes "{68D602D47FFC7967}" {
+      CameraDistanceToItem 0.75
+     }
     }
    }
   }
