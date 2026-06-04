@@ -2,9 +2,20 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 {
 	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
+	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
 
-	float IRRU_GetHealthPercentage()
+	//! Lazily resolves and caches the character's overall health hitzone by TYPE.
+	//! IMPORTANT: do NOT use GetDefaultHitZone() here. Under ACE Medical the default hitzone is a
+	//! separate plain SCR_HitZone ("ACE_Medical_Default", HZDefault 1) while the SCR_CharacterHealthHitZone
+	//! ("Health") is HZDefault 0 - so GetDefaultHitZone() would not return the health zone. A type-based
+	//! lookup is correct under both vanilla and ACE; caching it avoids the per-call array allocation + scan
+	//! (this is read every casualty-UI tick and every bleedout tick). The hitzone instance is stable for
+	//! the character's lifetime, matching how the base game caches blood/resilience/head hitzones.
+	SCR_CharacterHealthHitZone IRRU_GetHealthHitZone()
 	{
+		if (m_IRRU_HealthHitZone)
+			return m_IRRU_HealthHitZone;
+
 		array<HitZone> hitZones = {};
 		GetAllHitZones(hitZones);
 		foreach (HitZone hz : hitZones)
@@ -12,13 +23,24 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			SCR_CharacterHealthHitZone healthHZ = SCR_CharacterHealthHitZone.Cast(hz);
 			if (healthHZ)
 			{
-				float maxHealth = healthHZ.GetMaxHealth();
-				if (maxHealth <= 0)
-					return 100.0;
-				return (healthHZ.GetHealth() / maxHealth) * 100.0;
+				m_IRRU_HealthHitZone = healthHZ;
+				return m_IRRU_HealthHitZone;
 			}
 		}
-		return 100.0;
+		return null;
+	}
+
+	float IRRU_GetHealthPercentage()
+	{
+		SCR_CharacterHealthHitZone healthHZ = IRRU_GetHealthHitZone();
+		if (!healthHZ)
+			return 100.0;
+
+		float maxHealth = healthHZ.GetMaxHealth();
+		if (maxHealth <= 0)
+			return 100.0;
+
+		return (healthHZ.GetHealth() / maxHealth) * 100.0;
 	}
 
 	float IRRU_GetBloodPercentage()
@@ -179,31 +201,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 		float totalTime;
 		IRRU_GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
-	}
-
-	string IRRU_GetHealthColorCode(float percentage)
-	{
-		if (percentage >= 75) return "00FF00";
-		else if (percentage >= 50) return "FFFF00";
-		else if (percentage >= 25) return "FFA500";
-		else return "FF0000";
-	}
-
-	float IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup limb)
-	{
-		return GetGroupHealthScaled(limb) * 100.0;
-	}
-
-	void IRRU_GetAllLimbHealthPercentages(out float head, out float chest, out float abdomen,
-		out float leftArm, out float rightArm, out float leftLeg, out float rightLeg)
-	{
-		head = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.HEAD);
-		chest = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.UPPERTORSO);
-		abdomen = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LOWERTORSO);
-		leftArm = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTARM);
-		rightArm = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTARM);
-		leftLeg = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.LEFTLEG);
-		rightLeg = IRRU_GetLimbHealthPercentage(ECharacterHitZoneGroup.RIGHTLEG);
 	}
 
 	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones)

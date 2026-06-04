@@ -11,7 +11,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected bool m_bNID_Initialized = false;
 	[RplProp(onRplName: "OnUnconsciousStateChanged")]
 	protected bool m_bIsUnconscious = false;
-	protected bool m_bIsInitiatingKill = false;
 	[RplProp(onRplName: "OnCPRStateChanged")]
 	protected bool m_bReceivingCPR = false;
 	[RplProp()]
@@ -22,6 +21,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected bool m_bDeadBlockPrinted = false;
 	protected bool m_bDeadWarned = false;
 
+	//! Captured at unconscious time and held through the bleedout window. Read cross-module by the
+	//! IRRU Ticket System hook (modded IRRU_NoInstantDeathComponent) to attribute casualties. Do not remove.
 	protected Instigator m_LastKnownInstigator;
 	protected RplComponent m_Rpl;
 	protected SCR_CharacterDamageManagerComponent m_CachedDmgManager;
@@ -112,7 +113,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_bDeadBlockPrinted = false;
 		m_bDeadWarned = false;
 		m_fUnconsciousTimer = 0.0;
-		m_bIsInitiatingKill = false;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 		m_CachedDmgManager.ForceUnconsciousness();
 
@@ -210,13 +210,10 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-		m_bIsInitiatingKill = true;
 
 		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
 		if (hz)
 			hz.SetHealth(0);
-
-		m_bIsInitiatingKill = false;
 	}
 
 	protected void StopBleedoutTimer(string reason)
@@ -273,19 +270,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		return IRRU_NoInstantDeathSettings.GetBleedoutTime();
 	}
 
-	float GetBleedoutPercentage()
-	{
-		if (!m_bIsUnconscious)
-			return 100.0;
-		float remaining = GetBleedoutTimeRemaining();
-		if (remaining <= 0)
-			return 0.0;
-		return (remaining / IRRU_NoInstantDeathSettings.GetBleedoutTime()) * 100.0;
-	}
-
 	bool IsUnconscious() { return m_bIsUnconscious; }
-	bool IsInitiatingKill() { return m_bIsInitiatingKill; }
-	void ResetInitiatingKillFlag() { m_bIsInitiatingKill = false; }
 	bool IsReceivingCPR() { return m_bReceivingCPR; }
 	bool IsOnCPRCooldown() { return m_fCPRCooldownTimer > 0; }
 	float GetCPRCooldownRemaining() { return m_fCPRCooldownTimer; }

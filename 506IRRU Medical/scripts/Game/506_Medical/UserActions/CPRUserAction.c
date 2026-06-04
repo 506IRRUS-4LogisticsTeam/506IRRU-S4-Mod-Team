@@ -384,16 +384,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return true;
 	}
 
-	protected bool IsLocalPlayer(IEntity entity)
-	{
-		if (!entity)
-			return false;
-		PlayerController pc = GetGame().GetPlayerController();
-		if (!pc)
-			return false;
-		return pc.GetControlledEntity() == entity;
-	}
-
 	protected bool CheckAnimationPositionClear(IEntity owner, IEntity user)
 	{
 		TraceOBB trace = new TraceOBB();
