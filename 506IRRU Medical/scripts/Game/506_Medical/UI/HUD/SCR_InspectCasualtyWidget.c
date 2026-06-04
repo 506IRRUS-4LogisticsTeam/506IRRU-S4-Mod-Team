@@ -139,6 +139,26 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return "255,0,0,255";
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Remaining bleedout time as a percentage of this casualty's total bleedout window.
+	protected float IRRU_GetBleedoutPercentRemaining(IEntity character, float bleedoutTimeRemaining)
+	{
+		float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
+		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
+		if (nid)
+			totalBleedoutTime = nid.GetBleedoutTimeTotal();
+		return (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Bleedout time remaining formatted as M:SS.
+	protected string IRRU_FormatBleedoutTime(float bleedoutTimeRemaining)
+	{
+		int minutes = Math.Floor(bleedoutTimeRemaining / 60);
+		int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
+		return string.Format("%1:%2", minutes, seconds.ToString(2));
+	}
+
 	override protected void UpdateWidgetData()
 	{
 		if (!m_Target || !m_wCasualtyInspectWidget)
@@ -220,24 +240,19 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 
 		if (isUnconscious && isBleedingOut && bleedoutTimeRemaining > 0)
 		{
-			float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
-			if (nid)
-				totalBleedoutTime = nid.GetBleedoutTimeTotal();
-			float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
+			float percentRemaining = IRRU_GetBleedoutPercentRemaining(character, bleedoutTimeRemaining);
 
 			string timeText;
 			if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 			{
 				timeText = IRRU_GetTriageLevel(percentRemaining);
+				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
 				if (nid && nid.IsReceivingCPR())
 					timeText = timeText + " - CPR";
 			}
 			else
 			{
-				int minutes = Math.Floor(bleedoutTimeRemaining / 60);
-				int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
-				timeText = string.Format("%1:%2", minutes, seconds.ToString(2));
+				timeText = IRRU_FormatBleedoutTime(bleedoutTimeRemaining);
 			}
 
 			sName = string.Format("%1 [<color rgba='%2'>%3</color>]", sName, IRRU_GetTriageRGBA(percentRemaining), timeText);
@@ -334,21 +349,13 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		{
 			if (isBleedingOut && bleedoutTimeRemaining > 0)
 			{
-				float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(character.FindComponent(IRRU_NoInstantDeathComponent));
-				if (nid)
-					totalBleedoutTime = nid.GetBleedoutTimeTotal();
-				float percentRemaining = (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
+				float percentRemaining = IRRU_GetBleedoutPercentRemaining(character, bleedoutTimeRemaining);
 
 				string timeText;
 				if (IRRU_NoInstantDeathSettings.IsDescriptiveTimerEnabled())
 					timeText = string.Format("Condition: %1", IRRU_GetTriageLevel(percentRemaining));
 				else
-				{
-					int minutes = Math.Floor(bleedoutTimeRemaining / 60);
-					int seconds = Math.Floor(Math.Mod(bleedoutTimeRemaining, 60));
-					timeText = string.Format("Bleedout: %1:%2", minutes, seconds.ToString(2));
-				}
+					timeText = string.Format("Bleedout: %1", IRRU_FormatBleedoutTime(bleedoutTimeRemaining));
 
 				m_wBleedoutTimerText.SetText(timeText);
 				m_wBleedoutTimerText.SetColor(IRRU_GetTriageColor(percentRemaining));

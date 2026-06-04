@@ -65,6 +65,14 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		super.OnDelete(owner);
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Replicate this component's RplProps to clients (no-op when not networked).
+	protected void IRRU_BumpReplication()
+	{
+		if (m_Rpl)
+			Replication.BumpMe();
+	}
+
 	bool IsInitialized()
 	{
 		return m_bNID_Initialized;
@@ -83,8 +91,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		m_bNID_Initialized = true;
 
-		if (m_Rpl)
-			Replication.BumpMe();
+		IRRU_BumpReplication();
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath] %1: initialized with %2s bleedout timer", GetNameStr(GetOwner()), IRRU_NoInstantDeathSettings.GetBleedoutTime()));
@@ -119,8 +126,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (Replication.IsServer())
 		{
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
-			if (m_Rpl)
-				Replication.BumpMe();
+			IRRU_BumpReplication();
 			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
 
@@ -173,8 +179,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (!m_bReceivingCPR && !healthStable /* && !hasEpinephrine */)
 			m_fUnconsciousTimer += CHECK_INTERVAL;
 
-		if (m_Rpl)
-			Replication.BumpMe();
+		IRRU_BumpReplication();
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled() && Math.Mod(m_fUnconsciousTimer, PERIODIC_LOG_INTERVAL) < CHECK_INTERVAL)
 		{
@@ -228,8 +233,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer = 0.0;
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
-		if (Replication.IsServer() && m_Rpl)
-			Replication.BumpMe();
+		if (Replication.IsServer())
+			IRRU_BumpReplication();
 	}
 
 	protected void OnUnconsciousStateChanged() {}
@@ -282,8 +287,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		m_bReceivingCPR = receiving;
 
-		if (m_Rpl)
-			Replication.BumpMe();
+		IRRU_BumpReplication();
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
@@ -304,8 +308,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		m_fCPRCooldownTimer = cooldownDuration;
 
-		if (m_Rpl)
-			Replication.BumpMe();
+		IRRU_BumpReplication();
 
 		if (cooldownDuration > 0 && Replication.IsServer())
 		{
@@ -324,7 +327,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			GetGame().GetCallqueue().Remove(UpdateCPRCooldownTimer);
 		}
 
-		if (m_Rpl)
-			Replication.BumpMe();
+		IRRU_BumpReplication();
 	}
 }

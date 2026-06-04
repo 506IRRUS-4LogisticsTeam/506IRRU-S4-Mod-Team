@@ -3,6 +3,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
+	protected int m_iIRRU_ResilienceTextState = -1;
 
 	//! Lazily resolves and caches the character's overall health hitzone by TYPE.
 	//! IMPORTANT: do NOT use GetDefaultHitZone() here. Under ACE Medical the default hitzone is a
@@ -70,6 +71,52 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return GetResilienceHitZone() != null;
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Resilience is server-authoritative and regenerates fast, but its hitzone health replicates to
+	//! clients on a throttled cadence (worse under player load) - so the casualty-inspection resilience
+	//! text can lag reality by several seconds. We subscribe here (SetResilienceHitZone is the engine's
+	//! registration hook, so the hitzone is guaranteed valid) and force a replication push the moment the
+	//! value crosses into a new inspect-UI text state, flipping the text promptly instead of waiting for
+	//! the next routine hitzone sync.
+	override void SetResilienceHitZone(HitZone hitZone)
+	{
+		super.SetResilienceHitZone(hitZone);
+
+		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
+		if (resilienceHZ)
+			resilienceHZ.GetOnHealthChanged().Insert(IRRU_RefreshResilienceReplication);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Server-only: bump replication when resilience crosses into a new inspect-UI text state.
+	protected void IRRU_RefreshResilienceReplication()
+	{
+		if (!Replication.IsServer())
+			return;
+
+		int textState = IRRU_GetResilienceTextState();
+		if (textState == m_iIRRU_ResilienceTextState)
+			return;
+
+		m_iIRRU_ResilienceTextState = textState;
+		Replication.BumpMe();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Buckets resilience into the inspect UI's text states. MUST mirror SCR_InspectCasualtyWidget:
+	//! 0 = Unconscious (<33), 1 = Fading (<=59), 2 = Dazed (<=99), 3 = Fully responsive (>99).
+	protected int IRRU_GetResilienceTextState()
+	{
+		float resiliencePercent = IRRU_GetResiliencePercentage();
+		if (resiliencePercent < 33)
+			return 0;
+		if (resiliencePercent <= 59)
+			return 1;
+		if (resiliencePercent <= 99)
+			return 2;
+		return 3;
+	}
+
 	float IRRU_GetBleedingRateMLPerSecond()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
@@ -78,12 +125,19 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return bloodHZ.GetTotalBleedingAmount();
 	}
 
-	void IRRU_GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
+	//------------------------------------------------------------------------------------------------
+	//! This character's NID component, or null if absent. Centralizes the repeated owner->find->cast.
+	protected IRRU_NoInstantDeathComponent IRRU_GetNID()
 	{
 		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+		if (!owner)
+			return null;
+		return IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+	}
+
+	void IRRU_GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
+	{
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
 
 		if (nid && nid.IsUnconscious())
 		{
@@ -118,11 +172,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 	override bool ACE_Medical_ShouldDeactivateSecondChance()
 	{
-		IEntity owner = GetOwner();
-		if (!owner)
-			return super.ACE_Medical_ShouldDeactivateSecondChance();
-
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
 		if (!nid)
 			return super.ACE_Medical_ShouldDeactivateSecondChance();
 
@@ -140,27 +190,20 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		super.ACE_Medical_OnSecondChanceGranted();
 
 		IEntity owner = GetOwner();
-		if (owner)
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
+		if (nid)
 		{
-			IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-			if (nid)
-			{
-				if (!nid.IsInitialized())
-					nid.Initialize();
-				if (!nid.IsUnconscious())
-					nid.MakeUnconscious(owner);
-			}
+			if (!nid.IsInitialized())
+				nid.Initialize();
+			if (!nid.IsUnconscious())
+				nid.MakeUnconscious(owner);
 		}
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 		{
 			string characterName = "Unknown";
-			if (owner)
-			{
-				IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-				if (nid)
-					characterName = nid.GetNameStr(owner);
-			}
+			if (nid)
+				characterName = nid.GetNameStr(owner);
 
 			SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
 			HitZone healthHZ = GetDefaultHitZone();
@@ -193,10 +236,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		hasResilience = IRRU_HasResilienceSystem();
 		bleedingRateMLs = IRRU_GetBleedingRateMLPerSecond();
 
-		IEntity owner = GetOwner();
-		IRRU_NoInstantDeathComponent nid = null;
-		if (owner)
-			nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
 		isUnconscious = (nid && nid.IsUnconscious());
 
 		float totalTime;

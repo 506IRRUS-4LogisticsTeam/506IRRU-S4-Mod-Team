@@ -51,7 +51,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (ctrl && ctrl.GetLifeState() == ECharacterLifeState.DEAD)
 			return false;
 
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(owner);
 		if (!nid || !nid.IsUnconscious())
 			return false;
 
@@ -88,18 +88,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
 
-		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(user);
-		if (userChar)
+		float userCooldown = IRRU_GetUserCooldownRemaining(user);
+		if (userCooldown >= 0)
 		{
-			IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
-			if (userNid && userNid.IsOnCPRCooldown())
-			{
-				SetCannotPerformReason(string.Format("Resting - %1s remaining", Math.Ceil(userNid.GetCPRCooldownRemaining())));
-				return false;
-			}
+			SetCannotPerformReason(string.Format("Resting - %1s remaining", userCooldown));
+			return false;
 		}
 
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(owner);
 
 		if (nid && !nid.IsUnconscious())
 		{
@@ -152,19 +148,11 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (!pc)
 			return true;
 
-		IEntity user = pc.GetControlledEntity();
-		if (user)
+		float userCooldown = IRRU_GetUserCooldownRemaining(pc.GetControlledEntity());
+		if (userCooldown >= 0)
 		{
-			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(user);
-			if (userChar)
-			{
-				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
-				if (userNid && userNid.IsOnCPRCooldown())
-				{
-					outName = string.Format("CPR Cooldown (%1s)", Math.Ceil(userNid.GetCPRCooldownRemaining()));
-					return true;
-				}
-			}
+			outName = string.Format("CPR Cooldown (%1s)", userCooldown);
+			return true;
 		}
 
 		if (m_bCPRActive && m_fCPRStartTime > 0)
@@ -212,10 +200,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 	protected void ApplyHealingToPatient(IEntity patient)
 	{
-		if (!patient || !Replication.IsServer())
-			return;
-
-		SCR_CharacterDamageManagerComponent dmgManager = SCR_CharacterDamageManagerComponent.Cast(patient.FindComponent(SCR_CharacterDamageManagerComponent));
+		SCR_CharacterDamageManagerComponent dmgManager = IRRU_GetPatientDamageManager(patient);
 		if (!dmgManager)
 			return;
 
@@ -253,14 +238,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 	protected void ApplyResilienceRegeneration()
 	{
-		if (!m_pActiveHelper || !Replication.IsServer())
+		if (!m_pActiveHelper)
 			return;
 
-		IEntity patient = m_pActiveHelper.GetPatient();
-		if (!patient)
-			return;
-
-		SCR_CharacterDamageManagerComponent dmgManager = SCR_CharacterDamageManagerComponent.Cast(patient.FindComponent(SCR_CharacterDamageManagerComponent));
+		SCR_CharacterDamageManagerComponent dmgManager = IRRU_GetPatientDamageManager(m_pActiveHelper.GetPatient());
 		if (!dmgManager)
 			return;
 
@@ -291,13 +272,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			else
 				cooldownTime = Math.Clamp(cprDuration * CPR_COOLDOWN_RATIO, CPR_MIN_COOLDOWN, CPR_BASE_COOLDOWN);
 
-			SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
-			if (userChar)
-			{
-				IRRU_NoInstantDeathComponent userNid = IRRU_NoInstantDeathComponent.Cast(userChar.FindComponent(IRRU_NoInstantDeathComponent));
-				if (userNid)
-					userNid.SetCPRCooldown(cooldownTime);
-			}
+			IRRU_NoInstantDeathComponent userNid = IRRU_GetNID(pUserEntity);
+			if (userNid)
+				userNid.SetCPRCooldown(cooldownTime);
 		}
 
 		GetGame().GetCallqueue().Remove(AutoStopCPRDueToFatigue);
@@ -311,7 +288,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			m_pActiveHelper = null;
 		}
 
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(pOwnerEntity);
 		if (nid)
 			nid.SetReceivingCPR(false);
 
@@ -334,7 +311,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			m_iPerformingPlayerId = playerId;
 		}
 
-		IRRU_NoInstantDeathComponent nid = IRRU_NoInstantDeathComponent.Cast(pOwnerEntity.FindComponent(IRRU_NoInstantDeathComponent));
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(pOwnerEntity);
 		if (!nid)
 			return;
 
@@ -429,5 +406,33 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected bool TraceObstructionCallback(IEntity entity)
 	{
 		return !InventoryItemComponent.Cast(entity.FindComponent(InventoryItemComponent));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected IRRU_NoInstantDeathComponent IRRU_GetNID(IEntity entity)
+	{
+		if (!entity)
+			return null;
+		return IRRU_NoInstantDeathComponent.Cast(entity.FindComponent(IRRU_NoInstantDeathComponent));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Seconds of CPR cooldown remaining on the user (rounded up), or -1 when not on cooldown.
+	protected float IRRU_GetUserCooldownRemaining(IEntity user)
+	{
+		IRRU_NoInstantDeathComponent userNid = IRRU_GetNID(user);
+		if (userNid && userNid.IsOnCPRCooldown())
+			return Math.Ceil(userNid.GetCPRCooldownRemaining());
+
+		return -1;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Server-only fetch of the patient's damage manager; null off-server or when unavailable.
+	protected SCR_CharacterDamageManagerComponent IRRU_GetPatientDamageManager(IEntity patient)
+	{
+		if (!patient || !Replication.IsServer())
+			return null;
+		return SCR_CharacterDamageManagerComponent.Cast(patient.FindComponent(SCR_CharacterDamageManagerComponent));
 	}
 }
