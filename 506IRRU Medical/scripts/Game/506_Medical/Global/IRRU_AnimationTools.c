@@ -56,6 +56,6 @@ class IRRU_AnimationTools
 	{
 		ACE_AnimationHelperCompartment helper = GetHelperCompartment(performer);
 		if (helper)
-			helper.Terminate(getOutType);
+			helper.Terminate();
 	}
 }

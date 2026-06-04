@@ -307,7 +307,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (m_pActiveHelper)
 		{
 			m_pActiveHelper.GetOnTerminated().Remove(OnAnimationTerminated);
-			m_pActiveHelper.Terminate(EGetOutType.ANIMATED);
+			m_pActiveHelper.Terminate();
 			m_pActiveHelper = null;
 		}
 
