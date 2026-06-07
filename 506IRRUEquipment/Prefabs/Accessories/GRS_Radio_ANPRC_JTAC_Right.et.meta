@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{E2C3CAABBD4BE813}Prefabs/Accessories/GRS_Radio_JTAC_L.et"
+ Name "{6554BEAB4FB1BD68}Prefabs/Accessories/GRS_Radio_ANPRC_JTAC_Right.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

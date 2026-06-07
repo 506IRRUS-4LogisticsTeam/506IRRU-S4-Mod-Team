@@ -1,0 +1,109 @@
+GameEntity : "{B89432A8B5F489E5}Prefabs/Characters/Core/Uniform_Base.et" {
+ ID "5104869D194C6243"
+ components {
+  ClothNodeStorageComponent "{5222CB01D5B9A306}" {
+   Attributes SCR_ItemAttributeCollection "{5222CB01245CDF32}" {
+    ItemDisplayName UIInfo "{5222CB0109A04AB2}" {
+     Name "GRS: Crye G3 - MC"
+     Description "GRS: Crye G3 - MC"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{698B4BC7A0D6378B}" {
+     Weight 0.001
+     SizeSetupStrategy Manual
+     ItemDimensions 16 16 16
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{555292467DA11B7C}" {
+      CameraDistanceToItem 0.7
+      FOV 60
+      AspectRatio 1
+      PreviewWornModel 1
+      PreviewModel ""
+      LodModel 1
+     }
+    }
+    m_Size SLOT_2x2
+    m_SlotType SLOT_LOOT_STORAGE
+   }
+   StoragePurpose 0x41 0
+   UseCapacityCoefficient 0
+   MaxCumulativeVolume 0
+   MaxItemSize 1 1 1
+  }
+  MeshObject "{5104869D194C6262}" {
+   Object "{546A9234905E07DE}Assets/Characters/Uniforms/Tops/GRS_CryeG3_Tops/GRS_CCU_CryeG3_Compat.xob"
+  }
+  RigidBody "{5104869D194C6267}" {
+   Enabled 0
+  }
+  BaseLoadoutClothComponent "{5104869D194C627A}" {
+   AreaType LoadoutJacketArea "{698B4BC7A0D6387A}" {
+   }
+   Slots {
+    GRS_MorphSlotComponent Upper_Right_Patch {
+     PivotID "RightArm"
+     Offset 0.0439 -0.0635 -0.0524
+     Angles -0.3317 152.6098 -23.9288
+     Prefab "{31E78FC2F42AD836}Prefabs/Flag_Patches/USA_Flag_Color_Highlight.et"
+     AreaType GRS_Patch "{698B4BC7A0D6387E}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY 0.37
+     m_fMorphValueX 0.073
+    }
+    GRS_MorphSlotComponent Lower_Right_Patch {
+     PivotID "RightArm"
+     Offset 0.0029 -0.1319 -0.0486
+     Angles -8.9411 174.7749 -27.8532
+     Prefab "{EBA5841644915D3D}Prefabs/Items/Patches/RHS Patches/Unit Patches/101st Airborne.et"
+     AreaType GRS_Patch "{698B4BC7A0D6387D}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY 0.37
+     m_fMorphValueX 0.073
+    }
+    GRS_MorphSlotComponent Upper_Left_Patch {
+     PivotID "LeftArm"
+     Offset -0.0407 0.0633 0.0529
+     Angles -8.002 151.3685 153.9072
+     AreaType GRS_Patch "{698B4BC7A0D63873}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY -0.6
+     m_fMorphValueX -0.282
+    }
+    GRS_MorphSlotComponent Lower_Left_Patch {
+     PivotID "LeftArm"
+     Offset -0.0026 0.1296 0.0489
+     Angles -3.5544 170.9446 151.009
+     Prefab "{EBA5841644915D3D}Prefabs/Items/Patches/RHS Patches/Unit Patches/101st Airborne.et"
+     AreaType GRS_Patch "{698B4BC7A0D63871}" {
+     }
+     m_bEnableMorphing 1
+     m_fMorphValueY -0.128
+     m_fMorphValueX 0
+    }
+    LoadoutSlotInfo GRS_StorageComponent {
+     Prefab "{D5982F3150A75A97}Prefabs/Item/GRS_StorageComponent.et"
+    }
+   }
+   WornModel "{546A9234905E07DE}Assets/Characters/Uniforms/Tops/GRS_CryeG3_Tops/GRS_CCU_CryeG3_Compat.xob"
+   ItemModel "{C443C6246CB42AC7}Assets/Characters/Uniforms/Tops/GRS_CryeG3_Tops/GRS_New_G3_Shirt_Ground.xob"
+   OverrideMeshesToHide {
+    "Torso" "ArmUpper_L" "ArmUpper_R"
+   }
+   AreaOcludders {
+    "ChestLeftBottomFront"
+   }
+  }
+  ActionsManagerComponent "{5104869D194C6245}" {
+   ActionContexts {
+    UserActionContext "{5104869D194C624D}" {
+     Position PointInfo "{5104869D194C6273}" {
+      Offset 0 0.06 0
+     }
+    }
+   }
+  }
+ }
+}
