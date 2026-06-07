@@ -1,3 +1,4 @@
+/*
 //------------------------------------------------------------------------------------------------
 //! Hardcoded bleed-rate multiplier applied at the per-effect computation site.
 //! Bypasses ACE's m_fBleedingRateScale setting so the rate is consistent regardless
@@ -12,3 +13,4 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 		return super.ACE_Medical_ComputeBleedingRateForDamageEffect(damageManager, bleedingEffect) * IRRU_BLEEDING_RATE_MULTIPLIER;
 	}
 }
+*/
