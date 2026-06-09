@@ -246,30 +246,24 @@ class CustomNamesManager
 	//------------------------------------------------------------------------------------------------
 	bool ValidateCustomName(string name)
 	{
-		if (name.Length() < 3 || name.Length() > 20)
+		int len = name.Length();
+		if (len < 3 || len > 30)
 			return false;
-		for (int i = 0; i < name.Length(); i++)
+
+		if (name.Contains("\"") || name.Contains("\\"))
+			return false;
+
+		if (name.Contains("\n") || name.Contains("\r") || name.Contains("\t"))
+			return false;
+
+		string forbidden = "!#$%&()*+,/:;<=>?@[]^`{|}~";
+		for (int i = 0; i < forbidden.Length(); i++)
 		{
-			string char = name.Get(i);
-			if (!IsValidCharacter(char))
+			if (name.Contains(forbidden.Get(i)))
 				return false;
 		}
-		
+
 		return true;
-	}
-	
-	//------------------------------------------------------------------------------------------------
-	protected bool IsValidCharacter(string char)
-	{
-		int ascii = char.ToAscii();
-		if ((ascii >= 65 && ascii <= 90) || (ascii >= 97 && ascii <= 122))
-			return true;
-		if (ascii >= 48 && ascii <= 57)
-			return true;
-		if (ascii == 32 || ascii == 45 || ascii == 95 || ascii == 46)
-			return true;
-			
-		return false;
 	}
 	
 	//------------------------------------------------------------------------------------------------
@@ -310,6 +304,18 @@ class CustomNamesManager
 	}
 
 	//------------------------------------------------------------------------------------------------
+	protected string SanitizeForStorage(string value)
+	{
+		string clean = value;
+		clean.Replace("\\", "");
+		clean.Replace("\"", "");
+		clean.Replace("\n", "");
+		clean.Replace("\r", "");
+		clean.Replace("\t", "");
+		return clean;
+	}
+
+	//------------------------------------------------------------------------------------------------
 	protected void WriteCustomNamesJsonToFile(FileHandle file)
 	{
 		int count = 0;
@@ -321,9 +327,9 @@ class CustomNamesManager
 		{
 			count++;
 			file.WriteLine(string.Format("  \"%1\": {", playerUID));
-			file.WriteLine(string.Format("    \"customName\": \"%1\",", entry.m_sCustomName));
+			file.WriteLine(string.Format("    \"customName\": \"%1\",", SanitizeForStorage(entry.m_sCustomName)));
 			file.WriteLine(string.Format("    \"lastUpdated\": %1,", entry.m_iLastUpdated));
-			file.WriteLine(string.Format("    \"lastPlayerName\": \"%1\"", entry.m_sLastPlayerName));
+			file.WriteLine(string.Format("    \"lastPlayerName\": \"%1\"", SanitizeForStorage(entry.m_sLastPlayerName)));
 
 			if (count < total)
 			{
