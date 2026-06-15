@@ -1,4 +1,8 @@
+// --- Constants ---
+const int GMBudget_AI_HARD_CAP = 1000;
 
+
+// --- GameMode Budget Toggle ---
 modded class SCR_BaseGameMode {
 	[RplProp(onRplName: "DisableGMBudget_OnBroadcastValueUpdated")]
 	protected bool m_DisableGMBudgets_BudgetsEnabled = true;
@@ -41,6 +45,7 @@ modded class SCR_BaseGameMode {
 	};
 }
 
+// --- Editor Attribute Support ---
 [BaseContainerProps(), SCR_BaseEditorAttributeCustomTitle()]
 class DisableGMBudget_BudgetsEnabledAttribute : SCR_BaseEditorAttribute
 {	
@@ -68,6 +73,7 @@ class DisableGMBudget_BudgetsEnabledAttribute : SCR_BaseEditorAttribute
 	}
 };
 
+// --- Budget Editor Component ---
 modded class SCR_BudgetEditorComponent {
 	protected ref map<EEditableEntityBudget, int> m_DisableGMBudget_OriginalMaxBudgets = new map<EEditableEntityBudget, int>();
 	
@@ -92,7 +98,7 @@ modded class SCR_BudgetEditorComponent {
 			if (enabled)
 				maxBudget.SetBudgetValue(m_DisableGMBudget_OriginalMaxBudgets.Get(maxBudget.GetBudgetType()));
 			else
-				maxBudget.SetBudgetValue(m_DisableGMBudget_OriginalMaxBudgets.Get(maxBudget.GetBudgetType()) * 500);
+				maxBudget.SetBudgetValue(m_DisableGMBudget_OriginalMaxBudgets.Get(maxBudget.GetBudgetType()) * GMBudget_AI_HARD_CAP);
 		};
 	};
 	
