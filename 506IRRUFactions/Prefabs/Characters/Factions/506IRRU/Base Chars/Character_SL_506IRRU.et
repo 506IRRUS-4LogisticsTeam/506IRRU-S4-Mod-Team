@@ -1,4 +1,4 @@
-SCR_ChimeraCharacter : "{0D3B9A4944C77C62}Prefabs/Characters/Core/506IRRU/Character_Base_506IRRU.et" {
+SCR_ChimeraCharacter : "{0D3B9A4944C77C62}Prefabs/Characters/Factions/506IRRU/Base Chars/Character_Base_506IRRU.et" {
  ID "684C795FD3AFFB21"
  components {
   SCR_EditableCharacterComponent "{520EA1D2F659C85C}" {
@@ -9,6 +9,54 @@ SCR_ChimeraCharacter : "{0D3B9A4944C77C62}Prefabs/Characters/Core/506IRRU/Charac
     }
     m_aAutoLabels {
      ENTITYTYPE_CHARACTER SIZE_M FACTION_506IRRU
+    }
+   }
+  }
+  CharacterWeaponSlotComponent "{684C795FD3AC9429}" {
+   WeaponTemplate "{B37B43EC7A9639E0}Prefabs/Weapons/Rifles/M7/M7_Weathered.et"
+  }
+  BaseLoadoutManagerComponent "{684C795FD3AC9424}" {
+   Slots {
+    LoadoutSlotInfo ArmoredVest {
+     Prefab "{141EA69887810264}Prefabs/Vests/AVS_Custom/AVS_MC_506_SL.et"
+    }
+    LoadoutSlotInfo Back {
+     Prefab "{95D4766BBE46F23E}Prefabs/Backpacks/Tacticool Bag/GRS_Tacticool_Bag_MC.et"
+    }
+   }
+  }
+  SCR_InventoryStorageManagerComponent "{684C795FD3AC94C7}" {
+   InitialInventoryItems {
+    ItemsInitConfigurationItem "{698B4BC7F20A6F3F}" {
+     TargetStorage "Pants/GRS_CryeG3_Bottoms_Base.et"
+     TargetPurpose 1
+     PrefabsToSpawn {
+      "{922F95F91943F69A}Prefabs/Items/Equipment/Maps/Map_Paper_01/PaperMap_01_folded_US.et" "{61D4F80E49BF9B12}Prefabs/Items/Equipment/Compass/Compass_SY183.et" "{0619993AE6CDBF85}Prefabs/Items/Equipment/Accessories/ETool_ALICE/ETool_ALICE.et"
+     }
+    }
+    ItemsInitConfigurationItem "{6995533C0958B19A}" {
+     TargetStorage "ArmoredVest/AVS_MC_506_SL.et/Placards/GRS_Placard_ARC_506.et"
+     PrefabsToSpawn {
+      "{AA38F8205E5DB079}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid_25.et" "{AA38F8205E5DB079}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid_25.et" "{AA38F8205E5DB079}Prefabs/Weapons/Magazines/M7/6_8x51_Hybrid_25.et"
+     }
+    }
+    ItemsInitConfigurationItem "{6995533FF56D6214}" {
+     TargetStorage "ArmoredVest/AVS_MC_506_SL.et/RS_Pouch_2/GRS_M67_Filbe_Pouch.et"
+     PrefabsToSpawn {
+      "{E8F00BF730225B00}Prefabs/Weapons/Grenades/Grenade_M67.et"
+     }
+    }
+    ItemsInitConfigurationItem "{6995533FC8290B8B}" {
+     TargetStorage "ArmoredVest/AVS_MC_506_SL.et/RS_Pouch_1/GRS_M18_SPUD_Pouch.et"
+     PrefabsToSpawn {
+      "{9BBDEE253A16CC66}Prefabs/Weapons/Grenades/M18/Smoke_M18_Yellow.et"
+     }
+    }
+    ItemsInitConfigurationItem "{6995533F2C21F04F}" {
+     TargetStorage "ArmoredVest/AVS_MC_506_SL.et/LS_Pouch_2/GRS_M18_SPUD_Pouch.et"
+     PrefabsToSpawn {
+      "{9BBDEE253A16CC66}Prefabs/Weapons/Grenades/M18/Smoke_M18_Yellow.et"
+     }
     }
    }
   }

@@ -1,0 +1,40 @@
+GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat_Boonie_US_01_base.et" {
+ ID "5112706CD4157AC7"
+ components {
+  InventoryItemComponent "{5244E4431E28A759}" {
+   Attributes SCR_ItemAttributeCollection "{52C8D6017C371EA6}" {
+    ItemDisplayName UIInfo "{52C8D60173B1164A}" {
+     Name "Red Currahee"
+     Description "Red Currahee - 506IRRU"
+     Icon "{7B9D93E1F03326FB}Prefabs/Items/Patches/SHS Helmet Patch/Assets/Red Currahee_co.edds"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{52C8D6017161AECA}" {
+     Weight 0
+     SizeSetupStrategy Scaler
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{56F26C5A8C108C5F}" {
+      PreviewWornModel 1
+     }
+    }
+   }
+  }
+  MeshObject "{5112706CD4157AE0}" {
+   Object "{7B645A49A45ECA06}Prefabs/Items/Patches/SHS Helmet Patch/Assets/Red Currahee.xob"
+   Materials {
+    MaterialAssignClass "{669C4A31F12B5D1A}" {
+     SourceMaterial "Patch_sdr"
+     AssignedMaterial "{3EB944D8C2B7D7B8}assets/characters/headgear/patches/Patches/Data/Patch_sdr.emat"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5112706CD4157AF8}" {
+   AreaType SHS_506_Patch "{5A68DCDCBC46C964}" {
+   }
+   Animate 0
+   WornModel "{7B645A49A45ECA06}Prefabs/Items/Patches/SHS Helmet Patch/Assets/Red Currahee.xob"
+   ItemModel "{7B645A49A45ECA06}Prefabs/Items/Patches/SHS Helmet Patch/Assets/Red Currahee.xob"
+   DeflatedModel "{7B645A49A45ECA06}Prefabs/Items/Patches/SHS Helmet Patch/Assets/Red Currahee.xob"
+  }
+ }
+}
