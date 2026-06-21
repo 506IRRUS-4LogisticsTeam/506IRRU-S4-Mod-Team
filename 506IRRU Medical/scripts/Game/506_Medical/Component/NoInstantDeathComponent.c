@@ -21,6 +21,10 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected bool m_bDeadBlockPrinted = false;
 	protected bool m_bDeadWarned = false;
 
+	//! The patient's current CPR helper session. Used so a stale helper's delayed teardown does not
+	//! clear the CPR flag set by a newer session on the same patient. Server-side ref, not replicated.
+	protected IRRU_CPRHelperCompartment m_pActiveCPRHelper;
+
 	//! Captured at unconscious time and held through the bleedout window. Read cross-module by the
 	//! IRRU Ticket System hook (modded IRRU_NoInstantDeathComponent) to attribute casualties. Do not remove.
 	protected Instigator m_LastKnownInstigator;
@@ -296,6 +300,18 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 				state = "started";
 			Print(string.Format("[NoInstantDeath] %1: CPR %2", GetNameStr(GetOwner()), state));
 		}
+	}
+
+	//! Tracks which CPR helper currently owns this patient's session, so a stale helper's teardown
+	//! cannot clear the flag of a newer session. See IRRU_CPRHelperCompartment.OnCompartmentLeft().
+	void IRRU_SetActiveCPRHelper(IRRU_CPRHelperCompartment helper)
+	{
+		m_pActiveCPRHelper = helper;
+	}
+
+	IRRU_CPRHelperCompartment IRRU_GetActiveCPRHelper()
+	{
+		return m_pActiveCPRHelper;
 	}
 
 	void SetCPRCooldown(float cooldownDuration)
