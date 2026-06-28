@@ -99,8 +99,8 @@ class IRRU_InventoryRestore : ScriptComponent
         array<ResourceName> grsRadioNames = {
             "{E2C3CAABBD4BE813}Prefabs/Items/Equipment/Radios/GRS_Radio_JTAC_L.et",
             "{9FDB2653D8D8D48A}Prefabs/Items/Equipment/Radios/GRS_Radio_JTAC_R.et",
-            "{133810B5D3B81E16}Prefabs/Items/Equipment/Radios/GRS_Radio_MPU5.et",
-            "{86C16544D72A4BFC}Prefabs/Items/Equipment/Radios/GRS_Radio_Trellisware.et"
+            "{6177AD2B232FDA30}Prefabs/Accessories/GRS_Radio_MPU5_V2.et",
+            "{3AAE94CE6ADC37E5}Prefabs/Accessories/GRS_Radio_ANPRC_V3.et"
         };
 
         foreach (IEntity item : items) {
@@ -130,7 +130,7 @@ class IRRU_InventoryRestore : ScriptComponent
             TryAddMissingItem(storageManager, player, mapResourceName, "map", "Adding map to gear");
 
         if (!hasGRSRadio)
-            TryAddMissingItem(storageManager, player, grsRadioNames[3], "radio", "Adding Trellisware Radio to gear");
+            TryAddMissingItem(storageManager, player, grsRadioNames[3], "radio", "Adding ANPRCV3 Radio to gear");
 
         if (IRRU_InventoryRestoreSettings.IsDebugEnabled())
             Print("[InventoryCheck] Inventory check completed for player: " + playerName);
