@@ -10,7 +10,8 @@ GenericEntity : "{4CDB9A030F685F80}Prefabs/Items/Medicine/SalineBag_01/SalineBag
   }
   SCR_ConsumableItemComponent "{59E68C4DC131E9FC}" {
    m_ConsumableEffect SCR_ConsumableSalineBag "{59E68C4DDD8B416A}" {
-    m_fItemAbsoluteRegenerationAmount 3000
+    m_fItemRegenerationDuration 55
+    m_fItemAbsoluteRegenerationAmount 5000
    }
   }
  }
