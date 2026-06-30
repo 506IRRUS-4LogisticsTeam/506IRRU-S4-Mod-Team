@@ -9,11 +9,11 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const float CPR_BASE_COOLDOWN = 12.0;
 	protected static const float CPR_COOLDOWN_RATIO = 0.4;
 	protected static const float CPR_MIN_COOLDOWN = 12.0;
-	protected static const float CPR_MIN_HEALING = 5.0;
-	protected static const float CPR_MAX_HEALING = 17.0;
+	protected static const float CPR_MIN_HEALING = 20.0;
+	protected static const float CPR_MAX_HEALING = 40.0;
 	protected static const float CPR_FALLBACK_DURATION = 30.0;
 	protected static const float CPR_RESILIENCE_REGEN_INTERVAL = 1.0;
-	protected static const float CPR_RESILIENCE_PERCENT_PER_SECOND = 3.5;
+	protected static const float CPR_RESILIENCE_PERCENT_PER_SECOND = 4.0;
 	protected static const float CPR_LIFESTATE_CHECK_INTERVAL = 0.5;
 
 	[Attribute(defvalue: "3", desc: "Maximum distance to perform CPR in meters", params: "1 5 0.5", category: "CPR Settings")]
