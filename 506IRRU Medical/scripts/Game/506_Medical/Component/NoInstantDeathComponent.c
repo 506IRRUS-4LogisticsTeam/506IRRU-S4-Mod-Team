@@ -127,6 +127,10 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 		m_CachedDmgManager.ForceUnconsciousness();
 
+		// Blue-on-blue tracking is server-authoritative (instigator is only reliable on the server).
+		if (Replication.IsServer() || !Replication.IsRunning())
+			IRRU_LogBlueOnBlue(owner);
+
 		if (Replication.IsServer())
 		{
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
@@ -136,6 +140,50 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath] %1: entering unconscious state (%2s timer)", GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime()));
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Emit a WARNING whenever a casualty was caused by friendly fire (attacker shares the victim's
+	//! faction), so the unit can track blue-on-blue incidents in the server console. GM-possessed AI
+	//! attackers are ignored: Ares deliberately engages players, so those hits are not accidental.
+	protected void IRRU_LogBlueOnBlue(IEntity owner)
+	{
+		if (!m_LastKnownInstigator)
+			return;
+
+		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
+		if (!attacker || attacker == owner)
+			return; // self-inflicted or world damage is never blue-on-blue
+
+		// Ignore GM-possessed AI (Ares) - it engages players intentionally, not by accident.
+		if (SCR_CharacterHelper.GetCharacterControlType(attacker) == SCR_ECharacterControlType.POSSESSED_AI)
+			return;
+
+		string victimFaction = IRRU_GetFactionKey(owner);
+		string attackerFaction = IRRU_GetFactionKey(attacker);
+		if (victimFaction.IsEmpty() || attackerFaction.IsEmpty() || victimFaction != attackerFaction)
+			return; // different or unknown factions -> not friendly fire
+
+		Print(string.Format("[NoInstantDeath] BLUE-ON-BLUE: %1 knocked unconscious by friendly %2 (faction=%3)",
+			GetNameStr(owner), GetNameStr(attacker), victimFaction), LogLevel.WARNING);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Resolve an entity's affiliated faction key, or "" if it has no faction.
+	protected string IRRU_GetFactionKey(IEntity e)
+	{
+		if (!e)
+			return "";
+
+		SCR_FactionAffiliationComponent fac = SCR_FactionAffiliationComponent.Cast(e.FindComponent(SCR_FactionAffiliationComponent));
+		if (!fac)
+			return "";
+
+		Faction faction = fac.GetAffiliatedFaction();
+		if (!faction)
+			return "";
+
+		return faction.GetFactionKey();
 	}
 
 	protected void UpdateUnconsciousTimer()
