@@ -17,7 +17,7 @@ class IRRU_StealthSettings
 	[Attribute(defvalue: "1000", desc: "How often (ms) to rescan a character's inventory for the stealth item.", category: "AI Stealth", uiwidget: UIWidgets.Slider, params: "250 10000 50")]
 	int m_iCheckIntervalMs;
 
-	[Attribute(defvalue: "300", desc: "Seconds stealth stays broken after firing a weapon. Re-activates automatically after timer expires (if still carrying the item).", category: "AI Stealth", uiwidget: UIWidgets.Slider, params: "0 3600 5")]
+	[Attribute(defvalue: "200", desc: "Seconds stealth stays broken after firing a weapon. Re-activates automatically after timer expires (if still carrying the item).", category: "AI Stealth", uiwidget: UIWidgets.Slider, params: "0 3600 5")]
 	float m_fFireSuppressionSec;
 
 	[Attribute(defvalue: "", desc: "Prefab of the magic item that activates stealth when present in inventory.", category: "AI Stealth", uiwidget: UIWidgets.ResourcePickerThumbnail, params: "et")]
