@@ -27,15 +27,27 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected vector m_vTargetAngles = vector.Zero;
     protected vector m_vCurrentAngles = vector.Zero;
 
-    protected const float MIN_ELEVATION_MILS = 800.0;
-    protected const float MAX_ELEVATION_MILS = 1515.0;
-    protected const float MILS_TO_DEGREES = 360.0 / 6400.0;
-    protected const float DEGREES_TO_MILS = 6400.0 / 360.0;
     protected const float ALTITUDE_CORRECTION_FACTOR = 100.0;
+
+    // Per-weapon mils conversion factors, computed in OnPostInit from m_fMilsPerRevolution
+    protected float m_fMilsToDegrees;
+    protected float m_fDegreesToMils;
 
     // Configurable attributes for turret control
     [Attribute(defvalue: "true", desc: "Enable auto-aim system by default")]
     protected bool m_bDefaultAutoAimEnabled;
+
+    [Attribute(defvalue: "", desc: "Ballistic table set prefix. Empty = US M252/M224 (81mm M821, NATO mils). 'USSR_' = Soviet 2B14 (82mm O-832DU, Soviet mils).")]
+    protected string m_sBallisticTablePrefix;
+
+    [Attribute(defvalue: "6400", desc: "Mils per full circle used by this weapon's sight and tables (6400 = NATO, 6000 = Soviet)")]
+    protected float m_fMilsPerRevolution;
+
+    [Attribute(defvalue: "800", desc: "Minimum elevation in this weapon's sight mils (physical turret limit, 45 degrees)")]
+    protected float m_fMinElevationMils;
+
+    [Attribute(defvalue: "1515", desc: "Maximum elevation in this weapon's sight mils (physical turret limit)")]
+    protected float m_fMaxElevationMils;
 
     [Attribute(defvalue: "true", desc: "Keep map open after selecting target")]
     protected bool m_bKeepMapOpen;
@@ -56,6 +68,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         m_Owner = owner;
         m_bAutoAimSystemEnabled = m_bDefaultAutoAimEnabled;
+
+        if (m_fMilsPerRevolution <= 0)
+            m_fMilsPerRevolution = 6400.0;
+
+        m_fMilsToDegrees = 360.0 / m_fMilsPerRevolution;
+        m_fDegreesToMils = m_fMilsPerRevolution / 360.0;
+
         MortarBallisticTables.Initialize();
     }
 
@@ -63,6 +82,13 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     string GetSelectedAmmoType()
     {
         return m_sSelectedAmmoType;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Table lookup key for the selected ammo type, including this weapon's table set prefix
+    protected string GetSelectedTableKey()
+    {
+        return m_sBallisticTablePrefix + m_sSelectedAmmoType;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -93,7 +119,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
         else
         {
-            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable("HE", m_iSelectedCharge);
+            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable(GetSelectedTableKey(), m_iSelectedCharge);
             if (table && table.Count() > 0)
             {
                 MortarBallisticEntry firstEntry = table.Get(0);
@@ -128,7 +154,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
         else
         {
-            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable("HE", m_iSelectedCharge);
+            array<ref MortarBallisticEntry> table = MortarBallisticTables.GetTable(GetSelectedTableKey(), m_iSelectedCharge);
             if (table && table.Count() > 0)
             {
                 MortarBallisticEntry firstEntry = table.Get(0);
@@ -315,9 +341,9 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         if (azimuth < 0)
             azimuth = azimuth + 360;
 
-        string ammoType = GetSelectedAmmoType();
+        string tableKey = GetSelectedTableKey();
         float minRange, maxRange;
-        MortarBallisticTables.GetMinMaxRange(ammoType, minRange, maxRange);
+        MortarBallisticTables.GetMinMaxRange(tableKey, minRange, maxRange);
 
         if (horizontalDistance < minRange)
         {
@@ -329,7 +355,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
         else
         {
-            CalculateAndDisplaySolution(ammoType, horizontalDistance, toTarget, targetPos, mortarPos, azimuth);
+            CalculateAndDisplaySolution(tableKey, horizontalDistance, toTarget, targetPos, mortarPos, azimuth);
         }
 
     }
@@ -359,7 +385,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
     //------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------
-    protected void CalculateAndDisplaySolution(string ammoType, float horizontalDistance, vector toTarget, vector targetPos, vector mortarPos, float azimuth)
+    protected void CalculateAndDisplaySolution(string tableKey, float horizontalDistance, vector toTarget, vector targetPos, vector mortarPos, float azimuth)
     {
         float elevationMils;
         float timeOfFlight;
@@ -370,12 +396,12 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         if (m_iSelectedCharge == -1)
         {
-            solutionFound = MortarBallisticTables.CalculateSolution(ammoType, horizontalDistance, elevationMils, timeOfFlight, charge, dElevCorrection);
+            solutionFound = MortarBallisticTables.CalculateSolution(tableKey, horizontalDistance, elevationMils, timeOfFlight, charge, dElevCorrection, m_fMinElevationMils, m_fMaxElevationMils);
         }
         else
         {
             charge = m_iSelectedCharge;
-            solutionFound = MortarBallisticTables.CalculateSolutionForCharge(ammoType, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection);
+            solutionFound = MortarBallisticTables.CalculateSolutionForCharge(tableKey, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection);
         }
 
         if (!solutionFound)
@@ -388,7 +414,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         elevationMils = ApplyAltitudeCorrection(elevationMils, elevationDifference, dElevCorrection);
         elevationMils = ClampElevation(elevationMils);
 
-        DisplayFiringSolution(ammoType, horizontalDistance, toTarget, azimuth, elevationMils, elevationDifference, charge, timeOfFlight);
+        DisplayFiringSolution(GetSelectedAmmoType(), horizontalDistance, toTarget, azimuth, elevationMils, elevationDifference, charge, timeOfFlight);
 
         if (m_TurretComponent && m_bAutoAimSystemEnabled)
         {
@@ -404,7 +430,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
             float quatInv[4];
             Math3D.QuatInverse(quatInv, quat);
 
-            float elevationAngleDeg = elevationMils * MILS_TO_DEGREES;
+            float elevationAngleDeg = elevationMils * m_fMilsToDegrees;
 
             float azimuthRad = azimuth * Math.DEG2RAD;
             float elevationRad = elevationAngleDeg * Math.DEG2RAD;
@@ -464,10 +490,10 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     //------------------------------------------------------------------------------------------------
     protected float ClampElevation(float elevationMils)
     {
-        if (elevationMils < MIN_ELEVATION_MILS)
-            return MIN_ELEVATION_MILS;
-        if (elevationMils > MAX_ELEVATION_MILS)
-            return MAX_ELEVATION_MILS;
+        if (elevationMils < m_fMinElevationMils)
+            return m_fMinElevationMils;
+        if (elevationMils > m_fMaxElevationMils)
+            return m_fMaxElevationMils;
         return elevationMils;
     }
 
@@ -475,9 +501,9 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     //------------------------------------------------------------------------------------------------
     protected void DisplayFiringSolution(string ammoType, float horizontalDistance, vector toTarget, float azimuth, float elevationMils, float elevationDifference, int charge, float timeOfFlight)
     {
-        float elevationDegrees = elevationMils * MILS_TO_DEGREES;
+        float elevationDegrees = elevationMils * m_fMilsToDegrees;
         float slantDistance = toTarget.Length();
-        float azimuthMils = azimuth * DEGREES_TO_MILS;
+        float azimuthMils = azimuth * m_fDegreesToMils;
 
         string hint1 = string.Format(
             "FIRING SOLUTION - %1\n\nRange: %2m\nSlant Range: %3m\nElev Diff: %4m\nAzimuth: %5 mils (%6°)",

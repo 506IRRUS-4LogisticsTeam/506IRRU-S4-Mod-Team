@@ -1,4 +1,4 @@
-//! Mortar ballistic tables for 81mm mortars
+//! Mortar ballistic tables for 81mm (US M252/M224, NATO 6400 mils) and 82mm (USSR 2B14, Soviet 6000 mils) mortars
 //! Data structure for ballistic calculations
 
 //! Ballistic entry for mortar firing calculations
@@ -28,9 +28,8 @@ class MortarBallisticEntry
 class MortarBallisticTables
 {
     protected static ref map<string, ref array<ref MortarBallisticEntry>> s_Tables;
-    
-    protected const float MAX_ELEVATION_MILS = 1515.0;
-    protected const float MIN_ELEVATION_MILS = 800.0;
+
+    // Elevation limits are per-weapon and passed into CalculateSolution by the computer component
     protected const int MAX_CHARGE = 4;
     
     //------------------------------------------------------------------------------------------------
@@ -41,10 +40,11 @@ class MortarBallisticTables
             return;
             
         s_Tables = new map<string, ref array<ref MortarBallisticEntry>>();
-        
+
         InitializeHETables();
         InitializeSmokeTables();
         InitializeIlluminationTables();
+        InitializeSovietHETables();
     }
     
     //------------------------------------------------------------------------------------------------
@@ -73,34 +73,36 @@ class MortarBallisticTables
     //! \param timeOfFlight Output time of flight in seconds
     //! \param bestCharge Output best charge level
     //! \param dElevCorrection Output D_ELEV correction factor
+    //! \param minElevationMils Minimum usable elevation in mils (weapon's physical limit, in its own mils system)
+    //! \param maxElevationMils Maximum usable elevation in mils (weapon's physical limit, in its own mils system)
     //! \return True if solution found
-    static bool CalculateSolution(string ammoType, float range, out float elevationMils, out float timeOfFlight, out int bestCharge, out int dElevCorrection)
+    static bool CalculateSolution(string ammoType, float range, out float elevationMils, out float timeOfFlight, out int bestCharge, out int dElevCorrection, float minElevationMils = 800.0, float maxElevationMils = 1515.0)
     {
         if (!s_Tables)
             Initialize();
-        
+
         float bestTimeOfFlight = 9999.0;
         float bestElevation = 0;
         int bestChargeFound = -1;
         int bestDElev = 0;
         bool solutionFound = false;
-        
+
         for (int charge = 0; charge <= MAX_CHARGE; charge++)
         {
             array<ref MortarBallisticEntry> table = GetTable(ammoType, charge);
             if (!table || table.Count() == 0)
                 continue;
-                
+
             MortarBallisticEntry firstEntry = table.Get(0);
             MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
-            
+
             if (range >= firstEntry.range && range <= lastEntry.range)
             {
                 float testElevation, testTimeOfFlight;
                 int testDElev;
                 InterpolateElevation(table, range, testElevation, testTimeOfFlight, testDElev);
-                
-                if (testElevation <= MAX_ELEVATION_MILS && testElevation >= MIN_ELEVATION_MILS)
+
+                if (testElevation <= maxElevationMils && testElevation >= minElevationMils)
                 {
                     if (testTimeOfFlight < bestTimeOfFlight)
                     {
@@ -506,5 +508,94 @@ class MortarBallisticTables
         illumCharge1.Insert(new MortarBallisticEntry(700, 974, 15.0, 151));
         illumCharge1.Insert(new MortarBallisticEntry(750, 823, 13.3, 0));
         s_Tables.Insert("Illumination_1", illumCharge1);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Initialize Soviet 82mm O-832DU HE tables for the 2B14 Podnos
+    //! IMPORTANT: elevations are in SOVIET mils (6000 per circle), matching the 2B14's in-game
+    //! sight and range card (m_fMils 6000). Data matches the vanilla in-game ballistic table.
+    protected static void InitializeSovietHETables()
+    {
+        array<ref MortarBallisticEntry> ussrHeCharge0 = new array<ref MortarBallisticEntry>();
+        ussrHeCharge0.Insert(new MortarBallisticEntry(50, 1455, 15.0, 44));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(100, 1411, 15.0, 46));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(150, 1365, 14.9, 47));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(200, 1318, 14.8, 50));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(250, 1268, 14.6, 51));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(300, 1217, 14.4, 58));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(350, 1159, 14.1, 64));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(400, 1095, 13.7, 72));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(450, 1023, 13.2, 101));
+        ussrHeCharge0.Insert(new MortarBallisticEntry(500, 922, 12.4, 0));
+        s_Tables.Insert("USSR_HE_0", ussrHeCharge0);
+
+        array<ref MortarBallisticEntry> ussrHeCharge1 = new array<ref MortarBallisticEntry>();
+        ussrHeCharge1.Insert(new MortarBallisticEntry(100, 1446, 19.5, 27));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(200, 1392, 19.4, 28));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(300, 1335, 19.2, 29));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(400, 1275, 18.9, 31));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(500, 1212, 18.6, 35));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(600, 1141, 18.1, 40));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(700, 1058, 17.4, 48));
+        ussrHeCharge1.Insert(new MortarBallisticEntry(800, 952, 16.4, 81));
+        s_Tables.Insert("USSR_HE_1", ussrHeCharge1);
+
+        array<ref MortarBallisticEntry> ussrHeCharge2 = new array<ref MortarBallisticEntry>();
+        ussrHeCharge2.Insert(new MortarBallisticEntry(200, 1432, 24.8, 17));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(300, 1397, 24.7, 18));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(400, 1362, 24.6, 18));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(500, 1325, 24.4, 18));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(600, 1288, 24.2, 20));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(700, 1248, 24.0, 20));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(800, 1207, 23.7, 22));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(900, 1162, 23.3, 23));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(1000, 1114, 22.9, 26));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(1100, 1060, 22.3, 29));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(1200, 997, 21.5, 37));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(1300, 914, 20.4, 55));
+        ussrHeCharge2.Insert(new MortarBallisticEntry(1400, 755, 17.8, 0));
+        s_Tables.Insert("USSR_HE_2", ussrHeCharge2);
+
+        array<ref MortarBallisticEntry> ussrHeCharge3 = new array<ref MortarBallisticEntry>();
+        ussrHeCharge3.Insert(new MortarBallisticEntry(300, 1423, 28.9, 13));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(400, 1397, 28.8, 14));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(500, 1370, 28.6, 13));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(600, 1343, 28.5, 14));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(700, 1315, 28.5, 14));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(800, 1286, 28.3, 14));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(900, 1257, 28.1, 16));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1000, 1226, 27.9, 16));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1100, 1193, 27.6, 16));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1200, 1159, 27.2, 18));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1300, 1123, 26.8, 19));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1400, 1084, 26.4, 22));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1500, 1040, 25.8, 24));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1600, 991, 25.1, 28));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1700, 932, 24.2, 36));
+        ussrHeCharge3.Insert(new MortarBallisticEntry(1800, 851, 22.8, 68));
+        s_Tables.Insert("USSR_HE_3", ussrHeCharge3);
+
+        array<ref MortarBallisticEntry> ussrHeCharge4 = new array<ref MortarBallisticEntry>();
+        ussrHeCharge4.Insert(new MortarBallisticEntry(400, 1418, 32.9, 10));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(500, 1398, 32.9, 11));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(600, 1376, 32.8, 10));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(700, 1355, 32.7, 11));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(800, 1333, 32.6, 11));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(900, 1311, 32.4, 12));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1000, 1288, 32.2, 12));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1100, 1264, 32.1, 12));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1200, 1240, 31.8, 13));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1300, 1215, 31.6, 13));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1400, 1189, 31.3, 14));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1500, 1161, 31.0, 14));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1600, 1133, 30.7, 15));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1700, 1102, 30.3, 16));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1800, 1069, 29.8, 17));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(1900, 1034, 29.3, 19));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(2000, 995, 28.7, 22));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(2100, 950, 27.9, 26));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(2200, 896, 26.9, 34));
+        ussrHeCharge4.Insert(new MortarBallisticEntry(2300, 820, 25.3, 65));
+        s_Tables.Insert("USSR_HE_4", ussrHeCharge4);
     }
 }
