@@ -3,7 +3,7 @@ GameProject {
  GUID "65CF352757188FCF"
  TITLE "506th IRRU Mortars"
  Dependencies {
-  "58D0FB3206B6F859" "62B0555FF0A21CA6"
+  "58D0FB3206B6F859" "62B0555FF0A21CA6" "69C6E7E5C3006233"
  }
  Configurations {
   GameProjectConfig PC {
