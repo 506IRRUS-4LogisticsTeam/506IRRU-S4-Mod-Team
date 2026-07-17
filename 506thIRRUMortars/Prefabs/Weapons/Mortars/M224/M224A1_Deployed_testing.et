@@ -5,6 +5,7 @@ Turret : "{4AD877DEA242E512}Prefabs/Weapons/Core/Turret_Base.et" {
    m_sBallisticTablePrefix "M224_"
    m_fMaxElevationMils 1422
    m_iMaxCharge 1
+   m_fTraverseLimitDegrees 45
   }
   ActionsManagerComponent "{51ACD09C7181BA0B}" {
    additionalActions {
