@@ -37,7 +37,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     [Attribute(defvalue: "true", desc: "Enable auto-aim system by default")]
     protected bool m_bDefaultAutoAimEnabled;
 
-    [Attribute(defvalue: "", desc: "Ballistic table set prefix. Empty = US M252/M224 (81mm M821, NATO mils). 'USSR_' = Soviet 2B14 (82mm O-832DU, Soviet mils).")]
+    [Attribute(defvalue: "", desc: "Ballistic table set prefix. Empty = US M252 (81mm M821, NATO mils). 'USSR_' = Soviet 2B14 (82mm O-832DU, Soviet mils). 'M224_' = M224A1 60mm handheld (M720A1, NATO mils).")]
     protected string m_sBallisticTablePrefix;
 
     [Attribute(defvalue: "6400", desc: "Mils per full circle used by this weapon's sight and tables (6400 = NATO, 6000 = Soviet)")]
@@ -48,6 +48,9 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
     [Attribute(defvalue: "1515", desc: "Maximum elevation in this weapon's sight mils (physical turret limit)")]
     protected float m_fMaxElevationMils;
+
+    [Attribute(defvalue: "4", desc: "Highest selectable charge for this weapon (4 = vanilla mortars, 1 = M224A1 two-charge system)")]
+    protected int m_iMaxCharge;
 
     [Attribute(defvalue: "true", desc: "Keep map open after selecting target")]
     protected bool m_bKeepMapOpen;
@@ -109,7 +112,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     void CycleChargeSelection()
     {
         m_iSelectedCharge++;
-        if (m_iSelectedCharge > 4)
+        if (m_iSelectedCharge > m_iMaxCharge)
             m_iSelectedCharge = -1;
 
         string chargeText;

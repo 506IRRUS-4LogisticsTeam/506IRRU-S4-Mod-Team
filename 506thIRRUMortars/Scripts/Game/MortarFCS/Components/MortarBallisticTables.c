@@ -45,6 +45,7 @@ class MortarBallisticTables
         InitializeSmokeTables();
         InitializeIlluminationTables();
         InitializeSovietHETables();
+        InitializeM224HETables();
     }
     
     //------------------------------------------------------------------------------------------------
@@ -597,5 +598,35 @@ class MortarBallisticTables
         ussrHeCharge4.Insert(new MortarBallisticEntry(2200, 896, 26.9, 34));
         ussrHeCharge4.Insert(new MortarBallisticEntry(2300, 820, 25.3, 65));
         s_Tables.Insert("USSR_HE_4", ussrHeCharge4);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Initialize M224A1 60mm HE tables (M224A1 Handheld Mortar mod, M720A1 HE / M722 WP shared)
+    //! Values taken verbatim from the mod's official firing card (FM 10-M224.1): NATO mils (6400),
+    //! two charges only (0 = MV 75 m/s, 1 = MV 115 m/s), elevation 800-1422 mils (45-80 deg).
+    //! dElev derived from the card's own rows as elevation change per 50m of range.
+    protected static void InitializeM224HETables()
+    {
+        array<ref MortarBallisticEntry> m224HeCharge0 = new array<ref MortarBallisticEntry>();
+        m224HeCharge0.Insert(new MortarBallisticEntry(187, 1422, 14.1, 48));
+        m224HeCharge0.Insert(new MortarBallisticEntry(280, 1333, 14.0, 64));
+        m224HeCharge0.Insert(new MortarBallisticEntry(350, 1244, 13.4, 69));
+        m224HeCharge0.Insert(new MortarBallisticEntry(414, 1156, 12.9, 93));
+        m224HeCharge0.Insert(new MortarBallisticEntry(462, 1067, 12.3, 95));
+        m224HeCharge0.Insert(new MortarBallisticEntry(509, 978, 11.7, 247));
+        m224HeCharge0.Insert(new MortarBallisticEntry(527, 889, 10.9, 297));
+        m224HeCharge0.Insert(new MortarBallisticEntry(542, 800, 10.1, 0));
+        s_Tables.Insert("M224_HE_0", m224HeCharge0);
+
+        array<ref MortarBallisticEntry> m224HeCharge1 = new array<ref MortarBallisticEntry>();
+        m224HeCharge1.Insert(new MortarBallisticEntry(407, 1422, 21.1, 25));
+        m224HeCharge1.Insert(new MortarBallisticEntry(585, 1333, 20.6, 25));
+        m224HeCharge1.Insert(new MortarBallisticEntry(766, 1244, 20.2, 33));
+        m224HeCharge1.Insert(new MortarBallisticEntry(901, 1156, 19.4, 35));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1028, 1067, 18.6, 49));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1118, 978, 17.6, 75));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1177, 889, 16.8, 494));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1186, 800, 15.4, 0));
+        s_Tables.Insert("M224_HE_1", m224HeCharge1);
     }
 }
