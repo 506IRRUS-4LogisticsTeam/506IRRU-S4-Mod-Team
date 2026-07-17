@@ -52,6 +52,9 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     [Attribute(defvalue: "4", desc: "Highest selectable charge for this weapon (4 = vanilla mortars, 1 = M224A1 two-charge system)")]
     protected int m_iMaxCharge;
 
+    [Attribute(defvalue: "0", desc: "Traverse limit in degrees either side of the mortar's placed facing (0 = unlimited, 45 = M224A1). Auto-aim refuses to move the mortar when the solution is outside this arc.")]
+    protected float m_fTraverseLimitDegrees;
+
     [Attribute(defvalue: "true", desc: "Keep map open after selecting target")]
     protected bool m_bKeepMapOpen;
 
@@ -207,6 +210,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
 
         m_TurretComponent = TurretComponent.Cast(m_Owner.FindComponent(TurretComponent));
+        m_TurretController = TurretControllerComponent.Cast(m_Owner.FindComponent(TurretControllerComponent));
 
         m_MapEntity = mapEntity;
 
@@ -421,34 +425,148 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
 
         if (m_TurretComponent && m_bAutoAimSystemEnabled)
         {
-            IEntity turretEntity = m_TurretComponent.GetOwner();
-            if (!turretEntity)
-                return;
-
-            vector turretMat[4];
-            turretEntity.GetTransform(turretMat);
-
-            float quat[4];
-            Math3D.MatrixToQuat(turretMat, quat);
-            float quatInv[4];
-            Math3D.QuatInverse(quatInv, quat);
-
             float elevationAngleDeg = elevationMils * m_fMilsToDegrees;
 
-            float azimuthRad = azimuth * Math.DEG2RAD;
-            float elevationRad = elevationAngleDeg * Math.DEG2RAD;
+            vector muzzleDirection;
+            if (GetMuzzleWorldDirection(muzzleDirection))
+            {
+                // Frame-agnostic aiming: offset the turret's current aim angles by the world-space
+                // difference between the desired and the current barrel direction. Unlike the entity
+                // transform method below, this works on mounts whose turret frame is not aligned
+                // with the entity root (e.g. the M224A1 handheld mortar).
+                vector currentAimDeg = m_TurretComponent.GetAimingRotation();
+                vector currentWorldDeg = muzzleDirection.VectorToAngles();
 
-            vector worldDirection;
-            worldDirection[0] = Math.Sin(azimuthRad) * Math.Cos(elevationRad);
-            worldDirection[1] = Math.Sin(elevationRad);
-            worldDirection[2] = Math.Cos(azimuthRad) * Math.Cos(elevationRad);
+                float yawDelta = azimuth - currentWorldDeg[0];
+                while (yawDelta > 180)
+                    yawDelta -= 360;
+                while (yawDelta < -180)
+                    yawDelta += 360;
 
-            vector dirLocal = SCR_Math3D.QuatMultiply(quatInv, worldDirection);
+                float pitchDelta = elevationAngleDeg - currentWorldDeg[1];
 
-            vector desiredAngles = dirLocal.VectorToAngles();
+                if (!CheckTraverseLimit(currentAimDeg[0] + yawDelta))
+                    return;
 
-            m_vTargetAngles = Vector(desiredAngles[0] * Math.DEG2RAD, desiredAngles[1] * Math.DEG2RAD, 0);
-            m_bAutoAimActive = true;
+                m_vTargetAngles = Vector(
+                    (currentAimDeg[0] + yawDelta) * Math.DEG2RAD,
+                    (currentAimDeg[1] + pitchDelta) * Math.DEG2RAD,
+                    0);
+                m_bAutoAimActive = true;
+            }
+            else
+            {
+                // Fallback: exact world-to-local conversion via the entity transform.
+                // Only valid for mounts whose turret frame matches the entity root (vanilla mortars).
+                IEntity turretEntity = m_TurretComponent.GetOwner();
+                if (!turretEntity)
+                    return;
+
+                vector turretMat[4];
+                turretEntity.GetTransform(turretMat);
+
+                float quat[4];
+                Math3D.MatrixToQuat(turretMat, quat);
+                float quatInv[4];
+                Math3D.QuatInverse(quatInv, quat);
+
+                float azimuthRad = azimuth * Math.DEG2RAD;
+                float elevationRad = elevationAngleDeg * Math.DEG2RAD;
+
+                vector worldDirection;
+                worldDirection[0] = Math.Sin(azimuthRad) * Math.Cos(elevationRad);
+                worldDirection[1] = Math.Sin(elevationRad);
+                worldDirection[2] = Math.Cos(azimuthRad) * Math.Cos(elevationRad);
+
+                vector dirLocal = SCR_Math3D.QuatMultiply(quatInv, worldDirection);
+
+                vector desiredAngles = dirLocal.VectorToAngles();
+
+                if (!CheckTraverseLimit(desiredAngles[0]))
+                    return;
+
+                m_vTargetAngles = Vector(desiredAngles[0] * Math.DEG2RAD, desiredAngles[1] * Math.DEG2RAD, 0);
+                m_bAutoAimActive = true;
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Current barrel direction in world space from the active muzzle transform
+    //! \param direction Output world-space barrel direction
+    //! \return True if a muzzle transform was available
+    protected bool GetMuzzleWorldDirection(out vector direction)
+    {
+        if (!m_TurretController)
+            return false;
+
+        BaseWeaponManagerComponent weaponManager = m_TurretController.GetWeaponManager();
+        if (!weaponManager)
+            return false;
+
+        vector transform[4];
+        weaponManager.GetCurrentMuzzleTransform(transform);
+        direction = transform[2];
+        return true;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Check a turret-local target yaw against the weapon's traverse arc.
+    //! Refuses the solution (mortar is not moved) and shows an error when outside.
+    //! \param targetYawDeg Target turret-local yaw in degrees (0 = placed facing)
+    //! \return True when within the arc or no traverse limit is configured
+    protected bool CheckTraverseLimit(float targetYawDeg)
+    {
+        if (m_fTraverseLimitDegrees <= 0)
+            return true;
+
+        while (targetYawDeg > 180)
+            targetYawDeg -= 360;
+        while (targetYawDeg < -180)
+            targetYawDeg += 360;
+
+        if (Math.AbsFloat(targetYawDeg) <= m_fTraverseLimitDegrees)
+            return true;
+
+        float overshootDeg = Math.AbsFloat(targetYawDeg) - m_fTraverseLimitDegrees;
+
+        string side = "RIGHT";
+        if (targetYawDeg < 0)
+            side = "LEFT";
+
+        string hint = string.Format(
+            "<color rgba='255,60,60,255'>TRAVERSE LIMIT!\n\nTarget bearing is %1° %2 of this mortar's ±%3° traverse arc.\nThe mortar was NOT moved.\n\nReposition the tube toward the target and try again.</color>",
+            overshootDeg.ToString(0),
+            side,
+            m_fTraverseLimitDegrees.ToString(0)
+        );
+
+        SCR_HintManagerComponent.ShowCustomHint(hint, "Auto-Aim Refused", 10.0, false);
+        return false;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Warn the operator when the turret could not reach the commanded angles (traverse/elevation limits)
+    protected void VerifyAutoAimResult(vector commandedAnglesRad)
+    {
+        if (!m_TurretComponent)
+            return;
+
+        vector achievedDeg = m_TurretComponent.GetAimingRotation();
+
+        float yawErrorDeg = achievedDeg[0] - commandedAnglesRad[0] * Math.RAD2DEG;
+        while (yawErrorDeg > 180)
+            yawErrorDeg -= 360;
+        while (yawErrorDeg < -180)
+            yawErrorDeg += 360;
+
+        float pitchErrorDeg = achievedDeg[1] - commandedAnglesRad[1] * Math.RAD2DEG;
+
+        if (Math.AbsFloat(yawErrorDeg) > 1.0 || Math.AbsFloat(pitchErrorDeg) > 1.0)
+        {
+            SCR_HintManagerComponent.ShowCustomHint(
+                "<color rgba='255,60,60,255'>TURRET LIMIT REACHED!\n\nThe mortar could not rotate fully onto the firing solution.\nTarget is outside this weapon's traverse or elevation limits.\n\nReposition the mortar to face the target and try again.</color>",
+                "Auto-Aim Clamped", 10.0, false);
         }
     }
 
@@ -461,7 +579,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         if (tooClose)
         {
             hint = string.Format(
-                "TARGET TOO CLOSE!\n\nMinimum Range: %1m\nTarget Distance: %2m\n\nSelect a target further away!",
+                "<color rgba='255,60,60,255'>TARGET TOO CLOSE!\n\nMinimum Range: %1m\nTarget Distance: %2m\n\nSelect a target further away!</color>",
                 minRange.ToString(0),
                 distance.ToString(0)
             );
@@ -469,7 +587,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         else
         {
             hint = string.Format(
-                "TARGET OUT OF RANGE!\n\nMaximum Range: %1m\nTarget Distance: %2m\n\nSelect a closer target!",
+                "<color rgba='255,60,60,255'>TARGET OUT OF RANGE!\n\nMaximum Range: %1m\nTarget Distance: %2m\n\nSelect a closer target!</color>",
                 maxRange.ToString(0),
                 distance.ToString(0)
             );
@@ -535,7 +653,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
     protected void DisplayNoSolutionHint(float distance)
     {
         string hint = string.Format(
-            "NO VALID SOLUTION!\n\nTarget at %1m requires elevation\noutside mortar's physical limits.\n\nMove closer/further to target or\nuse different firing position.",
+            "<color rgba='255,60,60,255'>NO VALID SOLUTION!\n\nTarget at %1m requires elevation\noutside mortar's physical limits.\n\nMove closer/further to target or\nuse different firing position.</color>",
             distance.ToString(0)
         );
         SCR_HintManagerComponent.ShowCustomHint(hint, "Elevation Limit", 8.0, false);
@@ -570,6 +688,7 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
 
         m_TurretComponent.SetAimingRotation(m_vTargetAngles);
+        GetGame().GetCallqueue().CallLater(VerifyAutoAimResult, 500, false, m_vTargetAngles);
         m_bAutoAimActive = false;
 
         if (!m_bMapOpen)

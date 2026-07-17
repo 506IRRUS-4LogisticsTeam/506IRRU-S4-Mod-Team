@@ -1,0 +1,23 @@
+Turret : "{4AD877DEA242E512}Prefabs/Weapons/Core/Turret_Base.et" {
+ ID "51ACD0965653D003"
+ components {
+  IRRU_MortarArtilleryComputerComponent "{69E35A3D6D43095B}" {
+   m_sBallisticTablePrefix "M224_"
+   m_fMaxElevationMils 1422
+   m_iMaxCharge 1
+  }
+  ActionsManagerComponent "{51ACD09C7181BA0B}" {
+   additionalActions {
+    IRRU_MortarComputerUserAction "{69E35A3D6E641E37}" {
+     ParentContextList {
+      "Trigger"
+     }
+     UIInfo SCR_ActionUIInfo "{69E35A3D71AA8EDC}" {
+      Name "Mortar Computer"
+      Description "Mortar Computer"
+     }
+    }
+   }
+  }
+ }
+}
