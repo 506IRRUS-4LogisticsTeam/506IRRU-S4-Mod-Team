@@ -97,8 +97,8 @@ class IRRU_InventoryRestore : ScriptComponent
 
         ResourceName mapResourceName = "{922F95F91943F69A}Prefabs/Items/Equipment/Maps/Map_Paper_01/PaperMap_01_folded_US.et";
         array<ResourceName> grsRadioNames = {
-            "{E2C3CAABBD4BE813}Prefabs/Items/Equipment/Radios/GRS_Radio_JTAC_L.et",
-            "{9FDB2653D8D8D48A}Prefabs/Items/Equipment/Radios/GRS_Radio_JTAC_R.et",
+            "{6554BEAB4FB1BD68}Prefabs/Accessories/GRS_Radio_ANPRC_JTAC_Right.et",
+            "{CE6320EE34E29382}Prefabs/Accessories/GRS_Radio_ANPRC_LEFT_JTAC.et",
             "{6177AD2B232FDA30}Prefabs/Accessories/GRS_Radio_MPU5_V2.et",
             "{3AAE94CE6ADC37E5}Prefabs/Accessories/GRS_Radio_ANPRC_V3.et"
         };
