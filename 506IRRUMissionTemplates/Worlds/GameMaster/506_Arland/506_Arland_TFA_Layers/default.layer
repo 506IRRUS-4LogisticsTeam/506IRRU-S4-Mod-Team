@@ -18,8 +18,8 @@ SCR_GameModeEditor GameMode_Editor_Full : "{DA3986AF1B5032B7}Prefabs/MP/Modes/Ed
    m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
   }
   SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
-   m_fDOTScale 0.175
-   m_fRegenScale 5
+   m_fDOTScale 0.39
+   m_fRegenScale 1
   }
  }
  coords 2033.122 32.126 2017.837
