@@ -143,29 +143,90 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Emit a WARNING whenever a casualty was caused by friendly fire (attacker shares the victim's
-	//! faction), so the unit can track blue-on-blue incidents in the server console. GM-possessed AI
-	//! attackers are ignored: Ares deliberately engages players, so those hits are not accidental.
+	//! Emit a WARNING whenever a player casualty was caused by friendly fire (attacker shares the
+	//! victim's faction), so the unit can track blue-on-blue incidents in the server console.
+	//! Attacker identity resolves player ID first and entity second - the same policy as the ticket
+	//! system's instigator handling - so a teamkiller whose body is already gone (killed, cleaned
+	//! up, or combat-logged) is still attributed instead of silently dropped. AI victims are skipped
+	//! to mirror the ticket system's casualty filter and keep AI-vs-AI engagements out of the log.
+	//! GM-driven attackers (Ares possession, editor actions) are ignored: those engagements are
+	//! deliberate, not accidental.
 	protected void IRRU_LogBlueOnBlue(IEntity owner)
 	{
 		if (!m_LastKnownInstigator)
 			return;
 
-		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
-		if (!attacker || attacker == owner)
-			return; // self-inflicted or world damage is never blue-on-blue
+		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
+		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
+			return; // only real player casualties count, matching IRRU_TicketSystemMedicalHook
 
-		// Ignore GM-possessed AI (Ares) - it engages players intentionally, not by accident.
-		if (SCR_CharacterHelper.GetCharacterControlType(attacker) == SCR_ECharacterControlType.POSSESSED_AI)
-			return;
+		int attackerPlayerId = m_LastKnownInstigator.GetInstigatorPlayerID();
+		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
+
+		if (attackerPlayerId <= 0 && !attacker)
+			return; // world damage is never blue-on-blue
+
+		if (attacker && attacker == owner)
+			return; // self-inflicted
+
+		PlayerManager pm = GetGame().GetPlayerManager();
+		if (pm && attackerPlayerId > 0 && attackerPlayerId == pm.GetPlayerIdFromControlledEntity(owner))
+			return; // self-inflicted via an indirect instigator (own grenade, vehicle, etc.)
+
+		// Probe the attacker's control type on the instigator entity while it still exists, else on
+		// the attacker player's current body. This runs at the instant of the knockout hit, so
+		// "current" is a faithful stand-in for "at fire time".
+		IEntity controlTypeProbe = attacker;
+		if (!controlTypeProbe && attackerPlayerId > 0 && pm)
+			controlTypeProbe = pm.GetPlayerControlledEntity(attackerPlayerId);
+		if (controlTypeProbe)
+		{
+			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+				return;
+		}
 
 		string victimFaction = IRRU_GetFactionKey(owner);
-		string attackerFaction = IRRU_GetFactionKey(attacker);
+		string attackerFaction = IRRU_GetAttackerFactionKey(attackerPlayerId, attacker);
 		if (victimFaction.IsEmpty() || attackerFaction.IsEmpty() || victimFaction != attackerFaction)
 			return; // different or unknown factions -> not friendly fire
 
 		Print(string.Format("[NoInstantDeath] BLUE-ON-BLUE: %1 knocked unconscious by friendly %2 (faction=%3)",
-			GetNameStr(owner), GetNameStr(attacker), victimFaction), LogLevel.WARNING);
+			GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), victimFaction), LogLevel.WARNING);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Resolve the attacker's faction key. The faction manager's per-player record is preferred
+	//! because it survives the attacker's entity being destroyed; the entity's faction affiliation
+	//! is the fallback for AI and other non-player instigators.
+	protected string IRRU_GetAttackerFactionKey(int attackerPlayerId, IEntity attackerEntity)
+	{
+		if (attackerPlayerId > 0)
+		{
+			Faction playerFaction = SCR_FactionManager.SGetPlayerFaction(attackerPlayerId);
+			if (playerFaction)
+				return playerFaction.GetFactionKey();
+		}
+
+		return IRRU_GetFactionKey(attackerEntity);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! "PlayerName#id" when the attacker resolves to a player, entity description otherwise.
+	protected string IRRU_GetAttackerDesc(int attackerPlayerId, IEntity attackerEntity)
+	{
+		if (attackerPlayerId > 0)
+		{
+			string playerName = "";
+			PlayerManager pm = GetGame().GetPlayerManager();
+			if (pm)
+				playerName = pm.GetPlayerName(attackerPlayerId);
+			if (playerName.IsEmpty())
+				playerName = "Player";
+			return string.Format("%1#%2", playerName, attackerPlayerId);
+		}
+
+		return GetNameStr(attackerEntity);
 	}
 
 	//------------------------------------------------------------------------------------------------
