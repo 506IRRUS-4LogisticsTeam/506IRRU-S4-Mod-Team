@@ -97,6 +97,9 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
+		if (newLifeState == ECharacterLifeState.INCAPACITATED && previousLifeState == ECharacterLifeState.ALIVE && (Replication.IsServer() || !Replication.IsRunning()))
+			IRRU_StowWeaponOnUnconscious();
+
 		if (newLifeState != ECharacterLifeState.INCAPACITATED || previousLifeState != ECharacterLifeState.ALIVE || !m_bNID_Initialized || m_bIsUnconscious)
 			return;
 
@@ -107,6 +110,28 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		}
 
 		MakeUnconscious(GetOwner());
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Weapon stow on unconsciousness adapted from "Keep Gun When Uncon" by bacon8008, original
+	//! implementation by R34P3R. Used and modified under the Arma Public License (APL), with
+	//! bacon8008's knowledge (2026-07-19).
+	//! https://reforger.armaplatform.com/workshop/6088A3044B7ECBFD-KeepGunWhenUncon
+	//! https://www.bohemia.net/community/licenses/arma-public-license
+	protected void IRRU_StowWeaponOnUnconscious()
+	{
+		if (!m_Ctrl)
+			return;
+
+		BaseWeaponManagerComponent weaponManager = m_Ctrl.GetWeaponManagerComponent();
+		if (!weaponManager)
+			return;
+
+		BaseWeaponComponent currentWeapon = weaponManager.GetCurrentWeapon();
+		if (!currentWeapon || !currentWeapon.GetOwner())
+			return;
+
+		m_Ctrl.TryEquipRightHandItem(null, EEquipItemType.EEquipTypeUnarmedContextual, true);
 	}
 
 	void MakeUnconscious(IEntity owner)

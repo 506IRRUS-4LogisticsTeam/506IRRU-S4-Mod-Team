@@ -1,9 +1,11 @@
 modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerComponent
 {
 	protected const float ARMOR_HIT_PAIN_SCALE = 3.0;
+	protected const float IRRU_KILL_BLOCK_LOG_INTERVAL_MS = 5000;
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
 	protected int m_iIRRU_ResilienceTextState = -1;
+	protected float m_fIRRU_NextKillBlockLogTimeMS;
 
 	SCR_CharacterHealthHitZone IRRU_GetHealthHitZone()
 	{
@@ -175,12 +177,19 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 				PlayerManager playerManager = GetGame().GetPlayerManager();
 				if (owner && playerManager && playerManager.GetPlayerIdFromControlledEntity(owner) > 0)
 				{
-					int instigatorPlayerId = 0;
-					if (instigator)
-						instigatorPlayerId = instigator.GetInstigatorPlayerID();
+					float nowMS = owner.GetWorld().GetWorldTime();
+					if (nowMS >= m_fIRRU_NextKillBlockLogTimeMS)
+					{
+						m_fIRRU_NextKillBlockLogTimeMS = nowMS + IRRU_KILL_BLOCK_LOG_INTERVAL_MS;
 
-					Print(string.Format("[NoInstantDeath] BLOCKED Kill() on %1 during bleedout - Blood: %2%%, Health: %3%%, timer remaining: %4s, instigatorPlayerId: %5",
-						nid.GetNameStr(owner), IRRU_GetBloodPercentage(), IRRU_GetHealthPercentage(), nid.GetBleedoutTimeRemaining(), instigatorPlayerId), LogLevel.WARNING);
+						int instigatorPlayerId = 0;
+						if (instigator)
+							instigatorPlayerId = instigator.GetInstigatorPlayerID();
+
+						Print(string.Format("[NoInstantDeath] BLOCKED Kill() on %1 during bleedout - Blood: %2%%, Health: %3%%, timer remaining: %4s, instigatorPlayerId: %5",
+							nid.GetNameStr(owner), IRRU_GetBloodPercentage(), IRRU_GetHealthPercentage(), nid.GetBleedoutTimeRemaining(), instigatorPlayerId), LogLevel.WARNING);
+					}
+
 					return;
 				}
 			}

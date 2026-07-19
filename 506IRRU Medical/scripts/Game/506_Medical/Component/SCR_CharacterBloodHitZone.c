@@ -5,11 +5,12 @@
 //! OnDamageStateChanged the moment this hit zone reaches DESTROYED (0% blood), unless
 //! ACE_Medical_CanBleedOut() returns false. We suppress that kill outright for players so the
 //! IRRU_NoInstantDeathComponent bleedout timer is the only thing that can kill an unconscious
-//! player. Server evidence (Nizla dedicated, 2026-07-19) showed a player still dying the instant
-//! blood hit zero despite this gate - the kill likely originates in the vanilla super chain,
-//! which runs BEFORE ACE's gate - so SCR_CharacterDamageManagerComponent.Kill() carries a
-//! second, unconditional backstop. The debug print in CanBleedOut exists to prove in the RPT
-//! whether this gate was consulted at death time and what it decided.
+//! player. A second, un-gated kill also exists on servers running the "Keep Gun When Uncon"
+//! workshop mod (6088A3044B7ECBFD): it overrides UpdateConsciousness with a copy of the vanilla
+//! body, resurrecting the blood-destroyed Kill() whenever it loads after ACE Medical (confirmed
+//! 2026-07-19 from its source). SCR_CharacterDamageManagerComponent.Kill() therefore carries an
+//! unconditional backstop; this mod now ships the weapon-stow feature itself, so that mod should
+//! be REMOVED from server configs.
 //!
 //! THE BLEEDING RATE SCALE IS APPLIED HERE, NOT IN SCR_GameModeHealthSettings. Server log
 //! evidence (2026-07-19): the game mode component verifiably held m_fDOTScale 0.25 while actual
@@ -34,13 +35,7 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 {
 	override protected bool ACE_Medical_CanBleedOut()
 	{
-		IEntity owner = IRRU_GetCharacterOwner();
-		int controllingPlayerId = IRRU_GetControllingPlayerId(owner);
-
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath] CanBleedOut evaluated - controllingPlayerId: %1, owner: %2", controllingPlayerId, owner), LogLevel.WARNING);
-
-		if (controllingPlayerId > 0)
+		if (IRRU_GetControllingPlayerId(IRRU_GetCharacterOwner()) > 0)
 			return false;
 
 		return super.ACE_Medical_CanBleedOut();
