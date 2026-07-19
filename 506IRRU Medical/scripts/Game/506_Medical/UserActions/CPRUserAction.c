@@ -408,7 +408,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return !InventoryItemComponent.Cast(entity.FindComponent(InventoryItemComponent));
 	}
 
-	//------------------------------------------------------------------------------------------------
 	protected IRRU_NoInstantDeathComponent IRRU_GetNID(IEntity entity)
 	{
 		if (!entity)
@@ -416,8 +415,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return IRRU_NoInstantDeathComponent.Cast(entity.FindComponent(IRRU_NoInstantDeathComponent));
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Seconds of CPR cooldown remaining on the user (rounded up), or -1 when not on cooldown.
 	protected float IRRU_GetUserCooldownRemaining(IEntity user)
 	{
 		IRRU_NoInstantDeathComponent userNid = IRRU_GetNID(user);
@@ -427,8 +424,6 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return -1;
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Server-only fetch of the patient's damage manager; null off-server or when unavailable.
 	protected SCR_CharacterDamageManagerComponent IRRU_GetPatientDamageManager(IEntity patient)
 	{
 		if (!patient || !Replication.IsServer())

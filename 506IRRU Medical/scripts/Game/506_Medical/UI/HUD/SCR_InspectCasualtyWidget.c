@@ -139,8 +139,6 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return "255,0,0,255";
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Remaining bleedout time as a percentage of this casualty's total bleedout window.
 	protected float IRRU_GetBleedoutPercentRemaining(IEntity character, float bleedoutTimeRemaining)
 	{
 		float totalBleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
@@ -150,8 +148,6 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 		return (bleedoutTimeRemaining / totalBleedoutTime) * 100.0;
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Bleedout time remaining formatted as M:SS.
 	protected string IRRU_FormatBleedoutTime(float bleedoutTimeRemaining)
 	{
 		int minutes = Math.Floor(bleedoutTimeRemaining / 60);

@@ -46,11 +46,6 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 		return super.ACE_Medical_CanBleedOut();
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Resolve the character entity via the hit zone container (the damage manager component, whose
-	//! GetOwner() is guaranteed to be the character), falling back to the hit zone's own GetOwner().
-	//! Guards against hit zone GetOwner() semantics differing from the character entity - the one
-	//! remaining suspect for why ACE's own EntityUtils.IsPlayer gate failed on the dedicated server.
 	protected IEntity IRRU_GetCharacterOwner()
 	{
 		HitZoneContainerComponent container = GetHitZoneContainer();
@@ -64,9 +59,6 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 		return GetOwner();
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Effective drain = raw wound sum x IRRU bleeding scale, capped at the IRRU max rate. This is
-	//! the exact number ACE_Medical_BloodLossDamageEffect drains per second - see banner.
 	override float GetTotalBleedingAmount()
 	{
 		float bleedingRate = super.GetTotalBleedingAmount() * IRRU_NoInstantDeathSettings.GetBleedingRateScale();
@@ -76,6 +68,18 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 			return maxBleedingRate;
 
 		return bleedingRate;
+	}
+
+	override void ACE_Medical_UpdateTotalBleedingAmount()
+	{
+		super.ACE_Medical_UpdateTotalBleedingAmount();
+
+		if (super.GetTotalBleedingAmount() > 0)
+			return;
+
+		SCR_CharacterDamageManagerComponent damageManager = SCR_CharacterDamageManagerComponent.Cast(GetHitZoneContainer());
+		if (damageManager)
+			damageManager.IRRU_ClearBleedingParticles();
 	}
 
 	protected int IRRU_GetControllingPlayerId(IEntity entity)

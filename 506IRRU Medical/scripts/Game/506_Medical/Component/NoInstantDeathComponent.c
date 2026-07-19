@@ -21,12 +21,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected bool m_bDeadBlockPrinted = false;
 	protected bool m_bDeadWarned = false;
 
-	//! The patient's current CPR helper session. Used so a stale helper's delayed teardown does not
-	//! clear the CPR flag set by a newer session on the same patient. Server-side ref, not replicated.
 	protected IRRU_CPRHelperCompartment m_pActiveCPRHelper;
 
-	//! Captured at unconscious time and held through the bleedout window. Read cross-module by the
-	//! IRRU Ticket System hook (modded IRRU_NoInstantDeathComponent) to attribute casualties. Do not remove.
 	protected Instigator m_LastKnownInstigator;
 	protected RplComponent m_Rpl;
 	protected SCR_CharacterDamageManagerComponent m_CachedDmgManager;
@@ -69,8 +65,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		super.OnDelete(owner);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Replicate this component's RplProps to clients (no-op when not networked).
 	protected void IRRU_BumpReplication()
 	{
 		if (m_Rpl)
@@ -127,7 +121,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 		m_CachedDmgManager.ForceUnconsciousness();
 
-		// Blue-on-blue tracking is server-authoritative (instigator is only reliable on the server).
 		if (Replication.IsServer() || !Replication.IsRunning())
 			IRRU_LogBlueOnBlue(owner);
 
@@ -142,15 +135,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			Print(string.Format("[NoInstantDeath] %1: entering unconscious state (%2s timer)", GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime()));
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Emit a WARNING whenever a player casualty was caused by friendly fire (attacker shares the
-	//! victim's faction), so the unit can track blue-on-blue incidents in the server console.
-	//! Attacker identity resolves player ID first and entity second - the same policy as the ticket
-	//! system's instigator handling - so a teamkiller whose body is already gone (killed, cleaned
-	//! up, or combat-logged) is still attributed instead of silently dropped. AI victims are skipped
-	//! to mirror the ticket system's casualty filter and keep AI-vs-AI engagements out of the log.
-	//! GM-driven attackers (Ares possession, editor actions) are ignored: those engagements are
-	//! deliberate, not accidental.
 	protected void IRRU_LogBlueOnBlue(IEntity owner)
 	{
 		if (!m_LastKnownInstigator)
@@ -158,24 +142,21 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
 		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
-			return; // only real player casualties count, matching IRRU_TicketSystemMedicalHook
+			return;
 
 		int attackerPlayerId = m_LastKnownInstigator.GetInstigatorPlayerID();
 		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
 
 		if (attackerPlayerId <= 0 && !attacker)
-			return; // world damage is never blue-on-blue
+			return;
 
 		if (attacker && attacker == owner)
-			return; // self-inflicted
+			return;
 
 		PlayerManager pm = GetGame().GetPlayerManager();
 		if (pm && attackerPlayerId > 0 && attackerPlayerId == pm.GetPlayerIdFromControlledEntity(owner))
-			return; // self-inflicted via an indirect instigator (own grenade, vehicle, etc.)
+			return;
 
-		// Probe the attacker's control type on the instigator entity while it still exists, else on
-		// the attacker player's current body. This runs at the instant of the knockout hit, so
-		// "current" is a faithful stand-in for "at fire time".
 		IEntity controlTypeProbe = attacker;
 		if (!controlTypeProbe && attackerPlayerId > 0 && pm)
 			controlTypeProbe = pm.GetPlayerControlledEntity(attackerPlayerId);
@@ -189,16 +170,12 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		string victimFaction = IRRU_GetFactionKey(owner);
 		string attackerFaction = IRRU_GetAttackerFactionKey(attackerPlayerId, attacker);
 		if (victimFaction.IsEmpty() || attackerFaction.IsEmpty() || victimFaction != attackerFaction)
-			return; // different or unknown factions -> not friendly fire
+			return;
 
 		Print(string.Format("[NoInstantDeath] BLUE-ON-BLUE: %1 knocked unconscious by friendly %2 (faction=%3)",
 			GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), victimFaction), LogLevel.WARNING);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Resolve the attacker's faction key. The faction manager's per-player record is preferred
-	//! because it survives the attacker's entity being destroyed; the entity's faction affiliation
-	//! is the fallback for AI and other non-player instigators.
 	protected string IRRU_GetAttackerFactionKey(int attackerPlayerId, IEntity attackerEntity)
 	{
 		if (attackerPlayerId > 0)
@@ -211,8 +188,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		return IRRU_GetFactionKey(attackerEntity);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! "PlayerName#id" when the attacker resolves to a player, entity description otherwise.
 	protected string IRRU_GetAttackerDesc(int attackerPlayerId, IEntity attackerEntity)
 	{
 		if (attackerPlayerId > 0)
@@ -229,8 +204,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		return GetNameStr(attackerEntity);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Resolve an entity's affiliated faction key, or "" if it has no faction.
 	protected string IRRU_GetFactionKey(IEntity e)
 	{
 		if (!e)
@@ -280,16 +253,12 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		}
 
 		bool healthStable = false;
-		// bool hasEpinephrine = false;
 		if (m_CachedDmgManager)
 		{
 			healthStable = (m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0);
-			// HitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
-			// if (resilienceHZ)
-			// 	hasEpinephrine = (m_CachedDmgManager.FindDamageEffectOnHitZone(ACE_Medical_EpinephrineDamageEffect, resilienceHZ) != null);
 		}
 
-		if (!m_bReceivingCPR && !healthStable /* && !hasEpinephrine */)
+		if (!m_bReceivingCPR && !healthStable)
 			m_fUnconsciousTimer += CHECK_INTERVAL;
 
 		IRRU_BumpReplication();
@@ -302,8 +271,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 				pauseReason = " (paused: CPR)";
 			else if (healthStable)
 				pauseReason = " (paused: vitals stable)";
-			// else if (hasEpinephrine)
-			// 	pauseReason = " (paused: epinephrine)";
 
 			Print(string.Format("[NoInstantDeath] %1: bleedout %2/%3s remaining%4 - Health: %5%%, Blood: %6%%, Resilience: %7%%, Bleeding: %8 ml/s",
 				GetNameStr(owner), (bleedoutTime - m_fUnconsciousTimer), bleedoutTime, pauseReason,
@@ -412,8 +379,6 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		}
 	}
 
-	//! Tracks which CPR helper currently owns this patient's session, so a stale helper's teardown
-	//! cannot clear the flag of a newer session. See IRRU_CPRHelperCompartment.OnCompartmentLeft().
 	void IRRU_SetActiveCPRHelper(IRRU_CPRHelperCompartment helper)
 	{
 		m_pActiveCPRHelper = helper;

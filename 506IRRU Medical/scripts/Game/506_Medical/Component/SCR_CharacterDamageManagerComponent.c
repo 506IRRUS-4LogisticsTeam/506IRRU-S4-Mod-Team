@@ -5,13 +5,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
 	protected int m_iIRRU_ResilienceTextState = -1;
 
-	//! Lazily resolves and caches the character's overall health hitzone by TYPE.
-	//! IMPORTANT: do NOT use GetDefaultHitZone() here. Under ACE Medical the default hitzone is a
-	//! separate plain SCR_HitZone ("ACE_Medical_Default", HZDefault 1) while the SCR_CharacterHealthHitZone
-	//! ("Health") is HZDefault 0 - so GetDefaultHitZone() would not return the health zone. A type-based
-	//! lookup is correct under both vanilla and ACE; caching it avoids the per-call array allocation + scan
-	//! (this is read every casualty-UI tick and every bleedout tick). The hitzone instance is stable for
-	//! the character's lifetime, matching how the base game caches blood/resilience/head hitzones.
 	SCR_CharacterHealthHitZone IRRU_GetHealthHitZone()
 	{
 		if (m_IRRU_HealthHitZone)
@@ -71,13 +64,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return GetResilienceHitZone() != null;
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Resilience is server-authoritative and regenerates fast, but its hitzone health replicates to
-	//! clients on a throttled cadence (worse under player load) - so the casualty-inspection resilience
-	//! text can lag reality by several seconds. We subscribe here (SetResilienceHitZone is the engine's
-	//! registration hook, so the hitzone is guaranteed valid) and force a replication push the moment the
-	//! value crosses into a new inspect-UI text state, flipping the text promptly instead of waiting for
-	//! the next routine hitzone sync.
 	override void SetResilienceHitZone(HitZone hitZone)
 	{
 		super.SetResilienceHitZone(hitZone);
@@ -87,8 +73,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			resilienceHZ.GetOnHealthChanged().Insert(IRRU_RefreshResilienceReplication);
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Server-only: bump replication when resilience crosses into a new inspect-UI text state.
 	protected void IRRU_RefreshResilienceReplication()
 	{
 		if (!Replication.IsServer())
@@ -102,9 +86,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		Replication.BumpMe();
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! Buckets resilience into the inspect UI's text states. MUST mirror SCR_InspectCasualtyWidget:
-	//! 0 = Unconscious (<33), 1 = Fading (<=59), 2 = Dazed (<=99), 3 = Fully responsive (>99).
 	protected int IRRU_GetResilienceTextState()
 	{
 		float resiliencePercent = IRRU_GetResiliencePercentage();
@@ -125,8 +106,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return bloodHZ.GetTotalBleedingAmount();
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! This character's NID component, or null if absent. Centralizes the repeated owner->find->cast.
 	protected IRRU_NoInstantDeathComponent IRRU_GetNID()
 	{
 		IEntity owner = GetOwner();
@@ -185,19 +164,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return super.ACE_Medical_ShouldDeactivateSecondChance();
 	}
 
-	//------------------------------------------------------------------------------------------------
-	//! LAST-LINE ENFORCEMENT of the no-instant-death rule. Every scripted kill path in ACE Medical
-	//! (blood-out, second chance refusal, second chance deactivation) and most base game paths end
-	//! in DamageManager.Kill(). Server evidence (Nizla dedicated, 2026-07-19) showed a player killed
-	//! the instant blood hit 0% even with the ACE_Medical_CanBleedOut() gate in place, so the rule
-	//! is enforced here unconditionally: while a player-controlled character is held unconscious by
-	//! IRRU_NoInstantDeathComponent, Kill() is swallowed and logged. The WARN snapshot identifies
-	//! the caller by fingerprint - blood at 0% means the blood-out path, higher blood values point
-	//! at second chance or another mod.
-	//!
-	//! The bleedout timer death is NOT affected: IRRU_NoInstantDeathComponent.KillCharacter() kills
-	//! via SetHealth(0) on the default hitzone and never calls Kill(). Side effect: GM/admin kill
-	//! actions on an unconscious player are also swallowed - delete the entity instead.
 	override void Kill(notnull Instigator instigator)
 	{
 		if (Replication.IsServer() || !Replication.IsRunning())
@@ -254,6 +220,18 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 			Print(string.Format("[NoInstantDeath] SecondChance triggered on %1 - Health: %2, Resilience: %3%%", characterName, currentHealth, currentResilience * 100.0));
 		}
+	}
+
+	void IRRU_ClearBleedingParticles()
+	{
+		RemoveAllBleedingParticles();
+	}
+
+	override void FullHeal(bool ignoreHealingDOT = true)
+	{
+		super.FullHeal(ignoreHealingDOT);
+
+		RemoveAllBleedingParticles();
 	}
 
 	override void ArmorHitEventDamage(EDamageType type, float damage, IEntity instigator)
