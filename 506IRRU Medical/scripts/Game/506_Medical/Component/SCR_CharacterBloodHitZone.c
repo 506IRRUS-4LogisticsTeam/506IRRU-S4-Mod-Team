@@ -3,50 +3,73 @@
 //!
 //! ACE Medical (ACE_Medical_Bleeding) mods this class and kills the character from its
 //! OnDamageStateChanged the moment this hit zone reaches DESTROYED (0% blood), unless
-//! ACE_Medical_CanBleedOut() returns false. Unlike our SCR_GameModeHealthSettings override, this
-//! is not a race won on timing - we suppress the kill outright for players, so ACE never reaches
-//! its damageManager.Kill() call at all.
+//! ACE_Medical_CanBleedOut() returns false. We suppress that kill outright for players so the
+//! IRRU_NoInstantDeathComponent bleedout timer is the only thing that can kill an unconscious
+//! player. Server evidence (Nizla dedicated, 2026-07-19) showed a player still dying the instant
+//! blood hit zero despite this gate - the kill likely originates in the vanilla super chain,
+//! which runs BEFORE ACE's gate - so SCR_CharacterDamageManagerComponent.Kill() carries a
+//! second, unconditional backstop. The debug print in CanBleedOut exists to prove in the RPT
+//! whether this gate was consulted at death time and what it decided.
 //!
-//! Why: ACE gates that kill behind m_bBleedOutForPlayersEnabled, which on our servers did not take
-//! effect even when set to 0 in the mission header. Players were dying the instant blood hit 0%
-//! with most of the bleedout timer still remaining. Enforcing the rule here makes it independent
-//! of whether ACE mod settings ever bind correctly.
-//!
-//! CRITICAL: with this in place a player can no longer die from blood loss by ANY path. The
-//! bleedout timer in IRRU_NoInstantDeathComponent becomes the only thing that can kill an
-//! unconscious player. If that component is missing from a character prefab, or fails to
-//! initialise, that character is effectively immortal while unconscious.
+//! THE BLEEDING RATE SCALE IS APPLIED HERE, NOT IN SCR_GameModeHealthSettings. Server log
+//! evidence (2026-07-19): the game mode component verifiably held m_fDOTScale 0.25 while actual
+//! blood drain matched the raw wound sum 1:1. ACE_Medical_BloodLossDamageEffect consumes
+//! GetTotalBleedingAmount() directly and nothing downstream applies the game mode scale, so
+//! every historical value of that knob (1.25 prefab, 0.175 layers, 0.39 mission header) was
+//! inert under ACE. This getter is the single choke point the drain pipeline actually reads;
+//! scale and cap are both enforced here, and the value it returns - which is what the NID
+//! periodic log prints as "Bleeding: X ml/s" - is therefore the EFFECTIVE drain in ml/s.
+//! m_fMaxTotalBleedingRate in IRRU_NoInstantDeathSettings caps the post-scale rate.
 //!
 //! Compatibility consequences:
 //! - AI is deliberately left on ACE behaviour via super, so AI still bleed out and die normally.
-//! - EntityUtils.IsPlayer() is deliberately NOT used here even though that is ACE's own check, as
-//!   it was a suspect for the original failure. PlayerManager.GetPlayerIdFromControlledEntity() is
-//!   used instead, and is known to resolve correctly for unconscious players.
-//! - A disconnected player's body stops being player controlled, so it falls back to ACE behaviour
+//! - A disconnected player's body stops being player controlled, falls back to ACE behaviour,
 //!   and can bleed out.
 //! - Blood stays pinned at 0% for downed players until they are revived. That is expected.
-//! - Any mod overriding ACE_Medical_CanBleedOut() or OnDamageStateChanged() without calling super
-//!   re-enables ACE's kill, and players will start dying at 0% blood again with no error logged.
+//! - Any mod overriding ACE_Medical_CanBleedOut(), GetTotalBleedingAmount(), or
+//!   OnDamageStateChanged() without calling super re-enables ACE's kill or drops the scale, and
+//!   players start dying at 0% blood again with no error logged.
 //------------------------------------------------------------------------------------------------
 modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 {
 	override protected bool ACE_Medical_CanBleedOut()
 	{
-		if (IRRU_IsPlayerControlled(GetOwner()))
+		IEntity owner = IRRU_GetCharacterOwner();
+		int controllingPlayerId = IRRU_GetControllingPlayerId(owner);
+
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
+			Print(string.Format("[NoInstantDeath] CanBleedOut evaluated - controllingPlayerId: %1, owner: %2", controllingPlayerId, owner), LogLevel.WARNING);
+
+		if (controllingPlayerId > 0)
 			return false;
 
 		return super.ACE_Medical_CanBleedOut();
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Caps the combined bleed rate using IRRU_NoInstantDeathSettings. ACE already clamps its stored
-	//! total with its own m_fMaxTotalBleedingRate; this clamps again at the read site so our cap
-	//! applies regardless of whether ACE settings loaded. Note that anything reading ACE's
-	//! m_fACE_Medical_TotalBleedingAmount member directly bypasses this - only callers of
-	//! GetTotalBleedingAmount() are capped, which covers ACE_Medical_BloodLossDamageEffect.
+	//! Resolve the character entity via the hit zone container (the damage manager component, whose
+	//! GetOwner() is guaranteed to be the character), falling back to the hit zone's own GetOwner().
+	//! Guards against hit zone GetOwner() semantics differing from the character entity - the one
+	//! remaining suspect for why ACE's own EntityUtils.IsPlayer gate failed on the dedicated server.
+	protected IEntity IRRU_GetCharacterOwner()
+	{
+		HitZoneContainerComponent container = GetHitZoneContainer();
+		if (container)
+		{
+			IEntity containerOwner = container.GetOwner();
+			if (containerOwner)
+				return containerOwner;
+		}
+
+		return GetOwner();
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Effective drain = raw wound sum x IRRU bleeding scale, capped at the IRRU max rate. This is
+	//! the exact number ACE_Medical_BloodLossDamageEffect drains per second - see banner.
 	override float GetTotalBleedingAmount()
 	{
-		float bleedingRate = super.GetTotalBleedingAmount();
+		float bleedingRate = super.GetTotalBleedingAmount() * IRRU_NoInstantDeathSettings.GetBleedingRateScale();
 
 		float maxBleedingRate = IRRU_NoInstantDeathSettings.GetMaxTotalBleedingRate();
 		if (maxBleedingRate >= 0 && bleedingRate > maxBleedingRate)
@@ -55,15 +78,15 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 		return bleedingRate;
 	}
 
-	protected bool IRRU_IsPlayerControlled(IEntity entity)
+	protected int IRRU_GetControllingPlayerId(IEntity entity)
 	{
 		if (!entity)
-			return false;
+			return 0;
 
 		PlayerManager playerManager = GetGame().GetPlayerManager();
 		if (!playerManager)
-			return false;
+			return 0;
 
-		return playerManager.GetPlayerIdFromControlledEntity(entity) > 0;
+		return playerManager.GetPlayerIdFromControlledEntity(entity);
 	}
 }

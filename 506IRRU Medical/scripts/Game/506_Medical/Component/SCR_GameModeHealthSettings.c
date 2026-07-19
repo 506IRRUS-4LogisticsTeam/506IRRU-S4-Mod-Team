@@ -1,30 +1,23 @@
 //------------------------------------------------------------------------------------------------
-//! WARNING - INTENTIONALLY OVERRIDES ACE MEDICAL. LOAD ORDER SENSITIVE.
+//! DIAGNOSTICS ONLY - THIS COMPONENT NO LONGER CONTROLS BLEEDING.
 //!
-//! ACE Medical (ACE_Medical_Bleeding) also mods this class and writes BOTH m_fDOTScale and
-//! m_fRegenScale inside its OnPostInit, sourced from ACE_Medical_Core_Settings. ACE calls super,
-//! and so do we, so ACE's OnPostInit still runs - we do not block it. We instead overwrite the
-//! bleeding scale afterwards on a delayed callback, so the last writer (this mod) wins.
+//! History: this override used to force m_fDOTScale from IRRU settings on a delayed callback,
+//! assuming the engine applied it to ACE's blood drain. Server log evidence (Nizla dedicated,
+//! 2026-07-19) proved the knob is INERT under ACE Medical: the component verifiably held 0.25
+//! while actual drain matched the raw wound sum 1:1, because ACE_Medical_BloodLossDamageEffect
+//! consumes SCR_CharacterBloodHitZone.GetTotalBleedingAmount() directly and nothing downstream
+//! reads the game mode scale. The real scale and cap now live in the modded
+//! SCR_CharacterBloodHitZone.GetTotalBleedingAmount() in this mod.
 //!
-//! Why: ACE reads its value once at init from ACE mod settings, which on our servers did not
-//! reliably reflect the mission-header config (players bled out at 0% blood despite
-//! m_bBleedOutForPlayersEnabled being 0). This mod owns the bleeding rate instead, sourced from
-//! IRRU_NoInstantDeathSettings so it behaves identically in Workbench and on a dedicated server.
-//!
-//! Compatibility consequences:
-//! - ACE's m_fBleedingRateScale (server config / mission header) is INERT for bleeding.
-//!   Change the rate in IRRU_NoInstantDeathSettings.conf, not in the server config.
-//! - m_fRegenScale is deliberately NOT touched here, so ACE still owns blood regen whenever its
-//!   settings are loaded; it falls back to the mission/prefab value when they are not.
-//! - Mission and prefab m_fDOTScale values are overwritten at runtime, so per-world bleed tuning
-//!   no longer has any effect.
-//! - Any mod that writes m_fDOTScale later than IRRU_APPLY_DELAY_MS will beat this and win.
-//! - Any mod that overrides OnPostInit WITHOUT calling super stops our apply from ever being
-//!   scheduled, silently reverting bleeding to whatever ACE or the mission set.
+//! This override only prints the resolved values at startup so the RPT shows, in one line, what
+//! the IRRU config actually enforces versus what the inert game mode knobs happen to hold (ACE
+//! still writes them from its own settings in OnPostInit; mission templates also set them). Do
+//! not "fix" bleeding by editing m_fDOTScale anywhere - prefab, layer, or server config - it
+//! does nothing under ACE. Edit IRRU_NoInstantDeathSettings.conf instead.
 //------------------------------------------------------------------------------------------------
 modded class SCR_GameModeHealthSettings : ScriptComponent
 {
-	protected const float IRRU_APPLY_DELAY_MS = 5000;
+	protected const float IRRU_LOG_DELAY_MS = 5000;
 
 	override void OnPostInit(IEntity owner)
 	{
@@ -33,21 +26,19 @@ modded class SCR_GameModeHealthSettings : ScriptComponent
 		if (!GetGame().InPlayMode() || !Replication.IsServer())
 			return;
 
-		GetGame().GetCallqueue().CallLater(IRRU_ApplyBleedingSettings, IRRU_APPLY_DELAY_MS, false);
+		GetGame().GetCallqueue().CallLater(IRRU_LogHealthSettings, IRRU_LOG_DELAY_MS, false);
 	}
 
 	override void OnDelete(IEntity owner)
 	{
-		GetGame().GetCallqueue().Remove(IRRU_ApplyBleedingSettings);
+		GetGame().GetCallqueue().Remove(IRRU_LogHealthSettings);
 
 		super.OnDelete(owner);
 	}
 
-	protected void IRRU_ApplyBleedingSettings()
+	protected void IRRU_LogHealthSettings()
 	{
-		SetBleedingScale(IRRU_NoInstantDeathSettings.GetBleedingRateScale());
-
-		Print(string.Format("[NoInstantDeath] Health settings resolved - BleedingScale: %1, RegenScale: %2, MaxTotalBleedRate: %3 ml/s",
-			GetBleedingScale(), GetRegenScale(), IRRU_NoInstantDeathSettings.GetMaxTotalBleedingRate()));
+		Print(string.Format("[NoInstantDeath] Health settings resolved - IRRU BleedingScale: %1 (enforced at blood hitzone), IRRU MaxTotalBleedRate: %2 ml/s effective, GameMode DOTScale: %3 (inert under ACE), RegenScale: %4",
+			IRRU_NoInstantDeathSettings.GetBleedingRateScale(), IRRU_NoInstantDeathSettings.GetMaxTotalBleedingRate(), GetBleedingScale(), GetRegenScale()));
 	}
 }

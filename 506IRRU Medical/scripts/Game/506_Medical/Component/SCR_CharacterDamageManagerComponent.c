@@ -185,6 +185,44 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return super.ACE_Medical_ShouldDeactivateSecondChance();
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! LAST-LINE ENFORCEMENT of the no-instant-death rule. Every scripted kill path in ACE Medical
+	//! (blood-out, second chance refusal, second chance deactivation) and most base game paths end
+	//! in DamageManager.Kill(). Server evidence (Nizla dedicated, 2026-07-19) showed a player killed
+	//! the instant blood hit 0% even with the ACE_Medical_CanBleedOut() gate in place, so the rule
+	//! is enforced here unconditionally: while a player-controlled character is held unconscious by
+	//! IRRU_NoInstantDeathComponent, Kill() is swallowed and logged. The WARN snapshot identifies
+	//! the caller by fingerprint - blood at 0% means the blood-out path, higher blood values point
+	//! at second chance or another mod.
+	//!
+	//! The bleedout timer death is NOT affected: IRRU_NoInstantDeathComponent.KillCharacter() kills
+	//! via SetHealth(0) on the default hitzone and never calls Kill(). Side effect: GM/admin kill
+	//! actions on an unconscious player are also swallowed - delete the entity instead.
+	override void Kill(notnull Instigator instigator)
+	{
+		if (Replication.IsServer() || !Replication.IsRunning())
+		{
+			IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
+			if (nid && nid.IsUnconscious())
+			{
+				IEntity owner = GetOwner();
+				PlayerManager playerManager = GetGame().GetPlayerManager();
+				if (owner && playerManager && playerManager.GetPlayerIdFromControlledEntity(owner) > 0)
+				{
+					int instigatorPlayerId = 0;
+					if (instigator)
+						instigatorPlayerId = instigator.GetInstigatorPlayerID();
+
+					Print(string.Format("[NoInstantDeath] BLOCKED Kill() on %1 during bleedout - Blood: %2%%, Health: %3%%, timer remaining: %4s, instigatorPlayerId: %5",
+						nid.GetNameStr(owner), IRRU_GetBloodPercentage(), IRRU_GetHealthPercentage(), nid.GetBleedoutTimeRemaining(), instigatorPlayerId), LogLevel.WARNING);
+					return;
+				}
+			}
+		}
+
+		super.Kill(instigator);
+	}
+
 	override void ACE_Medical_OnSecondChanceGranted()
 	{
 		super.ACE_Medical_OnSecondChanceGranted();
