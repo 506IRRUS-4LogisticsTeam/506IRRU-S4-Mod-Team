@@ -113,9 +113,9 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Weapon stow on unconsciousness adapted from "Keep Gun When Uncon" by bacon8008, original
-	//! implementation by R34P3R. Used and modified under the Arma Public License (APL), with
-	//! bacon8008's knowledge (2026-07-19).
+	//! Weapon stow on unconsciousness adapted from "Keep Gun When Uncon" by ceo_of_bacon (published
+	//! on the Workshop originally as bacon8008), original implementation by R34P3R. Used and modified under the
+	//! Arma Public License (APL), with ceo_of_bacon's knowledge (2026-07-19).
 	//! https://reforger.armaplatform.com/workshop/6088A3044B7ECBFD-KeepGunWhenUncon
 	//! https://www.bohemia.net/community/licenses/arma-public-license
 	protected void IRRU_StowWeaponOnUnconscious()
