@@ -18,7 +18,7 @@ SCR_GameModeEditor GameMode_Editor_TFBase : "{DA3986AF1B5032B7}Prefabs/MP/Modes/
    m_sLoadoutSaveBlackListHolder "{D8486197EEACB762}Configs/Arsenal/506ArsenalLoadoutSaveBlacklists.conf"
   }
   SCR_GameModeHealthSettings "{5A22E11F9ACBB1DF}" {
-   m_fDOTScale 0.39
+   m_fDOTScale 0.25
    m_fRegenScale 1
   }
  }
