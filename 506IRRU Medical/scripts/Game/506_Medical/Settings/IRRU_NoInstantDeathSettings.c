@@ -5,6 +5,10 @@ class IRRU_NoInstantDeathSettings
 	protected const float MIN_BLEEDOUT_TIME = 60.0;
 	protected const float MAX_BLEEDOUT_TIME = 3600.0;
 	protected const float DEFAULT_BLEEDOUT_TIME = 360.0;
+	protected const float MIN_BLEEDING_RATE_SCALE = 0.0;
+	protected const float MAX_BLEEDING_RATE_SCALE = 5.0;
+	protected const float DEFAULT_BLEEDING_RATE_SCALE = 1.0;
+	protected const float DEFAULT_MAX_TOTAL_BLEEDING_RATE = -1.0;
 
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
 	float m_fBleedoutTime;
@@ -14,6 +18,12 @@ class IRRU_NoInstantDeathSettings
 
 	[Attribute(defvalue: "1", desc: "Use descriptive text instead of exact timer", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bUseDescriptiveTimer;
+
+	[Attribute(defvalue: "1", desc: "Character bleeding rate multiplier", category: "Bleeding", uiwidget: UIWidgets.Slider, params: "0 5 0.001", precision: 3)]
+	float m_fBleedingRateScale;
+
+	[Attribute(defvalue: "-1", desc: "Maximum combined bleeding rate in ml/s across all wounds (negative means uncapped)", category: "Bleeding")]
+	float m_fMaxTotalBleedingRate;
 
 	protected static ref IRRU_NoInstantDeathSettings s_Instance;
 	protected static bool s_Initialized = false;
@@ -43,6 +53,8 @@ class IRRU_NoInstantDeathSettings
 				s_Instance.m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
 				s_Instance.m_bDebugEnabled = true;
 				s_Instance.m_bUseDescriptiveTimer = true;
+				s_Instance.m_fBleedingRateScale = DEFAULT_BLEEDING_RATE_SCALE;
+				s_Instance.m_fMaxTotalBleedingRate = DEFAULT_MAX_TOTAL_BLEEDING_RATE;
 			}
 
 			if (!s_Initialized)
@@ -76,6 +88,22 @@ class IRRU_NoInstantDeathSettings
 		IRRU_NoInstantDeathSettings settings = GetInstance();
 		if (settings)
 			settings.m_fBleedoutTime = seconds;
+	}
+
+	static float GetBleedingRateScale()
+	{
+		IRRU_NoInstantDeathSettings settings = GetInstance();
+		if (settings)
+			return Math.Clamp(settings.m_fBleedingRateScale, MIN_BLEEDING_RATE_SCALE, MAX_BLEEDING_RATE_SCALE);
+		return DEFAULT_BLEEDING_RATE_SCALE;
+	}
+
+	static float GetMaxTotalBleedingRate()
+	{
+		IRRU_NoInstantDeathSettings settings = GetInstance();
+		if (settings)
+			return settings.m_fMaxTotalBleedingRate;
+		return DEFAULT_MAX_TOTAL_BLEEDING_RATE;
 	}
 
 	static void SetDebugEnabled(bool enabled)
