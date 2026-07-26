@@ -163,24 +163,39 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected void IRRU_LogBlueOnBlue(IEntity owner)
 	{
 		if (!m_LastKnownInstigator)
+		{
+			IRRU_LogBlueOnBlueSkip(owner, "no instigator recorded");
 			return;
+		}
 
 		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
 		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
+		{
+			IRRU_LogBlueOnBlueSkip(owner, string.Format("victim is not a player (control type %1)", typename.EnumToString(SCR_ECharacterControlType, victimType)));
 			return;
+		}
 
 		int attackerPlayerId = m_LastKnownInstigator.GetInstigatorPlayerID();
 		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
 
 		if (attackerPlayerId <= 0 && !attacker)
+		{
+			IRRU_LogBlueOnBlueSkip(owner, "world damage");
 			return;
+		}
 
 		if (attacker && attacker == owner)
+		{
+			IRRU_LogBlueOnBlueSkip(owner, "self-inflicted");
 			return;
+		}
 
 		PlayerManager pm = GetGame().GetPlayerManager();
 		if (pm && attackerPlayerId > 0 && attackerPlayerId == pm.GetPlayerIdFromControlledEntity(owner))
+		{
+			IRRU_LogBlueOnBlueSkip(owner, "self-inflicted via indirect instigator");
 			return;
+		}
 
 		IEntity controlTypeProbe = attacker;
 		if (!controlTypeProbe && attackerPlayerId > 0 && pm)
@@ -189,16 +204,30 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		{
 			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
 			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+			{
+				IRRU_LogBlueOnBlueSkip(owner, string.Format("attacker is GM-driven (control type %1)", typename.EnumToString(SCR_ECharacterControlType, attackerType)));
 				return;
+			}
 		}
 
 		string victimFaction = IRRU_GetFactionKey(owner);
 		string attackerFaction = IRRU_GetAttackerFactionKey(attackerPlayerId, attacker);
 		if (victimFaction.IsEmpty() || attackerFaction.IsEmpty() || victimFaction != attackerFaction)
+		{
+			IRRU_LogBlueOnBlueSkip(owner, string.Format("factions differ or unknown (victim=%1, attacker=%2)", victimFaction, attackerFaction));
 			return;
+		}
 
 		Print(string.Format("[NoInstantDeath] BLUE-ON-BLUE: %1 knocked unconscious by friendly %2 (faction=%3)",
 			GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), victimFaction), LogLevel.WARNING);
+	}
+
+	protected void IRRU_LogBlueOnBlueSkip(IEntity owner, string reason)
+	{
+		if (!IRRU_NoInstantDeathSettings.IsDebugEnabled())
+			return;
+
+		Print(string.Format("[NoInstantDeath] %1: blue-on-blue check skipped - %2", GetNameStr(owner), reason));
 	}
 
 	protected string IRRU_GetAttackerFactionKey(int attackerPlayerId, IEntity attackerEntity)

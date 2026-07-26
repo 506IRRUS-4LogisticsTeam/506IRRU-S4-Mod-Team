@@ -1,7 +1,0 @@
-SCR_ChimeraCharacter {
- ID "520EC961A090B1EE"
- components {
-  IRRU_ContactViewWeaponTracker "{68577423C3821B40}" {
-  }
- }
-}

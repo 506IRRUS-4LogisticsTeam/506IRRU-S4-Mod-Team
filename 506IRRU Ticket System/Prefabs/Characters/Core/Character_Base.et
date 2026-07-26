@@ -1,7 +1,0 @@
-SCR_ChimeraCharacter {
- ID "520EC961A090B1EE"
- components {
-  IRRU_TicketSystemDamageTracker "{688A0EDE349A7A4E}" {
-  }
- }
-}
