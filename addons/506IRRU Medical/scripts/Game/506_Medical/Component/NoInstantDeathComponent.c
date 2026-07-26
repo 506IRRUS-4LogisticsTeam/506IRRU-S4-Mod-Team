@@ -20,6 +20,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 	protected bool m_bDeadBlockPrinted = false;
 	protected bool m_bDeadWarned = false;
+	protected float m_fLastPeriodicLoggedTime = -1.0;
 
 	protected IRRU_CPRHelperCompartment m_pActiveCPRHelper;
 
@@ -143,6 +144,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_bDeadBlockPrinted = false;
 		m_bDeadWarned = false;
 		m_fUnconsciousTimer = 0.0;
+		m_fLastPeriodicLoggedTime = -1.0;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 		m_CachedDmgManager.ForceUnconsciousness();
 
@@ -162,16 +164,13 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 	protected void IRRU_LogBlueOnBlue(IEntity owner)
 	{
+		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
+		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
+			return;
+
 		if (!m_LastKnownInstigator)
 		{
 			IRRU_LogBlueOnBlueSkip(owner, "no instigator recorded");
-			return;
-		}
-
-		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
-		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
-		{
-			IRRU_LogBlueOnBlueSkip(owner, string.Format("victim is not a player (control type %1)", typename.EnumToString(SCR_ECharacterControlType, victimType)));
 			return;
 		}
 
@@ -191,7 +190,11 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		}
 
 		PlayerManager pm = GetGame().GetPlayerManager();
-		if (pm && attackerPlayerId > 0 && attackerPlayerId == pm.GetPlayerIdFromControlledEntity(owner))
+		int victimPlayerId = 0;
+		if (pm)
+			victimPlayerId = pm.GetPlayerIdFromControlledEntity(owner);
+
+		if (attackerPlayerId > 0 && attackerPlayerId == victimPlayerId)
 		{
 			IRRU_LogBlueOnBlueSkip(owner, "self-inflicted via indirect instigator");
 			return;
@@ -210,8 +213,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			}
 		}
 
-		string victimFaction = IRRU_GetFactionKey(owner);
-		string attackerFaction = IRRU_GetAttackerFactionKey(attackerPlayerId, attacker);
+		string victimFaction = IRRU_ResolveFactionKey(victimPlayerId, owner);
+		string attackerFaction = IRRU_ResolveFactionKey(attackerPlayerId, attacker);
 		if (victimFaction.IsEmpty() || attackerFaction.IsEmpty() || victimFaction != attackerFaction)
 		{
 			IRRU_LogBlueOnBlueSkip(owner, string.Format("factions differ or unknown (victim=%1, attacker=%2)", victimFaction, attackerFaction));
@@ -230,16 +233,16 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		Print(string.Format("[NoInstantDeath] %1: blue-on-blue check skipped - %2", GetNameStr(owner), reason));
 	}
 
-	protected string IRRU_GetAttackerFactionKey(int attackerPlayerId, IEntity attackerEntity)
+	protected string IRRU_ResolveFactionKey(int playerId, IEntity entity)
 	{
-		if (attackerPlayerId > 0)
+		if (playerId > 0)
 		{
-			Faction playerFaction = SCR_FactionManager.SGetPlayerFaction(attackerPlayerId);
+			Faction playerFaction = SCR_FactionManager.SGetPlayerFaction(playerId);
 			if (playerFaction)
 				return playerFaction.GetFactionKey();
 		}
 
-		return IRRU_GetFactionKey(attackerEntity);
+		return IRRU_GetFactionKey(entity);
 	}
 
 	protected string IRRU_GetAttackerDesc(int attackerPlayerId, IEntity attackerEntity)
@@ -268,6 +271,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return "";
 
 		Faction faction = fac.GetAffiliatedFaction();
+		if (!faction)
+			faction = fac.GetDefaultAffiliatedFaction();
 		if (!faction)
 			return "";
 
@@ -317,8 +322,9 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		IRRU_BumpReplication();
 
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled() && Math.Mod(m_fUnconsciousTimer, PERIODIC_LOG_INTERVAL) < CHECK_INTERVAL)
+		if (IRRU_NoInstantDeathSettings.IsDebugEnabled() && m_fUnconsciousTimer != m_fLastPeriodicLoggedTime && Math.Mod(m_fUnconsciousTimer, PERIODIC_LOG_INTERVAL) < CHECK_INTERVAL)
 		{
+			m_fLastPeriodicLoggedTime = m_fUnconsciousTimer;
 			float bleedoutTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
 			string pauseReason = "";
 			if (m_bReceivingCPR)
@@ -354,6 +360,10 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
 		if (hz)
 			hz.SetHealth(0);
+
+		m_bIsUnconscious = false;
+		m_fUnconsciousTimer = 0.0;
+		IRRU_BumpReplication();
 	}
 
 	protected void StopBleedoutTimer(string reason)
