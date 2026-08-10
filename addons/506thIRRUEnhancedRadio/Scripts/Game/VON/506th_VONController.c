@@ -1,14 +1,5 @@
 modded class SCR_VONController
 {
-    const string IRRU_BEEP_CONFIG = "{CFD40D355E0717B6}Sounds/VON/506th_beep.acp";
-    const string IRRU_EAR_ROUTING_CONFIG = "{23599C437CC8463D}Sounds/VON/RadioEarRouting.conf";
-
-    const string IRRU_BEEP_HIGH = "IRRU_BEEP_HIGH";
-    const string IRRU_BEEP_LOW = "IRRU_BEEP_LOW";
-    const string IRRU_CLICK_OFF = "IRRU_CLICK_OFF";
-    const string IRRU_GRS_START = "IRRU_GRS_START";
-    const string IRRU_GRS_END = "IRRU_GRS_END";
-
     const string IRRU_SOUND_CYCLE = "{8382F79979658ABA}Sounds/VON/GL_Sounds/RadioCycle.wav";
     const string IRRU_SOUND_LOCAL_OFF = "{F60574D50A8FA527}Sounds/VON/GL_Sounds/RadioLocalOff.wav";
     const string IRRU_SOUND_LOCAL_ON = "{2E10BC6B1FF478BC}Sounds/VON/GL_Sounds/RadioLocalOn.wav";
@@ -23,66 +14,18 @@ modded class SCR_VONController
     override void OnPostInit(IEntity owner)
     {
         super.OnPostInit(owner);
-        AudioSystem.PlayEventInitialize(IRRU_BEEP_CONFIG);
+        AudioSystem.PlayEventInitialize(IRRU_RadioBeepHelper.BEEP_CONFIG);
         IRRU_RFPropagationSettings.GetInstance();
     }
 
     protected void PlayBeepStart(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return;
-
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
-
-        string eventName;
-        switch (beepType)
-        {
-            case IRRUBeepType.ACE_HIGH: eventName = IRRU_BEEP_HIGH; break;
-            case IRRUBeepType.ACE_LOW: eventName = IRRU_BEEP_LOW; break;
-            case IRRUBeepType.GRS: eventName = IRRU_GRS_START; break;
-            default: return;
-        }
-
-        PlayRoutedSound(eventName, transceiver);
+        IRRU_RadioBeepHelper.PlayTxStart(transceiver);
     }
 
     protected void PlayBeepEnd(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return;
-
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
-
-        string eventName;
-        switch (beepType)
-        {
-            case IRRUBeepType.ACE_HIGH:
-            case IRRUBeepType.ACE_LOW:
-                eventName = IRRU_CLICK_OFF;
-                break;
-            case IRRUBeepType.GRS:
-                eventName = IRRU_GRS_END;
-                break;
-            default:
-                return;
-        }
-
-        PlayRoutedSound(eventName, transceiver);
-    }
-
-    protected void PlayRoutedSound(string eventName, BaseTransceiver transceiver)
-    {
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUEarRouting routing = settings.GetRouting(transceiver);
-
-        AudioSystem.SetVariableByName("EarRouting", routing, IRRU_EAR_ROUTING_CONFIG);
-
-        vector mat[4];
-        Math3D.MatrixIdentity4(mat);
-
-        AudioSystem.PlayEvent(IRRU_BEEP_CONFIG, eventName, mat);
+        IRRU_RadioBeepHelper.PlayTxEnd(transceiver);
     }
 
     override void SetActiveTransmit(notnull SCR_VONEntry entry)
