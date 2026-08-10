@@ -3,7 +3,7 @@ GameProject {
  GUID "64C80CD9E208154B"
  TITLE "506th IRRU Medical"
  Dependencies {
-  "60C4C12DAE90727B" "58D0FB3206B6F859"
+  "60C4C12DAE90727B" "58D0FB3206B6F859" "6647107B7ED20990"
  }
  Configurations {
   GameProjectConfig PC {

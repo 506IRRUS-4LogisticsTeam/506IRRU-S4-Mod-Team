@@ -245,14 +245,18 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		return IRRU_GetFactionKey(entity);
 	}
 
+	//! Resolve the custom roster name from the name tags addon, falling back
+	//! to the platform (Steam/console) name when none is set.
+	protected string IRRU_GetPlayerDisplayName(int playerId)
+	{
+		return IRRU_PlayerNameHelper.GetPlayerDisplayName(playerId);
+	}
+
 	protected string IRRU_GetAttackerDesc(int attackerPlayerId, IEntity attackerEntity)
 	{
 		if (attackerPlayerId > 0)
 		{
-			string playerName = "";
-			PlayerManager pm = GetGame().GetPlayerManager();
-			if (pm)
-				playerName = pm.GetPlayerName(attackerPlayerId);
+			string playerName = IRRU_GetPlayerDisplayName(attackerPlayerId);
 			if (playerName.IsEmpty())
 				playerName = "Player";
 			return string.Format("%1#%2", playerName, attackerPlayerId);
@@ -399,7 +403,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 				int pid = pm.GetPlayerIdFromControlledEntity(ch);
 				if (pid > 0)
 				{
-					string n = pm.GetPlayerName(pid);
+					string n = IRRU_GetPlayerDisplayName(pid);
 					if (!n.IsEmpty())
 						return n;
 				}

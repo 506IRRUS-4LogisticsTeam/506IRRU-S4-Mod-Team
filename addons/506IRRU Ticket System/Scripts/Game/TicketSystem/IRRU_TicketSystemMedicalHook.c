@@ -103,7 +103,7 @@ modded class IRRU_NoInstantDeathComponent : IRRU_NoInstantDeathComponent
 
 		if (playerId > 0)
 		{
-			string playerName = GetGame().GetPlayerManager().GetPlayerName(playerId);
+			string playerName = IRRU_GetPlayerDisplayName(playerId);
 			if (playerName.IsEmpty())
 				playerName = "Player";
 			return string.Format("%1#%2", playerName, playerId);
