@@ -10,6 +10,7 @@ modded class SCR_VONController
     protected AudioHandle m_AudioHandleLocalOff;
     protected bool m_bAlternatePTTActive = false;
     protected SCR_VONEntry m_SavedPrimaryEntry;
+    protected int m_iIRRU_KeyedFrequency = -1;
 
     override void OnPostInit(IEntity owner)
     {
@@ -35,7 +36,10 @@ modded class SCR_VONController
         {
             BaseTransceiver transceiver = radioEntry.GetTransceiver();
             if (transceiver)
+            {
                 PlayBeepStart(transceiver);
+                IRRU_NotifyKeyStart(transceiver);
+            }
         }
 
         super.SetActiveTransmit(entry);
@@ -52,9 +56,54 @@ modded class SCR_VONController
                 if (transceiver)
                     PlayBeepEnd(transceiver);
             }
+
+            IRRU_NotifyKeyStop();
         }
 
         super.DeactivateVON(transmitType);
+    }
+
+    //! Tell the server this client keyed a radio so receivers can squelch even
+    //! when no voice packets flow (dead key). Tracks the keyed frequency
+    //! locally so start/stop RPCs always pair up, including active-entry swaps
+    //! mid-key (alternate channel PTT).
+    protected void IRRU_NotifyKeyStart(BaseTransceiver transceiver)
+    {
+        int frequency = transceiver.GetFrequency();
+        if (m_iIRRU_KeyedFrequency == frequency)
+            return;
+
+        if (m_iIRRU_KeyedFrequency >= 0)
+            Rpc(RpcAsk_IRRU_KeyState, m_iIRRU_KeyedFrequency, 0.0, false);
+
+        m_iIRRU_KeyedFrequency = frequency;
+        Rpc(RpcAsk_IRRU_KeyState, frequency, transceiver.GetRange(), true);
+    }
+
+    protected void IRRU_NotifyKeyStop()
+    {
+        if (m_iIRRU_KeyedFrequency < 0)
+            return;
+
+        Rpc(RpcAsk_IRRU_KeyState, m_iIRRU_KeyedFrequency, 0.0, false);
+        m_iIRRU_KeyedFrequency = -1;
+    }
+
+    [RplRpc(RplChannel.Reliable, RplRcver.Server)]
+    protected void RpcAsk_IRRU_KeyState(int frequency, float range, bool keyed)
+    {
+        PlayerController playerController = PlayerController.Cast(GetOwner());
+        if (!playerController)
+            return;
+
+        IRRU_RFPropagationNetworkComponent net = IRRU_RFPropagationNetworkComponent.GetInstance();
+        if (net)
+            net.IRRU_RelayKeyState(playerController.GetPlayerId(), frequency, range, keyed);
+    }
+
+    SCR_VONEntryRadio IRRU_FindRadioEntryByFrequency(int frequency)
+    {
+        return FindEntryByFrequency(frequency);
     }
 
     override protected void ActionVONProximityToggle(float value, EActionTrigger reason = EActionTrigger.UP)

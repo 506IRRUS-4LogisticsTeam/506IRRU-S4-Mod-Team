@@ -7,17 +7,11 @@ modded class SCR_VoNComponent : VoNComponent
     protected static bool s_bJamStrengthValid = false;
     protected static bool s_bChannelVolumeValid = false;
 
-    //! No "transmission ended" event exists on the receive side, so incoming
-    //! traffic is tracked per receiving radio and closed by packet-silence timeout.
-    //! VON capture does silence detection, so a long mid-PTT pause stops the packet
-    //! stream: the timeout must ride through natural speech pauses, and the reopen
-    //! grace keeps a borderline pause from replaying the open beep.
-    protected static const float IRRU_RX_SILENCE_TIMEOUT_MS = 600;
+    //! Voice packets feed IRRU_RadioRxSquelch as the fallback squelch trigger
+    //! (key-state RPCs are the primary); this component only hosts the timeout
+    //! ticker, which is all the state machine needs while voice is flowing.
     protected static const int IRRU_RX_WATCHDOG_TICK_MS = 150;
-    protected static const float IRRU_RX_REOPEN_GRACE_MS = 500;
 
-    protected ref map<BaseTransceiver, float> m_mIRRU_RxLastPacketMs = new map<BaseTransceiver, float>();
-    protected ref map<BaseTransceiver, float> m_mIRRU_RxClosedAtMs = new map<BaseTransceiver, float>();
     protected bool m_bIRRU_RxWatchdogRunning = false;
 
     override protected event void OnReceive(int playerId, bool isSenderEditor, BaseTransceiver receiver, int frequency, float quality)
@@ -66,34 +60,18 @@ modded class SCR_VoNComponent : VoNComponent
         }
 
         if (receiver)
-            IRRU_TrackIncomingTransmission(receiver, playerId);
+            IRRU_TrackIncomingTransmission(receiver, frequency, playerId);
 
         super.OnReceive(playerId, isSenderEditor, receiver, frequency, quality);
     }
 
-    protected void IRRU_TrackIncomingTransmission(BaseTransceiver receiver, int senderPlayerId)
+    protected void IRRU_TrackIncomingTransmission(BaseTransceiver receiver, int frequency, int senderPlayerId)
     {
         PlayerController playerController = GetGame().GetPlayerController();
         if (playerController && playerController.GetPlayerId() == senderPlayerId)
             return;
 
-        float nowMs = GetGame().GetWorld().GetWorldTime();
-
-        if (m_mIRRU_RxLastPacketMs.Contains(receiver))
-        {
-            m_mIRRU_RxLastPacketMs.Set(receiver, nowMs);
-            return;
-        }
-
-        m_mIRRU_RxLastPacketMs.Set(receiver, nowMs);
-
-        // A packet gap slightly past the silence timeout would otherwise replay
-        // the open beep mid-conversation; reopening within the grace window stays silent.
-        float closedAtMs;
-        bool withinReopenGrace = m_mIRRU_RxClosedAtMs.Find(receiver, closedAtMs) && (nowMs - closedAtMs < IRRU_RX_REOPEN_GRACE_MS);
-        m_mIRRU_RxClosedAtMs.Remove(receiver);
-        if (!withinReopenGrace)
-            IRRU_RadioBeepHelper.PlayRxOpen(receiver);
+        IRRU_RadioRxSquelch.GetInstance().OnVoicePacket(frequency, receiver);
 
         if (!m_bIRRU_RxWatchdogRunning)
         {
@@ -106,30 +84,7 @@ modded class SCR_VoNComponent : VoNComponent
     {
         float nowMs = GetGame().GetWorld().GetWorldTime();
 
-        array<BaseTransceiver> ended = {};
-        foreach (BaseTransceiver transceiver, float lastPacketMs : m_mIRRU_RxLastPacketMs)
-        {
-            if (nowMs - lastPacketMs > IRRU_RX_SILENCE_TIMEOUT_MS)
-                ended.Insert(transceiver);
-        }
-
-        foreach (BaseTransceiver transceiver : ended)
-        {
-            m_mIRRU_RxLastPacketMs.Remove(transceiver);
-            m_mIRRU_RxClosedAtMs.Set(transceiver, nowMs);
-            IRRU_RadioBeepHelper.PlayRxClose(transceiver);
-        }
-
-        array<BaseTransceiver> staleClosed = {};
-        foreach (BaseTransceiver transceiver, float closedAtMs : m_mIRRU_RxClosedAtMs)
-        {
-            if (nowMs - closedAtMs >= IRRU_RX_REOPEN_GRACE_MS)
-                staleClosed.Insert(transceiver);
-        }
-        foreach (BaseTransceiver transceiver : staleClosed)
-            m_mIRRU_RxClosedAtMs.Remove(transceiver);
-
-        if (m_mIRRU_RxLastPacketMs.Count() > 0)
+        if (IRRU_RadioRxSquelch.GetInstance().Tick(nowMs))
             GetGame().GetCallqueue().CallLater(IRRU_RxWatchdogTick, IRRU_RX_WATCHDOG_TICK_MS, false);
         else
             m_bIRRU_RxWatchdogRunning = false;
