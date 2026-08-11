@@ -4,6 +4,7 @@ modded class SCR_VONController
     const string IRRU_SOUND_LOCAL_OFF = "{F60574D50A8FA527}Sounds/VON/GL_Sounds/RadioLocalOff.wav";
     const string IRRU_SOUND_LOCAL_ON = "{2E10BC6B1FF478BC}Sounds/VON/GL_Sounds/RadioLocalOn.wav";
     const string IRRU_SOUND_ERROR = "{BB24E9E96BDD524F}Sounds/IRRU_Sound/errorbeep.wav";
+    const string IRRU_SOUND_ROGER = "{AAACA964A5A37618}Sounds/IRRU_Sound/rogerbeep.wav";
 
     //! Key-up spam lockout: more radio key-ups than the limit inside the window
     //! refuses transmission for the lockout period, answering each denied
@@ -22,6 +23,7 @@ modded class SCR_VONController
     protected ref array<float> m_aIRRU_KeyUpTimesMs = new array<float>();
     protected float m_fIRRU_KeyLockoutUntilMs = -1;
     protected AudioHandle m_AudioHandleError;
+    protected bool m_bIRRU_RadioCheckPlayed = false;
 
     override void OnPostInit(IEntity owner)
     {
@@ -96,6 +98,31 @@ modded class SCR_VONController
             AudioSystem.TerminateSound(m_AudioHandleError);
 
         m_AudioHandleError = AudioSystem.PlaySound(IRRU_SOUND_ERROR);
+    }
+
+    //! One-time radio check on first spawn: tells the player the Enhanced Radio
+    //! mod is up, TFAR/ACRE style. The VON controller instance lives exactly one
+    //! server session on the client, so the flag resets naturally on reconnect
+    //! and never replays on respawn.
+    protected void IRRU_TryPlayRadioCheck()
+    {
+        PlayerController playerController = GetGame().GetPlayerController();
+        if (!playerController)
+            return;
+
+        IEntity controlledEntity = playerController.GetControlledEntity();
+        if (!controlledEntity)
+            return;
+
+        if (!SCR_ChimeraCharacter.Cast(controlledEntity))
+            return;
+
+        m_bIRRU_RadioCheckPlayed = true;
+        AudioSystem.PlaySound(IRRU_SOUND_ROGER);
+
+        SCR_ChatComponent chatComponent = SCR_ChatComponent.Cast(playerController.FindComponent(SCR_ChatComponent));
+        if (chatComponent)
+            chatComponent.ShowMessage("***ENHANCED RADIO INITIALIZED***");
     }
 
     override void DeactivateVON(EVONTransmitType transmitType = EVONTransmitType.NONE)
@@ -200,6 +227,9 @@ modded class SCR_VONController
     override void Update(float timeSlice)
     {
         super.Update(timeSlice);
+
+        if (!m_bIRRU_RadioCheckPlayed)
+            IRRU_TryPlayRadioCheck();
 
         InputManager inputMgr = GetGame().GetInputManager();
         if (inputMgr)
