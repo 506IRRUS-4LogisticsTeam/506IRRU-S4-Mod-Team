@@ -6,7 +6,7 @@ AudioClass {
    tl 115.468 -456.121
    res "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
    conns {
-    IOPConnectionClass iopConnection {
+    IOPConnectionClass "iop:1" {
      port 1
      conn {
       ConnectionsClass connections {
@@ -36,7 +36,6 @@ AudioClass {
    inputvaluesmax {
     1
    }
-   path "{F3B02BB0A8FE1F51}Sounds/VON/506throuting.sig"
   }
  }
  vars {
@@ -72,7 +71,7 @@ AudioClass {
    id 14345
    name "IRRU_BEEP_HIGH"
    version 5
-   tl 553.682 -186.603
+   tl 540.457 -239.969
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -90,7 +89,7 @@ AudioClass {
    id 16393
    name "IRRU_BEEP_LOW"
    version 5
-   tl 559.813 -53.673
+   tl 542.108 -123.633
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -108,7 +107,7 @@ AudioClass {
    id 17417
    name "IRRU_GRS_START"
    version 5
-   tl 569.704 117.131
+   tl 542.699 -4.274
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -120,13 +119,13 @@ AudioClass {
      }
     }
    }
-   volume_dB -9
+   volume_dB 6
   }
   SoundClass "19465" {
    id 19465
    name "IRRU_GRS_END"
    version 5
-   tl 563.549 287.614
+   tl 546.654 113.269
    ins {
     ConnectionsClass "con:64" {
      id 64
@@ -138,7 +137,25 @@ AudioClass {
      }
     }
    }
-   volume_dB -18
+   volume_dB -3
+  }
+  SoundClass "21513" {
+   id 21513
+   name "IRRU_SQUELCH_TAIL"
+   version 5
+   tl 546.232 232.999
+   ins {
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "22535:65" {
+       id 22535
+       port 65
+      }
+     }
+    }
+   }
+   volume_dB -12
   }
  }
  buses {
@@ -186,7 +203,7 @@ AudioClass {
    id 12295
    name "Routing Bus"
    version 7
-   tl 315.763 -189.955
+   tl 315.763 -240.676
    ins {
     ConnectionsClass "con:2" {
      id 2
@@ -226,7 +243,7 @@ AudioClass {
    id 15367
    name "Routing Bus"
    version 7
-   tl 307.056 -53.526
+   tl 315.801 -123.486
    ins {
     ConnectionsClass "con:2" {
      id 2
@@ -266,7 +283,7 @@ AudioClass {
    id 18439
    name "Routing Bus"
    version 7
-   tl 301.702 116.865
+   tl 315.694 -2.067
    ins {
     ConnectionsClass "con:2" {
      id 2
@@ -306,7 +323,7 @@ AudioClass {
    id 20487
    name "Routing Bus"
    version 7
-   tl 295.448 288.111
+   tl 312.938 120.206
    ins {
     ConnectionsClass "con:2" {
      id 2
@@ -342,19 +359,56 @@ AudioClass {
    channels "2"
    channelVolume 1
   }
+  BusClass "22535" {
+   id 22535
+   name "Routing Bus"
+   version 7
+   tl 312.516 237.463
+   ins {
+    ConnectionsClass "con:2" {
+     id 2
+     links {
+      ConnectionClass "8205:22" {
+       id 8205
+       port 22
+      }
+     }
+    }
+    ConnectionsClass "con:3" {
+     id 3
+     links {
+      ConnectionClass "8205:2" {
+       id 8205
+       port 2
+      }
+     }
+    }
+    ConnectionsClass "con:64" {
+     id 64
+     links {
+      ConnectionClass "23556:65" {
+       id 23556
+       port 65
+      }
+     }
+    }
+   }
+   pi {
+    1020 0
+   }
+   channels "2"
+   channelVolume 1
+  }
  }
  banks_local {
   BankLocalClass "1028" {
    id 1028
    name "ACE_HighBeep"
    version 7
-   tl 88.043 -196.609
+   tl 88.043 -247.33
    Samples {
     AudioBankSampleClass "beep_high.wav" {
      Filename "{814D1E54332EC272}Sounds/ACE_Radio/beep_high.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
     }
    }
   }
@@ -362,13 +416,10 @@ AudioClass {
    id 2052
    name "ACE_LowBeep"
    version 7
-   tl 80.478 -52.391
+   tl 89.223 -122.351
    Samples {
     AudioBankSampleClass "beep_low.wav" {
      Filename "{3ADB5BDA582183B1}Sounds/ACE_Radio/beep_low.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
     }
    }
   }
@@ -380,9 +431,6 @@ AudioClass {
    Samples {
     AudioBankSampleClass "click_off.wav" {
      Filename "{174028EDB8912D82}Sounds/ACE_Radio/click_off.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
     }
    }
   }
@@ -390,13 +438,10 @@ AudioClass {
    id 4100
    name "GRS_Start"
    version 7
-   tl 80.217 119.783
+   tl 94.209 0.851
    Samples {
     AudioBankSampleClass "StartRadioTransmissionBeep.wav" {
      Filename "{FB5EEF6BE942DD69}Sounds/VON/GL_Sounds/StartRadioTransmissionBeep.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
     }
    }
   }
@@ -404,16 +449,24 @@ AudioClass {
    id 5124
    name "GRS_End"
    version 7
-   tl 74.035 288.937
+   tl 91.525 121.032
    Samples {
     AudioBankSampleClass "EndRadioTransmission2.wav" {
      Filename "{6AE1E925161ADFC4}Sounds/VON/GL_Sounds/EndRadioTransmission2.wav"
-     Probability 100
-     Index 0
-     SampleMetadata ""
+    }
+   }
+  }
+  BankLocalClass "23556" {
+   id 23556
+   name "Squelch Tail"
+   version 7
+   tl 93.748 236.967
+   Samples {
+    AudioBankSampleClass Empty {
+     Filename "{83276DB8C9EBC4AD}Sounds/IRRU_Sound/squelch_tail_01.wav"
     }
    }
   }
  }
- version 1
+ version 2
 }

@@ -13,6 +13,8 @@ class IRRU_RadioBeepHelper
     static const string EVENT_CLICK_OFF = "IRRU_CLICK_OFF";
     static const string EVENT_GRS_START = "IRRU_GRS_START";
     static const string EVENT_GRS_END = "IRRU_GRS_END";
+    //! Sound node must exist with this exact name in 506th_beep.acp
+    static const string EVENT_SQUELCH_TAIL = "IRRU_SQUELCH_TAIL";
 
     static void PlayTxStart(BaseTransceiver transceiver)
     {
@@ -72,7 +74,7 @@ class IRRU_RadioBeepHelper
         {
             case IRRUBeepType.ACE_HIGH:
             case IRRUBeepType.ACE_LOW:
-                eventName = EVENT_CLICK_OFF;
+                eventName = EVENT_SQUELCH_TAIL;
                 break;
             case IRRUBeepType.GRS:
                 eventName = EVENT_GRS_START;
