@@ -1,4 +1,11 @@
 //------------------------------------------------------------------------------------------------
+class IRRU_PendingKeyStop
+{
+	int m_iFrequency;
+	float m_fQueuedAtMs;
+}
+
+//------------------------------------------------------------------------------------------------
 class IRRU_RFPropagationNetworkComponentClass : SCR_BaseGameModeComponentClass
 {
 };
@@ -15,6 +22,12 @@ class IRRU_RFPropagationNetworkComponent : SCR_BaseGameModeComponent
 
 	//! Server-only: which frequency each currently-keyed player is holding open
 	protected ref map<int, int> m_mIRRU_KeyedFreqByPlayer = new map<int, int>();
+
+	//! Server-only: key-stops held briefly before broadcast; a re-key inside the
+	//! window cancels the stop so PTT spam reads as one continuous transmission
+	//! for receivers instead of a close beep per cycle (and generates no traffic).
+	protected ref map<int, ref IRRU_PendingKeyStop> m_mIRRU_PendingStops = new map<int, ref IRRU_PendingKeyStop>();
+	protected static const int IRRU_KEY_STOP_DEBOUNCE_MS = 300;
 
 	protected static const int IRRU_SQUELCH_TICK_MS = 150;
 	protected bool m_bIRRU_SquelchTickerRunning = false;
@@ -80,10 +93,54 @@ class IRRU_RFPropagationNetworkComponent : SCR_BaseGameModeComponent
 			return;
 
 		if (keyed)
-			m_mIRRU_KeyedFreqByPlayer.Set(senderPlayerId, frequency);
-		else
-			m_mIRRU_KeyedFreqByPlayer.Remove(senderPlayerId);
+		{
+			IRRU_PendingKeyStop pending;
+			if (m_mIRRU_PendingStops.Find(senderPlayerId, pending))
+			{
+				m_mIRRU_PendingStops.Remove(senderPlayerId);
 
+				// Re-key of the same frequency inside the debounce window:
+				// receivers never saw the close, so there is nothing to send.
+				if (pending.m_iFrequency == frequency)
+					return;
+
+				IRRU_BroadcastKeyState(senderPlayerId, pending.m_iFrequency, 0.0, false);
+			}
+
+			m_mIRRU_KeyedFreqByPlayer.Set(senderPlayerId, frequency);
+			IRRU_BroadcastKeyState(senderPlayerId, frequency, range, true);
+		}
+		else
+		{
+			IRRU_PendingKeyStop pending = new IRRU_PendingKeyStop();
+			pending.m_iFrequency = frequency;
+			pending.m_fQueuedAtMs = GetGame().GetWorld().GetWorldTime();
+			m_mIRRU_PendingStops.Set(senderPlayerId, pending);
+			GetGame().GetCallqueue().CallLater(IRRU_FlushPendingStop, IRRU_KEY_STOP_DEBOUNCE_MS, false, senderPlayerId);
+		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_FlushPendingStop(int playerId)
+	{
+		IRRU_PendingKeyStop pending;
+		if (!m_mIRRU_PendingStops.Find(playerId, pending))
+			return;
+
+		// A newer stop queued during our delay has its own flush call coming;
+		// the 50ms margin absorbs CallLater frame jitter on our own entry.
+		float nowMs = GetGame().GetWorld().GetWorldTime();
+		if (nowMs - pending.m_fQueuedAtMs < IRRU_KEY_STOP_DEBOUNCE_MS - 50)
+			return;
+
+		m_mIRRU_PendingStops.Remove(playerId);
+		m_mIRRU_KeyedFreqByPlayer.Remove(playerId);
+		IRRU_BroadcastKeyState(playerId, pending.m_iFrequency, 0.0, false);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	protected void IRRU_BroadcastKeyState(int senderPlayerId, int frequency, float range, bool keyed)
+	{
 		vector senderPos = vector.Zero;
 		IEntity senderEntity = GetGame().GetPlayerManager().GetPlayerControlledEntity(senderPlayerId);
 		if (senderEntity)

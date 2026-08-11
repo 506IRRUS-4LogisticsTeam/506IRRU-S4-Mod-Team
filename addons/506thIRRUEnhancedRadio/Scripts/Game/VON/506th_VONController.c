@@ -3,6 +3,14 @@ modded class SCR_VONController
     const string IRRU_SOUND_CYCLE = "{8382F79979658ABA}Sounds/VON/GL_Sounds/RadioCycle.wav";
     const string IRRU_SOUND_LOCAL_OFF = "{F60574D50A8FA527}Sounds/VON/GL_Sounds/RadioLocalOff.wav";
     const string IRRU_SOUND_LOCAL_ON = "{2E10BC6B1FF478BC}Sounds/VON/GL_Sounds/RadioLocalOn.wav";
+    const string IRRU_SOUND_ERROR = "{BB24E9E96BDD524F}Sounds/IRRU_Sound/errorbeep.wav";
+
+    //! Key-up spam lockout: more radio key-ups than the limit inside the window
+    //! refuses transmission for the lockout period, answering each denied
+    //! attempt with the deny tone - like a trunked system rejecting the channel.
+    protected static const int IRRU_KEY_SPAM_MAX_KEYS = 4;
+    protected static const float IRRU_KEY_SPAM_WINDOW_MS = 4000;
+    protected static const float IRRU_KEY_SPAM_LOCKOUT_MS = 2000;
 
     protected ref IRRU_FrequencyInput m_FrequencyInput;
     protected AudioHandle m_AudioHandleCycle;
@@ -11,6 +19,9 @@ modded class SCR_VONController
     protected bool m_bAlternatePTTActive = false;
     protected SCR_VONEntry m_SavedPrimaryEntry;
     protected int m_iIRRU_KeyedFrequency = -1;
+    protected ref array<float> m_aIRRU_KeyUpTimesMs = new array<float>();
+    protected float m_fIRRU_KeyLockoutUntilMs = -1;
+    protected AudioHandle m_AudioHandleError;
 
     override void OnPostInit(IEntity owner)
     {
@@ -34,6 +45,14 @@ modded class SCR_VONController
         SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(entry);
         if (radioEntry)
         {
+            // Denied key-ups never reach super, so no transmission starts, no
+            // TX beep plays and no key RPC is sent - just the deny tone.
+            if (IRRU_IsKeySpamLocked())
+            {
+                IRRU_PlayErrorBeep();
+                return;
+            }
+
             BaseTransceiver transceiver = radioEntry.GetTransceiver();
             if (transceiver)
             {
@@ -43,6 +62,40 @@ modded class SCR_VONController
         }
 
         super.SetActiveTransmit(entry);
+    }
+
+    //! Records this radio key-up and reports whether the spam lockout is engaged.
+    protected bool IRRU_IsKeySpamLocked()
+    {
+        float nowMs = GetGame().GetWorld().GetWorldTime();
+
+        if (nowMs < m_fIRRU_KeyLockoutUntilMs)
+            return true;
+
+        m_aIRRU_KeyUpTimesMs.Insert(nowMs);
+
+        for (int i = m_aIRRU_KeyUpTimesMs.Count() - 1; i >= 0; i--)
+        {
+            if (nowMs - m_aIRRU_KeyUpTimesMs[i] > IRRU_KEY_SPAM_WINDOW_MS)
+                m_aIRRU_KeyUpTimesMs.Remove(i);
+        }
+
+        if (m_aIRRU_KeyUpTimesMs.Count() > IRRU_KEY_SPAM_MAX_KEYS)
+        {
+            m_fIRRU_KeyLockoutUntilMs = nowMs + IRRU_KEY_SPAM_LOCKOUT_MS;
+            m_aIRRU_KeyUpTimesMs.Clear();
+            return true;
+        }
+
+        return false;
+    }
+
+    protected void IRRU_PlayErrorBeep()
+    {
+        if (m_AudioHandleError != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleError))
+            AudioSystem.TerminateSound(m_AudioHandleError);
+
+        m_AudioHandleError = AudioSystem.PlaySound(IRRU_SOUND_ERROR);
     }
 
     override void DeactivateVON(EVONTransmitType transmitType = EVONTransmitType.NONE)
