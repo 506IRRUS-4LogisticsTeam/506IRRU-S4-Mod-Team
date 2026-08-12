@@ -17,6 +17,7 @@ GameEntity : "{D4BC1F7EC5C290A3}Prefabs/Characters/HeadGear/Hat_Boonie_US_01/Hat
       PreviewWornModel 1
      }
     }
+    CommonItemType "SHS_PATCH"
    }
   }
   MeshObject "{5112706CD4157AE0}" {
