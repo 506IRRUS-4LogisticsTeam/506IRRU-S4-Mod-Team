@@ -66,6 +66,9 @@ class IRRU_RadioBeepHelper
         if (!transceiver)
             return;
 
+        if (!IRRU_RadioUserSettings.GetInstance().AreRxBeepsEnabled())
+            return;
+
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         IRRUBeepType beepType = settings.GetBeepType(transceiver);
 
@@ -89,6 +92,9 @@ class IRRU_RadioBeepHelper
     static void PlayRxClose(BaseTransceiver transceiver)
     {
         if (!transceiver)
+            return;
+
+        if (!IRRU_RadioUserSettings.GetInstance().AreRxBeepsEnabled())
             return;
 
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();

@@ -30,6 +30,7 @@ modded class SCR_VONController
         super.OnPostInit(owner);
         AudioSystem.PlayEventInitialize(IRRU_RadioBeepHelper.BEEP_CONFIG);
         IRRU_RFPropagationSettings.GetInstance();
+        IRRU_RadioChatCommands.EnsureRegistered();
     }
 
     protected void PlayBeepStart(BaseTransceiver transceiver)
@@ -118,6 +119,10 @@ modded class SCR_VONController
             return;
 
         m_bIRRU_RadioCheckPlayed = true;
+
+        if (!IRRU_RadioUserSettings.GetInstance().IsRadioCheckEnabled())
+            return;
+
         AudioSystem.PlaySound(IRRU_SOUND_ROGER);
 
         SCR_ChatComponent chatComponent = SCR_ChatComponent.Cast(playerController.FindComponent(SCR_ChatComponent));
