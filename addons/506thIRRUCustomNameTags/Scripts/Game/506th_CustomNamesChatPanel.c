@@ -2,6 +2,15 @@
 modded class SCR_ChatPanel
 {
 	//------------------------------------------------------------------------------------------------
+	//! The chat panel is the only way to type a command, so its creation is the
+	//! guaranteed-early registration point (BaseChatComponent has no OnPostInit).
+	override void HandlerAttached(Widget w)
+	{
+		super.HandlerAttached(w);
+		IRRU_CustomNamesChatCommands.EnsureRegistered();
+	}
+
+	//------------------------------------------------------------------------------------------------
 	override void OnUpdateChat(float timeSlice)
 	{
 		super.OnUpdateChat(timeSlice);

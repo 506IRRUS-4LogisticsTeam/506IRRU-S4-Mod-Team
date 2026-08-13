@@ -2,13 +2,6 @@
 modded class SCR_ChatComponent : BaseChatComponent
 {
 	//------------------------------------------------------------------------------------------------
-	override void OnPostInit(IEntity owner)
-	{
-		super.OnPostInit(owner);
-		IRRU_CustomNamesChatCommands.EnsureRegistered();
-	}
-
-	//------------------------------------------------------------------------------------------------
 	//! Bare-word name commands no longer execute - by the time this runs the
 	//! message has already broadcast to every client, so executing here trained
 	//! users into leaking their commands. Swallow locally and teach the prefix.
@@ -23,7 +16,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 			{
 				if (IRRU_IsCustomNameCommand(msg))
 				{
-					IRRU_SendChatFeedback(string.Format("Name commands moved: use %1setname <YourName>, %1resetname or %1myname - with the %1 prefix they stay out of everyone's chat",
+					IRRU_SendChatFeedback(string.Format("Name commands moved: use %1setname <YourName>, %1resetname or %1myname",
 						SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
 					return;
 				}
