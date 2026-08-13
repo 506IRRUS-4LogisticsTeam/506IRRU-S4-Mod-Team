@@ -21,9 +21,9 @@ modded class SCR_ChatComponent : BaseChatComponent
 
 			if (localPlayerId == senderId && senderId > 0 && msg && !msg.IsEmpty())
 			{
-				if (IsCustomNameCommand(msg))
+				if (IRRU_IsCustomNameCommand(msg))
 				{
-					SendChatFeedback(string.Format("Name commands moved: use %1setname <YourName>, %1resetname or %1myname - with the %1 prefix they stay out of everyone's chat",
+					IRRU_SendChatFeedback(string.Format("Name commands moved: use %1setname <YourName>, %1resetname or %1myname - with the %1 prefix they stay out of everyone's chat",
 						SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
 					return;
 				}
@@ -38,12 +38,12 @@ modded class SCR_ChatComponent : BaseChatComponent
 	//! validation feedback and server RPC the bare-word path used to trigger.
 	void IRRU_ProcessLocalCommand(string msg, int senderId)
 	{
-		ProcessCustomNameCommand(msg, senderId);
-		Rpc(RpcSrv_ProcessCustomNameCommand, msg, senderId);
+		IRRU_ProcessCustomNameCommand(msg, senderId);
+		Rpc(RpcSrv_IRRU_ProcessCustomNameCommand, msg, senderId);
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected bool IsCustomNameCommand(string msg)
+	protected bool IRRU_IsCustomNameCommand(string msg)
 	{
 		if (!msg || msg.IsEmpty()) return false;
 		
@@ -57,7 +57,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected void ProcessCustomNameCommand(string msg, int playerId)
+	protected void IRRU_ProcessCustomNameCommand(string msg, int playerId)
 	{
 		string trimmedMsg = msg;
 		trimmedMsg.Trim();
@@ -67,7 +67,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (!manager)
 		{
-			SendChatFeedback("Custom Names system not available");
+			IRRU_SendChatFeedback("Custom Names system not available");
 			Print("[CustomNames] Manager instance not available for command processing", LogLevel.WARNING);
 			return;
 		}
@@ -81,7 +81,7 @@ modded class SCR_ChatComponent : BaseChatComponent
 			
 			if (newName.IsEmpty())
 			{
-				SendChatFeedback("Usage: setname <YourName>");
+				IRRU_SendChatFeedback("Usage: setname <YourName>");
 				return;
 			}
 			
@@ -89,28 +89,28 @@ modded class SCR_ChatComponent : BaseChatComponent
 			{
 				if (manager.SetCustomName(playerId, newName))
 				{
-					SendChatFeedback(string.Format("Name set to: %1", newName));
+					IRRU_SendChatFeedback(string.Format("Name set to: %1", newName));
 				}
 				else
 				{
-					SendChatFeedback("Failed to set name");
+					IRRU_SendChatFeedback("Failed to set name");
 					Print(string.Format("[CustomNames] Failed to set custom name '%1' for player %2", newName, playerId), LogLevel.WARNING);
 				}
 			}
 			else
 			{
-				SendChatFeedback(string.Format("Invalid name: %1", newName));
+				IRRU_SendChatFeedback(string.Format("Invalid name: %1", newName));
 			}
 		}
 		else if (lowerMsg == "resetname")
 		{
 			if (manager.SetCustomName(playerId, ""))
 			{
-				SendChatFeedback("Name reset to default");
+				IRRU_SendChatFeedback("Name reset to default");
 			}
 			else
 			{
-				SendChatFeedback("Failed to reset name");
+				IRRU_SendChatFeedback("Failed to reset name");
 				Print(string.Format("[CustomNames] Failed to reset name for player %1", playerId), LogLevel.WARNING);
 			}
 		}
@@ -119,22 +119,22 @@ modded class SCR_ChatComponent : BaseChatComponent
 			string currentName = manager.GetCustomName(playerId);
 			if (currentName.IsEmpty())
 			{
-				SendChatFeedback("You have no custom name set");
+				IRRU_SendChatFeedback("You have no custom name set");
 			}
 			else
 			{
-				SendChatFeedback(string.Format("Your current name: %1", currentName));
+				IRRU_SendChatFeedback(string.Format("Your current name: %1", currentName));
 			}
 		}
 	}
 
 	//------------------------------------------------------------------------------------------------
 	[RplRpc(RplChannel.Reliable, RplRcver.Server)]
-	protected void RpcSrv_ProcessCustomNameCommand(string msg, int senderId)
+	protected void RpcSrv_IRRU_ProcessCustomNameCommand(string msg, int senderId)
 	{
-		if (!Replication.IsServer()) 
+		if (!Replication.IsServer())
 		{
-			Print("[CustomNames] RpcSrv_ProcessCustomNameCommand called on non-server", LogLevel.WARNING);
+			Print("[CustomNames] RpcSrv_IRRU_ProcessCustomNameCommand called on non-server", LogLevel.WARNING);
 			return;
 		}
 		
@@ -151,17 +151,17 @@ modded class SCR_ChatComponent : BaseChatComponent
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	static void BroadcastCustomNameUpdate(string playerId, string customName)
+	static void IRRU_BroadcastCustomNameUpdate(string playerId, string customName)
 	{
 		if (!Replication.IsServer())
 		{
-			Print("[CustomNames] BroadcastCustomNameUpdate called on client", LogLevel.WARNING);
+			Print("[CustomNames] IRRU_BroadcastCustomNameUpdate called on client", LogLevel.WARNING);
 			return;
 		}
 	}
 
 	//------------------------------------------------------------------------------------------------
-	protected void SendChatFeedback(string message)
+	protected void IRRU_SendChatFeedback(string message)
 	{
 		SCR_ChatComponent chatComp = SCR_ChatComponent.Cast(this);
 		if (chatComp)

@@ -5,11 +5,11 @@ modded class SCR_ChatPanel
 	override void OnUpdateChat(float timeSlice)
 	{
 		super.OnUpdateChat(timeSlice);
-		UpdateChatNamesDisplay();
+		IRRU_UpdateChatNamesDisplay();
 	}
 	
 	//------------------------------------------------------------------------------------------------
-	protected void UpdateChatNamesDisplay()
+	protected void IRRU_UpdateChatNamesDisplay()
 	{
 		CustomNamesManager manager = CustomNamesManager.GetInstance();
 		if (!manager || !m_wRoot)

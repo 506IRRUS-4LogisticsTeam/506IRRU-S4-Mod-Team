@@ -28,7 +28,7 @@ modded class SCR_VoNComponent : VoNComponent
 
         if (s_bEarRoutingValid)
         {
-            float earRouting = GetEarRoutingForTransceiver(receiver);
+            float earRouting = IRRU_GetEarRoutingForTransceiver(receiver);
             AudioSystem.SetVariableByName("EarRouting", earRouting, EAR_ROUTING_CONFIG);
         }
 
@@ -43,19 +43,19 @@ modded class SCR_VoNComponent : VoNComponent
 
         if (s_bSignalQualityValid)
         {
-            float signalQuality = GetSignalQuality(playerId, frequency, receiverPos);
+            float signalQuality = IRRU_GetSignalQuality(playerId, frequency, receiverPos);
             AudioSystem.SetVariableByName("SignalQuality", signalQuality, EAR_ROUTING_CONFIG);
         }
 
         if (s_bJamStrengthValid)
         {
-            float jamStrength = GetJamStrength(receiverPos);
+            float jamStrength = IRRU_GetJamStrength(receiverPos);
             AudioSystem.SetVariableByName("JamStrength", jamStrength, EAR_ROUTING_CONFIG);
         }
 
         if (s_bChannelVolumeValid)
         {
-            float channelVolume = GetChannelVolumeForTransceiver(receiver);
+            float channelVolume = IRRU_GetChannelVolumeForTransceiver(receiver);
             AudioSystem.SetVariableByName("ChannelVolume", channelVolume, EAR_ROUTING_CONFIG);
         }
 
@@ -90,14 +90,14 @@ modded class SCR_VoNComponent : VoNComponent
             m_bIRRU_RxWatchdogRunning = false;
     }
 
-    protected float GetEarRoutingForTransceiver(BaseTransceiver transceiver)
+    protected float IRRU_GetEarRoutingForTransceiver(BaseTransceiver transceiver)
     {
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         IRRUEarRouting routing = settings.GetRouting(transceiver);
         return routing;
     }
 
-    protected float GetChannelVolumeForTransceiver(BaseTransceiver transceiver)
+    protected float IRRU_GetChannelVolumeForTransceiver(BaseTransceiver transceiver)
     {
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         float volume = settings.GetVolume(transceiver);
@@ -105,7 +105,7 @@ modded class SCR_VoNComponent : VoNComponent
         return Math.Pow(volume, 2.5);
     }
 
-    protected float GetSignalQuality(int senderId, int frequencyKHz, vector receiverPos)
+    protected float IRRU_GetSignalQuality(int senderId, int frequencyKHz, vector receiverPos)
     {
         if (!IRRU_RFPropagationNetworkComponent.IsRFPropagationEnabled())
             return 1.0;
@@ -120,7 +120,7 @@ modded class SCR_VoNComponent : VoNComponent
         return signalManager.GetSignalQuality(transmitterPos, receiverPos, frequencyKHz);
     }
 
-    protected float GetJamStrength(vector receiverPos)
+    protected float IRRU_GetJamStrength(vector receiverPos)
     {
         IRRU_SignalManager signalManager = IRRU_SignalManager.GetInstance();
         float jammerDegradation = signalManager.GetJammerStrength(receiverPos);
