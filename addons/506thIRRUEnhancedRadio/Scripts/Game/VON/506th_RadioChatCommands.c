@@ -1,7 +1,9 @@
-//! Registers Enhanced Radio chat commands with the game's native chat command
-//! system (SCR_ChatPanelManager). Prefixed commands are dispatched locally on
-//! the typing client and never transmitted - unlike plain chat messages, which
-//! broadcast to everyone before any display-side interception can hide them.
+//! Enhanced Radio chat commands via the game's native command system
+//! (SCR_ChatPanelManager invokers): prefixed commands dispatch locally on the
+//! typing client and are NEVER transmitted to other players. Bare unprefixed
+//! words are deliberately NOT intercepted - they broadcast like any chat
+//! message, so the commands only exist behind the prefix. The registration
+//! log prints the prefix character.
 class IRRU_RadioChatCommands
 {
     protected static const int REGISTER_RETRY_MS = 1000;
@@ -33,6 +35,8 @@ class IRRU_RadioChatCommands
             m_iTries++;
             if (m_iTries < REGISTER_MAX_TRIES)
                 GetGame().GetCallqueue().CallLater(Register, REGISTER_RETRY_MS, false);
+            else
+                Print("[EnhancedRadio] Chat command registration gave up - native prefix commands unavailable, bare-word fallback still active", LogLevel.WARNING);
             return;
         }
 
@@ -40,6 +44,9 @@ class IRRU_RadioChatCommands
         manager.GetCommandInvoker("radiobeeps").Insert(OnRadioBeepsCommand);
         manager.GetCommandInvoker("radiocheck").Insert(OnRadioCheckCommand);
         manager.GetCommandInvoker("radiosettings").Insert(OnRadioSettingsCommand);
+
+        Print(string.Format("[EnhancedRadio] Chat commands registered - prefix character is '%1' (e.g. %1radiosettings)",
+            SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
     }
 
     //------------------------------------------------------------------------------------------------
@@ -63,7 +70,8 @@ class IRRU_RadioChatCommands
         }
         else
         {
-            Feedback(string.Format("Usage: %1radiobeeps on|off", SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
+            Feedback(string.Format("Usage: %1radiobeeps on|off (the %1 prefix keeps the command out of everyone's chat)",
+                SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
         }
     }
 
@@ -88,7 +96,8 @@ class IRRU_RadioChatCommands
         }
         else
         {
-            Feedback(string.Format("Usage: %1radiocheck on|off", SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
+            Feedback(string.Format("Usage: %1radiocheck on|off (the %1 prefix keeps the command out of everyone's chat)",
+                SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
         }
     }
 
