@@ -1,0 +1,12 @@
+GenericEntity : "{51929D997B5FB8B8}Prefabs/Props/Military/Compositions/Antenna_01_base.et" {
+ ID "F0DBA538AC2A0552"
+ components {
+  ScriptedRadioComponent "{5CB8818C71F12C73}" {
+   Transceivers {
+    RelayTransceiver "{5CB8819A2D055A05}" {
+     "Transmitting Range" 100000
+    }
+   }
+  }
+ }
+}
