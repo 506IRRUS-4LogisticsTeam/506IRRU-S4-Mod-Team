@@ -91,10 +91,9 @@ class IRRU_RadioBeepHelper
 
     protected static void PlayRouted(string eventName, BaseTransceiver transceiver)
     {
-        // The beep latches its values at PlayEvent within this same call, so it
-        // always renders correctly; restoring the authoritative stream's values
-        // right after keeps an asynchronous voice-start latch from ever catching
-        // beep values (the engine latches variables at sound start).
+        // The beep reads its values at PlayEvent within this same call, so it
+        // always renders correctly. A voice stream that opened earlier in this
+        // frame has not been read yet, so its values go straight back.
         ApplyChannelAudioVariables(transceiver);
 
         vector mat[4];
@@ -102,6 +101,6 @@ class IRRU_RadioBeepHelper
 
         AudioSystem.PlayEvent(BEEP_CONFIG, eventName, mat);
 
-        IRRU_RadioRxSquelch.GetInstance().RestoreAuthoritativeAudioVariables();
+        IRRU_RadioRxSquelch.GetInstance().RestoreAudioSlot();
     }
 }
