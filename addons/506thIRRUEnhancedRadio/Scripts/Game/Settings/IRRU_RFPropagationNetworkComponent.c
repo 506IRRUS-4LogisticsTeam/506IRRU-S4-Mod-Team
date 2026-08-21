@@ -14,10 +14,10 @@ class IRRU_RFPropagationNetworkComponent : SCR_BaseGameModeComponent
 {
 	protected static IRRU_RFPropagationNetworkComponent s_Instance;
 
-	[RplProp(onRplName: "OnSettingsReceived")]
+	[RplProp()]
 	protected bool m_bRFPropagationEnabled;
 
-	[RplProp(onRplName: "OnSettingsReceived")]
+	[RplProp()]
 	protected bool m_bDebugEnabled;
 
 	//! Server-only: which frequency each currently-keyed player is holding open
@@ -55,13 +55,6 @@ class IRRU_RFPropagationNetworkComponent : SCR_BaseGameModeComponent
 	static IRRU_RFPropagationNetworkComponent GetInstance()
 	{
 		return s_Instance;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected void OnSettingsReceived()
-	{
-		Print(string.Format("[IRRU RFPropagation] Received server settings - RF: %1 | Debug: %2",
-			m_bRFPropagationEnabled, m_bDebugEnabled));
 	}
 
 	//------------------------------------------------------------------------------------------------

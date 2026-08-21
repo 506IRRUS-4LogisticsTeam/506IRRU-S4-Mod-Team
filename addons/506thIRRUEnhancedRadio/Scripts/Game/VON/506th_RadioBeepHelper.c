@@ -2,7 +2,6 @@
 //! TX beeps are the local key-up/release confirmation heard by the operator
 //! (sidetone / talk-permit). RX beeps are the squelch open/close effects heard
 //! when receiving someone else's transmission (squelch tail / roger beep).
-//! RX is deliberately asymmetric: subtle click on open, prominent sound on close.
 class IRRU_RadioBeepHelper
 {
     static const string BEEP_CONFIG = "{CFD40D355E0717B6}Sounds/VON/506th_beep.acp";
@@ -18,95 +17,58 @@ class IRRU_RadioBeepHelper
 
     static void PlayTxStart(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return;
-
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
-
-        string eventName;
-        switch (beepType)
-        {
-            case IRRUBeepType.ACE_HIGH: eventName = EVENT_BEEP_HIGH; break;
-            case IRRUBeepType.ACE_LOW: eventName = EVENT_BEEP_LOW; break;
-            case IRRUBeepType.GRS: eventName = EVENT_GRS_START; break;
-            default: return;
-        }
-
-        PlayRouted(eventName, transceiver);
+        Play(transceiver, false, true);
     }
 
     static void PlayTxEnd(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return;
-
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
-
-        string eventName;
-        switch (beepType)
-        {
-            case IRRUBeepType.ACE_HIGH:
-            case IRRUBeepType.ACE_LOW:
-                eventName = EVENT_CLICK_OFF;
-                break;
-            case IRRUBeepType.GRS:
-                eventName = EVENT_GRS_END;
-                break;
-            default:
-                return;
-        }
-
-        PlayRouted(eventName, transceiver);
+        Play(transceiver, false, false);
     }
 
     static void PlayRxOpen(BaseTransceiver transceiver)
     {
+        Play(transceiver, true, true);
+    }
+
+    static void PlayRxClose(BaseTransceiver transceiver)
+    {
+        Play(transceiver, true, false);
+    }
+
+    //! Sound matrix per channel style. RX is deliberately asymmetric: subtle
+    //! squelch on open, the style's prominent sound on close.
+    protected static void Play(BaseTransceiver transceiver, bool receiving, bool opening)
+    {
         if (!transceiver)
             return;
 
-        if (!IRRU_RadioUserSettings.GetInstance().AreRxBeepsEnabled())
+        if (receiving && !IRRU_RadioUserSettings.GetInstance().AreRxBeepsEnabled())
             return;
 
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
+        IRRUBeepType beepType = SCR_IRRURadioEarSettings.GetInstance().GetBeepType(transceiver);
 
         string eventName;
         switch (beepType)
         {
             case IRRUBeepType.ACE_HIGH:
             case IRRUBeepType.ACE_LOW:
-                eventName = EVENT_SQUELCH_TAIL;
+                if (receiving && opening)
+                    eventName = EVENT_SQUELCH_TAIL;
+                else if (!receiving && !opening)
+                    eventName = EVENT_CLICK_OFF;
+                else if (beepType == IRRUBeepType.ACE_HIGH)
+                    eventName = EVENT_BEEP_HIGH;
+                else
+                    eventName = EVENT_BEEP_LOW;
                 break;
             case IRRUBeepType.GRS:
-                eventName = EVENT_GRS_START;
+                if (opening)
+                    eventName = EVENT_GRS_START;
+                else
+                    eventName = EVENT_GRS_END;
                 break;
             default:
                 return;
-        }
-
-        PlayRouted(eventName, transceiver);
-    }
-
-    static void PlayRxClose(BaseTransceiver transceiver)
-    {
-        if (!transceiver)
-            return;
-
-        if (!IRRU_RadioUserSettings.GetInstance().AreRxBeepsEnabled())
-            return;
-
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        IRRUBeepType beepType = settings.GetBeepType(transceiver);
-
-        string eventName;
-        switch (beepType)
-        {
-            case IRRUBeepType.ACE_HIGH: eventName = EVENT_BEEP_HIGH; break;
-            case IRRUBeepType.ACE_LOW: eventName = EVENT_BEEP_LOW; break;
-            case IRRUBeepType.GRS: eventName = EVENT_GRS_END; break;
-            default: return;
         }
 
         PlayRouted(eventName, transceiver);

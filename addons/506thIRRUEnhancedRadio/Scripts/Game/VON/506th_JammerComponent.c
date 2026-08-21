@@ -16,14 +16,8 @@ class IRRU_JammerComponent : ScriptComponent
 	[Attribute("0 0 0", UIWidgets.Coords, "Emitter offset from entity origin (local space)")]
 	protected vector m_vEmitterOffset;
 
-	[RplProp(onRplName: "OnActiveChanged")]
+	[RplProp()]
 	protected bool m_bActive;
-
-	[RplProp()]
-	protected float m_fRange;
-
-	[RplProp()]
-	protected float m_fConeAngle;
 
 	#ifdef WORKBENCH
 	protected ref array<ref Shape> m_aDebugShapes;
@@ -35,8 +29,6 @@ class IRRU_JammerComponent : ScriptComponent
 
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
-			m_fRange = m_fRangeConfig;
-			m_fConeAngle = m_fConeAngleConfig;
 			m_bActive = m_bActiveConfig;
 			Replication.BumpMe();
 		}
@@ -153,18 +145,14 @@ class IRRU_JammerComponent : ScriptComponent
 		Replication.BumpMe();
 	}
 
-	protected void OnActiveChanged()
-	{
-	}
-
 	float GetRange()
 	{
-		return m_fRange;
+		return m_fRangeConfig;
 	}
 
 	float GetConeAngle()
 	{
-		return m_fConeAngle;
+		return m_fConeAngleConfig;
 	}
 
 	vector GetPosition()

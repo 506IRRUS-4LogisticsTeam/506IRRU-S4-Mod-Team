@@ -29,18 +29,7 @@ modded class SCR_VONController
     {
         super.OnPostInit(owner);
         AudioSystem.PlayEventInitialize(IRRU_RadioBeepHelper.BEEP_CONFIG);
-        IRRU_RFPropagationSettings.GetInstance();
         IRRU_RadioChatCommands.EnsureRegistered();
-    }
-
-    protected void IRRU_PlayBeepStart(BaseTransceiver transceiver)
-    {
-        IRRU_RadioBeepHelper.PlayTxStart(transceiver);
-    }
-
-    protected void IRRU_PlayBeepEnd(BaseTransceiver transceiver)
-    {
-        IRRU_RadioBeepHelper.PlayTxEnd(transceiver);
     }
 
     override void SetActiveTransmit(notnull SCR_VONEntry entry)
@@ -52,14 +41,14 @@ modded class SCR_VONController
             // TX beep plays and no key RPC is sent - just the deny tone.
             if (IRRU_IsKeySpamLocked())
             {
-                IRRU_PlayErrorBeep();
+                IRRU_PlayOneShot(IRRU_SOUND_ERROR, m_AudioHandleError);
                 return;
             }
 
             BaseTransceiver transceiver = radioEntry.GetTransceiver();
             if (transceiver)
             {
-                IRRU_PlayBeepStart(transceiver);
+                IRRU_RadioBeepHelper.PlayTxStart(transceiver);
                 IRRU_NotifyKeyStart(transceiver);
             }
         }
@@ -93,12 +82,13 @@ modded class SCR_VONController
         return false;
     }
 
-    protected void IRRU_PlayErrorBeep()
+    //! Restart-safe one-shot: a still-playing previous instance is cut first
+    protected void IRRU_PlayOneShot(string sound, inout AudioHandle handle)
     {
-        if (m_AudioHandleError != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleError))
-            AudioSystem.TerminateSound(m_AudioHandleError);
+        if (handle != 0 && AudioSystem.IsSoundPlayed(handle))
+            AudioSystem.TerminateSound(handle);
 
-        m_AudioHandleError = AudioSystem.PlaySound(IRRU_SOUND_ERROR);
+        handle = AudioSystem.PlaySound(sound);
     }
 
     //! One-time radio check on first spawn: tells the player the Enhanced Radio
@@ -139,7 +129,7 @@ modded class SCR_VONController
             {
                 BaseTransceiver transceiver = radioEntry.GetTransceiver();
                 if (transceiver)
-                    IRRU_PlayBeepEnd(transceiver);
+                    IRRU_RadioBeepHelper.PlayTxEnd(transceiver);
             }
 
             IRRU_NotifyKeyStop();
@@ -186,11 +176,6 @@ modded class SCR_VONController
             net.IRRU_RelayKeyState(playerController.GetPlayerId(), frequency, range, keyed);
     }
 
-    SCR_VONEntryRadio IRRU_FindRadioEntryByFrequency(int frequency)
-    {
-        return IRRU_FindEntryByFrequency(frequency);
-    }
-
     //! Frequency of the currently selected radio entry, -1 when none is a radio.
     int IRRU_GetActiveRadioFrequency()
     {
@@ -215,30 +200,15 @@ modded class SCR_VONController
         super.ActionVONProximityToggle(value, reason);
 
         if (m_bIsToggledDirect && !wasToggled)
-        {
-            if (m_AudioHandleLocalOn != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleLocalOn))
-                AudioSystem.TerminateSound(m_AudioHandleLocalOn);
-
-            m_AudioHandleLocalOn = AudioSystem.PlaySound(IRRU_SOUND_LOCAL_ON);
-        }
+            IRRU_PlayOneShot(IRRU_SOUND_LOCAL_ON, m_AudioHandleLocalOn);
         else if (!m_bIsToggledDirect && wasToggled)
-        {
-            if (m_AudioHandleLocalOff != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleLocalOff))
-                AudioSystem.TerminateSound(m_AudioHandleLocalOff);
-
-            m_AudioHandleLocalOff = AudioSystem.PlaySound(IRRU_SOUND_LOCAL_OFF);
-        }
+            IRRU_PlayOneShot(IRRU_SOUND_LOCAL_OFF, m_AudioHandleLocalOff);
     }
 
     override protected void ActionVONTransceiverCycle(float value, EActionTrigger reason = EActionTrigger.UP)
     {
         if (reason == EActionTrigger.DOWN)
-        {
-            if (m_AudioHandleCycle != 0 && AudioSystem.IsSoundPlayed(m_AudioHandleCycle))
-                AudioSystem.TerminateSound(m_AudioHandleCycle);
-
-            m_AudioHandleCycle = AudioSystem.PlaySound(IRRU_SOUND_CYCLE);
-        }
+            IRRU_PlayOneShot(IRRU_SOUND_CYCLE, m_AudioHandleCycle);
 
         super.ActionVONTransceiverCycle(value, reason);
     }
@@ -251,14 +221,14 @@ modded class SCR_VONController
             IRRU_TryPlayRadioCheck();
 
         InputManager inputMgr = GetGame().GetInputManager();
-        if (inputMgr)
-        {
-            float altValue = inputMgr.GetActionValue("IRRU_AlternateChannel");
-            if (altValue > 0 && !m_bAlternatePTTActive)
-                IRRU_OnAlternatePTTStart();
-            else if (altValue <= 0 && m_bAlternatePTTActive)
-                IRRU_OnAlternatePTTEnd();
-        }
+        if (!inputMgr)
+            return;
+
+        float altValue = inputMgr.GetActionValue("IRRU_AlternateChannel");
+        if (altValue > 0 && !m_bAlternatePTTActive)
+            IRRU_OnAlternatePTTStart();
+        else if (altValue <= 0 && m_bAlternatePTTActive)
+            IRRU_OnAlternatePTTEnd();
 
         if (m_FrequencyInput && m_FrequencyInput.IsOpen())
         {
@@ -268,83 +238,79 @@ modded class SCR_VONController
             return;
         }
 
-        if (m_VONMenu && m_VONMenu.GetRadialMenu() && m_VONMenu.GetRadialMenu().IsOpened())
-        {
-            if (inputMgr && inputMgr.GetActionTriggered("IRRU_VONRoutingAction"))
-                IRRU_OnEarRoutingToggle();
+        if (!m_VONMenu)
+            return;
 
-            if (inputMgr && inputMgr.GetActionTriggered("IRRU_SetFrequencyAction"))
-                IRRU_OnSetFrequencyPressed();
+        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
+        if (!radialMenu || !radialMenu.IsOpened())
+            return;
 
-            if (inputMgr && inputMgr.GetActionTriggered("IRRU_VONBeepTypeAction"))
-                IRRU_OnBeepTypeToggle();
+        if (inputMgr.GetActionTriggered("IRRU_VONRoutingAction"))
+            IRRU_OnEarRoutingToggle();
 
-            float volumeValue = inputMgr.GetActionValue("IRRU_VolumeAction");
-            if (volumeValue != 0)
-                IRRU_OnVolumeAdjust(volumeValue);
+        if (inputMgr.GetActionTriggered("IRRU_SetFrequencyAction"))
+            IRRU_OnSetFrequencyPressed();
 
-            if (inputMgr.GetActionTriggered("IRRU_VolumeUp"))
-                IRRU_OnVolumeAdjust(1);
+        if (inputMgr.GetActionTriggered("IRRU_VONBeepTypeAction"))
+            IRRU_OnBeepTypeToggle();
 
-            if (inputMgr.GetActionTriggered("IRRU_VolumeDown"))
-                IRRU_OnVolumeAdjust(-1);
+        float volumeValue = inputMgr.GetActionValue("IRRU_VolumeAction");
+        if (volumeValue != 0)
+            IRRU_OnVolumeAdjust(volumeValue);
 
-            if (inputMgr && inputMgr.GetActionTriggered("IRRU_AlternateChannelAction"))
-                IRRU_OnAlternateChannelToggle();
-        }
+        if (inputMgr.GetActionTriggered("IRRU_VolumeUp"))
+            IRRU_OnVolumeAdjust(1);
+
+        if (inputMgr.GetActionTriggered("IRRU_VolumeDown"))
+            IRRU_OnVolumeAdjust(-1);
+
+        if (inputMgr.GetActionTriggered("IRRU_AlternateChannelAction"))
+            IRRU_OnAlternateChannelToggle();
+    }
+
+    //! Transceiver of the radio entry highlighted in the VON radial menu, if any
+    protected BaseTransceiver IRRU_GetRadialSelection(out SCR_RadialMenu radialMenu, out SCR_VONEntryRadio radioEntry)
+    {
+        radialMenu = m_VONMenu.GetRadialMenu();
+        if (!radialMenu)
+            return null;
+
+        radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
+        if (!radioEntry)
+            return null;
+
+        return radioEntry.GetTransceiver();
     }
 
     protected void IRRU_OnEarRoutingToggle()
     {
-        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
-        if (!radialMenu)
-            return;
-
-        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
-        if (!radioEntry)
-            return;
-
-        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        SCR_RadialMenu radialMenu;
+        SCR_VONEntryRadio radioEntry;
+        BaseTransceiver transceiver = IRRU_GetRadialSelection(radialMenu, radioEntry);
         if (!transceiver)
             return;
 
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        settings.CycleRouting(transceiver);
-
+        SCR_IRRURadioEarSettings.GetInstance().CycleRouting(transceiver);
         radialMenu.UpdateEntries();
     }
 
     protected void IRRU_OnBeepTypeToggle()
     {
-        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
-        if (!radialMenu)
-            return;
-
-        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
-        if (!radioEntry)
-            return;
-
-        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        SCR_RadialMenu radialMenu;
+        SCR_VONEntryRadio radioEntry;
+        BaseTransceiver transceiver = IRRU_GetRadialSelection(radialMenu, radioEntry);
         if (!transceiver)
             return;
 
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        settings.CycleBeepType(transceiver);
-
+        SCR_IRRURadioEarSettings.GetInstance().CycleBeepType(transceiver);
         radialMenu.UpdateEntries();
     }
 
     protected void IRRU_OnSetFrequencyPressed()
     {
-        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
-        if (!radialMenu)
-            return;
-
-        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
-        if (!radioEntry)
-            return;
-
-        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        SCR_RadialMenu radialMenu;
+        SCR_VONEntryRadio radioEntry;
+        BaseTransceiver transceiver = IRRU_GetRadialSelection(radialMenu, radioEntry);
         if (!transceiver)
             return;
 
@@ -356,46 +322,29 @@ modded class SCR_VONController
 
     protected void IRRU_OnVolumeAdjust(float value)
     {
-        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
-        if (!radialMenu)
-            return;
-
-        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
-        if (!radioEntry)
-            return;
-
-        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        SCR_RadialMenu radialMenu;
+        SCR_VONEntryRadio radioEntry;
+        BaseTransceiver transceiver = IRRU_GetRadialSelection(radialMenu, radioEntry);
         if (!transceiver)
             return;
 
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-
-        float delta;
+        float delta = -0.1;
         if (value > 0)
             delta = 0.1;
-        else
-            delta = -0.1;
 
-        settings.AdjustVolume(transceiver, delta);
+        SCR_IRRURadioEarSettings.GetInstance().AdjustVolume(transceiver, delta);
         radialMenu.UpdateEntries();
     }
 
     protected void IRRU_OnAlternateChannelToggle()
     {
-        SCR_RadialMenu radialMenu = m_VONMenu.GetRadialMenu();
-        if (!radialMenu)
-            return;
-
-        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(radialMenu.GetSelectionEntry());
-        if (!radioEntry)
-            return;
-
-        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        SCR_RadialMenu radialMenu;
+        SCR_VONEntryRadio radioEntry;
+        BaseTransceiver transceiver = IRRU_GetRadialSelection(radialMenu, radioEntry);
         if (!transceiver)
             return;
 
-        SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
-        settings.ToggleAlternate(transceiver);
+        SCR_IRRURadioEarSettings.GetInstance().ToggleAlternate(transceiver);
         radialMenu.UpdateEntries();
     }
 
@@ -437,7 +386,7 @@ modded class SCR_VONController
         }
     }
 
-    protected SCR_VONEntryRadio IRRU_FindEntryByFrequency(int frequency)
+    SCR_VONEntryRadio IRRU_FindEntryByFrequency(int frequency)
     {
         if (frequency < 0)
             return null;

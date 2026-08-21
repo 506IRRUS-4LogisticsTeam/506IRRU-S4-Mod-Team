@@ -27,12 +27,6 @@ class IRRU_JammerToggleUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	override bool GetActionNameScript(out string outName)
 	{
-		if (!m_JammerComponent)
-		{
-			outName = "Toggle Jammer";
-			return true;
-		}
-
 		if (m_JammerComponent.IsJammerActive())
 			outName = "Disable Jammer";
 		else
@@ -45,11 +39,6 @@ class IRRU_JammerToggleUserAction : ScriptedUserAction
 	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
 		super.PerformAction(pOwnerEntity, pUserEntity);
-
-		if (!m_JammerComponent)
-			return;
-
-		bool newState = !m_JammerComponent.IsJammerActive();
-		m_JammerComponent.SetJammerActive(newState);
+		m_JammerComponent.SetJammerActive(!m_JammerComponent.IsJammerActive());
 	}
 }

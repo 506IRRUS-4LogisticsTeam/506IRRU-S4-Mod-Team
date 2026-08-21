@@ -118,7 +118,6 @@ class IRRU_RadioRxSquelch
         float nowMs = GetGame().GetWorld().GetWorldTime();
 
         IRRU_RxChannelState state = GetOrCreateState(frequency);
-        ExpireStuckKeys(state, nowMs);
 
         if (nowMs - state.m_fRpcClosedAtMs < VOICE_TAIL_DISCARD_MS)
             return;
@@ -251,11 +250,7 @@ class IRRU_RadioRxSquelch
     //------------------------------------------------------------------------------------------------
     protected int GetSelectedRadioFrequency()
     {
-        PlayerController playerController = GetGame().GetPlayerController();
-        if (!playerController)
-            return -1;
-
-        SCR_VONController vonController = SCR_VONController.Cast(playerController.FindComponent(SCR_VONController));
+        SCR_VONController vonController = GetLocalVonController();
         if (!vonController)
             return -1;
 
@@ -292,17 +287,23 @@ class IRRU_RadioRxSquelch
     }
 
     //------------------------------------------------------------------------------------------------
-    protected BaseTransceiver FindTunedTransceiver(int frequency)
+    protected SCR_VONController GetLocalVonController()
     {
         PlayerController playerController = GetGame().GetPlayerController();
         if (!playerController)
             return null;
 
-        SCR_VONController vonController = SCR_VONController.Cast(playerController.FindComponent(SCR_VONController));
+        return SCR_VONController.Cast(playerController.FindComponent(SCR_VONController));
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected BaseTransceiver FindTunedTransceiver(int frequency)
+    {
+        SCR_VONController vonController = GetLocalVonController();
         if (!vonController)
             return null;
 
-        SCR_VONEntryRadio entry = vonController.IRRU_FindRadioEntryByFrequency(frequency);
+        SCR_VONEntryRadio entry = vonController.IRRU_FindEntryByFrequency(frequency);
         if (!entry)
             return null;
 
@@ -335,7 +336,7 @@ class IRRU_RadioRxSquelch
 
         if (IRRU_RFPropagationNetworkComponent.IsRFPropagationEnabled())
         {
-            float quality = IRRU_SignalManager.GetInstance().GetSignalQuality(senderPos, myPos, frequency);
+            float quality = IRRU_RFPropagationModel.GetInstance().CalculateSignalQuality(senderPos, myPos, frequency);
             if (quality < MIN_SIGNAL_QUALITY)
                 return false;
         }

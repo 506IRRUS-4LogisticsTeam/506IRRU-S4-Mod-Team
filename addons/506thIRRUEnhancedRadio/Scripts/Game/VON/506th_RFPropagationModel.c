@@ -9,8 +9,8 @@ class IRRU_RFPropagationModel
     protected static const float MIN_DISTANCE = 50.0;
     protected static const int MAX_KNIFE_EDGES = 3;
 
-    protected static const float EARTH_RADIUS = 6371000.0;
-    protected static const float K_FACTOR = 1.333;
+    //! 4/3-earth model: 6371 km mean radius x 1.333 atmospheric K-factor
+    protected static const float EFFECTIVE_EARTH_RADIUS = 8492543.0;
 
     protected static const float EXCELLENT_THRESHOLD = 75.0;
     protected static const float GOOD_THRESHOLD = 85.0;
@@ -189,16 +189,13 @@ class IRRU_RFPropagationModel
         if (totalDist <= 0)
             return 0.0;
 
-        float radius = Math.Sqrt(wavelength * d1 * d2 / totalDist);
-        return radius;
+        return Math.Sqrt(wavelength * d1 * d2 / totalDist);
     }
 
     //------------------------------------------------------------------------------------------------
     protected float CalculateEarthBulge(float d1, float d2)
     {
-        float effectiveRadius = EARTH_RADIUS * K_FACTOR;
-        float bulge = (d1 * d2) / (2.0 * effectiveRadius);
-        return bulge;
+        return (d1 * d2) / (2.0 * EFFECTIVE_EARTH_RADIUS);
     }
 
     //------------------------------------------------------------------------------------------------
@@ -263,220 +260,5 @@ class IRRU_RFPropagationModel
         }
 
         return 0.0;
-    }
-
-    //------------------------------------------------------------------------------------------------
-    static void DebugPropagation()
-    {
-        Print("------------------- IRRU RF PROPAGATION DEBUG -------------------", LogLevel.NORMAL);
-
-        PlayerController pc = GetGame().GetPlayerController();
-        if (!pc)
-        {
-            Print("[RF Debug] ERROR: No PlayerController found", LogLevel.ERROR);
-            return;
-        }
-
-        IEntity controlled = pc.GetControlledEntity();
-        if (!controlled)
-        {
-            Print("[RF Debug] ERROR: No controlled entity", LogLevel.ERROR);
-            return;
-        }
-
-        BaseWorld world = GetGame().GetWorld();
-        if (!world)
-        {
-            Print("[RF Debug] ERROR: No world", LogLevel.ERROR);
-            return;
-        }
-
-        vector playerPos = controlled.GetOrigin();
-        Print(string.Format("[RF Debug] Player position: %1", playerPos), LogLevel.NORMAL);
-
-        float testDistance = 1000.0;
-        vector forward = controlled.GetTransformAxis(2);
-        vector targetPos = playerPos + forward * testDistance;
-
-        Print(string.Format("[RF Debug] Test target: %1 (%2 m forward)", targetPos, testDistance), LogLevel.NORMAL);
-
-        float playerTerrainY = world.GetSurfaceY(playerPos[0], playerPos[2]);
-        float targetTerrainY = world.GetSurfaceY(targetPos[0], targetPos[2]);
-        float playerHeight = playerTerrainY + ANTENNA_HEIGHT;
-        float targetHeight = targetTerrainY + ANTENNA_HEIGHT;
-
-        Print(string.Format("[RF Debug] Player terrain: %1 m, antenna: %2 m", playerTerrainY.ToString(1), playerHeight.ToString(1)), LogLevel.NORMAL);
-        Print(string.Format("[RF Debug] Target terrain: %1 m, antenna: %2 m", targetTerrainY.ToString(1), targetHeight.ToString(1)), LogLevel.NORMAL);
-
-        float dx = targetPos[0] - playerPos[0];
-        float dz = targetPos[2] - playerPos[2];
-        float horizontalDist = Math.Sqrt(dx * dx + dz * dz);
-
-        int numSamples = Math.Floor(horizontalDist / SAMPLE_INTERVAL);
-        if (numSamples > MAX_SAMPLES)
-            numSamples = MAX_SAMPLES;
-
-        float debugFreqKHz = DEFAULT_FREQUENCY_KHZ;
-        float debugFreqHz = debugFreqKHz * 1000.0;
-        float wavelength = SPEED_OF_LIGHT / debugFreqHz;
-        float debugFreqMHz = debugFreqKHz / 1000.0;
-
-        Print(string.Format("[RF Debug] Frequency: %1 MHz, Wavelength: %2 m", debugFreqMHz, wavelength), LogLevel.NORMAL);
-        Print(string.Format("[RF Debug] Horizontal distance: %1 m, samples: %2", horizontalDist, numSamples), LogLevel.NORMAL);
-
-        float effectiveEarthRadius = EARTH_RADIUS * K_FACTOR;
-        float maxBulgeD1 = horizontalDist * 0.5;
-        float maxBulgeD2 = horizontalDist * 0.5;
-        float maxBulge = (maxBulgeD1 * maxBulgeD2) / (2.0 * effectiveEarthRadius);
-        Print(string.Format("[RF Debug] Atmospheric K-factor: %1 (effective earth radius: %2 km)", K_FACTOR, (effectiveEarthRadius / 1000.0).ToString(0)), LogLevel.NORMAL);
-        Print(string.Format("[RF Debug] Max earth bulge at midpoint: %1 m", maxBulge.ToString(2)), LogLevel.NORMAL);
-
-        Print("[RF Debug] --- Terrain Profile ---", LogLevel.NORMAL);
-
-        float dirX = dx / horizontalDist;
-        float dirZ = dz / horizontalDist;
-
-        ref array<float> peakHeights = new array<float>();
-        ref array<float> peakD1 = new array<float>();
-        ref array<float> peakD2 = new array<float>();
-        ref array<int> peakSamples = new array<int>();
-
-        float worstFresnelIntrusion = 0.0;
-        float worstFresnelRadius = 0.0;
-
-        IRRU_RFPropagationModel model = GetInstance();
-
-        for (int i = 1; i < numSamples; i++)
-        {
-            float d1 = i * SAMPLE_INTERVAL;
-            float d2 = horizontalDist - d1;
-
-            float sampleX = playerPos[0] + dirX * d1;
-            float sampleZ = playerPos[2] + dirZ * d1;
-            float terrainY = world.GetSurfaceY(sampleX, sampleZ);
-
-            float earthBulge = model.CalculateEarthBulge(d1, d2);
-            float effectiveTerrainY = terrainY + earthBulge;
-
-            float losHeight = playerHeight + (targetHeight - playerHeight) * (d1 / horizontalDist);
-            float fresnelRadius = model.CalculateFresnelRadius(d1, d2, horizontalDist, wavelength);
-            float heightAboveLOS = effectiveTerrainY - losHeight;
-
-            string status;
-            if (heightAboveLOS > 0)
-            {
-                status = "BLOCKED";
-                DebugInsertPeak(peakHeights, peakD1, peakD2, peakSamples, heightAboveLOS, d1, d2, i);
-            }
-            else
-            {
-                float fresnelClearance = -heightAboveLOS;
-                float clearancePercent = fresnelClearance / fresnelRadius * 100.0;
-
-                if (clearancePercent >= 100.0)
-                    status = "CLEAR";
-                else if (clearancePercent >= 60.0)
-                    status = "GOOD";
-                else
-                {
-                    status = "PARTIAL";
-                    float fresnelIntrusion = fresnelRadius - fresnelClearance;
-                    if (fresnelIntrusion > worstFresnelIntrusion)
-                    {
-                        worstFresnelIntrusion = fresnelIntrusion;
-                        worstFresnelRadius = fresnelRadius;
-                    }
-                }
-            }
-
-            Print(string.Format("  Sample %1: d=%2m, terrain=%3m, bulge=%4m, LOS=%5m, aboveLOS=%6m [%7]",
-                i, d1, terrainY, earthBulge.ToString(2), losHeight, heightAboveLOS.ToString(2), status), LogLevel.NORMAL);
-        }
-
-        Print("[RF Debug] --- Calculations ---", LogLevel.NORMAL);
-
-        float dy = targetHeight - playerHeight;
-        float totalDistance = Math.Sqrt(horizontalDist * horizontalDist + dy * dy);
-
-        float pathLoss = model.CalculatePathLoss(totalDistance, debugFreqMHz);
-
-        Print(string.Format("[RF Debug] Path Loss (FSPL): %1 dB", pathLoss), LogLevel.NORMAL);
-
-        float diffLoss = 0.0;
-        int numPeaks = peakHeights.Count();
-        if (numPeaks > 0)
-        {
-            Print(string.Format("[RF Debug] Detected %1 obstructions (using top %2):", numPeaks, MAX_KNIFE_EDGES), LogLevel.NORMAL);
-            int peaksToUse = numPeaks;
-            if (peaksToUse > MAX_KNIFE_EDGES)
-                peaksToUse = MAX_KNIFE_EDGES;
-
-            for (int p = 0; p < peaksToUse; p++)
-            {
-                float h = peakHeights.Get(p);
-                float pd1 = peakD1.Get(p);
-                float pd2 = peakD2.Get(p);
-                int sampleIdx = peakSamples.Get(p);
-                float peakDiffLoss = model.CalculateDiffractionLoss(h, pd1, pd2, horizontalDist, wavelength);
-                diffLoss += peakDiffLoss;
-                Print(string.Format("  Peak %1: Sample %2, h=%3m above LOS, loss=%4 dB", p + 1, sampleIdx, h, peakDiffLoss), LogLevel.NORMAL);
-            }
-            Print(string.Format("[RF Debug] Total Diffraction Loss: %1 dB", diffLoss), LogLevel.NORMAL);
-        }
-        else
-        {
-            Print("[RF Debug] No terrain above LOS (clear line-of-sight)", LogLevel.NORMAL);
-        }
-
-        float fresnelLoss = 0.0;
-        if (worstFresnelIntrusion > 0 && worstFresnelRadius > 0)
-        {
-            float clearancePercent = 1.0 - (worstFresnelIntrusion / worstFresnelRadius);
-            if (clearancePercent < 0.2)
-                fresnelLoss = 3.0;
-            else if (clearancePercent < 0.4)
-                fresnelLoss = 2.0;
-            else if (clearancePercent < 0.6)
-                fresnelLoss = 1.0;
-
-            if (fresnelLoss > 0)
-                Print(string.Format("[RF Debug] Fresnel Zone Intrusion: %1 dB (clearance %2%%)", fresnelLoss, (clearancePercent * 100.0).ToString(0)), LogLevel.NORMAL);
-        }
-
-        float totalLoss = pathLoss + diffLoss + fresnelLoss;
-        float quality = model.LossToQuality(totalLoss);
-
-        Print("[RF Debug] === RESULT ===", LogLevel.NORMAL);
-        Print(string.Format("[RF Debug] Total Loss: %1 dB", totalLoss), LogLevel.NORMAL);
-        Print(string.Format("[RF Debug] Signal Quality: %1 (1.0=perfect, 0.0=no signal)", quality), LogLevel.NORMAL);
-        Print("=== END RF DEBUG ===", LogLevel.NORMAL);
-    }
-
-    //------------------------------------------------------------------------------------------------
-    protected static void DebugInsertPeak(array<float> heights, array<float> d1Arr, array<float> d2Arr, array<int> samples, float h, float d1, float d2, int sampleIdx)
-    {
-        int insertIdx = heights.Count();
-        for (int i = 0; i < heights.Count(); i++)
-        {
-            if (h > heights.Get(i))
-            {
-                insertIdx = i;
-                break;
-            }
-        }
-
-        heights.InsertAt(h, insertIdx);
-        d1Arr.InsertAt(d1, insertIdx);
-        d2Arr.InsertAt(d2, insertIdx);
-        samples.InsertAt(sampleIdx, insertIdx);
-
-        while (heights.Count() > MAX_KNIFE_EDGES)
-        {
-            int lastIdx = heights.Count() - 1;
-            heights.Remove(lastIdx);
-            d1Arr.Remove(lastIdx);
-            d2Arr.Remove(lastIdx);
-            samples.Remove(lastIdx);
-        }
     }
 }

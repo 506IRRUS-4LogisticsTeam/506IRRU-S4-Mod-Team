@@ -36,7 +36,7 @@ class IRRU_RadioChatCommands
             if (m_iTries < REGISTER_MAX_TRIES)
                 GetGame().GetCallqueue().CallLater(Register, REGISTER_RETRY_MS, false);
             else
-                Print("[EnhancedRadio] Chat command registration gave up - native prefix commands unavailable, bare-word fallback still active", LogLevel.WARNING);
+                Print("[EnhancedRadio] Chat command registration gave up - radio commands unavailable this session", LogLevel.WARNING);
             return;
         }
 
@@ -52,53 +52,44 @@ class IRRU_RadioChatCommands
     //------------------------------------------------------------------------------------------------
     protected void OnRadioBeepsCommand(SCR_ChatPanel panel, string data)
     {
-        string argument = data;
-        argument.Trim();
-        argument.ToLower();
-
-        IRRU_RadioUserSettings settings = IRRU_RadioUserSettings.GetInstance();
-
-        if (argument == "on")
-        {
-            settings.SetRxBeepsEnabled(true);
-            Feedback("Enhanced Radio: incoming squelch/beeps ON");
-        }
-        else if (argument == "off")
-        {
-            settings.SetRxBeepsEnabled(false);
-            Feedback("Enhanced Radio: incoming squelch/beeps OFF");
-        }
-        else
-        {
-            Feedback(string.Format("Usage: %1radiobeeps on|off (the %1 prefix keeps the command out of everyone's chat)",
-                SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
-        }
+        HandleToggle(data, true);
     }
 
     //------------------------------------------------------------------------------------------------
     protected void OnRadioCheckCommand(SCR_ChatPanel panel, string data)
     {
+        HandleToggle(data, false);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void HandleToggle(string data, bool rxBeeps)
+    {
         string argument = data;
         argument.Trim();
         argument.ToLower();
 
-        IRRU_RadioUserSettings settings = IRRU_RadioUserSettings.GetInstance();
+        string command = "radiocheck";
+        string label = "spawn radio check";
+        if (rxBeeps)
+        {
+            command = "radiobeeps";
+            label = "incoming squelch/beeps";
+        }
 
-        if (argument == "on")
+        if (argument != "on" && argument != "off")
         {
-            settings.SetRadioCheckEnabled(true);
-            Feedback("Enhanced Radio: spawn radio check ON");
+            Feedback(string.Format("Usage: %1%2 on|off", SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER, command));
+            return;
         }
-        else if (argument == "off")
-        {
-            settings.SetRadioCheckEnabled(false);
-            Feedback("Enhanced Radio: spawn radio check OFF");
-        }
+
+        bool enabled = argument == "on";
+        IRRU_RadioUserSettings settings = IRRU_RadioUserSettings.GetInstance();
+        if (rxBeeps)
+            settings.SetRxBeepsEnabled(enabled);
         else
-        {
-            Feedback(string.Format("Usage: %1radiocheck on|off (the %1 prefix keeps the command out of everyone's chat)",
-                SCR_ChatPanelManager.CHAT_COMMAND_CHARACTER));
-        }
+            settings.SetRadioCheckEnabled(enabled);
+
+        Feedback(string.Format("Enhanced Radio: %1 %2", label, OnOffText(enabled)));
     }
 
     //------------------------------------------------------------------------------------------------

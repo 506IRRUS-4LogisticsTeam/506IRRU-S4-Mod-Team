@@ -33,41 +33,30 @@ class SCR_IRRURadioEarSettings
 
     IRRUEarRouting GetRouting(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return IRRUEarRouting.CENTER;
+        IRRUEarRouting routing;
+        if (transceiver && m_mRoutingByTransceiver.Find(transceiver, routing))
+            return routing;
 
-        if (!m_mRoutingByTransceiver.Contains(transceiver))
-            return IRRUEarRouting.CENTER;
-
-        return m_mRoutingByTransceiver.Get(transceiver);
+        return IRRUEarRouting.CENTER;
     }
 
     void SetRouting(BaseTransceiver transceiver, IRRUEarRouting routing)
     {
-        if (!transceiver)
-            return;
-
-        m_mRoutingByTransceiver.Set(transceiver, routing);
+        if (transceiver)
+            m_mRoutingByTransceiver.Set(transceiver, routing);
     }
 
+    //! Cycle order is deliberately C -> L -> R, not enum order
     IRRUEarRouting CycleRouting(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return IRRUEarRouting.CENTER;
-
-        IRRUEarRouting current = GetRouting(transceiver);
         IRRUEarRouting next;
-
-        switch (current)
+        switch (GetRouting(transceiver))
         {
             case IRRUEarRouting.CENTER:
                 next = IRRUEarRouting.LEFT;
                 break;
             case IRRUEarRouting.LEFT:
                 next = IRRUEarRouting.RIGHT;
-                break;
-            case IRRUEarRouting.RIGHT:
-                next = IRRUEarRouting.CENTER;
                 break;
             default:
                 next = IRRUEarRouting.CENTER;
@@ -79,47 +68,32 @@ class SCR_IRRURadioEarSettings
 
     string GetRoutingDisplayText(IRRUEarRouting routing)
     {
-        switch (routing)
-        {
-            case IRRUEarRouting.LEFT:
-                return "L";
-            case IRRUEarRouting.RIGHT:
-                return "R";
-            default:
-                return "C";
-        }
-
+        if (routing == IRRUEarRouting.LEFT)
+            return "L";
+        if (routing == IRRUEarRouting.RIGHT)
+            return "R";
         return "C";
     }
 
     IRRUBeepType GetBeepType(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return IRRUBeepType.ACE_HIGH;
+        IRRUBeepType beepType;
+        if (transceiver && m_mBeepTypeByTransceiver.Find(transceiver, beepType))
+            return beepType;
 
-        if (!m_mBeepTypeByTransceiver.Contains(transceiver))
-            return IRRUBeepType.ACE_HIGH;
-
-        return m_mBeepTypeByTransceiver.Get(transceiver);
+        return IRRUBeepType.ACE_HIGH;
     }
 
     void SetBeepType(BaseTransceiver transceiver, IRRUBeepType beepType)
     {
-        if (!transceiver)
-            return;
-
-        m_mBeepTypeByTransceiver.Set(transceiver, beepType);
+        if (transceiver)
+            m_mBeepTypeByTransceiver.Set(transceiver, beepType);
     }
 
     IRRUBeepType CycleBeepType(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return IRRUBeepType.ACE_HIGH;
-
-        IRRUBeepType current = GetBeepType(transceiver);
         IRRUBeepType next;
-
-        switch (current)
+        switch (GetBeepType(transceiver))
         {
             case IRRUBeepType.OFF:
                 next = IRRUBeepType.ACE_HIGH;
@@ -130,72 +104,38 @@ class SCR_IRRURadioEarSettings
             case IRRUBeepType.ACE_LOW:
                 next = IRRUBeepType.GRS;
                 break;
-            case IRRUBeepType.GRS:
-                next = IRRUBeepType.OFF;
-                break;
             default:
-                next = IRRUBeepType.ACE_LOW;
+                next = IRRUBeepType.OFF;
         }
 
         SetBeepType(transceiver, next);
         return next;
     }
 
-    string GetBeepTypeDisplayText(IRRUBeepType beepType)
-    {
-        switch (beepType)
-        {
-            case IRRUBeepType.OFF:
-                return "OFF";
-            case IRRUBeepType.ACE_HIGH:
-                return "ACE-H";
-            case IRRUBeepType.ACE_LOW:
-                return "ACE-L";
-            case IRRUBeepType.GRS:
-                return "GRS";
-            default:
-                return "ACE-L";
-        }
-
-        return "ACE-H";
-    }
-
     float GetVolume(BaseTransceiver transceiver)
     {
-        if (!transceiver)
-            return 1.0;
+        float volume;
+        if (transceiver && m_mVolumeByTransceiver.Find(transceiver, volume))
+            return volume;
 
-        if (!m_mVolumeByTransceiver.Contains(transceiver))
-            return 1.0;
-
-        return m_mVolumeByTransceiver.Get(transceiver);
+        return 1.0;
     }
 
     void SetVolume(BaseTransceiver transceiver, float volume)
     {
-        if (!transceiver)
-            return;
-
-        m_mVolumeByTransceiver.Set(transceiver, Math.Clamp(volume, 0.0, 1.0));
+        if (transceiver)
+            m_mVolumeByTransceiver.Set(transceiver, Math.Clamp(volume, 0.0, 1.0));
     }
 
     float AdjustVolume(BaseTransceiver transceiver, float delta)
     {
-        float current = GetVolume(transceiver);
-        float newVolume = Math.Clamp(current + delta, 0.0, 1.0);
-        SetVolume(transceiver, newVolume);
-        return newVolume;
+        SetVolume(transceiver, GetVolume(transceiver) + delta);
+        return GetVolume(transceiver);
     }
 
     int GetVolumePercent(BaseTransceiver transceiver)
     {
         return Math.Round(GetVolume(transceiver) * 100);
-    }
-
-    string GetVolumeDisplayText(BaseTransceiver transceiver)
-    {
-        int percent = GetVolumePercent(transceiver);
-        return percent.ToString() + "%";
     }
 
     int GetAlternateFrequency()
@@ -211,16 +151,6 @@ class SCR_IRRURadioEarSettings
         return transceiver.GetFrequency() == m_iAlternateFrequency;
     }
 
-    void SetAlternateFrequency(int frequency)
-    {
-        m_iAlternateFrequency = frequency;
-    }
-
-    void ClearAlternateFrequency()
-    {
-        m_iAlternateFrequency = -1;
-    }
-
     bool ToggleAlternate(BaseTransceiver transceiver)
     {
         if (!transceiver)
@@ -228,14 +158,12 @@ class SCR_IRRURadioEarSettings
 
         if (IsAlternate(transceiver))
         {
-            ClearAlternateFrequency();
+            m_iAlternateFrequency = -1;
             return false;
         }
-        else
-        {
-            SetAlternateFrequency(transceiver.GetFrequency());
-            return true;
-        }
+
+        m_iAlternateFrequency = transceiver.GetFrequency();
+        return true;
     }
 
     bool IsTransmittingOnAlternate()

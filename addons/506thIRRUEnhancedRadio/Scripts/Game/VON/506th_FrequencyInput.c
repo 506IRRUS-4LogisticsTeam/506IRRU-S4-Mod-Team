@@ -8,8 +8,6 @@ class IRRU_FrequencyInput
     protected Widget m_wRoot;
     protected EditBoxWidget m_wFrequencyEdit;
     protected TextWidget m_wRangeText;
-    protected TextWidget m_wTitle;
-    protected TextWidget m_wHintText;
     
     protected bool m_bIsOpen;
     
@@ -31,8 +29,6 @@ class IRRU_FrequencyInput
         
         m_wFrequencyEdit = EditBoxWidget.Cast(m_wRoot.FindAnyWidget("FrequencyEdit"));
         m_wRangeText = TextWidget.Cast(m_wRoot.FindAnyWidget("RangeText"));
-        m_wTitle = TextWidget.Cast(m_wRoot.FindAnyWidget("Title"));
-        m_wHintText = TextWidget.Cast(m_wRoot.FindAnyWidget("HintText"));
         
         if (!m_wFrequencyEdit)
         {
@@ -49,11 +45,8 @@ class IRRU_FrequencyInput
             m_wRangeText.SetText(rangeStr);
         }
         
-        if (m_wFrequencyEdit && m_Transceiver)
-        {
-            int currentFreq = m_Transceiver.GetFrequency();
-            m_wFrequencyEdit.SetText(FormatFrequency(currentFreq));
-        }
+        if (m_Transceiver)
+            m_wFrequencyEdit.SetText(FormatFrequency(m_Transceiver.GetFrequency()));
         
         GetGame().GetWorkspace().SetFocusedWidget(m_wFrequencyEdit);
         m_wFrequencyEdit.ActivateWriteMode();
@@ -81,8 +74,6 @@ class IRRU_FrequencyInput
         
         m_wFrequencyEdit = null;
         m_wRangeText = null;
-        m_wTitle = null;
-        m_wHintText = null;
         m_Transceiver = null;
         m_RadioEntry = null;
         m_bIsOpen = false;
