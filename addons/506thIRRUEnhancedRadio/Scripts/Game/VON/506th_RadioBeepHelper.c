@@ -112,22 +112,34 @@ class IRRU_RadioBeepHelper
         PlayRouted(eventName, transceiver);
     }
 
-    protected static void PlayRouted(string eventName, BaseTransceiver transceiver)
+    //! Write a transceiver's routing/volume into the shared audio variables.
+    //! ChannelVolume is set even though 506th_beep.acp only consumes EarRouting
+    //! today, so beeps scale with per-channel volume once the variable is wired
+    //! into the audio project in Workbench.
+    static void ApplyChannelAudioVariables(BaseTransceiver transceiver)
     {
         SCR_IRRURadioEarSettings settings = SCR_IRRURadioEarSettings.GetInstance();
         IRRUEarRouting routing = settings.GetRouting(transceiver);
 
         AudioSystem.SetVariableByName("EarRouting", routing, EAR_ROUTING_CONFIG);
 
-        // 506th_beep.acp only consumes EarRouting today; ChannelVolume is set so
-        // beeps scale with per-channel volume once the variable is wired into the
-        // audio project in Workbench.
         float volume = Math.Pow(settings.GetVolume(transceiver), 2.5);
         AudioSystem.SetVariableByName("ChannelVolume", volume, EAR_ROUTING_CONFIG);
+    }
+
+    protected static void PlayRouted(string eventName, BaseTransceiver transceiver)
+    {
+        // The beep latches its values at PlayEvent within this same call, so it
+        // always renders correctly; restoring the authoritative stream's values
+        // right after keeps an asynchronous voice-start latch from ever catching
+        // beep values (the engine latches variables at sound start).
+        ApplyChannelAudioVariables(transceiver);
 
         vector mat[4];
         Math3D.MatrixIdentity4(mat);
 
         AudioSystem.PlayEvent(BEEP_CONFIG, eventName, mat);
+
+        IRRU_RadioRxSquelch.GetInstance().RestoreAuthoritativeAudioVariables();
     }
 }

@@ -14,6 +14,7 @@ class IRRU_RxChannelState
     bool m_bVoiceActive;
     float m_fLastVoiceMs;
     bool m_bOpen;
+    float m_fOpenedAtMs;
     float m_fClosedAtMs;
     float m_fRpcClosedAtMs;
 }
@@ -36,6 +37,14 @@ class IRRU_RadioRxSquelch
     private static ref IRRU_RadioRxSquelch s_Instance;
 
     protected ref map<int, ref IRRU_RxChannelState> m_mChannels = new map<int, ref IRRU_RxChannelState>();
+
+    //! The audio variables (EarRouting/ChannelVolume/...) are single global
+    //! slots, so with concurrent transmissions exactly ONE stream may write
+    //! them or every stream renders with whichever values were written last
+    //! (the engine latches values at sound start - whole transmissions come out
+    //! wrong). The player's selected channel preempts; otherwise the
+    //! earliest-opened channel holds authority until it closes.
+    protected int m_iAuthoritativeFrequency = -1;
 
     //------------------------------------------------------------------------------------------------
     static IRRU_RadioRxSquelch GetInstance()
@@ -74,7 +83,7 @@ class IRRU_RadioRxSquelch
             IRRU_RxChannelState state = GetOrCreateState(frequency);
             ExpireStuckKeys(state, nowMs);
             state.m_mKeyedSenders.Set(senderPlayerId, nowMs);
-            Open(state, transceiver, nowMs);
+            Open(state, frequency, transceiver, nowMs);
         }
         else
         {
@@ -116,7 +125,29 @@ class IRRU_RadioRxSquelch
 
         state.m_bVoiceActive = true;
         state.m_fLastVoiceMs = nowMs;
-        Open(state, receiver, nowMs);
+        Open(state, frequency, receiver, nowMs);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Whether packets of this frequency may write the global audio variables.
+    bool ShouldDriveAudioVariables(int frequency)
+    {
+        return frequency == m_iAuthoritativeFrequency;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Put the authoritative channel's values back into the audio variables
+    //! after a one-shot (beep) borrowed them; no-op when no stream is active.
+    void RestoreAuthoritativeAudioVariables()
+    {
+        if (m_iAuthoritativeFrequency == -1)
+            return;
+
+        BaseTransceiver transceiver = FindTunedTransceiver(m_iAuthoritativeFrequency);
+        if (!transceiver)
+            return;
+
+        IRRU_RadioBeepHelper.ApplyChannelAudioVariables(transceiver);
     }
 
     //------------------------------------------------------------------------------------------------
@@ -146,17 +177,38 @@ class IRRU_RadioRxSquelch
     }
 
     //------------------------------------------------------------------------------------------------
-    protected void Open(IRRU_RxChannelState state, BaseTransceiver transceiver, float nowMs)
+    protected void Open(IRRU_RxChannelState state, int frequency, BaseTransceiver transceiver, float nowMs)
     {
+        ClaimAudioAuthority(frequency);
+
         if (state.m_bOpen)
             return;
 
         state.m_bOpen = true;
+        state.m_fOpenedAtMs = nowMs;
 
         if (nowMs - state.m_fClosedAtMs < REOPEN_GRACE_MS)
             return;
 
         IRRU_RadioBeepHelper.PlayRxOpen(transceiver);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected void ClaimAudioAuthority(int frequency)
+    {
+        if (frequency == m_iAuthoritativeFrequency)
+            return;
+
+        if (m_iAuthoritativeFrequency == -1)
+        {
+            m_iAuthoritativeFrequency = frequency;
+            return;
+        }
+
+        // A stream on the player's selected channel outranks whoever holds
+        // authority; anything else waits for the holder to close.
+        if (frequency == GetSelectedRadioFrequency())
+            m_iAuthoritativeFrequency = frequency;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -168,9 +220,46 @@ class IRRU_RadioRxSquelch
         state.m_bOpen = false;
         state.m_fClosedAtMs = nowMs;
 
+        if (frequency == m_iAuthoritativeFrequency)
+            ReleaseAudioAuthority();
+
         BaseTransceiver transceiver = FindTunedTransceiver(frequency);
         if (transceiver)
             IRRU_RadioBeepHelper.PlayRxClose(transceiver);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Hand authority to the earliest-opened channel still receiving, if any.
+    protected void ReleaseAudioAuthority()
+    {
+        m_iAuthoritativeFrequency = -1;
+
+        float oldestOpenedAtMs;
+        foreach (int frequency, IRRU_RxChannelState state : m_mChannels)
+        {
+            if (!state.m_bOpen)
+                continue;
+
+            if (m_iAuthoritativeFrequency == -1 || state.m_fOpenedAtMs < oldestOpenedAtMs)
+            {
+                m_iAuthoritativeFrequency = frequency;
+                oldestOpenedAtMs = state.m_fOpenedAtMs;
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------
+    protected int GetSelectedRadioFrequency()
+    {
+        PlayerController playerController = GetGame().GetPlayerController();
+        if (!playerController)
+            return -1;
+
+        SCR_VONController vonController = SCR_VONController.Cast(playerController.FindComponent(SCR_VONController));
+        if (!vonController)
+            return -1;
+
+        return vonController.IRRU_GetActiveRadioFrequency();
     }
 
     //------------------------------------------------------------------------------------------------

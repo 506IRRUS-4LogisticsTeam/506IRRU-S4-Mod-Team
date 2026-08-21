@@ -26,41 +26,48 @@ modded class SCR_VoNComponent : VoNComponent
             IRRU_RFPropagationSettings.GetInstance();
         }
 
-        if (s_bEarRoutingValid)
-        {
-            float earRouting = IRRU_GetEarRoutingForTransceiver(receiver);
-            AudioSystem.SetVariableByName("EarRouting", earRouting, EAR_ROUTING_CONFIG);
-        }
-
-        vector receiverPos = vector.Zero;
-        PlayerController playerController = GetGame().GetPlayerController();
-        if (playerController)
-        {
-            IEntity receiverEntity = playerController.GetControlledEntity();
-            if (receiverEntity)
-                receiverPos = receiverEntity.GetOrigin();
-        }
-
-        if (s_bSignalQualityValid)
-        {
-            float signalQuality = IRRU_GetSignalQuality(playerId, frequency, receiverPos);
-            AudioSystem.SetVariableByName("SignalQuality", signalQuality, EAR_ROUTING_CONFIG);
-        }
-
-        if (s_bJamStrengthValid)
-        {
-            float jamStrength = IRRU_GetJamStrength(receiverPos);
-            AudioSystem.SetVariableByName("JamStrength", jamStrength, EAR_ROUTING_CONFIG);
-        }
-
-        if (s_bChannelVolumeValid)
-        {
-            float channelVolume = IRRU_GetChannelVolumeForTransceiver(receiver);
-            AudioSystem.SetVariableByName("ChannelVolume", channelVolume, EAR_ROUTING_CONFIG);
-        }
-
         if (receiver)
             IRRU_TrackIncomingTransmission(receiver, frequency, playerId);
+
+        // The audio variables are single global slots and the engine latches
+        // them at sound start: direct speech must never write them (its
+        // defaults would poison a starting transmission with center/full), and
+        // with concurrent radio streams only the arbitrated one may write.
+        if (receiver && IRRU_RadioRxSquelch.GetInstance().ShouldDriveAudioVariables(frequency))
+        {
+            if (s_bEarRoutingValid)
+            {
+                float earRouting = IRRU_GetEarRoutingForTransceiver(receiver);
+                AudioSystem.SetVariableByName("EarRouting", earRouting, EAR_ROUTING_CONFIG);
+            }
+
+            vector receiverPos = vector.Zero;
+            PlayerController playerController = GetGame().GetPlayerController();
+            if (playerController)
+            {
+                IEntity receiverEntity = playerController.GetControlledEntity();
+                if (receiverEntity)
+                    receiverPos = receiverEntity.GetOrigin();
+            }
+
+            if (s_bSignalQualityValid)
+            {
+                float signalQuality = IRRU_GetSignalQuality(playerId, frequency, receiverPos);
+                AudioSystem.SetVariableByName("SignalQuality", signalQuality, EAR_ROUTING_CONFIG);
+            }
+
+            if (s_bJamStrengthValid)
+            {
+                float jamStrength = IRRU_GetJamStrength(receiverPos);
+                AudioSystem.SetVariableByName("JamStrength", jamStrength, EAR_ROUTING_CONFIG);
+            }
+
+            if (s_bChannelVolumeValid)
+            {
+                float channelVolume = IRRU_GetChannelVolumeForTransceiver(receiver);
+                AudioSystem.SetVariableByName("ChannelVolume", channelVolume, EAR_ROUTING_CONFIG);
+            }
+        }
 
         super.OnReceive(playerId, isSenderEditor, receiver, frequency, quality);
     }

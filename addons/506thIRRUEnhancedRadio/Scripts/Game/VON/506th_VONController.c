@@ -191,6 +191,20 @@ modded class SCR_VONController
         return IRRU_FindEntryByFrequency(frequency);
     }
 
+    //! Frequency of the currently selected radio entry, -1 when none is a radio.
+    int IRRU_GetActiveRadioFrequency()
+    {
+        SCR_VONEntryRadio radioEntry = SCR_VONEntryRadio.Cast(m_ActiveEntry);
+        if (!radioEntry)
+            return -1;
+
+        BaseTransceiver transceiver = radioEntry.GetTransceiver();
+        if (!transceiver)
+            return -1;
+
+        return transceiver.GetFrequency();
+    }
+
     override protected void ActionVONProximityToggle(float value, EActionTrigger reason = EActionTrigger.UP)
     {
         if (!m_VONComp)
