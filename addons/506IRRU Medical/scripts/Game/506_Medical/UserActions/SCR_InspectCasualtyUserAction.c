@@ -1,13 +1,11 @@
 modded class SCR_InspectCasualtyUserAction : ScriptedUserAction
 {
+	//! Only inspect casualties on foot or sharing your vehicle
 	override bool CanBeShownScript(IEntity user)
 	{
 		ChimeraCharacter userChar = ChimeraCharacter.Cast(user);
 		ChimeraCharacter ownerChar = ChimeraCharacter.Cast(GetOwner());
-		if (!userChar || !ownerChar)
-			return false;
-
-		if (userChar == ownerChar)
+		if (!userChar || !ownerChar || userChar == ownerChar)
 			return false;
 
 		CompartmentAccessComponent userCompAccessComp = userChar.GetCompartmentAccessComponent();
@@ -15,15 +13,9 @@ modded class SCR_InspectCasualtyUserAction : ScriptedUserAction
 		if (!userCompAccessComp || !targetCompAccessComp)
 			return false;
 
-		IEntity userVeh = userCompAccessComp.GetVehicleIn(userChar);
-		IEntity targetVeh = targetCompAccessComp.GetVehicleIn(ownerChar);
+		if (userCompAccessComp.GetVehicleIn(userChar) != targetCompAccessComp.GetVehicleIn(ownerChar))
+			return false;
 
-		if (!userVeh && !targetVeh)
-			return CanBePerformedScript(user);
-
-		if (userVeh && targetVeh && targetVeh == userVeh)
-			return CanBePerformedScript(user);
-
-		return false;
+		return CanBePerformedScript(user);
 	}
 }

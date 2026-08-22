@@ -6,12 +6,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	protected static const vector CPR_PERFORMER_BB_HALF_EXTENDS = {0.15, 0.15, 0.15};
 
 	protected static const float CPR_MAX_DURATION = 30.0;
-	protected static const float CPR_BASE_COOLDOWN = 12.0;
-	protected static const float CPR_COOLDOWN_RATIO = 0.4;
-	protected static const float CPR_MIN_COOLDOWN = 12.0;
+	protected static const float CPR_COOLDOWN = 12.0;
 	protected static const float CPR_MIN_HEALING = 20.0;
 	protected static const float CPR_MAX_HEALING = 40.0;
-	protected static const float CPR_FALLBACK_DURATION = 30.0;
 	protected static const float CPR_RESILIENCE_REGEN_INTERVAL = 1.0;
 	protected static const float CPR_RESILIENCE_PERCENT_PER_SECOND = 4.0;
 	protected static const float CPR_LIFESTATE_CHECK_INTERVAL = 0.5;
@@ -21,72 +18,62 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 	[RplProp()]
 	protected int m_iPerformingPlayerId = -1;
-	protected IRRU_CPRHelperCompartment m_pActiveHelper;
 	[RplProp()]
 	protected bool m_bCPRActive = false;
 	[RplProp()]
 	protected float m_fCPRStartTime = 0;
 
+	protected IRRU_CPRHelperCompartment m_pActiveHelper;
+
+	//! The patient is the action's owner and never changes; resolved once
+	protected SCR_ChimeraCharacter m_Patient;
+	protected SCR_CharacterControllerComponent m_PatientController;
+	protected CompartmentAccessComponent m_PatientCompartment;
+	protected IRRU_NoInstantDeathComponent m_PatientNID;
+	protected SCR_CharacterDamageManagerComponent m_PatientDamageManager;
+
+	//------------------------------------------------------------------------------------------------
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
 	{
 		super.Init(pOwnerEntity, pManagerComponent);
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print("[NoInstantDeath] CPR action initialized");
+
+		m_Patient = SCR_ChimeraCharacter.Cast(pOwnerEntity);
+		if (!m_Patient)
+			return;
+
+		m_PatientController = SCR_CharacterControllerComponent.Cast(m_Patient.GetCharacterController());
+		m_PatientCompartment = m_Patient.GetCompartmentAccessComponent();
+		m_PatientNID = IRRU_NoInstantDeathComponent.Cast(m_Patient.FindComponent(IRRU_NoInstantDeathComponent));
+		m_PatientDamageManager = SCR_CharacterDamageManagerComponent.Cast(m_Patient.GetDamageManager());
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Evaluated every frame for nearby bodies: cheap rejections first, the world trace last
 	override bool CanBeShownScript(IEntity user)
 	{
-		if (!user)
+		if (!user || !m_Patient || !m_PatientNID || !m_PatientNID.IsUnconscious())
 			return false;
 
-		IEntity owner = GetOwner();
-		if (!owner)
+		if (m_PatientController && m_PatientController.GetLifeState() == ECharacterLifeState.DEAD)
 			return false;
 
-		SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(owner);
-		if (!character)
+		if (vector.Distance(user.GetOrigin(), m_Patient.GetOrigin()) > m_fMaxDistance)
 			return false;
 
-		CharacterControllerComponent ctrl = character.GetCharacterController();
-		if (ctrl && ctrl.GetLifeState() == ECharacterLifeState.DEAD)
+		if (m_PatientCompartment && m_PatientCompartment.IsInCompartment())
 			return false;
 
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(owner);
-		if (!nid || !nid.IsUnconscious())
+		if (m_PatientController && m_PatientController.ACE_Medical_GetUnconsciousPose() != ACE_Medical_EUnconsciousPose.BACK)
 			return false;
 
-		CompartmentAccessComponent compartment = CompartmentAccessComponent.Cast(character.FindComponent(CompartmentAccessComponent));
-		if (compartment && compartment.IsInCompartment())
-			return false;
-
-		if (!CheckAnimationPositionClear(owner, user))
-			return false;
-
-		SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(character.GetCharacterController());
-		if (controller && controller.ACE_Medical_GetUnconsciousPose() != ACE_Medical_EUnconsciousPose.BACK)
-			return false;
-
-		float distance = vector.Distance(user.GetOrigin(), owner.GetOrigin());
-		if (distance > m_fMaxDistance)
-			return false;
-
-		return true;
+		return CheckAnimationPositionClear(user);
 	}
 
+	//------------------------------------------------------------------------------------------------
 	override bool CanBePerformedScript(IEntity user)
 	{
 		if (!user)
 			return false;
-
-		IEntity owner = GetOwner();
-		if (!owner)
-			return false;
-
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (!playerManager)
-			return false;
-
-		int playerId = playerManager.GetPlayerIdFromControlledEntity(user);
 
 		float userCooldown = IRRU_GetUserCooldownRemaining(user);
 		if (userCooldown >= 0)
@@ -95,53 +82,19 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return false;
 		}
 
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(owner);
-
-		if (nid && !nid.IsUnconscious())
+		if (m_PatientNID && m_PatientNID.IsReceivingCPR())
 		{
-			SetCannotPerformReason("Patient is conscious");
-			return false;
-		}
-
-		if (nid && nid.IsReceivingCPR())
-		{
-			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
+			if (m_bCPRActive && m_iPerformingPlayerId == GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(user))
 				return true;
 
 			SetCannotPerformReason("Another medic is already performing CPR");
 			return false;
 		}
 
-		if (IRRU_AnimationTools.GetHelperCompartment(user))
-			return true;
-
-		SCR_ChimeraCharacter character = SCR_ChimeraCharacter.Cast(owner);
-		if (character)
-		{
-			CompartmentAccessComponent compartment = CompartmentAccessComponent.Cast(character.FindComponent(CompartmentAccessComponent));
-			if (compartment && compartment.IsInCompartment())
-			{
-				SetCannotPerformReason("Cannot perform CPR in vehicle");
-				return false;
-			}
-
-			SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(character.GetCharacterController());
-			if (controller && controller.ACE_Medical_GetUnconsciousPose() != ACE_Medical_EUnconsciousPose.BACK)
-			{
-				SetCannotPerformReason("Patient must be on their back for CPR");
-				return false;
-			}
-
-			if (!CheckAnimationPositionClear(owner, user))
-			{
-				SetCannotPerformReason("Position obstructed");
-				return false;
-			}
-		}
-
 		return true;
 	}
 
+	//------------------------------------------------------------------------------------------------
 	override bool GetActionNameScript(out string outName)
 	{
 		PlayerController pc = GetGame().GetPlayerController();
@@ -155,126 +108,120 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return true;
 		}
 
+		outName = "Start CPR";
 		if (m_bCPRActive && m_fCPRStartTime > 0)
 		{
-			float elapsedTime = (GetGame().GetWorld().GetWorldTime() - m_fCPRStartTime) / 1000.0;
-			float remainingTime = CPR_MAX_DURATION - elapsedTime;
+			float remainingTime = CPR_MAX_DURATION - (GetGame().GetWorld().GetWorldTime() - m_fCPRStartTime) / 1000.0;
 			if (remainingTime > 0)
 				outName = string.Format("Stop CPR (%1s)", Math.Ceil(remainingTime));
 			else
 				outName = "Stop CPR";
 		}
-		else
-		{
-			outName = "Start CPR";
-		}
+
 		return true;
 	}
 
-	protected void OnAnimationTerminated()
+	//------------------------------------------------------------------------------------------------
+	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
 	{
-		if (m_pActiveHelper)
+		int playerId = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(pUserEntity);
+		if (m_bCPRActive && m_iPerformingPlayerId == playerId)
 		{
-			IEntity patient = m_pActiveHelper.GetPatient();
-			IEntity performer = m_pActiveHelper.GetPerformer();
-			if (patient && performer)
-				StopCPR(patient, performer);
-			m_pActiveHelper = null;
+			StopCPR(pUserEntity);
+			return;
 		}
-		m_bCPRActive = false;
+
+		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
+		if (!m_Patient || !m_PatientNID || !userChar)
+			return;
+
+		vector transform[4];
+		GetEntryTransform(transform, pUserEntity);
+
+		m_pActiveHelper = IRRU_CPRHelperCompartment.Cast(IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform));
+		if (!m_pActiveHelper)
+			return;
+
+		m_pActiveHelper.SetPatient(m_Patient);
+		m_pActiveHelper.GetOnTerminated().Insert(OnAnimationTerminated);
+
+		m_iPerformingPlayerId = playerId;
+		m_bCPRActive = true;
+		m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
+
+		GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000, false);
+		GetGame().GetCallqueue().CallLater(CheckPatientLifeState, CPR_LIFESTATE_CHECK_INTERVAL * 1000, false);
+
+		if (Replication.IsServer())
+			GetGame().GetCallqueue().CallLater(ApplyResilienceRegeneration, CPR_RESILIENCE_REGEN_INTERVAL * 1000, true);
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! The helper ended on its own (performer left or died); always tear down so no timer outlives it
+	protected void OnAnimationTerminated()
+	{
+		IEntity performer;
+		if (m_pActiveHelper)
+			performer = m_pActiveHelper.GetPerformer();
+
+		StopCPR(performer);
+	}
+
+	//------------------------------------------------------------------------------------------------
 	protected void AutoStopCPRDueToFatigue()
 	{
 		if (!m_bCPRActive || !m_pActiveHelper)
 			return;
 
-		IEntity patient = m_pActiveHelper.GetPatient();
-		IEntity performer = m_pActiveHelper.GetPerformer();
-		if (patient && performer)
-		{
-			ApplyHealingToPatient(patient);
-			StopCPR(patient, performer, true);
-		}
+		ApplyHealingToPatient();
+		StopCPR(m_pActiveHelper.GetPerformer());
 	}
 
-	protected void ApplyHealingToPatient(IEntity patient)
-	{
-		SCR_CharacterDamageManagerComponent dmgManager = IRRU_GetPatientDamageManager(patient);
-		if (!dmgManager)
-			return;
-
-		float healAmount = Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING);
-		dmgManager.HealHitZones(healAmount, false, 1.0);
-	}
-
+	//------------------------------------------------------------------------------------------------
 	protected void CheckPatientLifeState()
 	{
 		if (!m_bCPRActive || !m_pActiveHelper)
 			return;
 
-		IEntity patient = m_pActiveHelper.GetPatient();
-		if (!patient)
-			return;
-
-		SCR_ChimeraCharacter patientChar = SCR_ChimeraCharacter.Cast(patient);
-		if (!patientChar)
-			return;
-
-		SCR_CharacterControllerComponent controller = SCR_CharacterControllerComponent.Cast(patientChar.GetCharacterController());
-		if (!controller)
-			return;
-
-		if (controller.GetLifeState() == ECharacterLifeState.ALIVE)
+		if (m_PatientController && m_PatientController.GetLifeState() == ECharacterLifeState.ALIVE)
 		{
-			IEntity performer = m_pActiveHelper.GetPerformer();
-			if (performer)
-				StopCPR(patient, performer);
+			StopCPR(m_pActiveHelper.GetPerformer());
 			return;
 		}
 
 		GetGame().GetCallqueue().CallLater(CheckPatientLifeState, CPR_LIFESTATE_CHECK_INTERVAL * 1000, false);
 	}
 
+	//------------------------------------------------------------------------------------------------
+	protected void ApplyHealingToPatient()
+	{
+		if (!Replication.IsServer() || !m_PatientDamageManager)
+			return;
+
+		m_PatientDamageManager.HealHitZones(Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING), false, 1.0);
+	}
+
+	//------------------------------------------------------------------------------------------------
 	protected void ApplyResilienceRegeneration()
 	{
-		if (!m_pActiveHelper)
+		if (!m_pActiveHelper || !m_PatientDamageManager || m_PatientDamageManager.IRRU_GetHealthPercentage() < 33.0)
 			return;
 
-		SCR_CharacterDamageManagerComponent dmgManager = IRRU_GetPatientDamageManager(m_pActiveHelper.GetPatient());
-		if (!dmgManager)
-			return;
-
-		if (dmgManager.IRRU_GetHealthPercentage() < 33.0)
-			return;
-
-		SCR_CharacterResilienceHitZone resilienceHZ = dmgManager.GetResilienceHitZone();
+		SCR_CharacterResilienceHitZone resilienceHZ = m_PatientDamageManager.GetResilienceHitZone();
 		if (!resilienceHZ)
 			return;
 
-		float resilienceHealAmount = resilienceHZ.GetMaxHealth() * (CPR_RESILIENCE_PERCENT_PER_SECOND / 100.0);
-		resilienceHZ.HandleDamage(-resilienceHealAmount, EDamageType.HEALING, null);
+		resilienceHZ.HandleDamage(-resilienceHZ.GetMaxHealth() * (CPR_RESILIENCE_PERCENT_PER_SECOND / 100.0), EDamageType.HEALING, null);
 	}
 
-	protected void StopCPR(IEntity pOwnerEntity, IEntity pUserEntity, bool wasForcedByFatigue = false)
+	//------------------------------------------------------------------------------------------------
+	protected void StopCPR(IEntity performer)
 	{
 		if (m_iPerformingPlayerId != -1 && Replication.IsServer())
 		{
-			float cprDuration;
-			if (m_fCPRStartTime > 0)
-				cprDuration = (GetGame().GetWorld().GetWorldTime() - m_fCPRStartTime) / 1000.0;
-			else
-				cprDuration = CPR_FALLBACK_DURATION;
-
-			float cooldownTime;
-			if (wasForcedByFatigue)
-				cooldownTime = CPR_BASE_COOLDOWN;
-			else
-				cooldownTime = Math.Clamp(cprDuration * CPR_COOLDOWN_RATIO, CPR_MIN_COOLDOWN, CPR_BASE_COOLDOWN);
-
-			IRRU_NoInstantDeathComponent userNid = IRRU_GetNID(pUserEntity);
-			if (userNid)
-				userNid.SetCPRCooldown(cooldownTime);
+			IRRU_NoInstantDeathComponent performerNID = IRRU_GetNID(performer);
+			if (performerNID)
+				performerNID.SetCPRCooldown(CPR_COOLDOWN);
 		}
 
 		GetGame().GetCallqueue().Remove(AutoStopCPRDueToFatigue);
@@ -288,60 +235,15 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			m_pActiveHelper = null;
 		}
 
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(pOwnerEntity);
-		if (nid)
-			nid.SetReceivingCPR(false);
+		if (m_PatientNID)
+			m_PatientNID.SetReceivingCPR(false);
 
 		m_bCPRActive = false;
 		m_fCPRStartTime = 0;
 		m_iPerformingPlayerId = -1;
 	}
 
-	override void PerformAction(IEntity pOwnerEntity, IEntity pUserEntity)
-	{
-		PlayerManager playerManager = GetGame().GetPlayerManager();
-		if (playerManager)
-		{
-			int playerId = playerManager.GetPlayerIdFromControlledEntity(pUserEntity);
-			if (m_bCPRActive && m_iPerformingPlayerId == playerId)
-			{
-				StopCPR(pOwnerEntity, pUserEntity);
-				return;
-			}
-			m_iPerformingPlayerId = playerId;
-		}
-
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID(pOwnerEntity);
-		if (!nid)
-			return;
-
-		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
-		if (!userChar)
-			return;
-
-		vector transform[4];
-		GetEntryTransform(transform, pOwnerEntity, pUserEntity);
-
-		m_pActiveHelper = IRRU_CPRHelperCompartment.Cast(
-			IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform));
-
-		if (m_pActiveHelper)
-		{
-			m_pActiveHelper.SetPatient(SCR_ChimeraCharacter.Cast(pOwnerEntity));
-			m_pActiveHelper.GetOnTerminated().Insert(OnAnimationTerminated);
-
-			nid.SetReceivingCPR(true);
-			m_bCPRActive = true;
-			m_fCPRStartTime = GetGame().GetWorld().GetWorldTime();
-
-			GetGame().GetCallqueue().CallLater(AutoStopCPRDueToFatigue, CPR_MAX_DURATION * 1000);
-			GetGame().GetCallqueue().CallLater(CheckPatientLifeState, CPR_LIFESTATE_CHECK_INTERVAL * 1000, false);
-
-			if (Replication.IsServer())
-				GetGame().GetCallqueue().CallLater(ApplyResilienceRegeneration, CPR_RESILIENCE_REGEN_INTERVAL * 1000, true);
-		}
-	}
-
+	//------------------------------------------------------------------------------------------------
 	override bool HasLocalEffectOnlyScript() { return false; }
 	override bool CanBroadcastScript() { return false; }
 
@@ -361,13 +263,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return true;
 	}
 
-	protected bool CheckAnimationPositionClear(IEntity owner, IEntity user)
+	//------------------------------------------------------------------------------------------------
+	protected bool CheckAnimationPositionClear(IEntity user)
 	{
+		vector transform[4];
+		GetEntryTransform(transform, user);
+
 		TraceOBB trace = new TraceOBB();
 		trace.Exclude = user;
-		vector transform[4];
-		GetEntryTransform(transform, owner, user);
-
 		for (int i = 0; i < 3; i++)
 			trace.Mat[i] = transform[i];
 
@@ -378,7 +281,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		return GetGame().GetWorld().TracePosition(trace, TraceObstructionCallback) >= 0;
 	}
 
-	protected void GetEntryTransform(out vector transform[4], IEntity owner, IEntity user)
+	//------------------------------------------------------------------------------------------------
+	//! Kneeling spot beside the patient closest to the user
+	protected void GetEntryTransform(out vector transform[4], IEntity user)
 	{
 		vector userPos = user.GetOrigin();
 		vector bestTransform[4];
@@ -386,7 +291,7 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		for (int i = 0; i < CPR_PERFORMER_ANGLES.Count(); i++)
 		{
-			owner.GetWorldTransform(transform);
+			m_Patient.GetWorldTransform(transform);
 			vector angles = Math3D.MatrixToAngles(transform);
 			angles[0] = angles[0] + CPR_PERFORMER_ANGLES[i];
 			Math3D.AnglesToMatrix(angles, transform);
@@ -403,31 +308,29 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		transform = bestTransform;
 	}
 
+	//------------------------------------------------------------------------------------------------
 	protected bool TraceObstructionCallback(IEntity entity)
 	{
 		return !InventoryItemComponent.Cast(entity.FindComponent(InventoryItemComponent));
 	}
 
+	//------------------------------------------------------------------------------------------------
 	protected IRRU_NoInstantDeathComponent IRRU_GetNID(IEntity entity)
 	{
 		if (!entity)
 			return null;
+
 		return IRRU_NoInstantDeathComponent.Cast(entity.FindComponent(IRRU_NoInstantDeathComponent));
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! \return whole seconds left on the user's CPR cooldown, -1 when none
 	protected float IRRU_GetUserCooldownRemaining(IEntity user)
 	{
-		IRRU_NoInstantDeathComponent userNid = IRRU_GetNID(user);
-		if (userNid && userNid.IsOnCPRCooldown())
-			return Math.Ceil(userNid.GetCPRCooldownRemaining());
+		IRRU_NoInstantDeathComponent userNID = IRRU_GetNID(user);
+		if (userNID && userNID.IsOnCPRCooldown())
+			return Math.Ceil(userNID.GetCPRCooldownRemaining());
 
 		return -1;
-	}
-
-	protected SCR_CharacterDamageManagerComponent IRRU_GetPatientDamageManager(IEntity patient)
-	{
-		if (!patient || !Replication.IsServer())
-			return null;
-		return SCR_CharacterDamageManagerComponent.Cast(patient.FindComponent(SCR_CharacterDamageManagerComponent));
 	}
 }

@@ -2,13 +2,10 @@
 class IRRU_NoInstantDeathSettings
 {
 	static const string MOD_VERSION = "2.3.9";
-	protected const float MIN_BLEEDOUT_TIME = 60.0;
-	protected const float MAX_BLEEDOUT_TIME = 3600.0;
-	protected const float DEFAULT_BLEEDOUT_TIME = 360.0;
-	protected const float MIN_BLEEDING_RATE_SCALE = 0.0;
-	protected const float MAX_BLEEDING_RATE_SCALE = 5.0;
-	protected const float DEFAULT_BLEEDING_RATE_SCALE = 1.0;
-	protected const float DEFAULT_MAX_TOTAL_BLEEDING_RATE = -1.0;
+	protected static const ResourceName CONFIG_PATH = "{7E9D8A65E020E49C}Configs/IRRU_NoInstantDeathSettings.conf";
+	protected static const float MIN_BLEEDOUT_TIME = 60.0;
+	protected static const float MAX_BLEEDOUT_TIME = 3600.0;
+	protected static const float MAX_BLEEDING_RATE_SCALE = 5.0;
 
 	[Attribute(defvalue: "360", desc: "Time (in seconds) before the unconscious player dies", category: "No Instant Death")]
 	float m_fBleedoutTime;
@@ -26,105 +23,52 @@ class IRRU_NoInstantDeathSettings
 	float m_fMaxTotalBleedingRate;
 
 	protected static ref IRRU_NoInstantDeathSettings s_Instance;
-	protected static bool s_Initialized = false;
 
-	void IRRU_NoInstantDeathSettings()
-	{
-		if (m_fBleedoutTime <= 0)
-			m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
-	}
-
+	//------------------------------------------------------------------------------------------------
 	static IRRU_NoInstantDeathSettings GetInstance()
 	{
+		if (s_Instance)
+			return s_Instance;
+
+		s_Instance = SCR_ConfigHelperT<IRRU_NoInstantDeathSettings>.GetConfigObject(CONFIG_PATH);
 		if (!s_Instance)
 		{
-			Resource holder = BaseContainerTools.LoadContainer("{7E9D8A65E020E49C}Configs/IRRU_NoInstantDeathSettings.conf");
-			if (holder && holder.GetResource())
-			{
-				BaseContainer container = holder.GetResource().ToBaseContainer();
-				if (container)
-					s_Instance = IRRU_NoInstantDeathSettings.Cast(BaseContainerTools.CreateInstanceFromContainer(container));
-			}
-
-			if (!s_Instance)
-			{
-				Print("[NoInstantDeath] Config not found, using defaults", LogLevel.WARNING);
-				s_Instance = new IRRU_NoInstantDeathSettings();
-				s_Instance.m_fBleedoutTime = DEFAULT_BLEEDOUT_TIME;
-				s_Instance.m_bDebugEnabled = true;
-				s_Instance.m_bUseDescriptiveTimer = true;
-				s_Instance.m_fBleedingRateScale = DEFAULT_BLEEDING_RATE_SCALE;
-				s_Instance.m_fMaxTotalBleedingRate = DEFAULT_MAX_TOTAL_BLEEDING_RATE;
-			}
-
-			if (!s_Initialized)
-			{
-				s_Initialized = true;
-				Print(string.Format("[NoInstantDeath] Medical Mod v%1 initialized - Bleedout: %2s, Debug: %3",
-					MOD_VERSION, s_Instance.m_fBleedoutTime, s_Instance.m_bDebugEnabled));
-			}
+			Print("[NoInstantDeath] Config not found, using defaults", LogLevel.WARNING);
+			s_Instance = new IRRU_NoInstantDeathSettings();
+			s_Instance.m_fBleedoutTime = 360;
+			s_Instance.m_bDebugEnabled = true;
+			s_Instance.m_bUseDescriptiveTimer = true;
+			s_Instance.m_fBleedingRateScale = 1;
+			s_Instance.m_fMaxTotalBleedingRate = -1;
 		}
+
+		Print(string.Format("[NoInstantDeath] Medical Mod v%1 - Bleedout: %2s, Debug: %3", MOD_VERSION, s_Instance.m_fBleedoutTime, s_Instance.m_bDebugEnabled));
 		return s_Instance;
 	}
 
+	//------------------------------------------------------------------------------------------------
 	static bool IsDebugEnabled()
 	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			return settings.m_bDebugEnabled;
-		return true;
+		return GetInstance().m_bDebugEnabled;
 	}
 
 	static float GetBleedoutTime()
 	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			return Math.Clamp(settings.m_fBleedoutTime, MIN_BLEEDOUT_TIME, MAX_BLEEDOUT_TIME);
-		return DEFAULT_BLEEDOUT_TIME;
-	}
-
-	static void SetBleedoutTime(float seconds)
-	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			settings.m_fBleedoutTime = seconds;
+		return Math.Clamp(GetInstance().m_fBleedoutTime, MIN_BLEEDOUT_TIME, MAX_BLEEDOUT_TIME);
 	}
 
 	static float GetBleedingRateScale()
 	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			return Math.Clamp(settings.m_fBleedingRateScale, MIN_BLEEDING_RATE_SCALE, MAX_BLEEDING_RATE_SCALE);
-		return DEFAULT_BLEEDING_RATE_SCALE;
+		return Math.Clamp(GetInstance().m_fBleedingRateScale, 0, MAX_BLEEDING_RATE_SCALE);
 	}
 
 	static float GetMaxTotalBleedingRate()
 	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			return settings.m_fMaxTotalBleedingRate;
-		return DEFAULT_MAX_TOTAL_BLEEDING_RATE;
-	}
-
-	static void SetDebugEnabled(bool enabled)
-	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			settings.m_bDebugEnabled = enabled;
+		return GetInstance().m_fMaxTotalBleedingRate;
 	}
 
 	static bool IsDescriptiveTimerEnabled()
 	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			return settings.m_bUseDescriptiveTimer;
-		return true;
-	}
-
-	static void SetDescriptiveTimerEnabled(bool enabled)
-	{
-		IRRU_NoInstantDeathSettings settings = GetInstance();
-		if (settings)
-			settings.m_bUseDescriptiveTimer = enabled;
+		return GetInstance().m_bUseDescriptiveTimer;
 	}
 }

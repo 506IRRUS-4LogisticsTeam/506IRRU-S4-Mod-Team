@@ -4,9 +4,12 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected const float IRRU_KILL_BLOCK_LOG_INTERVAL_MS = 5000;
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
+	protected IRRU_NoInstantDeathComponent m_IRRU_NID;
 	protected int m_iIRRU_ResilienceTextState = -1;
 	protected float m_fIRRU_NextKillBlockLogTimeMS;
 
+	//------------------------------------------------------------------------------------------------
+	//! Under ACE the default hit zone is not the health hit zone, so scan once and cache
 	SCR_CharacterHealthHitZone IRRU_GetHealthHitZone()
 	{
 		if (m_IRRU_HealthHitZone)
@@ -16,56 +19,67 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		GetAllHitZones(hitZones);
 		foreach (HitZone hz : hitZones)
 		{
-			SCR_CharacterHealthHitZone healthHZ = SCR_CharacterHealthHitZone.Cast(hz);
-			if (healthHZ)
-			{
-				m_IRRU_HealthHitZone = healthHZ;
-				return m_IRRU_HealthHitZone;
-			}
+			m_IRRU_HealthHitZone = SCR_CharacterHealthHitZone.Cast(hz);
+			if (m_IRRU_HealthHitZone)
+				break;
 		}
-		return null;
+
+		return m_IRRU_HealthHitZone;
 	}
 
+	//------------------------------------------------------------------------------------------------
+	protected IRRU_NoInstantDeathComponent IRRU_GetNID()
+	{
+		if (!m_IRRU_NID)
+			m_IRRU_NID = IRRU_NoInstantDeathComponent.Cast(GetOwner().FindComponent(IRRU_NoInstantDeathComponent));
+
+		return m_IRRU_NID;
+	}
+
+	//------------------------------------------------------------------------------------------------
 	float IRRU_GetHealthPercentage()
 	{
 		SCR_CharacterHealthHitZone healthHZ = IRRU_GetHealthHitZone();
-		if (!healthHZ)
+		if (!healthHZ || healthHZ.GetMaxHealth() <= 0)
 			return 100.0;
 
-		float maxHealth = healthHZ.GetMaxHealth();
-		if (maxHealth <= 0)
-			return 100.0;
-
-		return (healthHZ.GetHealth() / maxHealth) * 100.0;
+		return healthHZ.GetHealth() / healthHZ.GetMaxHealth() * 100.0;
 	}
 
+	//------------------------------------------------------------------------------------------------
 	float IRRU_GetBloodPercentage()
 	{
 		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
-		if (!bloodHZ)
+		if (!bloodHZ || bloodHZ.GetMaxHealth() <= 0)
 			return 100.0;
-		float maxBlood = bloodHZ.GetMaxHealth();
-		if (maxBlood <= 0)
-			return 100.0;
-		return (bloodHZ.GetHealth() / maxBlood) * 100.0;
+
+		return bloodHZ.GetHealth() / bloodHZ.GetMaxHealth() * 100.0;
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! \return -1 when the character has no resilience hit zone
 	float IRRU_GetResiliencePercentage()
 	{
 		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
 		if (!resilienceHZ)
 			return -1.0;
-		float maxResilience = resilienceHZ.GetMaxHealth();
-		if (maxResilience <= 0)
+		if (resilienceHZ.GetMaxHealth() <= 0)
 			return 100.0;
-		return (resilienceHZ.GetHealth() / maxResilience) * 100.0;
+
+		return resilienceHZ.GetHealth() / resilienceHZ.GetMaxHealth() * 100.0;
 	}
 
-	bool IRRU_HasResilienceSystem()
+	//------------------------------------------------------------------------------------------------
+	float IRRU_GetBleedingRateMLPerSecond()
 	{
-		return GetResilienceHitZone() != null;
+		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
+		if (!bloodHZ)
+			return 0.0;
+
+		return bloodHZ.GetTotalBleedingAmount();
 	}
 
+	//------------------------------------------------------------------------------------------------
 	override void SetResilienceHitZone(HitZone hitZone)
 	{
 		super.SetResilienceHitZone(hitZone);
@@ -75,6 +89,8 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			resilienceHZ.GetOnHealthChanged().Insert(IRRU_RefreshResilienceReplication);
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Push a replication update whenever the resilience crosses an inspection-text threshold
 	protected void IRRU_RefreshResilienceReplication()
 	{
 		if (!Replication.IsServer())
@@ -88,6 +104,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		Replication.BumpMe();
 	}
 
+	//------------------------------------------------------------------------------------------------
 	protected int IRRU_GetResilienceTextState()
 	{
 		float resiliencePercent = IRRU_GetResiliencePercentage();
@@ -100,149 +117,91 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		return 3;
 	}
 
-	float IRRU_GetBleedingRateMLPerSecond()
-	{
-		SCR_CharacterBloodHitZone bloodHZ = GetBloodHitZone();
-		if (!bloodHZ)
-			return 0.0;
-		return bloodHZ.GetTotalBleedingAmount();
-	}
-
-	protected IRRU_NoInstantDeathComponent IRRU_GetNID()
-	{
-		IEntity owner = GetOwner();
-		if (!owner)
-			return null;
-		return IRRU_NoInstantDeathComponent.Cast(owner.FindComponent(IRRU_NoInstantDeathComponent));
-	}
-
-	void IRRU_GetBleedoutTimerInfo(out float timeRemaining, out float totalTime, out bool isBleedingOut)
-	{
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
-
-		if (nid && nid.IsUnconscious())
-		{
-			isBleedingOut = true;
-			timeRemaining = nid.GetBleedoutTimeRemaining();
-			totalTime = nid.GetBleedoutTimeTotal();
-		}
-		else
-		{
-			isBleedingOut = false;
-			timeRemaining = -1.0;
-			totalTime = IRRU_NoInstantDeathSettings.GetBleedoutTime();
-		}
-	}
-
+	//------------------------------------------------------------------------------------------------
 	void ACE_Medical_SetPainHitZone(ACE_Medical_PainHitZone hz) { m_pPainHitZone = hz; }
 	override ACE_Medical_PainHitZone ACE_Medical_GetPainHitZone() { return m_pPainHitZone; }
 
 	override bool ACE_Medical_IsInPain()
 	{
-		if (!m_pPainHitZone)
-			return false;
-		return m_pPainHitZone.GetDamageState() != EDamageState.UNDAMAGED;
+		return m_pPainHitZone && m_pPainHitZone.GetDamageState() != EDamageState.UNDAMAGED;
 	}
 
 	override float ACE_Medical_GetPainIntensity()
 	{
 		if (!m_pPainHitZone)
 			return 0.0;
+
 		return 1.0 - m_pPainHitZone.GetHealthScaled();
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Keep ACE from disabling Second Chance while our bleedout timer owns the character
 	override bool ACE_Medical_ShouldDeactivateSecondChance()
 	{
 		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
-		if (!nid)
-			return super.ACE_Medical_ShouldDeactivateSecondChance();
+		if (nid)
+		{
+			if (!nid.IsInitialized())
+				nid.Initialize();
 
-		if (!nid.IsInitialized())
-			nid.Initialize();
-
-		if (nid.IsUnconscious())
-			return false;
+			if (nid.IsUnconscious())
+				return false;
+		}
 
 		return super.ACE_Medical_ShouldDeactivateSecondChance();
 	}
 
+	//------------------------------------------------------------------------------------------------
+	//! Backstop: nothing may kill an unconscious player except the bleedout timer
 	override void Kill(notnull Instigator instigator)
 	{
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
 			IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
-			if (nid && nid.IsUnconscious())
+			IEntity owner = GetOwner();
+			if (nid && nid.IsUnconscious() && GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner) > 0)
 			{
-				IEntity owner = GetOwner();
-				PlayerManager playerManager = GetGame().GetPlayerManager();
-				if (owner && playerManager && playerManager.GetPlayerIdFromControlledEntity(owner) > 0)
+				float nowMS = owner.GetWorld().GetWorldTime();
+				if (nowMS >= m_fIRRU_NextKillBlockLogTimeMS)
 				{
-					float nowMS = owner.GetWorld().GetWorldTime();
-					if (nowMS >= m_fIRRU_NextKillBlockLogTimeMS)
-					{
-						m_fIRRU_NextKillBlockLogTimeMS = nowMS + IRRU_KILL_BLOCK_LOG_INTERVAL_MS;
-
-						int instigatorPlayerId = 0;
-						if (instigator)
-							instigatorPlayerId = instigator.GetInstigatorPlayerID();
-
-						Print(string.Format("[NoInstantDeath] BLOCKED Kill() on %1 during bleedout - Blood: %2%%, Health: %3%%, timer remaining: %4s, instigatorPlayerId: %5",
-							nid.GetNameStr(owner), IRRU_GetBloodPercentage(), IRRU_GetHealthPercentage(), nid.GetBleedoutTimeRemaining(), instigatorPlayerId), LogLevel.WARNING);
-					}
-
-					return;
+					m_fIRRU_NextKillBlockLogTimeMS = nowMS + IRRU_KILL_BLOCK_LOG_INTERVAL_MS;
+					Print(string.Format("[NoInstantDeath] BLOCKED Kill() on %1 during bleedout - Blood: %2%%, Health: %3%%, timer remaining: %4s, instigatorPlayerId: %5",
+						nid.GetNameStr(owner), IRRU_GetBloodPercentage(), IRRU_GetHealthPercentage(), nid.GetBleedoutTimeRemaining(), instigator.GetInstigatorPlayerID()), LogLevel.WARNING);
 				}
+
+				return;
 			}
 		}
 
 		super.Kill(instigator);
 	}
 
+	//------------------------------------------------------------------------------------------------
 	override void ACE_Medical_OnSecondChanceGranted()
 	{
 		super.ACE_Medical_OnSecondChanceGranted();
 
-		IEntity owner = GetOwner();
 		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
-		if (nid)
-		{
-			if (!nid.IsInitialized())
-				nid.Initialize();
-			if (!nid.IsUnconscious())
-				nid.MakeUnconscious(owner);
-		}
+		if (!nid)
+			return;
+
+		if (!nid.IsInitialized())
+			nid.Initialize();
+		if (!nid.IsUnconscious())
+			nid.MakeUnconscious(GetOwner());
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-		{
-			string characterName = "Unknown";
-			if (nid)
-				characterName = nid.GetNameStr(owner);
-
-			SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
-			HitZone healthHZ = GetDefaultHitZone();
-			float currentHealth = 0;
-			float currentResilience = 0;
-			if (healthHZ)
-				currentHealth = healthHZ.GetHealth();
-			if (resilienceHZ)
-				currentResilience = resilienceHZ.GetHealthScaled();
-
-			Print(string.Format("[NoInstantDeath] SecondChance triggered on %1 - Health: %2, Resilience: %3%%", characterName, currentHealth, currentResilience * 100.0));
-		}
+			Print(string.Format("[NoInstantDeath] SecondChance triggered on %1 - Health: %2%%, Resilience: %3%%", nid.GetNameStr(GetOwner()), IRRU_GetHealthPercentage(), IRRU_GetResiliencePercentage()));
 	}
 
-	void IRRU_ClearBleedingParticles()
-	{
-		RemoveAllBleedingParticles();
-	}
-
+	//------------------------------------------------------------------------------------------------
 	override void FullHeal(bool ignoreHealingDOT = true)
 	{
 		super.FullHeal(ignoreHealingDOT);
-
 		RemoveAllBleedingParticles();
 	}
 
+	//------------------------------------------------------------------------------------------------
 	override void ArmorHitEventDamage(EDamageType type, float damage, IEntity instigator)
 	{
 		super.ArmorHitEventDamage(type, damage, instigator);
@@ -250,24 +209,8 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			m_pPainHitZone.HandleDamage(damage * ARMOR_HIT_PAIN_SCALE, type, instigator);
 	}
 
-	void IRRU_GetDetailedMedicalStatus(out float healthPercent, out float bloodPercent,
-		out float resiliencePercent, out bool hasResilience,
-		out float bleedingRateMLs, out bool isUnconscious,
-		out float bleedoutTimeRemaining, out bool isBleedingOut)
-	{
-		healthPercent = IRRU_GetHealthPercentage();
-		bloodPercent = IRRU_GetBloodPercentage();
-		resiliencePercent = IRRU_GetResiliencePercentage();
-		hasResilience = IRRU_HasResilienceSystem();
-		bleedingRateMLs = IRRU_GetBleedingRateMLPerSecond();
-
-		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
-		isUnconscious = (nid && nid.IsUnconscious());
-
-		float totalTime;
-		IRRU_GetBleedoutTimerInfo(bleedoutTimeRemaining, totalTime, isBleedingOut);
-	}
-
+	//------------------------------------------------------------------------------------------------
+	//! Vanilla distribution with an iteration cap so a zone that refuses healing cannot spin forever
 	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones)
 	{
 		array<HitZone> damagedHitZones = {};
@@ -313,7 +256,7 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 		}
 
 		if (iteration >= maxIterations && IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath] HealHitZonesInParallel hit max iterations"), LogLevel.WARNING);
+			Print("[NoInstantDeath] HealHitZonesInParallel hit max iterations", LogLevel.WARNING);
 
 		return healthToDistribute;
 	}
