@@ -3,7 +3,7 @@ Turret : "{4AD877DEA242E512}Prefabs/Weapons/Core/Turret_Base.et" {
  components {
   IRRU_MortarArtilleryComputerComponent "{69E35A3D6D43095B}" {
    m_sBallisticTablePrefix "M224_"
-   m_fMaxElevationMils 1422
+   m_fMaxElevationMils 1511
    m_iMaxCharge 1
    m_fTraverseLimitDegrees 45
   }

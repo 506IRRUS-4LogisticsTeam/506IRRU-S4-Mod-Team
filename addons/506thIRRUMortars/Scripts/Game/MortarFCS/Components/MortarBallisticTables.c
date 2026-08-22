@@ -169,8 +169,26 @@ class MortarBallisticTables
     //! \param elevationMils Output elevation in mils
     //! \param timeOfFlight Output time of flight in seconds
     //! \param dElevCorrection Output D_ELEV correction factor
-    //! \return True if solution found for this charge
-    static bool CalculateSolutionForCharge(string ammoType, int charge, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection)
+    //! \param minElevationMils Minimum usable elevation in mils (weapon's physical limit)
+    //! \param maxElevationMils Maximum usable elevation in mils (weapon's physical limit)
+    //! \return True if solution found for this charge within the weapon's elevation limits
+    static bool CalculateSolutionForCharge(string ammoType, int charge, float range, out float elevationMils, out float timeOfFlight, out int dElevCorrection, float minElevationMils = 800.0, float maxElevationMils = 1515.0)
+    {
+        float minRange, maxRange;
+        if (!GetChargeRange(ammoType, charge, minRange, maxRange) || range < minRange || range > maxRange)
+            return false;
+
+        InterpolateElevation(GetTable(ammoType, charge), range, elevationMils, timeOfFlight, dElevCorrection);
+
+        // A table row can sit above the tube's limit (e.g. 85 deg rows on an 80 deg
+        // weapon); presenting a clamped elevation as a solution would aim long.
+        return elevationMils >= minElevationMils && elevationMils <= maxElevationMils;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Range band covered by one charge's table
+    //! \return False when the table does not exist
+    static bool GetChargeRange(string ammoType, int charge, out float minRange, out float maxRange)
     {
         if (!s_Tables)
             Initialize();
@@ -179,13 +197,8 @@ class MortarBallisticTables
         if (!table || table.Count() == 0)
             return false;
 
-        MortarBallisticEntry firstEntry = table.Get(0);
-        MortarBallisticEntry lastEntry = table.Get(table.Count() - 1);
-
-        if (range < firstEntry.range || range > lastEntry.range)
-            return false;
-
-        InterpolateElevation(table, range, elevationMils, timeOfFlight, dElevCorrection);
+        minRange = table.Get(0).range;
+        maxRange = table.Get(table.Count() - 1).range;
         return true;
     }
 
@@ -602,31 +615,34 @@ class MortarBallisticTables
 
     //------------------------------------------------------------------------------------------------
     //! Initialize M224A1 60mm HE tables (M224A1 Handheld Mortar mod, M720A1 HE / M722 WP shared)
-    //! Values taken verbatim from the mod's official firing card (FM 10-M224.1): NATO mils (6400),
-    //! two charges only (0 = MV 75 m/s, 1 = MV 115 m/s), elevation 800-1422 mils (45-80 deg).
+    //! Values taken verbatim from the mod's firing card FM 10-M224.1 (live-fire tracer sweep
+    //! 2026-07-16): NATO mils (6400), two charges only (0 = MV 65 m/s, 1 = MV 115 m/s),
+    //! elevation 800-1511 mils (45-85 deg). The 45/50 deg rows sit on the max-range plateau.
     //! dElev derived from the card's own rows as elevation change per 50m of range.
     protected static void InitializeM224HETables()
     {
         array<ref MortarBallisticEntry> m224HeCharge0 = new array<ref MortarBallisticEntry>();
-        m224HeCharge0.Insert(new MortarBallisticEntry(187, 1422, 14.1, 48));
-        m224HeCharge0.Insert(new MortarBallisticEntry(280, 1333, 14.0, 64));
-        m224HeCharge0.Insert(new MortarBallisticEntry(350, 1244, 13.4, 69));
-        m224HeCharge0.Insert(new MortarBallisticEntry(414, 1156, 12.9, 93));
-        m224HeCharge0.Insert(new MortarBallisticEntry(462, 1067, 12.3, 95));
-        m224HeCharge0.Insert(new MortarBallisticEntry(509, 978, 11.7, 247));
-        m224HeCharge0.Insert(new MortarBallisticEntry(527, 889, 10.9, 297));
-        m224HeCharge0.Insert(new MortarBallisticEntry(542, 800, 10.1, 0));
+        m224HeCharge0.Insert(new MortarBallisticEntry(72, 1511, 12.8, 61));
+        m224HeCharge0.Insert(new MortarBallisticEntry(145, 1422, 12.8, 70));
+        m224HeCharge0.Insert(new MortarBallisticEntry(209, 1333, 12.4, 81));
+        m224HeCharge0.Insert(new MortarBallisticEntry(264, 1244, 12.1, 85));
+        m224HeCharge0.Insert(new MortarBallisticEntry(316, 1156, 11.7, 101));
+        m224HeCharge0.Insert(new MortarBallisticEntry(360, 1067, 11.2, 171));
+        m224HeCharge0.Insert(new MortarBallisticEntry(386, 978, 10.5, 185));
+        m224HeCharge0.Insert(new MortarBallisticEntry(410, 889, 10.0, 556));
+        m224HeCharge0.Insert(new MortarBallisticEntry(418, 800, 9.0, 0));
         s_Tables.Insert("M224_HE_0", m224HeCharge0);
 
         array<ref MortarBallisticEntry> m224HeCharge1 = new array<ref MortarBallisticEntry>();
-        m224HeCharge1.Insert(new MortarBallisticEntry(407, 1422, 21.1, 25));
-        m224HeCharge1.Insert(new MortarBallisticEntry(585, 1333, 20.6, 25));
-        m224HeCharge1.Insert(new MortarBallisticEntry(766, 1244, 20.2, 33));
-        m224HeCharge1.Insert(new MortarBallisticEntry(901, 1156, 19.4, 35));
-        m224HeCharge1.Insert(new MortarBallisticEntry(1028, 1067, 18.6, 49));
-        m224HeCharge1.Insert(new MortarBallisticEntry(1118, 978, 17.6, 75));
-        m224HeCharge1.Insert(new MortarBallisticEntry(1177, 889, 16.8, 494));
-        m224HeCharge1.Insert(new MortarBallisticEntry(1186, 800, 15.4, 0));
+        m224HeCharge1.Insert(new MortarBallisticEntry(220, 1511, 22.0, 22));
+        m224HeCharge1.Insert(new MortarBallisticEntry(425, 1422, 21.8, 25));
+        m224HeCharge1.Insert(new MortarBallisticEntry(601, 1333, 21.2, 26));
+        m224HeCharge1.Insert(new MortarBallisticEntry(774, 1244, 20.8, 28));
+        m224HeCharge1.Insert(new MortarBallisticEntry(931, 1156, 20.2, 41));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1039, 1067, 19.1, 54));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1122, 978, 18.1, 67));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1188, 889, 17.1, 556));
+        m224HeCharge1.Insert(new MortarBallisticEntry(1196, 800, 15.5, 0));
         s_Tables.Insert("M224_HE_1", m224HeCharge1);
     }
 }

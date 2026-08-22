@@ -408,7 +408,16 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         else
         {
             charge = m_iSelectedCharge;
-            solutionFound = MortarBallisticTables.CalculateSolutionForCharge(tableKey, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection);
+
+            // Outside the selected charge's band is a charge problem, not an elevation one
+            float chargeMinRange, chargeMaxRange;
+            if (MortarBallisticTables.GetChargeRange(tableKey, charge, chargeMinRange, chargeMaxRange) && (horizontalDistance < chargeMinRange || horizontalDistance > chargeMaxRange))
+            {
+                DisplayChargeRangeError(charge, chargeMinRange, chargeMaxRange, horizontalDistance);
+                return;
+            }
+
+            solutionFound = MortarBallisticTables.CalculateSolutionForCharge(tableKey, charge, horizontalDistance, elevationMils, timeOfFlight, dElevCorrection, m_fMinElevationMils, m_fMaxElevationMils);
         }
 
         if (!solutionFound)
@@ -594,6 +603,21 @@ class IRRU_MortarArtilleryComputerComponent : ScriptComponent
         }
 
         SCR_HintManagerComponent.ShowCustomHint(hint, "Range Error", 8.0, false);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------
+    protected void DisplayChargeRangeError(int charge, float minRange, float maxRange, float distance)
+    {
+        string hint = string.Format(
+            "<color rgba='255,60,60,255'>CHARGE %1 COVERS %2-%3m\n\nTarget Distance: %4m\n\nSelect another charge or AUTO!</color>",
+            charge,
+            minRange.ToString(0),
+            maxRange.ToString(0),
+            distance.ToString(0)
+        );
+
+        SCR_HintManagerComponent.ShowCustomHint(hint, "Charge Range", 8.0, false);
     }
 
     //------------------------------------------------------------------------------------------------
