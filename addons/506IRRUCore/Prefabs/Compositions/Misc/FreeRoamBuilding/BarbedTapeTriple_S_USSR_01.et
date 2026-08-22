@@ -1,0 +1,19 @@
+GenericEntity : "{6E9190BC2713551D}Prefabs/Compositions/Slotted/BuildableComposition_Base.et" {
+ ID "5282DCB5DFC8538F"
+ {
+  StaticModelEntity {
+   ID "5E64B54F57833D69"
+   components {
+    SCR_SpecialCollisionHandlerComponent "{6252F4450481F44C}" {
+     m_aSpecialCollisions {
+      SCR_PersistentBarbedWireDamageEffect "{6252F471A92D88F2}" {
+       m_ResultingEffect SCR_BarbedWireCuttingDamageEffect "{6256D719312326D2}" {
+        m_fDamageMultiplier 1
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}
