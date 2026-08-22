@@ -1,6 +1,7 @@
 modded class SCR_InspectCasualtyUserAction : ScriptedUserAction
 {
-	//! Only inspect casualties on foot or sharing your vehicle
+	//! Vanilla hides the action on undamaged characters; we keep it available so resilience
+	//! and CPR state can be read on anyone. The same-vehicle rule is vanilla's.
 	override bool CanBeShownScript(IEntity user)
 	{
 		ChimeraCharacter userChar = ChimeraCharacter.Cast(user);

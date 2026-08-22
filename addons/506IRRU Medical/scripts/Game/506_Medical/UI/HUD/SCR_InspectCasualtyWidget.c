@@ -1,9 +1,7 @@
+//! Replaces the vanilla casualty readout with percentage-based wound/blood text, a triage tag
+//! with the bleedout countdown, and resilience/CPR lines (widgets added in the modded layout).
 modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 {
-	protected const float UPDATE_FREQ = 0.5;
-	protected const float MAX_SHOW_DURATION = 5;
-	protected const string TARGET_BONE = "Spine4";
-
 	protected TextWidget m_wResilienceText;
 	protected TextWidget m_wCPRStatusText;
 	protected TextWidget m_wDamageText;
@@ -13,70 +11,16 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 	//------------------------------------------------------------------------------------------------
 	override void DisplayStartDraw(IEntity owner)
 	{
-		m_wCasualtyInspectWidget = GetRootWidget();
-		if (m_wCasualtyInspectWidget)
-		{
-			m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
-			m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
-			m_wDamageText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DamageInfo_text"));
-			m_wBleedingText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedingInfo_text"));
-			m_DamageInfoUI = SCR_InventoryDamageInfoUI.Cast(m_wCasualtyInspectWidget.FindHandler(SCR_InventoryDamageInfoUI));
-		}
-		DisableWidget();
-	}
+		super.DisplayStartDraw(owner);
 
-	//------------------------------------------------------------------------------------------------
-	override event void DisplayUpdate(IEntity owner, float timeSlice)
-	{
-		if (m_fTimeTillClose < 0)
-			DisableWidget();
-		else
-			m_fTimeTillClose -= timeSlice;
-
-		if (m_fTimeTillUpdate > 0)
-			m_fTimeTillUpdate -= timeSlice;
-		else
-		{
-			m_fTimeTillUpdate = UPDATE_FREQ;
-			UpdateTarget();
-		}
-		UpdateWidget();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override bool ShowInspectCasualtyWidget(IEntity targetCharacter)
-	{
 		if (!m_wCasualtyInspectWidget)
-			return false;
-
-		ChimeraCharacter ch = ChimeraCharacter.Cast(targetCharacter);
-		if (!ch || !ch.GetCharacterController())
-			return false;
-
-		UpdateTarget();
-		EnableWidget();
-		return true;
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override protected void UpdateTarget()
-	{
-		if (!m_Target)
-		{
-			DisableWidget();
-			return;
-		}
-
-		ChimeraCharacter ch = ChimeraCharacter.Cast(m_Target);
-		if (!ch)
 			return;
 
-		if (ch.GetCharacterController().GetLifeState() == ECharacterLifeState.DEAD)
-		{
-			DisableWidget();
-			return;
-		}
-		UpdateWidgetData();
+		m_wResilienceText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("ResilienceText"));
+		m_wCPRStatusText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("CPRStatusText"));
+		m_wDamageText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("DamageInfo_text"));
+		m_wBleedingText = TextWidget.Cast(m_wCasualtyInspectWidget.FindAnyWidget("BleedingInfo_text"));
+		m_DamageInfoUI = SCR_InventoryDamageInfoUI.Cast(m_wCasualtyInspectWidget.FindHandler(SCR_InventoryDamageInfoUI));
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -300,109 +244,5 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 				m_wCPRStatusText.SetColor(Color.FromSRGBA(128, 128, 128, 255));
 			}
 		}
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override protected void UpdateWidget()
-	{
-		if (!m_Target || !m_wCasualtyInspectWidget || !m_bIsEnabled)
-			return;
-
-		vector boneVector[4];
-		m_Target.GetAnimation().GetBoneMatrix(m_Target.GetAnimation().GetBoneIndex(TARGET_BONE), boneVector);
-
-		vector WPPos = boneVector[3] + m_Target.GetOrigin();
-		vector pos = GetGame().GetWorkspace().ProjWorldToScreen(WPPos, GetGame().GetWorld());
-
-		WorkspaceWidget workspace = GetGame().GetWorkspace();
-		int winX = workspace.GetWidth();
-		int winY = workspace.GetHeight();
-		int posX = workspace.DPIScale(pos[0]);
-		int posY = workspace.DPIScale(pos[1]);
-
-		if (posX < 0 || posX > winX || posY > winY || posY < 0)
-		{
-			DisableWidget();
-			return;
-		}
-
-		FrameSlot.SetPos(m_wCasualtyInspectWidget.GetChildren(), pos[0], pos[1]);
-
-		PlayerController pc = GetGame().GetPlayerController();
-		if (!pc || !pc.GetControlledEntity())
-		{
-			DisableWidget();
-			return;
-		}
-
-		float dist = vector.Distance(pc.GetControlledEntity().GetOrigin(), WPPos);
-		if (dist >= 4)
-		{
-			DisableWidget();
-			return;
-		}
-
-		float distanceOpacityReduction = 0;
-		if (dist > 3)
-			distanceOpacityReduction = Math.InverseLerp(3, 4, dist);
-
-		m_wCasualtyInspectWidget.SetOpacity(1 - distanceOpacityReduction);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override protected void GetCasualtyName(inout string sName, IEntity targetCharacter)
-	{
-		int playerID = GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(targetCharacter);
-		if (playerID > 0)
-		{
-			sName = SCR_PlayerNamesFilterCache.GetInstance().GetPlayerDisplayName(playerID);
-			return;
-		}
-
-		SCR_CharacterIdentityComponent scrCharIdentity = SCR_CharacterIdentityComponent.Cast(targetCharacter.FindComponent(SCR_CharacterIdentityComponent));
-		if (scrCharIdentity)
-		{
-			string sFormat, sAlias, sSurname;
-			scrCharIdentity.GetFormattedFullName(sFormat, sName, sAlias, sSurname);
-			sName = sName + " " + sSurname;
-			return;
-		}
-
-		CharacterIdentityComponent charIdentity = CharacterIdentityComponent.Cast(targetCharacter.FindComponent(CharacterIdentityComponent));
-		if (charIdentity && charIdentity.GetIdentity())
-			sName = charIdentity.GetIdentity().GetName();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override protected void DisplayOnSuspended() { DisableWidget(); }
-	override void SetTarget(IEntity target) { m_Target = target; }
-
-	override bool IsActive()
-	{
-		return m_Target && m_wCasualtyInspectWidget && m_wCasualtyInspectWidget.GetOpacity() != 0;
-	}
-
-	override protected void DisableWidget()
-	{
-		if (m_wCasualtyInspectWidget)
-			m_wCasualtyInspectWidget.SetVisible(false);
-		m_Target = null;
-		SetEnabled(false);
-		m_bShouldBeVisible = false;
-		m_fTimeTillClose = MAX_SHOW_DURATION;
-	}
-
-	override protected void EnableWidget()
-	{
-		if (m_wCasualtyInspectWidget)
-			m_wCasualtyInspectWidget.SetVisible(true);
-		SetEnabled(true);
-		m_bShouldBeVisible = true;
-	}
-
-	override void DisplayOnResumed()
-	{
-		if (!m_bShouldBeVisible && m_wCasualtyInspectWidget)
-			m_wCasualtyInspectWidget.SetVisible(false);
 	}
 }
