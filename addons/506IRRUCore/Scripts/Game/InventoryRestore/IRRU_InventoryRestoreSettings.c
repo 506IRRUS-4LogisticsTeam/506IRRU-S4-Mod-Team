@@ -3,7 +3,7 @@ class IRRU_InventoryRestoreSettings
 {
 	static const string MOD_VERSION = "1.0.0";
 
-	[Attribute(defvalue: "1", desc: "Enable verbose debug output to the RPT log", category: "Inventory Check", uiwidget: UIWidgets.CheckBox)]
+	[Attribute(defvalue: "0", desc: "Enable verbose debug output to the RPT log", category: "Inventory Check", uiwidget: UIWidgets.CheckBox)]
 	bool m_bDebugEnabled;
 
 	protected static ref IRRU_InventoryRestoreSettings s_Instance;
@@ -25,7 +25,7 @@ class IRRU_InventoryRestoreSettings
 			{
 				Print("[InventoryCheck] Config not found, using defaults", LogLevel.WARNING);
 				s_Instance = new IRRU_InventoryRestoreSettings();
-				s_Instance.m_bDebugEnabled = true;
+				s_Instance.m_bDebugEnabled = false;
 			}
 
 			if (!s_Initialized)
@@ -43,7 +43,10 @@ class IRRU_InventoryRestoreSettings
 		IRRU_InventoryRestoreSettings settings = GetInstance();
 		if (settings)
 			return settings.m_bDebugEnabled;
-		return true;
+
+		// Fail quiet: a debug flag that defaults ON when something goes wrong
+		// spams every client instead of reporting the actual problem.
+		return false;
 	}
 
 	static void SetDebugEnabled(bool enabled)
