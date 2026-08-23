@@ -25,33 +25,52 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 	protected IRRU_CPRHelperCompartment m_pActiveHelper;
 
-	//! The patient is the action's owner and never changes; resolved once
+	//! The patient is the action's owner and never changes
 	protected SCR_ChimeraCharacter m_Patient;
 	protected SCR_CharacterControllerComponent m_PatientController;
 	protected CompartmentAccessComponent m_PatientCompartment;
 	protected IRRU_NoInstantDeathComponent m_PatientNID;
 	protected SCR_CharacterDamageManagerComponent m_PatientDamageManager;
+	protected bool m_bPatientRefsResolved;
 
 	//------------------------------------------------------------------------------------------------
 	override void Init(IEntity pOwnerEntity, GenericComponent pManagerComponent)
 	{
 		super.Init(pOwnerEntity, pManagerComponent);
 
+		// Only the owner is safe to take here - see IRRU_ResolvePatientRefs()
 		m_Patient = SCR_ChimeraCharacter.Cast(pOwnerEntity);
-		if (!m_Patient)
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Resolve the patient's components once, then never again (one bool test
+	//! per call afterwards).
+	//! This CANNOT be done in Init(): actions are constructed in the same frame
+	//! the character entity is created, before the character has populated its
+	//! own component accessors, so GetDamageManager() returns null there. Caching
+	//! that null left healing and resilience regeneration dead for the casualty's
+	//! whole life. FindComponent works as soon as the component exists, and the
+	//! damage manager decides when we are done, since it is the one that matters.
+	protected void IRRU_ResolvePatientRefs()
+	{
+		if (m_bPatientRefsResolved || !m_Patient)
 			return;
 
-		m_PatientController = SCR_CharacterControllerComponent.Cast(m_Patient.GetCharacterController());
-		m_PatientCompartment = m_Patient.GetCompartmentAccessComponent();
+		m_PatientDamageManager = SCR_CharacterDamageManagerComponent.Cast(m_Patient.FindComponent(SCR_CharacterDamageManagerComponent));
+		m_PatientController = SCR_CharacterControllerComponent.Cast(m_Patient.FindComponent(SCR_CharacterControllerComponent));
+		m_PatientCompartment = CompartmentAccessComponent.Cast(m_Patient.FindComponent(CompartmentAccessComponent));
 		m_PatientNID = IRRU_NoInstantDeathComponent.Cast(m_Patient.FindComponent(IRRU_NoInstantDeathComponent));
-		m_PatientDamageManager = SCR_CharacterDamageManagerComponent.Cast(m_Patient.GetDamageManager());
+
+		m_bPatientRefsResolved = m_PatientDamageManager != null;
 	}
 
 	//------------------------------------------------------------------------------------------------
 	//! Evaluated every frame for nearby bodies: cheap rejections first, the world trace last
 	override bool CanBeShownScript(IEntity user)
 	{
-		if (!user || !m_Patient || !m_PatientNID || !m_PatientNID.IsUnconscious())
+		IRRU_ResolvePatientRefs();
+
+		if (!user || !m_PatientNID || !m_PatientNID.IsUnconscious())
 			return false;
 
 		if (m_PatientController && m_PatientController.GetLifeState() == ECharacterLifeState.DEAD)
@@ -131,6 +150,8 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return;
 		}
 
+		IRRU_ResolvePatientRefs();
+
 		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
 		if (!m_Patient || !m_PatientNID || !userChar)
 			return;
@@ -140,7 +161,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		m_pActiveHelper = IRRU_CPRHelperCompartment.Cast(IRRU_AnimationTools.AnimateWithHelperCompartment(IRRU_EAnimationHelperID.CPR, userChar, transform));
 		if (!m_pActiveHelper)
+		{
+			Print("[IRRU_CPR] Helper compartment could not be created - CPR not started", LogLevel.WARNING);
 			return;
+		}
 
 		m_pActiveHelper.SetPatient(m_Patient);
 		m_pActiveHelper.GetOnTerminated().Insert(OnAnimationTerminated);
@@ -195,8 +219,16 @@ class IRRU_CPRUserAction : ScriptedUserAction
 	//------------------------------------------------------------------------------------------------
 	protected void ApplyHealingToPatient()
 	{
-		if (!Replication.IsServer() || !m_PatientDamageManager)
+		if (!Replication.IsServer())
 			return;
+
+		// Guard, not a workaround: HealHitZones is called on this reference. If it
+		// is ever null again, CPR silently stops healing - so say so loudly.
+		if (!m_PatientDamageManager)
+		{
+			Print("[IRRU_CPR] Patient damage manager missing - no CPR healing applied", LogLevel.WARNING);
+			return;
+		}
 
 		m_PatientDamageManager.HealHitZones(Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING), false, 1.0);
 	}
