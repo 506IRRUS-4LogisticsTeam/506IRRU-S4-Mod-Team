@@ -101,6 +101,12 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return false;
 		}
 
+		if (m_PatientNID && !m_PatientNID.IsUnconscious())
+		{
+			SetCannotPerformReason("Patient is conscious");
+			return false;
+		}
+
 		if (m_PatientNID && m_PatientNID.IsReceivingCPR())
 		{
 			if (m_bCPRActive && m_iPerformingPlayerId == GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(user))
@@ -152,8 +158,10 @@ class IRRU_CPRUserAction : ScriptedUserAction
 
 		IRRU_ResolvePatientRefs();
 
+		// CanBeShownScript/CanBePerformedScript are client-side gates the server
+		// never evaluates, so the patient's state is re-checked here on authority.
 		SCR_ChimeraCharacter userChar = SCR_ChimeraCharacter.Cast(pUserEntity);
-		if (!m_Patient || !m_PatientNID || !userChar)
+		if (!m_Patient || !m_PatientNID || !m_PatientNID.IsUnconscious() || !userChar)
 			return;
 
 		vector transform[4];
