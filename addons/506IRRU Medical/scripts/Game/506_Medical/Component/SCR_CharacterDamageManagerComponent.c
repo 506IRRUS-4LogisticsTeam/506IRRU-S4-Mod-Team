@@ -9,6 +9,29 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected float m_fIRRU_NextKillBlockLogTimeMS;
 
 	//------------------------------------------------------------------------------------------------
+	//! Friendly-fire audit: forward direct damage events to the NID component's
+	//! logger. DOT ticks (bleeding/healing) are filtered here so a friendly-
+	//! caused bleed cannot spam a line per tick.
+	override protected void OnDamage(notnull BaseDamageContext damageContext)
+	{
+		super.OnDamage(damageContext);
+
+		if (!Replication.IsServer() && Replication.IsRunning())
+			return;
+
+		if (damageContext.damageValue <= 0)
+			return;
+
+		EDamageType type = damageContext.damageType;
+		if (type == EDamageType.BLEEDING || type == EDamageType.HEALING)
+			return;
+
+		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
+		if (nid)
+			nid.IRRU_LogFriendlyDamage(damageContext.instigator, damageContext.damageValue, type);
+	}
+
+	//------------------------------------------------------------------------------------------------
 	//! Under ACE the default hit zone is not the health hit zone, so scan once and cache
 	SCR_CharacterHealthHitZone IRRU_GetHealthHitZone()
 	{

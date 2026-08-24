@@ -6,6 +6,9 @@ class IRRU_NoInstantDeathComponentClass : ScriptComponentClass
 class IRRU_NoInstantDeathComponent : ScriptComponent
 {
 	protected const float CHECK_INTERVAL = 1.0;
+	protected const int OPS_LOG_INTERVAL_TICKS = 30;
+
+	protected int m_iNID_OpsLogTicks = 0;
 
 	protected bool m_bNID_Initialized = false;
 	[RplProp()]
@@ -112,11 +115,18 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		m_bIsUnconscious = true;
 		m_fUnconsciousTimer = 0.0;
+		m_iNID_OpsLogTicks = 0;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
 		m_CachedDmgManager.ForceUnconsciousness();
 
 		if (Replication.IsServer() || !Replication.IsRunning())
+		{
+			Print(string.Format("[IRRU_MEDICAL] %1 UNCONSCIOUS (%2s bleedout) by %3 - Health: %4%%, Blood: %5%%, Resilience: %6%%",
+				GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime(), IRRU_GetOpsAttackerDesc(),
+				m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
+
 			IRRU_LogBlueOnBlue(owner);
+		}
 
 		if (Replication.IsServer())
 		{
@@ -176,7 +186,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
 			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
 			{
-				IRRU_LogBlueOnBlueSkip(owner, string.Format("attacker is GM-driven (control type %1)", typename.EnumToString(SCR_ECharacterControlType, attackerType)));
+				Print(string.Format("[IRRU_MEDICAL] ARES-CONTROLLED HIT: %1 downed by GM-driven %2 (control type %3)",
+					GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), typename.EnumToString(SCR_ECharacterControlType, attackerType)), LogLevel.WARNING);
 				return;
 			}
 		}
@@ -191,6 +202,53 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		Print(string.Format("[NoInstantDeath] BLUE-ON-BLUE: %1 knocked unconscious by friendly %2 (faction=%3)",
 			GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), victimFaction), LogLevel.WARNING);
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Called by the damage manager for every direct damage event on a player;
+	//! logs the hit when the attacker is a same-faction friendly
+	void IRRU_LogFriendlyDamage(Instigator instigator, float damageValue, EDamageType damageType)
+	{
+		if (!instigator)
+			return;
+
+		IEntity owner = GetOwner();
+		PlayerManager pm = GetGame().GetPlayerManager();
+		int victimPlayerId = pm.GetPlayerIdFromControlledEntity(owner);
+		if (victimPlayerId <= 0)
+			return;
+
+		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
+		if (victimType != SCR_ECharacterControlType.PLAYER)
+			return;
+
+		int attackerPlayerId = instigator.GetInstigatorPlayerID();
+		IEntity attacker = instigator.GetInstigatorEntity();
+
+		if (attackerPlayerId <= 0 && !attacker)
+			return;
+
+		if (attacker == owner || (attackerPlayerId > 0 && attackerPlayerId == victimPlayerId))
+			return;
+
+		IEntity controlTypeProbe = attacker;
+		if (!controlTypeProbe && attackerPlayerId > 0)
+			controlTypeProbe = pm.GetPlayerControlledEntity(attackerPlayerId);
+		if (controlTypeProbe)
+		{
+			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+				return;
+		}
+
+		string victimFaction = IRRU_ResolveFactionKey(victimPlayerId, owner);
+		string attackerFaction = IRRU_ResolveFactionKey(attackerPlayerId, attacker);
+		if (victimFaction.IsEmpty() || victimFaction != attackerFaction)
+			return;
+
+		Print(string.Format("[IRRU_MEDICAL] FRIENDLY FIRE: %1 took %2 damage from %3 (faction=%4, type=%5) - Health: %6%%",
+			GetNameStr(owner), damageValue, IRRU_GetAttackerDesc(attackerPlayerId, attacker), victimFaction,
+			typename.EnumToString(EDamageType, damageType), m_CachedDmgManager.IRRU_GetHealthPercentage()), LogLevel.WARNING);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -248,6 +306,35 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	}
 
 	//------------------------------------------------------------------------------------------------
+	protected string IRRU_GetOpsAttackerDesc()
+	{
+		if (!m_LastKnownInstigator)
+			return "<unknown>";
+
+		int attackerPlayerId = m_LastKnownInstigator.GetInstigatorPlayerID();
+		IEntity attacker = m_LastKnownInstigator.GetInstigatorEntity();
+
+		if (attackerPlayerId <= 0 && !attacker)
+			return "<world>";
+
+		string desc = IRRU_GetAttackerDesc(attackerPlayerId, attacker);
+
+		IEntity controlTypeProbe = attacker;
+		if (!controlTypeProbe && attackerPlayerId > 0)
+			controlTypeProbe = GetGame().GetPlayerManager().GetPlayerControlledEntity(attackerPlayerId);
+		if (controlTypeProbe)
+		{
+			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+				desc = desc + " [ARES-CONTROLLED]";
+			else if (attackerType == SCR_ECharacterControlType.AI)
+				desc = desc + " [AI]";
+		}
+
+		return desc;
+	}
+
+	//------------------------------------------------------------------------------------------------
 	protected void UpdateUnconsciousTimer()
 	{
 		IEntity owner = GetOwner();
@@ -280,10 +367,25 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			Replication.BumpMe();
 		}
 
+		m_iNID_OpsLogTicks++;
+		if (m_iNID_OpsLogTicks % OPS_LOG_INTERVAL_TICKS == 0)
+		{
+			string stateFlag = "";
+			if (m_bReceivingCPR)
+				stateFlag = " (CPR - timer paused)";
+			else if (healthStable)
+				stateFlag = " (stable - timer paused)";
+
+			int elapsed = Math.Round(m_fUnconsciousTimer);
+			Print(string.Format("[IRRU_MEDICAL] %1 bleedout %2/%3s%4 - Health: %5%%, Blood: %6%%, Resilience: %7%%",
+				GetNameStr(owner), elapsed, IRRU_NoInstantDeathSettings.GetBleedoutTime(), stateFlag,
+				m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
+		}
+
 		if (m_fUnconsciousTimer >= IRRU_NoInstantDeathSettings.GetBleedoutTime())
 		{
-			if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-				Print(string.Format("[NoInstantDeath] %1: bleedout timer expired", GetNameStr(owner)));
+			Print(string.Format("[IRRU_MEDICAL] %1 DIED - bleedout timer expired (%2s)",
+				GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime()), LogLevel.WARNING);
 
 			KillCharacter(owner);
 			return;
@@ -315,8 +417,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (!m_bIsUnconscious)
 			return;
 
-		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
-			Print(string.Format("[NoInstantDeath] %1: bleedout cancelled (%2)", GetNameStr(GetOwner()), reason));
+		int elapsed = Math.Round(m_fUnconsciousTimer);
+		Print(string.Format("[IRRU_MEDICAL] %1 bleedout ended after %2s (%3)", GetNameStr(GetOwner()), elapsed, reason));
 
 		m_bIsUnconscious = false;
 		m_fUnconsciousTimer = 0.0;
