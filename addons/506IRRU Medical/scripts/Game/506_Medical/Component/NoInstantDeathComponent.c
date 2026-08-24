@@ -183,8 +183,11 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			controlTypeProbe = pm.GetPlayerControlledEntity(attackerPlayerId);
 		if (controlTypeProbe)
 		{
+			// Only possessed AI counts as an Ares-controlled engagement; a
+			// player whose control type reads UNLIMITED_EDITOR goes through
+			// the normal logging paths like any other attacker
 			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
-			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI)
 			{
 				Print(string.Format("[IRRU_MEDICAL] ARES-CONTROLLED HIT: %1 downed by GM-driven %2 (control type %3)",
 					GetNameStr(owner), IRRU_GetAttackerDesc(attackerPlayerId, attacker), typename.EnumToString(SCR_ECharacterControlType, attackerType)), LogLevel.WARNING);
@@ -237,7 +240,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (controlTypeProbe)
 		{
 			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
-			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI)
 				return;
 		}
 
@@ -325,7 +328,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (controlTypeProbe)
 		{
 			SCR_ECharacterControlType attackerType = SCR_CharacterHelper.GetCharacterControlType(controlTypeProbe);
-			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI || attackerType == SCR_ECharacterControlType.UNLIMITED_EDITOR)
+			if (attackerType == SCR_ECharacterControlType.POSSESSED_AI)
 				desc = desc + " [ARES-CONTROLLED]";
 			else if (attackerType == SCR_ECharacterControlType.AI)
 				desc = desc + " [AI]";
