@@ -221,8 +221,10 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (victimPlayerId <= 0)
 			return;
 
+		// Exclude AI-type victims, never require PLAYER: an admin victim reads
+		// UNLIMITED_EDITOR even while playing as a regular character
 		SCR_ECharacterControlType victimType = SCR_CharacterHelper.GetCharacterControlType(owner);
-		if (victimType != SCR_ECharacterControlType.PLAYER)
+		if (victimType == SCR_ECharacterControlType.AI || victimType == SCR_ECharacterControlType.POSSESSED_AI || victimType == SCR_ECharacterControlType.UNKNOWN)
 			return;
 
 		int attackerPlayerId = instigator.GetInstigatorPlayerID();
