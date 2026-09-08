@@ -1,5 +1,3 @@
 MatPBRBasic {
- BCRMap "{19F39DE3EE8D723D}Assets/Accessories/Data/ANPRC152_Black_BaseColor.edds"
- OpacityMap "{104A6FD0A3444AA2}Assets/Accessories/Data/ANPRC152_NMO.edds"
- NMOMap "{104A6FD0A3444AA2}Assets/Accessories/Data/ANPRC152_NMO.edds"
+ BCRMap "{A4697CBA54DDF642}Assets/Attachments/rhs_peq16_body_blk.edds"
 }

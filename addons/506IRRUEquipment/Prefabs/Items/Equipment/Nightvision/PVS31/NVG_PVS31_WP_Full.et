@@ -1,0 +1,73 @@
+GameEntity : "{B7BA7694F821F556}Prefabs/Items/Equipment/Nightvision/PVS14/NVG_PVS14Dual.et" {
+ ID "5D7765E30127E8B9"
+ components {
+  BaseLightManagerComponent "{5D7765E30127E89F}" {
+   LightSlots {
+    BaseLightSlot "{5D7765E30127E8E2}" {
+     LightPositionInfo EntitySlotInfo x {
+      Offset 0.0761 -0.0268 0.0434
+     }
+     LightPrefab "{1D532235C0028A0C}Prefabs/Items/Equipment/Nightvision/PVS14/NVG_Light_WP_light.et"
+    }
+    BaseLightSlot "{5DCEACC53982D8DA}" {
+     LightPositionInfo LoadoutSlotInfo illuminator {
+      Offset 0 -0.0471 0.1085
+     }
+     LightPrefab "{B748D585BA30A69E}Prefabs/Items/Equipment/Nightvision/PVS31/NVG_Illuminator_PVS31_IR_light.et"
+    }
+    BaseLightSlot "{5DB0746D0D39F505}" {
+     LightPositionInfo EntitySlotInfo secondLight {
+      Offset 0.0761 0.0295 0.0434
+     }
+     LightPrefab "{1D532235C0028A0C}Prefabs/Items/Equipment/Nightvision/PVS14/NVG_Light_WP_light.et"
+    }
+   }
+  }
+  InventoryItemComponent "{5DB09136B1C985CE}" {
+   Attributes SCR_ItemAttributeCollection "{5DB09136B1C985C1}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{5DB09136B1C985EB}" {
+     Name "AN/PVS-31 Full"
+     Description "AN/PVS-31 Full"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{5DB09136B1C985D2}" {
+     Weight 0.45
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5DB09136B1C985C3}" {
+      CameraOrbitAngles 150 120 110
+     }
+     RHS_CustomAttributes "{5DB8F5B98D9963BA}" {
+      m_sShortName "#RHS-Item_ANPVS31_Name"
+     }
+    }
+   }
+  }
+  MeshObject "{5DB09136B1C985B5}" {
+   Object "{B40ED924810DA820}Assets/Items/Equipment/NVG/pvs31/RHS_LG_PVS31.xob"
+  }
+  RHS_RhinoAttachmentComponent "{5D7765E30127E8D1}" {
+   m_sNVGGooglesHDRMatrial "{7961F4B9E065FBF5}Assets/Items/Equipment/NVG/pvs14/data/NVG_WhitePhosphor_HDR.emat"
+   m_sNVGGooglesFilmGrainMaterial "{7961F4B9E065FBF5}Assets/Items/Equipment/NVG/pvs14/data/NVG_WhitePhosphor_HDR.emat"
+   m_aBlemSet {
+   }
+   m_fMaxBlemOpacity 1
+   m_fMinBlemOpacity 1
+   m_bUseMask 0
+  }
+  ProcAnimComponent "{5D7765E30127E8D5}" {
+   Parameters {
+    ProcAnimParams "{5D7765E30127E8DB}" {
+     ResourceName "{B35706BBEA171B12}Anims/proc/PVS31.pap"
+     BoneNames + {
+      "PVS_31_L" "PVS_31_R"
+     }
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{5DB09136B1C9859A}" {
+   WornModel "{B40ED924810DA820}Assets/Items/Equipment/NVG/pvs31/RHS_LG_PVS31.xob"
+   ItemModel "{B40ED924810DA820}Assets/Items/Equipment/NVG/pvs31/RHS_LG_PVS31.xob"
+  }
+ }
+ coords 1261.458 51.329 1340.574
+}
