@@ -38,6 +38,14 @@ modded class SCR_VONEntryRadio
         }
 
         string displayText = m_sText + " " + routingText + "|" + beepText + "|" + volume.ToString();
+
+        // COMSEC segment, only while the server runs encryption: "K7A" is a
+        // non-secret check value (verify a changeover at a glance or over
+        // voice), "--" marks an unfilled channel so the radial doubles as a
+        // pre-op checklist. Reflects the transceiver's CURRENT frequency.
+        if (IRRU_RFPropagationNetworkComponent.IsEncryptionEnabled())
+            displayText = displayText + "|" + settings.GetFillDisplayText(m_RadioTransceiver.GetFrequency());
+
         entryComp.SetFrequencyText(displayText);
 
         if (isAlternate)

@@ -15,6 +15,10 @@ class IRRU_RadioBeepHelper
     //! Sound node must exist with this exact name in 506th_beep.acp
     static const string EVENT_SQUELCH_TAIL = "IRRU_SQUELCH_TAIL";
 
+    //! Gap before the secure-TX confirmation blip so the two beeps read as a
+    //! deliberate double, not one smeared sound
+    protected static const int SECURE_CUE_DELAY_MS = 140;
+
     static void PlayTxStart(BaseTransceiver transceiver)
     {
         Play(transceiver, false, true);
@@ -72,6 +76,24 @@ class IRRU_RadioBeepHelper
         }
 
         PlayRouted(eventName, transceiver);
+
+        // Secure-TX cue (SINCGARS CT/PT spirit): keying a FILLED channel
+        // answers with a short second blip, so the operator hears cipher vs
+        // plaintext on every key-up. With fail-open plaintext this is the
+        // only transmit-side signal that a cleared or mistyped fill has you
+        // in the clear. Existing event, no new assets.
+        if (!receiving && opening
+            && IRRU_RFPropagationNetworkComponent.IsEncryptionEnabled()
+            && SCR_IRRURadioEarSettings.GetInstance().GetFillHash(transceiver.GetFrequency()) != 0)
+            GetGame().GetCallqueue().CallLater(PlaySecureCue, SECURE_CUE_DELAY_MS, false, transceiver);
+    }
+
+    protected static void PlaySecureCue(BaseTransceiver transceiver)
+    {
+        if (!transceiver)
+            return;
+
+        PlayRouted(EVENT_BEEP_LOW, transceiver);
     }
 
     //! Write a transceiver's routing/volume into the shared audio variables.

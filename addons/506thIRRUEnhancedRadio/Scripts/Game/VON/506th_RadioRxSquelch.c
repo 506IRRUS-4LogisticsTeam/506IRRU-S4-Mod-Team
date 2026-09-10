@@ -18,6 +18,18 @@ class IRRU_RxChannelState
     float m_fRpcClosedAtMs;
 }
 
+//! Latest crypto fill hash announced by a sender's key-up, kept OUTSIDE the
+//! per-frequency squelch channel state and written before any tuning or
+//! reachability gate: a receiver who tunes in, powers a radio on, walks into
+//! range or joins mid-transmission must still be able to verdict crypto, or
+//! encrypted traffic would play in the clear through normal gameplay.
+class IRRU_SenderKeyInfo
+{
+    int m_iFrequency;
+    int m_iFillHash;
+    float m_fStampedMs;
+}
+
 class IRRU_RadioRxSquelch
 {
     //! Voice capture does silence detection, so the timeout must ride through
@@ -27,6 +39,11 @@ class IRRU_RadioRxSquelch
     protected static const float REOPEN_GRACE_MS = 500;
     protected static const float MAX_KEY_HOLD_MS = 120000;
     protected static const float MIN_SIGNAL_QUALITY = 0.05;
+    //! Sender-key entries have their own failsafe lifetime, deliberately far
+    //! above MAX_KEY_HOLD: the squelch's 2-minute stuck-key expiry must never
+    //! delete the hash of a still-transmitting sender mid-stream. Entries are
+    //! normally removed by key-stop or the server-relayed disconnect stop.
+    protected static const float IRRU_SENDER_KEY_TTL_MS = 600000;
     //! Voice frames still in flight behind the reliable key-stop RPC must not
     //! reopen the channel (that would earn a second close beep from Tick);
     //! kept below REOPEN_GRACE_MS so a genuine still-talking voice-only sender
@@ -42,6 +59,12 @@ class IRRU_RadioRxSquelch
     //! beep borrowing the slots in between must put these back.
     protected int m_iAudioSlotFrequency = -1;
     protected float m_fAudioSlotStartedAtMs = -1;
+    //! Whether the stream that started the slot this frame carried an
+    //! ENCRYPTED crypto verdict; an intelligible same-frame START yields to
+    //! it (fail closed) instead of overwriting it with cleartext values.
+    protected bool m_bAudioSlotEncrypted = false;
+
+    protected ref map<int, ref IRRU_SenderKeyInfo> m_mSenderKeys = new map<int, ref IRRU_SenderKeyInfo>();
 
     //------------------------------------------------------------------------------------------------
     static IRRU_RadioRxSquelch GetInstance()
@@ -57,7 +80,7 @@ class IRRU_RadioRxSquelch
     //! frequency tuning and reachability so squelch mirrors what the voice
     //! path could actually deliver; key-stop is always processed so counts
     //! cannot wedge when the receiver moved out of range mid-transmission.
-    void OnRemoteKeyState(int senderPlayerId, int frequency, float range, bool keyed, vector senderPos)
+    void OnRemoteKeyState(int senderPlayerId, int frequency, float range, bool keyed, vector senderPos, int fillHash)
     {
         PlayerController playerController = GetGame().GetPlayerController();
         if (!playerController)
@@ -67,6 +90,15 @@ class IRRU_RadioRxSquelch
             return;
 
         float nowMs = GetGame().GetWorld().GetWorldTime();
+
+        // Sender-key bookkeeping runs UNCONDITIONALLY, before every gate
+        // below: the gates only decide squelch beeps, never crypto knowledge.
+        // The hash argument is meaningful only on key-starts; stops just
+        // clean up (their hash is always 0 and must be ignored).
+        if (keyed)
+            IRRU_StoreSenderKey(senderPlayerId, frequency, fillHash, nowMs, playerController);
+        else
+            m_mSenderKeys.Remove(senderPlayerId);
 
         if (keyed)
         {
@@ -81,6 +113,13 @@ class IRRU_RadioRxSquelch
             ExpireStuckKeys(state, nowMs);
             state.m_mKeyedSenders.Set(senderPlayerId, nowMs);
             Open(state, transceiver, nowMs);
+
+            // Encrypted senders: load the scramble values into the audio
+            // slots now, ahead of the sound event the incoming voice will
+            // spawn (see IRRU_PreArmEncryptedSlots for the probe evidence)
+            SCR_VoNComponent von = SCR_VoNComponent.Cast(playerController.FindComponent(SCR_VoNComponent));
+            if (von)
+                von.IRRU_PreArmEncryptedSlots(senderPlayerId, frequency, transceiver);
         }
         else
         {
@@ -125,13 +164,66 @@ class IRRU_RadioRxSquelch
     }
 
     //------------------------------------------------------------------------------------------------
+    //! Track the latest fill hash a sender announced; runs before the squelch
+    //! gates (see OnRemoteKeyState). Also nudges the VoN component: voice can
+    //! outrun this RPC, and a stream opened with a wrong assumed verdict gets
+    //! re-verdicted on its next packet instead of leaking for its lifetime.
+    protected void IRRU_StoreSenderKey(int senderPlayerId, int frequency, int fillHash, float nowMs, PlayerController playerController)
+    {
+        IRRU_SenderKeyInfo info;
+        if (!m_mSenderKeys.Find(senderPlayerId, info))
+        {
+            info = new IRRU_SenderKeyInfo();
+            m_mSenderKeys.Set(senderPlayerId, info);
+        }
+
+        info.m_iFrequency = frequency;
+        info.m_iFillHash = fillHash;
+        info.m_fStampedMs = nowMs;
+
+        // ===== IRRU_CPROBE (temporary diagnostic - remove after crypto timing investigation) =====
+        Print(string.Format("[IRRU_CPROBE] KeyStart: sender=%1 freq=%2 hash=%3 t=%4",
+            senderPlayerId, frequency, fillHash, nowMs), LogLevel.WARNING);
+        // ===== /IRRU_CPROBE =====
+
+        SCR_VoNComponent von = SCR_VoNComponent.Cast(playerController.FindComponent(SCR_VoNComponent));
+        if (von)
+            von.IRRU_OnSenderKeyInfo(senderPlayerId, frequency);
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Fill hash the sender announced for its current transmission.
+    //! 0 = unknown or plaintext - both deliberately fail open (intelligible).
+    int GetSenderFillHash(int senderPlayerId, int frequency)
+    {
+        IRRU_SenderKeyInfo info;
+        if (!m_mSenderKeys.Find(senderPlayerId, info))
+            return 0;
+
+        if (GetGame().GetWorld().GetWorldTime() - info.m_fStampedMs > IRRU_SENDER_KEY_TTL_MS)
+        {
+            m_mSenderKeys.Remove(senderPlayerId);
+            return 0;
+        }
+
+        if (info.m_iFrequency != frequency)
+            return 0;
+
+        return info.m_iFillHash;
+    }
+
+    //------------------------------------------------------------------------------------------------
     //! \param eventStart true when the engine certainly starts a sound event
     //! on the packet that wrote, so the values are about to be read
-    void OnAudioSlotWritten(int frequency, bool eventStart)
+    //! \param encrypted whether the writing stream carried an ENCRYPTED verdict
+    void OnAudioSlotWritten(int frequency, bool eventStart, bool encrypted = false)
     {
         m_iAudioSlotFrequency = frequency;
         if (eventStart)
+        {
             m_fAudioSlotStartedAtMs = GetGame().GetWorld().GetWorldTime();
+            m_bAudioSlotEncrypted = encrypted;
+        }
     }
 
     //------------------------------------------------------------------------------------------------
@@ -140,6 +232,19 @@ class IRRU_RadioRxSquelch
     bool WasAudioSlotStartedThisFrame()
     {
         return GetGame().GetWorld().GetWorldTime() - m_fAudioSlotStartedAtMs < 1.0;
+    }
+
+    //------------------------------------------------------------------------------------------------
+    //! Whether this frame's slot-starting stream was ENCRYPTED. Same-frame
+    //! collisions are last-writer-wins for BOTH sound events, so an
+    //! intelligible START yields to an encrypted one (a briefly scrambled
+    //! friendly stream is recoverable; leaked crypto audio is not).
+    bool WasAudioSlotEncryptedThisFrame()
+    {
+        if (!WasAudioSlotStartedThisFrame())
+            return false;
+
+        return m_bAudioSlotEncrypted;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -257,21 +362,15 @@ class IRRU_RadioRxSquelch
         if (!vonController)
             return null;
 
-        SCR_VONEntryRadio entry = vonController.IRRU_FindEntryByFrequency(frequency);
+        // The engine only delivers voice to powered radios; mirror that gate.
+        // The powered-preferring lookup matters with two radios on one
+        // frequency: the first-listed being switched off must not hide the
+        // powered second (that would drop key-starts while voice still flows).
+        SCR_VONEntryRadio entry = vonController.IRRU_FindPoweredEntryByFrequency(frequency);
         if (!entry)
             return null;
 
-        BaseTransceiver transceiver = entry.GetTransceiver();
-        if (!transceiver)
-            return null;
-
-        // The engine only delivers voice to powered radios; mirror that gate so
-        // a switched-off radio never squelches.
-        BaseRadioComponent radio = transceiver.GetRadio();
-        if (!radio || !radio.IsPowered())
-            return null;
-
-        return transceiver;
+        return entry.GetTransceiver();
     }
 
     //------------------------------------------------------------------------------------------------

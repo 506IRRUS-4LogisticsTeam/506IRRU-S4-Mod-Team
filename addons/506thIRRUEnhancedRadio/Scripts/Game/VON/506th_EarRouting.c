@@ -138,6 +138,95 @@ class SCR_IRRURadioEarSettings
         return Math.Round(GetVolume(transceiver) * 100);
     }
 
+    //------------------------------------------------------------------------------------------------
+    // Crypto fills (COMSEC). Fills are keyed by FREQUENCY, not transceiver
+    // object: frequency-keyed state survives respawn/radio swaps and matches
+    // the channel identity of the key-state RPC layer ("the net has a fill").
+    // Storage and persistence live in IRRU_RadioUserSettings so fills survive
+    // reconnects; these wrappers keep radio-settings reads in one class.
+    //------------------------------------------------------------------------------------------------
+
+    protected static const string IRRU_BASE36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    string GetFill(int frequencyKHz)
+    {
+        return IRRU_RadioUserSettings.GetInstance().GetFill(frequencyKHz);
+    }
+
+    void SetFill(int frequencyKHz, string fill)
+    {
+        IRRU_RadioUserSettings.GetInstance().SetFill(frequencyKHz, fill);
+    }
+
+    void ClearFill(int frequencyKHz)
+    {
+        IRRU_RadioUserSettings.GetInstance().ClearFill(frequencyKHz);
+    }
+
+    //! 0 = plaintext (no fill stored for this frequency)
+    int GetFillHash(int frequencyKHz)
+    {
+        return IRRU_HashFill(GetFill(frequencyKHz));
+    }
+
+    //! Deterministic djb2 over the digit string; 0 is reserved for plaintext
+    static int IRRU_HashFill(string fill)
+    {
+        if (fill.IsEmpty())
+            return 0;
+
+        int hash = 5381;
+        for (int i = 0; i < fill.Length(); i++)
+        {
+            hash = hash * 33 + fill.Get(i).ToAscii();
+        }
+
+        if (hash == 0)
+            hash = 1;
+
+        return hash;
+    }
+
+    static bool IRRU_IsDigits(string text)
+    {
+        if (text.IsEmpty())
+            return false;
+
+        for (int i = 0; i < text.Length(); i++)
+        {
+            int code = text.Get(i).ToAscii();
+            if (code < 48 || code > 57)
+                return false;
+        }
+
+        return true;
+    }
+
+    //! Two-character non-secret check value: many-to-one from the fill, so it
+    //! leaks nothing on streams, but lets players confirm a changeover by
+    //! glance or voice ("confirm Kilo Seven Alpha")
+    static string IRRU_CheckTextFromHash(int hash)
+    {
+        if (hash == 0)
+            return "--";
+
+        int value = hash % 1296;
+        if (value < 0)
+            value += 1296;
+
+        return IRRU_BASE36.Get(value / 36) + IRRU_BASE36.Get(value % 36);
+    }
+
+    //! Radial segment: "K7A" when filled, "--" when plaintext
+    string GetFillDisplayText(int frequencyKHz)
+    {
+        int hash = GetFillHash(frequencyKHz);
+        if (hash == 0)
+            return "--";
+
+        return "K" + IRRU_CheckTextFromHash(hash);
+    }
+
     int GetAlternateFrequency()
     {
         return m_iAlternateFrequency;

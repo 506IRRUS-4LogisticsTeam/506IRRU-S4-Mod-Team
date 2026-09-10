@@ -84,28 +84,44 @@ class IRRU_FrequencyInput
     {
         if (!m_Transceiver)
             return;
-        
+
         float inputMHz = input.ToFloat();
         if (inputMHz <= 0)
             return;
-        
-        int freqKHz = (int)(inputMHz * 1000);
-        
+
+        // Round, don't truncate: 38.1 is 38.099998 in float32, and (int)
+        // truncation landed 38099 -> resolution-snapped to 38000. Wrong
+        // frequency, and it desyncs every frequency-keyed system (crypto
+        // fills, squelch) from what the player believes they tuned.
+        int freqKHz = Math.Round(inputMHz * 1000);
+
         int minFreq = m_Transceiver.GetMinFrequency();
         int maxFreq = m_Transceiver.GetMaxFrequency();
         int resolution = m_Transceiver.GetFrequencyResolution();
-        
+
         freqKHz = Math.ClampInt(freqKHz, minFreq, maxFreq);
-        
+
         if (resolution > 0)
             freqKHz = (freqKHz / resolution) * resolution;
-        
+
+        int oldFrequency = m_Transceiver.GetFrequency();
         m_Transceiver.SetFrequency(freqKHz);
-        
+
         if (m_RadioEntry)
         {
             m_RadioEntry.SetEntryFrequency(freqKHz);
             m_RadioEntry.Update();
+        }
+
+        // Retuning the currently keyed transceiver moves the voice to the new
+        // frequency while receivers there never saw a key-start; let the
+        // controller re-announce so squelch and crypto stay coherent.
+        PlayerController playerController = GetGame().GetPlayerController();
+        if (playerController)
+        {
+            SCR_VONController vonController = SCR_VONController.Cast(playerController.FindComponent(SCR_VONController));
+            if (vonController)
+                vonController.IRRU_OnTransceiverRetuned(m_Transceiver, oldFrequency, freqKHz);
         }
     }
     

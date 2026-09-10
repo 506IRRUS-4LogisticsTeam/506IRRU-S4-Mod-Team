@@ -7,6 +7,13 @@ class IRRU_SenderStream
     float m_fJamStrength;
     float m_fComputedAtMs;
     int m_iFrequency;
+    //! Crypto verdict written for this stream's current sound event; compared
+    //! against fresh key-state broadcasts to catch voice-outran-the-RPC races
+    bool m_bEncryptedForMe;
+    //! Whether the stream's packets carry the editor (GM) sender flag; the
+    //! race-correction path must re-verdict with the SAME flag or a GM whose
+    //! announced hash mismatches would get its stream restarted forever
+    bool m_bSenderEditor;
 }
 
 enum IRRU_EStreamOpening
@@ -57,7 +64,7 @@ modded class SCR_VoNComponent : VoNComponent
                 // writes in the same frame.
                 IRRU_EStreamOpening opening = IRRU_GetStreamOpening(playerId, frequency);
                 if (opening != IRRU_EStreamOpening.NONE)
-                    IRRU_ApplyAudioVariables(playerId, receiver, frequency, playerController, opening == IRRU_EStreamOpening.START);
+                    IRRU_ApplyAudioVariables(playerId, receiver, frequency, playerController, opening == IRRU_EStreamOpening.START, isSenderEditor);
             }
         }
 
@@ -108,10 +115,36 @@ modded class SCR_VoNComponent : VoNComponent
         return IRRU_EStreamOpening.RESUME;
     }
 
-    protected void IRRU_ApplyAudioVariables(int senderPlayerId, BaseTransceiver receiver, int frequency, PlayerController playerController, bool eventStart)
+    //! Below this floor the SignalQuality sig attenuates the WHOLE radio
+    //! sound (jam noise included -> silence, not scramble); 0.15 keeps
+    //! encrypted noise present but still range-scaled, so it never plays
+    //! louder than legitimate marginal-range speech would.
+    protected static const float IRRU_ENCRYPTED_MIN_QUALITY = 0.15;
+
+    protected void IRRU_ApplyAudioVariables(int senderPlayerId, BaseTransceiver receiver, int frequency, PlayerController playerController, bool eventStart, bool isSenderEditor)
     {
+        bool encrypted = IRRU_IsStreamEncrypted(senderPlayerId, frequency, isSenderEditor);
+        IRRU_SenderStream verdictStream = IRRU_GetSenderStream(senderPlayerId);
+        verdictStream.m_bEncryptedForMe = encrypted;
+        verdictStream.m_bSenderEditor = isSenderEditor;
+
+        // ===== IRRU_CPROBE (temporary diagnostic - remove after crypto timing investigation) =====
+        Print(string.Format("[IRRU_CPROBE] StreamOpen: sender=%1 freq=%2 start=%3 senderHash=%4 myHash=%5 verdict=%6 t=%7",
+            senderPlayerId, frequency, eventStart,
+            IRRU_RadioRxSquelch.GetInstance().GetSenderFillHash(senderPlayerId, frequency),
+            SCR_IRRURadioEarSettings.GetInstance().GetFillHash(frequency),
+            encrypted, GetGame().GetWorld().GetWorldTime()), LogLevel.WARNING);
+        // ===== /IRRU_CPROBE =====
+
+        // Same-frame START collisions are last-writer-wins for BOTH sound
+        // events. An intelligible stream yields to an already-written
+        // encrypted one (fail closed): briefly scrambling friendly traffic is
+        // recoverable, leaking encrypted traffic in the clear is not.
+        if (!encrypted && eventStart && IRRU_RadioRxSquelch.GetInstance().WasAudioSlotEncryptedThisFrame())
+            return;
+
         IRRU_RadioBeepHelper.ApplyChannelAudioVariables(receiver);
-        IRRU_RadioRxSquelch.GetInstance().OnAudioSlotWritten(frequency, eventStart);
+        IRRU_RadioRxSquelch.GetInstance().OnAudioSlotWritten(frequency, eventStart, encrypted);
 
         vector receiverPos = vector.Zero;
         if (playerController)
@@ -122,8 +155,137 @@ modded class SCR_VoNComponent : VoNComponent
         }
 
         IRRU_SenderStream stream = IRRU_GetSenderSignals(senderPlayerId, frequency, receiverPos);
-        AudioSystem.SetVariableByName("SignalQuality", stream.m_fSignalQuality, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
-        AudioSystem.SetVariableByName("JamStrength", stream.m_fJamStrength, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+
+        if (encrypted)
+        {
+            // JamStrength 0 = maximum jam: the graph fully mutes the voice
+            // bus and drives the synthesized radio-band noise at full - the
+            // jammer path IS the scramble sound (see ENCRYPTION_DESIGN.md)
+            AudioSystem.SetVariableByName("SignalQuality", Math.Max(stream.m_fSignalQuality, IRRU_ENCRYPTED_MIN_QUALITY), IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+            AudioSystem.SetVariableByName("JamStrength", 0, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+        }
+        else
+        {
+            AudioSystem.SetVariableByName("SignalQuality", stream.m_fSignalQuality, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+            AudioSystem.SetVariableByName("JamStrength", stream.m_fJamStrength, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+        }
+    }
+
+    //! ENCRYPTED = the sender announced a fill for this frequency and it does
+    //! not match ours. Every ambiguity fails open (intelligible): plaintext
+    //! senders, senders with no key RPC, GM traffic in either direction.
+    protected bool IRRU_IsStreamEncrypted(int senderPlayerId, int frequency, bool isSenderEditor)
+    {
+        if (!IRRU_RFPropagationNetworkComponent.IsEncryptionEnabled())
+            return false;
+
+        if (isSenderEditor)
+            return false;
+
+        if (IRRU_IsLocalPlayerGM())
+            return false;
+
+        int senderHash = IRRU_RadioRxSquelch.GetInstance().GetSenderFillHash(senderPlayerId, frequency);
+        if (senderHash == 0)
+            return false;
+
+        return senderHash != SCR_IRRURadioEarSettings.GetInstance().GetFillHash(frequency);
+    }
+
+    //! GM omniscience is keyed to the LOCAL player's editor state, not the
+    //! receiving transceiver: the verdict lands in shared global audio slots,
+    //! and a GM with both an editor radio and a possessed character's radio
+    //! tuned to one net must not get whichever transceiver's verdict fired
+    //! first. A GM who closes the editor and walks as a character is treated
+    //! as a player - deliberately.
+    protected bool IRRU_IsLocalPlayerGM()
+    {
+        SCR_EditorManagerCore core = SCR_EditorManagerCore.Cast(SCR_EditorManagerCore.GetInstance(SCR_EditorManagerCore));
+        if (!core)
+            return false;
+
+        SCR_EditorManagerEntity editorManager = core.GetEditorManager();
+        if (!editorManager)
+            return false;
+
+        return editorManager.IsOpened() && !editorManager.IsLimited();
+    }
+
+    //! Called by the squelch layer when a sender's key-state broadcast lands.
+    //! Voice can outrun the two-hop RPC: a stream opened on a wrong assumed
+    //! verdict is aged so its next packet classifies as START and re-verdicts
+    //! immediately (best effort - the engine re-reads the audio variables
+    //! only when it restarts the sound event).
+    void IRRU_OnSenderKeyInfo(int senderPlayerId, int frequency)
+    {
+        if (!IRRU_RFPropagationNetworkComponent.IsEncryptionEnabled())
+            return;
+
+        IRRU_SenderStream stream;
+        if (!m_mIRRU_Streams.Find(senderPlayerId, stream))
+            return;
+
+        if (stream.m_iFrequency != frequency)
+            return;
+
+        float nowMs = GetGame().GetWorld().GetWorldTime();
+        if (nowMs - stream.m_fLastPacketMs > IRRU_VERIFIED_KEEPALIVE_MS)
+            return;
+
+        bool shouldBeEncrypted = IRRU_IsStreamEncrypted(senderPlayerId, frequency, stream.m_bSenderEditor);
+        if (shouldBeEncrypted == stream.m_bEncryptedForMe)
+            return;
+
+        stream.m_fLastPacketMs = nowMs - IRRU_VERIFIED_KEEPALIVE_MS - 100;
+    }
+
+    //! Pre-arm the global audio slots the moment an ENCRYPTED sender keys up,
+    //! BEFORE any voice packet arrives. Probe-verified (2026-08-23): the
+    //! voice-mute side of JamStrength applies from the event's first frame,
+    //! but the jam-noise generators latch their level at event spawn - a
+    //! same-frame write is one beat too late, so without this the first
+    //! transmission after a fill change renders as dead silence instead of
+    //! scramble (no leak, but confusing). The key-state RPC beats the first
+    //! voice packet by at least a frame, which is exactly the window needed.
+    void IRRU_PreArmEncryptedSlots(int senderPlayerId, int frequency, BaseTransceiver receiver)
+    {
+        if (!IRRU_IsStreamEncrypted(senderPlayerId, frequency, false))
+            return;
+
+        IRRU_RadioRxSquelch squelch = IRRU_RadioRxSquelch.GetInstance();
+        if (squelch.WasAudioSlotStartedThisFrame())
+            return;
+
+        PlayerController playerController = GetGame().GetPlayerController();
+        vector receiverPos = vector.Zero;
+        if (playerController)
+        {
+            IEntity receiverEntity = playerController.GetControlledEntity();
+            if (receiverEntity)
+                receiverPos = receiverEntity.GetOrigin();
+        }
+
+        if (receiver)
+            IRRU_RadioBeepHelper.ApplyChannelAudioVariables(receiver);
+
+        IRRU_SenderStream stream = IRRU_GetSenderSignals(senderPlayerId, frequency, receiverPos);
+        AudioSystem.SetVariableByName("SignalQuality", Math.Max(stream.m_fSignalQuality, IRRU_ENCRYPTED_MIN_QUALITY), IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+        AudioSystem.SetVariableByName("JamStrength", 0, IRRU_RadioBeepHelper.EAR_ROUTING_CONFIG);
+        squelch.OnAudioSlotWritten(frequency, true, true);
+    }
+
+    //! Kill-switch immediacy: called on the client when the server disables
+    //! encryption mid-session, so streams currently rendering as scramble
+    //! re-verdict to plaintext on their next packet instead of finishing the
+    //! transmission as noise.
+    void IRRU_ForceReverdictEncryptedStreams()
+    {
+        float staleMs = GetGame().GetWorld().GetWorldTime() - IRRU_VERIFIED_KEEPALIVE_MS - 100;
+        foreach (int senderPlayerId, IRRU_SenderStream stream : m_mIRRU_Streams)
+        {
+            if (stream.m_bEncryptedForMe)
+                stream.m_fLastPacketMs = staleMs;
+        }
     }
 
     protected IRRU_SenderStream IRRU_GetSenderStream(int senderPlayerId)
