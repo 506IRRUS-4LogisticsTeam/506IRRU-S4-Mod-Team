@@ -14,6 +14,9 @@ MetaFileClass {
    }
    Common TXOCommonClass "{693B6D54568CCD0A}" : "{0877E7C4BB2B2C9A}Configs/System/ResourceTypes/PC/MeshObjectCommon.conf" {
    }
+   ApplicationVendor "Blender Foundation"
+   ApplicationName "Blender (stable FBX IO)"
+   ApplicationVersion "5.2.1 LTS"
   }
   FBXResourceClass XBOX_ONE : PC {
    Common TXOCommonClass "{693B6D54568CF511}" : "{9D5B6207F7628CE2}Configs/System/ResourceTypes/XBOX_ONE/MeshObjectCommon.conf" {

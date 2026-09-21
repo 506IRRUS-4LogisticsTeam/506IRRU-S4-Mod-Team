@@ -4,7 +4,8 @@
 //! ACE Medical kills the character the moment this hit zone reaches 0% blood unless
 //! ACE_Medical_CanBleedOut() returns false. For players that kill is suppressed so the
 //! IRRU_NoInstantDeathComponent bleedout timer is the only thing that can kill an unconscious
-//! player (AI keep ACE behaviour via super). SCR_CharacterDamageManagerComponent.Kill() carries
+//! player (AI and GM-possessed AI keep ACE behaviour via super; a possessed body carries the GM's
+//! player id but never arms the NID timer). SCR_CharacterDamageManagerComponent.Kill() carries
 //! the backstop for mods that re-add an un-gated kill ("Keep Gun When Uncon" does).
 //!
 //! The bleeding rate scale and cap are applied HERE, not through the game mode's DOT scale:
@@ -16,7 +17,7 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 {
 	override protected bool ACE_Medical_CanBleedOut()
 	{
-		if (GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(GetOwner()) > 0)
+		if (GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(GetOwner()) > 0 && !IRRU_NoInstantDeathComponent.IRRU_IsAIControlled(GetOwner()))
 			return false;
 
 		return super.ACE_Medical_CanBleedOut();

@@ -1,0 +1,41 @@
+GameEntity : "{64322D5D501B7D79}Prefabs/Items/Equipment/Nightvision/PVS14/NVG_PVS14_Base.et" {
+ ID "5D7765E30127E8B9"
+ components {
+  BaseLightManagerComponent "{5D7765E30127E89F}" {
+   Enabled 0
+   LightSlots {
+    BaseLightSlot "{5D7765E30127E8E2}" {
+     LightPrefab "{1D532235C0028A0C}Prefabs/Items/Equipment/Nightvision/PVS14/NVG_Light_WP_light.et"
+    }
+   }
+  }
+  InventoryItemComponent "{5DB09136B1C985CE}" {
+   Attributes SCR_ItemAttributeCollection "{5DB09136B1C985C1}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{5DB09136B1C985EB}" {
+     Name "506 PVS-14 Thermal Full"
+     Description "506 PVS-14 Thermal Full"
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{5DB09136B1C985C3}" {
+      CameraOrbitAngles 150 120 110
+     }
+    }
+    m_Size SLOT_1x1
+   }
+  }
+  RHS_NVGIlluminatorComponent "{5DCEACC5DF66CEAF}" {
+   Enabled 0
+   m_iAvailableLightTypes {
+    NoLight
+   }
+   m_eSelectedLightType NoLight
+  }
+  RHS_RhinoAttachmentComponent "{5D7765E30127E8D1}" {
+   m_sNVGGooglesHDRMatrial "{2137DD81BBFCE5FD}Assets/Items/Equipment/Thermal/patrol_ir/Thermal_HDR.emat"
+   m_sNVGGooglesFilmGrainMaterial "{81FEF02C98CA2E7A}Assets/Weapons/Attachments/Optics/infratech_1tws/data/Thermal_Effect_Screen_Themral.emat"
+   m_fMaxBlemOpacity 1
+   m_fMinBlemOpacity 1
+   m_bUseMask 0
+  }
+ }
+}

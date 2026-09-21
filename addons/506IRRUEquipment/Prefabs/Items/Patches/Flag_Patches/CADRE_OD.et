@@ -1,0 +1,85 @@
+GameEntity {
+ ID "6A6A4D185511B0C7"
+ components {
+  ParametricMaterialInstanceComponent "{6A6A4D185511B0D1}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  Persistence "{6A6A4D185511B0DB}" {
+  }
+  SignalsManagerComponent "{6A6A4D185511B0A6}" {
+  }
+  InventoryItemComponent "{6A6A4D185511B0A1}" {
+   Attributes SCR_ItemAttributeCollection "{6A6A4D185511B0A3}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D185511B0AE}" {
+     Name "CADRE: OD"
+     Description "CADRE: OD"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{6A6A4D185511B0A8}" {
+     Weight 0.02
+     SizeSetupStrategy Size
+     ItemDimensions 2 2 2
+     RestingUP Forward
+     ActivePhysicalSimulation None
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{6A6A4D185511B0B5}" {
+      CameraDistanceToItem 0.7
+      ItemRenderRotation 20 0 20
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    CommonItemType "GRS_PATCH"
+    m_Size SLOT_1x1
+    m_SlotType SLOT_GADGETS_STORAGE
+    m_bStackable 0
+   }
+  }
+  MeshObject "{6A6A4D185511B0B1}" {
+   Object "{478D5199C307C562}Assets/Patches/CADRE_OD.xob"
+   LODFactors {
+    1 1 1 1
+   }
+  }
+  BaseLoadoutClothComponent "{6A6A4D185511B0B3}" {
+   AreaType GRS_Patch "{6A6A4D185511B0BE}" {
+   }
+   WornModel "{478D5199C307C562}Assets/Patches/CADRE_OD.xob"
+   ItemModel "{478D5199C307C562}Assets/Patches/CADRE_OD.xob"
+  }
+  ActionsManagerComponent "{6A6A4D185511B0B9}" {
+   ActionContexts {
+    UserActionContext "{6A6A4D185511B084}" {
+     ContextName "default"
+     Position PointInfo "{6A6A4D185511B08A}" {
+     }
+     Radius 0.05
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{6A6A4D185511B096}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{6A6A4D185511B090}" {
+      Name "#AR-Inventory_PickUp"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+  BaseItemAnimationComponent "{6A6A4D185511B093}" {
+   AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
+   AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
+  }
+  RplComponent "{6A6A4D185511B09D}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+   AutoHierarchy 0
+  }
+  Hierarchy "{6A6A4D185511B099}" {
+  }
+ }
+ coords 0 0 0
+}

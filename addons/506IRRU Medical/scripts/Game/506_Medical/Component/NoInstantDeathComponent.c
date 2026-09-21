@@ -79,10 +79,61 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 
 		if (Replication.IsServer() || !Replication.IsRunning())
+		{
 			IRRU_StowWeaponOnUnconscious();
+
+			// AI never get the bleedout timer: an unconscious AI or GM-possessed AI is killed outright
+			if (IRRU_NoInstantDeathSettings.IsKillUnconsciousAIEnabled() && IRRU_IsAIControlled(GetOwner()))
+			{
+				IRRU_KillUnconsciousAI(GetOwner());
+				return;
+			}
+		}
 
 		if (m_bNID_Initialized && !m_bIsUnconscious)
 			MakeUnconscious(GetOwner());
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! True for AI-driven and GM-possessed bodies. UNLIMITED_EDITOR means "admin playing as
+	//! infantry", not "in the editor", so it is deliberately treated as a player here.
+	static bool IRRU_IsAIControlled(IEntity entity)
+	{
+		if (!entity)
+			return false;
+
+		SCR_ECharacterControlType controlType = SCR_CharacterHelper.GetCharacterControlType(entity);
+		return controlType == SCR_ECharacterControlType.AI || controlType == SCR_ECharacterControlType.POSSESSED_AI;
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Server only. Kills an AI-controlled body that just fell unconscious. Mirrors ACE refusing
+	//! Second Chance for AI, so a non-lethal knockout (pain, blunt trauma, blood <= 33%) cannot
+	//! leave AI or possessed AI lying incapacitated.
+	protected void IRRU_KillUnconsciousAI(IEntity owner)
+	{
+		if (!m_CachedDmgManager)
+			return;
+
+		if (m_bIsUnconscious)
+			StopBleedoutTimer("AI killed on unconsciousness");
+
+		Instigator instigator = m_CachedDmgManager.GetInstigator();
+		if (!instigator)
+			instigator = Instigator.CreateInstigator(null);
+
+		m_LastKnownInstigator = instigator;
+
+		string controlDesc = "AI";
+		if (SCR_CharacterHelper.GetCharacterControlType(owner) == SCR_ECharacterControlType.POSSESSED_AI)
+			controlDesc = "possessed AI";
+
+		Print(string.Format("[IRRU_MEDICAL] %1 (%2) KILLED on unconsciousness by %3 - Health: %4%%, Blood: %5%%, Resilience: %6%%",
+			GetNameStr(owner), controlDesc, IRRU_GetOpsAttackerDesc(),
+			m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
+
+		// Kill from the call queue: we are inside the life-state callback (same precaution ACE takes)
+		GetGame().GetCallqueue().Call(m_CachedDmgManager.Kill, instigator);
 	}
 
 	//------------------------------------------------------------------------------------------------

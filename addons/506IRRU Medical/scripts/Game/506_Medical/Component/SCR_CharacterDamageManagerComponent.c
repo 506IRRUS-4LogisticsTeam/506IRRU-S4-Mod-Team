@@ -175,14 +175,15 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Backstop: nothing may kill an unconscious player except the bleedout timer
+	//! Backstop: nothing may kill an unconscious player except the bleedout timer.
+	//! AI and GM-possessed AI are never shielded (a possessed body carries the GM's player id).
 	override void Kill(notnull Instigator instigator)
 	{
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
 			IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
 			IEntity owner = GetOwner();
-			if (nid && nid.IsUnconscious() && GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner) > 0)
+			if (nid && nid.IsUnconscious() && GetGame().GetPlayerManager().GetPlayerIdFromControlledEntity(owner) > 0 && !IRRU_NoInstantDeathComponent.IRRU_IsAIControlled(owner))
 			{
 				float nowMS = owner.GetWorld().GetWorldTime();
 				if (nowMS >= m_fIRRU_NextKillBlockLogTimeMS)
@@ -206,6 +207,10 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 		IRRU_NoInstantDeathComponent nid = IRRU_GetNID();
 		if (!nid)
+			return;
+
+		// AI (incl. possessed) are killed by the NID life-state hook instead of getting a bleedout timer
+		if (IRRU_NoInstantDeathSettings.IsKillUnconsciousAIEnabled() && IRRU_NoInstantDeathComponent.IRRU_IsAIControlled(GetOwner()))
 			return;
 
 		if (!nid.IsInitialized())

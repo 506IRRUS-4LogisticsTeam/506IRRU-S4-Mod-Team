@@ -1,7 +1,7 @@
 [BaseContainerProps(configRoot: true)]
 class IRRU_NoInstantDeathSettings
 {
-	static const string MOD_VERSION = "2.3.9";
+	static const string MOD_VERSION = "2.4.0";
 	protected static const ResourceName CONFIG_PATH = "{7E9D8A65E020E49C}Configs/IRRU_NoInstantDeathSettings.conf";
 	protected static const float MIN_BLEEDOUT_TIME = 60.0;
 	protected static const float MAX_BLEEDOUT_TIME = 3600.0;
@@ -15,6 +15,9 @@ class IRRU_NoInstantDeathSettings
 
 	[Attribute(defvalue: "1", desc: "Use descriptive text instead of exact timer", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
 	bool m_bUseDescriptiveTimer;
+
+	[Attribute(defvalue: "1", desc: "Kill AI (including GM-possessed AI) the moment they fall unconscious instead of leaving them incapacitated", category: "No Instant Death", uiwidget: UIWidgets.CheckBox)]
+	bool m_bKillUnconsciousAI;
 
 	[Attribute(defvalue: "1", desc: "Character bleeding rate multiplier", category: "Bleeding", uiwidget: UIWidgets.Slider, params: "0 5 0.001", precision: 3)]
 	float m_fBleedingRateScale;
@@ -38,6 +41,7 @@ class IRRU_NoInstantDeathSettings
 			s_Instance.m_fBleedoutTime = 360;
 			s_Instance.m_bDebugEnabled = true;
 			s_Instance.m_bUseDescriptiveTimer = true;
+			s_Instance.m_bKillUnconsciousAI = true;
 			s_Instance.m_fBleedingRateScale = 1;
 			s_Instance.m_fMaxTotalBleedingRate = -1;
 		}
@@ -70,5 +74,10 @@ class IRRU_NoInstantDeathSettings
 	static bool IsDescriptiveTimerEnabled()
 	{
 		return GetInstance().m_bUseDescriptiveTimer;
+	}
+
+	static bool IsKillUnconsciousAIEnabled()
+	{
+		return GetInstance().m_bKillUnconsciousAI;
 	}
 }
