@@ -5,10 +5,8 @@ GenericEntity : "{F54F6C453A8CB478}Prefabs/Weapons/Core/MachineGun_Base.et" {
    components {
     MuzzleComponent "{50F64C4591CD7AA6}" {
      WeaponAimModifiers {
-      RecoilWeaponAimModifier "{61D17DC6EDD36F43}" {
-       TurnOffsetData RecoilData "{61D17DC6DD888C05}" {
-        "Curve Mins" -1.5 3 0
-        "Curve Maxs" 1.5 4 0
+      RecoilWeaponAimModifier "{624526223E8C47B8}" {
+       TurnOffsetData RecoilData "{624526223E8C47B4}" {
         "Base Recoil Scale" 1.5
        }
       }
