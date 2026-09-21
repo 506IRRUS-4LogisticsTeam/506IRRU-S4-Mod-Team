@@ -1,0 +1,85 @@
+GameEntity {
+ ID "6A6A4D1841AA49F3"
+ components {
+  ParametricMaterialInstanceComponent "{6A6A4D1841AA49CC}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  Persistence "{6A6A4D1841AA49D1}" {
+  }
+  SignalsManagerComponent "{6A6A4D1841AA49DC}" {
+  }
+  InventoryItemComponent "{6A6A4D1841AA49DE}" {
+   Attributes SCR_ItemAttributeCollection "{6A6A4D1841AA49D8}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D1841AA49DB}" {
+     Name "TACPO: MC"
+     Description "GRS: Patch USA Flag"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{6A6A4D1841AA49A6}" {
+     Weight 0.02
+     SizeSetupStrategy Size
+     ItemDimensions 2 2 2
+     RestingUP Forward
+     ActivePhysicalSimulation None
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{6A6A4D1841AA49A2}" {
+      CameraDistanceToItem 0.7
+      ItemRenderRotation 20 0 20
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    CommonItemType "GRS_PATCH"
+    m_Size SLOT_1x1
+    m_SlotType SLOT_GADGETS_STORAGE
+    m_bStackable 0
+   }
+  }
+  MeshObject "{6A6A4D1841AA49A8}" {
+   Object "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
+   LODFactors {
+    1 1 1 1
+   }
+  }
+  BaseLoadoutClothComponent "{6A6A4D1841AA49AA}" {
+   AreaType GRS_Patch "{6A6A4D1841AA49B5}" {
+   }
+   WornModel "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
+   ItemModel "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
+  }
+  ActionsManagerComponent "{6A6A4D1841AA49B0}" {
+   ActionContexts {
+    UserActionContext "{6A6A4D1841AA49B2}" {
+     ContextName "default"
+     Position PointInfo "{6A6A4D1841AA4984}" {
+     }
+     Radius 0.05
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{6A6A4D1841AA4981}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{6A6A4D1841AA4982}" {
+      Name "#AR-Inventory_PickUp"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+  BaseItemAnimationComponent "{6A6A4D1841AA498E}" {
+   AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
+   AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
+  }
+  RplComponent "{6A6A4D1841AA4988}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+   AutoHierarchy 0
+  }
+  Hierarchy "{6A6A4D1841AA4994}" {
+  }
+ }
+ coords 0 0 0
+}
