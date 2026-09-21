@@ -1,0 +1,260 @@
+GenericEntity : "{0FC0ECCFCBF82E00}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_storage_base.et" {
+ coords 7720.915 12.969 8110.908
+ angles 0 -44.879 0
+}
+GenericEntity : "{1EC51D33C3E9E8A1}PrefabsEditable/Auto/Props/Military/Compositions/US/E_Antenna_01_US.et" {
+ coords 7722.667 12.354 8074.329
+}
+GenericEntity : "{1F7AE3AAD6198021}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_V3_storage_USSR_covered.et" {
+ coords 7719.242 12.969 8108.633
+ angles 0 -52.392 0
+}
+SCR_DestructibleBuildingEntity : "{2EC358E97E66CEB2}Prefabs/Structures/Industrial/Sheds/ShedMetal_03/ShedMetal_03_v2.et" {
+ coords 7659.841 0.006 8097.453
+ angles 0 -49.728 0
+}
+$grp SCR_FiringRangeTarget : "{379D34B0D41DA810}Prefabs/Props/Military/Training/TargetInfantry_01.et" {
+ {
+  coords 7669.239 12.11 8136.787
+  angles 0 130 0
+ }
+ {
+  coords 7665.184 12.214 8131.438
+  angles 0 130 0
+ }
+ {
+  coords 7659.828 12.382 8125.728
+  angles 0 130 0
+ }
+ {
+  coords 7655.949 12.413 8120.892
+  angles 0 130 0
+ }
+ {
+  coords 7652.532 12.366 8116.529
+  angles 0 130 0
+ }
+ {
+  coords 7646.832 12.331 8110.142
+  angles 0 130 0
+ }
+ {
+  coords 7642.619 12.38 8105.036
+  angles 0 130 0
+ }
+ {
+  coords 7639.751 12.606 8101.545
+  angles 0 130 0
+ }
+ {
+  coords 7633.007 12.204 8116.159
+  angles 0 130 0
+ }
+ {
+  coords 7639.688 11.886 8125.272
+  angles 0 130 0
+ }
+ {
+  coords 7647.291 12.192 8133.188
+  angles 0 130 0
+ }
+ {
+  coords 7654.703 12.271 8141.348
+  angles 0 130 0
+ }
+ {
+  coords 7660.862 12.191 8148.663
+  angles 0 130 0
+ }
+ {
+  coords 7640.814 12.607 8161.289
+  angles 0 130 0
+ }
+ {
+  coords 7633.557 12.62 8153.923
+  angles 0 130 0
+ }
+ {
+  coords 7627.822 12.615 8148.47
+  angles 0 130 0
+ }
+ {
+  coords 7622.735 12.628 8142.655
+  angles 0 130 0
+ }
+ {
+  coords 7615.622 12.473 8134.666
+  angles 0 130 0
+ }
+ {
+  coords 7579.372 13.872 8159.762
+  angles 0 130 0
+ }
+ {
+  coords 7586.318 13.583 8169.488
+  angles 0 130 0
+ }
+ {
+  coords 7593.599 13.78 8177.165
+  angles 0 130 0
+ }
+ {
+  coords 7599.439 13.428 8184.597
+  angles 0 130 0
+ }
+ {
+  coords 7607.595 13.787 8193.628
+  angles 0 130 0
+ }
+}
+GenericEntity : "{3DFA7F32B1C56399}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_V3_storage_FIA_covered.et" {
+ coords 7719.851 12.969 8109.915
+ angles 0 -51.155 0
+}
+$grp GenericEntity : "{3E4C223A92230572}Prefabs/Props/Military/Sandbags/Sandbag_01_long_high_base.et" {
+ {
+  coords 7682.896 13.539 8128.926
+  angles 0 -51.144 0
+ }
+ {
+  coords 7680.809 13.539 8126.334
+  angles 0 -51.144 0
+ }
+ {
+  coords 7678.805 13.539 8123.907
+  angles 0 -51.144 0
+ }
+ {
+  coords 7676.743 13.539 8121.45
+  angles 0 -51.144 0
+ }
+ {
+  coords 7674.698 13.539 8118.942
+  angles 0 -51.144 0
+ }
+ {
+  coords 7672.636 13.539 8116.433
+  angles 0 -51.144 0
+ }
+ {
+  coords 7668.548 13.228 8111.397
+  angles 0 -51.144 0
+ }
+ {
+  coords 7664.5 13.539 8106.536
+  angles 0 -51.144 0
+ }
+ {
+  coords 7662.415 13.539 8104.006
+  angles 0 -51.144 0
+ }
+ {
+  coords 7660.287 13.539 8101.559
+  angles 0 -51.144 0
+ }
+ {
+  coords 7658.296 13.539 8099.121
+  angles 0 -51.144 0
+ }
+ {
+  coords 7649.867 13.539 8088.825
+  angles 0 -51.144 0
+ }
+ {
+  coords 7656.169 13.539 8096.539
+  angles 0 -51.144 0
+ }
+ {
+  coords 7654.102 13.539 8094.031
+  angles 0 -51.144 0
+ }
+ {
+  coords 7652.155 13.539 8091.321
+  angles 0 -51.144 0
+ }
+ {
+  coords 7666.68 13.539 8109.053
+  angles 0 -51.144 0
+ }
+ {
+  coords 7670.615 13.23 8113.945
+  angles 0 -51.144 0
+ }
+}
+Vehicle M923A1_transport_MERDC1 : "{3F2AA823B6C65E1E}Prefabs/Vehicles/Wheeled/M923A1/M923A1_transport_MERDC.et" {
+ coords 7722.967 12.969 8115.108
+ angles 0 129.671 0
+}
+$grp GenericEntity : "{45C675ED3CFBBEC5}Prefabs/Props/Military/Compositions/US/ArsenalBox_US.et" {
+ {
+  coords 7727.582 13.656 8151.985
+  angles 0 -56.895 0
+ }
+ {
+  coords 7729.793 13.656 8154.886
+  angles 0 -63.718 0
+ }
+ {
+  coords 7732.04 13.656 8157.674
+  angles 0 -55.328 0
+ }
+ {
+  coords 7561.8 166.156 4264.739
+ }
+ {
+  coords 7565.737 166.156 4264.297
+ }
+ {
+  coords 7569.785 166.156 4263.174
+ }
+}
+GenericEntity : "{4D4AFC2D853FA52A}PrefabsEditable/Auto/Structures/Military/Camps/Canvas_Covers/US/E_CanvasCover_Large_US.et" {
+ coords 7697.395 13.561 8137.144
+ angles 0 -50.131 0
+}
+GenericEntity : "{574B2F4BD1257127}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_V5_storage_FIA_covered.et" {
+ coords 7717.146 12.969 8109.287
+ {
+  GenericEntity {
+   ID "5D30E783A28A7954"
+   coords 0 0 0
+   angles 0 -43.603 0
+  }
+ }
+}
+GenericEntity : "{59EAF3EB72F08D52}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_base.et" {
+ coords 7718.759 12.969 8111.924
+ angles 0 130.574 0
+}
+GenericEntity : "{BD070A277B113E90}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_V2_storage_US_covered.et" {
+ coords 7718.119 12.969 8113.056
+ angles 0 -46.451 0
+}
+$grp Vehicle : "{BD75A18920BD1278}Prefabs/Vehicles/Wheeled/Conflict_Variants/BTR70_Conflict.et" {
+ BTR70_Conflict1 {
+  coords 7575.825 19.624 8180.197
+  angles 0 42.091 0
+ }
+ BTR70_Conflict2 {
+  coords 7594.732 19.392 8200.604
+  angles 0 -143.349 0
+ }
+}
+Vehicle BTR1 : "{C012BB3488BEA0C2}Prefabs/Vehicles/Wheeled/BTR70/BTR70.et" {
+ coords 7559.992 21.875 8159.23
+ angles 0 15.242 0
+}
+$grp SCR_DestructibleBuildingEntity : "{C4FD5AA3368F166C}Prefabs/Structures/Industrial/Sheds/ShedMetal_03/ShedMetal_03_v1.et" {
+ {
+  coords 7666.331 0.031 8105.097
+  angles 0 -49.728 0
+ }
+ {
+  coords 7653.338 0.087 8089.909
+  angles 0 -49.728 0
+ }
+}
+GenericEntity : "{CE9F9509FD78918B}Prefabs/Props/Military/SupplyBox/SupplyStack/SupplyStack_01/SupplyStack_01_V1.et" {
+ coords 7718.137 12.969 8110.771
+ angles 0 -48.408 0
+}

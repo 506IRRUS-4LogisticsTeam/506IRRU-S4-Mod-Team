@@ -1,0 +1,97 @@
+GenericEntity : "{071B55C2A5E0346F}PrefabsEditable/Auto/Structures/Military/Flags/E_FlagPole_02_V2_US.et" {
+ coords 7498.964 165.75 4243.064
+}
+$grp GenericEntity : "{BDAA871A06DABD74}PrefabsEditable/Auto/Props/Military/Sandbags/E_Sandbag_01_long_burlap.et" {
+ {
+  coords 7520.046 166.844 4206.3
+  angles 0 15.153 0
+ }
+ {
+  coords 7529.109 166.844 4203.608
+  angles 0 15.153 0
+ }
+ {
+  coords 7523.065 166.844 4220.679
+  angles 0 15.153 0
+ }
+ {
+  coords 7533.075 166.844 4218.131
+  angles 0 15.153 0
+ }
+ {
+  coords 7526.037 166.844 4229.969
+  angles 0 15.153 0
+ }
+ {
+  coords 7535.802 166.843 4227.259
+  angles 0 15.153 0
+ }
+ {
+  coords 7528.373 166.844 4237.956
+  angles 0 15.153 0
+ }
+ {
+  coords 7538.19 166.844 4235.495
+  angles 0 15.153 0
+ }
+ {
+  coords 7533.716 166.844 4250.45
+  angles 0 15.153 0
+ }
+ {
+  coords 7546.363 166.844 4263.534
+  angles 0 15.153 0
+ }
+ {
+  coords 7544.841 166.844 4284.188
+  angles 0 15.153 0
+ }
+ {
+  coords 7557.313 166.843 4299.601
+  angles 0 15.153 0
+ }
+ {
+  coords 7555.365 166.851 4320.275
+  angles 0 15.153 0
+ }
+ {
+  coords 7523.141 165.75 4331.366
+  angles 0 -73.393 0
+ }
+ {
+  coords 7522.239 165.75 4328.241
+  angles 0 -73.393 0
+ }
+ {
+  coords 7521.308 165.75 4325.206
+  angles 0 -73.393 0
+ }
+ {
+  coords 7520.384 165.75 4322.17
+  angles 0 -73.393 0
+ }
+ {
+  coords 7519.452 165.75 4319.037
+  angles 0 -73.393 0
+ }
+ {
+  coords 7518.488 165.75 4315.902
+  angles 0 -73.393 0
+ }
+ {
+  coords 7517.556 165.75 4312.769
+  angles 0 -73.393 0
+ }
+ {
+  coords 7516.548 165.75 4309.592
+  angles 0 -73.393 0
+ }
+ {
+  coords 7515.639 165.75 4306.391
+  angles 0 -73.393 0
+ }
+ {
+  coords 7514.68 165.75 4303.251
+  angles 0 -73.393 0
+ }
+}
