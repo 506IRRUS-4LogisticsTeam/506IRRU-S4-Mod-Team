@@ -9,29 +9,26 @@ GenericEntity {
    "Encryption key" "chickenNuggets"
    "Turned on" 1
    Transceivers {
-    RelayTransceiver "{6A2EE6D94D99670A}" {
+    RadioTransceiver "{6A2EE6D94D99670A}" {
      ChannelFrequency 35000
-     "Transmitting Range" 3000
+     "Transmitting Range" 5000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6D94D99670B}" {
+    RadioTransceiver "{6A2EE6D94D99670B}" {
      ChannelFrequency 36000
-     "Transmitting Range" 3000
+     "Transmitting Range" 5000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6D94D996708}" {
+    RadioTransceiver "{6A2EE6D94D996708}" {
      ChannelFrequency 38000
-     "Transmitting Range" 3000
+     "Transmitting Range" 5000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
    }
   }

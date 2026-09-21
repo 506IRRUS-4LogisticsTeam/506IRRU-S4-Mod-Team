@@ -9,37 +9,47 @@ GenericEntity {
    "Encryption key" "chickenNuggets"
    "Turned on" 1
    Transceivers {
-    RelayTransceiver "{6A2EE6DE684DCF50}" {
+    RadioTransceiver "{6A2EE6DE684DCF50}" {
      ChannelFrequency 32000
-     "Transmitting Range" 3000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DE684DCF6E}" {
+    RadioTransceiver "{6A2EE6DE684DCF6E}" {
      ChannelFrequency 35000
-     "Transmitting Range" 3000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DE684DCF6D}" {
+    RadioTransceiver "{6A2EE6DE684DCF6D}" {
      ChannelFrequency 38000
-     "Transmitting Range" 3000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DC92AAD4B1}" {
+    RadioTransceiver "{6A2EE6DC92AAD4B1}" {
      ChannelFrequency 33000
-     "Transmitting Range" 3000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
+    }
+    RadioTransceiver "{6A4D23592B1C14CD}" {
+     ChannelFrequency 33000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6A4D23592EF2BB98}" {
+     ChannelFrequency 33000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
     }
    }
   }

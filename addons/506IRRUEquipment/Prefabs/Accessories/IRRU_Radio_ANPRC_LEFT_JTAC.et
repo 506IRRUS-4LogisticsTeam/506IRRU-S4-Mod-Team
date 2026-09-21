@@ -9,37 +9,40 @@ GenericEntity {
    "Encryption key" "chickenNuggets"
    "Turned on" 1
    Transceivers {
-    RelayTransceiver "{6A2EE6DD3AF0EE56}" {
+    RadioTransceiver "{6A2EE6DD3AF0EE56}" {
      ChannelFrequency 32000
-     "Transmitting Range" 30000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DD04989B29}" {
+    RadioTransceiver "{6A4D2359269EE793}" {
+     ChannelFrequency 32000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6A2EE6DD04989B29}" {
      ChannelFrequency 33000
-     "Transmitting Range" 30000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DD05B6AA4C}" {
+    RadioTransceiver "{6A2EE6DD05B6AA4C}" {
      ChannelFrequency 35000
-     "Transmitting Range" 30000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
-    RelayTransceiver "{6A2EE6DD1A4D50E6}" {
+    RadioTransceiver "{6A2EE6DD1A4D50E6}" {
      ChannelFrequency 32000
-     "Transmitting Range" 30000
+     "Transmitting Range" 10000
      "Min tunable frequency" 30000
      "Max tunable frequency" 150000
      "Frequency resolution" 100
-     "Any frequency" 0
     }
    }
   }
@@ -110,6 +113,7 @@ GenericEntity {
   SCR_RadioComponent "{6A2EE6DD3AF0EE75}" {
    m_eAnimVariable ANPRC68
    m_iRadioType ANPRC68
+   m_eSHS_RadioTier JTAC
   }
   SCR_SoundDataComponent "{6A2EE6DD3AF0EE74}" {
    m_aAudioSourceConfiguration {

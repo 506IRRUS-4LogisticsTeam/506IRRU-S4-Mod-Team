@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{02C18CC03D83D471}Prefabs/Pouches/Base/GRS_ARSingle_Pouch.et"
+ Name "{95D4766BBE46F23E}Prefabs/Backpacks/Tacticool Bag/GRS_Tacticool_Bag_MC.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }
