@@ -31,9 +31,7 @@ modded class SCR_PlayerController : SCR_PlayerController
         // CallLater is in milliseconds, not seconds.
         GetGame().GetCallqueue().CallLater(DelayedInventoryCheck, 1000, false, player);
         GetGame().GetCallqueue().CallLater(DelayedInventoryCheck, 5000, false, player);
-        GetGame().GetCallqueue().CallLater(DelayedInventoryCheck, 15000, false, player);
-        GetGame().GetCallqueue().CallLater(DelayedInventoryCheck, 30000, false, player);
-        GetGame().GetCallqueue().CallLater(DelayedInventoryCheck, 60000, false, player);
+
     }
 
     void DelayedInventoryCheck(IEntity player)
