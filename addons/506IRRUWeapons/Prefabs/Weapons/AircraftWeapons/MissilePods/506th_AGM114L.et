@@ -1,0 +1,52 @@
+GenericEntity : "{CD609D6F3A054B14}Prefabs/Weapons/Core/Armament_Pod_Base.et" {
+ ID "629D11C8BD6AE717"
+ components {
+  MeshObject "{629D11CADAD0C383}" {
+   Object "{5E70B1974565E69E}Assets/Weapons/Hellfire_Rack_4x.xob"
+  }
+  RVX_WeaponComponent "{6A76A05E675A65D2}" {
+   weaponType AGMRadar
+   weaponID "AGMRadar"
+  }
+  WCS_Armament_WeaponComponent "{629D11C992611C79}" {
+   m_sName "M299 AGM-114K Laser Guided"
+   m_DefaultProjectile "{FD1840809DDAB3E8}Prefabs/Weapons/Ammo/RVX_Ammo_Missile_AGM-114K.et"
+   m_fLaunchOffset 2
+  }
+  SlotManagerComponent "{629D11C99AEE634A}" {
+   Slots {
+    WCS_Armament_ProjectileSlotInfo W_0 {
+     PivotID "agm_114_hellfire_dummy_01"
+     Offset 0 0 0.18105
+    }
+    WCS_Armament_ProjectileSlotInfo W_1 {
+     PivotID "agm_114_hellfire_dummy_02"
+     Offset 0 0 0.18105
+    }
+    WCS_Armament_ProjectileSlotInfo W_2 {
+     PivotID "agm_114_hellfire_dummy_03"
+     Offset 0 0 0.18105
+    }
+    WCS_Armament_ProjectileSlotInfo W_3 {
+     PivotID "agm_114_hellfire_dummy_04"
+     Offset 0 0 0.18105
+    }
+   }
+  }
+  ActionsManagerComponent "{629D11CAB6B28AE6}" {
+   ActionContexts {
+    UserActionContext "{629D11D46C8F2AA6}" {
+     Position PointInfo "{6152B772E6638695}" {
+      Offset 0 -0.0769 0.6194
+     }
+    }
+   }
+   additionalActions {
+    WCS_RearmPodAtRepairStationAction "{629D11D464DEC282}" {
+     m_fSupplyCostPerProjectile 100
+     m_sProjectileToRearm "{35B5EEE62F3E0E38}Prefabs/Weapons/Ammo/Ammo_Missile_AGM-114.et"
+    }
+   }
+  }
+ }
+}

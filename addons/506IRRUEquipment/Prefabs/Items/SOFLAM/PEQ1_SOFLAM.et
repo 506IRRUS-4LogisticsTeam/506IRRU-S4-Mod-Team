@@ -1,0 +1,50 @@
+GenericEntity : "{447D9C49127DE98B}Prefabs/Items/Equipment/Binoculars/Binoculars_base.et" {
+ ID "508AB2013EEE1E00"
+ components {
+  InventoryItemComponent "{5222EB4D0C73006B}" {
+   Attributes SCR_ItemAttributeCollection "{5222EB4D0A2B466B}" {
+    ItemDisplayName UIInfo "{5222EB4D07D865FA}" {
+     Name "AN/PEQ-1 SOFLAM (506th)"
+    }
+   }
+  }
+  RR_VisionBinocularsComponent "{6A76B3E3C924B3BC}" {
+   SightsPosition PointInfo "{6A76B7048C386B2B}" {
+    Offset 0 0.02 -0.11
+   }
+   SightsFOVInfo SCR_FixedFOVInfo "{6A76B704BF23962E}" {
+    m_fFieldOfView 22.2
+   }
+   SightsPointFront PointInfo "{6A76B704A1D2C8B4}" {
+    Offset 0 -0.02 0.055
+   }
+   SightsPointRear PointInfo "{6A76B704526B9D0C}" {
+    Offset 0 -0.02 -0.11
+   }
+   m_sReticleTexture "{9F05979719725859}Assets/SOFLAM/Reticle/SOFLAM_Reticle.edds"
+   m_sReticleGlowTexture "{9F05979719725859}Assets/SOFLAM/Reticle/SOFLAM_Reticle.edds"
+   m_ReticleColor 0 0 0 0
+   m_ReticleOutlineColor 1 1 1 0
+   m_cReticleTextureIllumination 1 0 0 0
+   m_fVignetteScale 0.87
+   m_fRollScale 0
+   m_fMisalignmentScale 0
+   m_fVignetteMoveSpeed 5
+   m_bShouldHideParentParentObject 1
+   m_bIsNVGCompatible 1
+   m_fObjectiveFov 6.75
+   m_fReticleAngularSize 5.625
+   m_fReticlePortion 0.85449
+   m_fReticleBaseZoom 5
+   m_fMagnification 5
+   layoutOverlay "{C32A53069A0FE31F}UI/Sights/OpticSoflam.layout"
+   m_sNightVisionMaterial "{AB64B3E655B400B6}Assets/Items/Equipment/NVG/pvs14/data/NVG_GreenPhosphor_HDR.emat"
+   m_sThermalMaterial "{2137DD81BBFCE5FD}Assets/Items/Equipment/Thermal/patrol_ir/Thermal_HDR.emat"
+   m_iEffectPriority 10
+   m_fMaxMagnification 24
+  }
+  RVX_SoflamSightsComponent "{64C93DB693B5481E}" {
+   Enabled 0
+  }
+ }
+}
