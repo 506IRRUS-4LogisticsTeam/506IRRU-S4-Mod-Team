@@ -1,0 +1,21 @@
+SCR_AIWorld {
+ ID "50B2B8F35661FB44"
+ components {
+  SCR_AISettingsComponent "{512CCCD0856CB4B9}" {
+   m_iCombatRangeDistanceModifier 50
+   m_iCombatStayInCoverDurationModifier 5
+   m_iCombatMoveToNextPositionDelayModifier 5
+   m_iSuppressRocketLauncherAmmoThreshold 0
+   m_iSuppressRocketLauncherTimeoutDuration 60
+   m_fPerceptionSafe 3
+   m_fPerceptionVigilant 3
+   m_fPerceptionAlerted 3
+   m_fPerceptionThreatened 5
+   m_bWeatherConditionsAffectsAI 1
+   m_bMovementAffectsAIAimAccuracy 1
+   m_fGlobalPerceptionSafe 3
+   m_fGlobalPerceptionVigilant 3
+  }
+ }
+ "Active AI limit" 999
+}
