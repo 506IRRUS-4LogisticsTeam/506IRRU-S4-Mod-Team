@@ -1,4 +1,4 @@
-GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
  ID "657B0C0A4C1F9EDE"
  components {
   InventoryItemComponent "{657B0C0AEEF49C10}" {
@@ -15,7 +15,7 @@ GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
   BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
    WornModel "{7B80C83A83D9FFA6}Assets/Patches/Havoc1M.xob"
    WornMaterialsOverride {
-    "{B44DE7536ABF394E}Assets/Rectangle Patches/Data/24th_Patch.emat"
+    "{31BD62AA428347FD}Assets/Patches/Data/Havoc1.emat"
    }
    ItemModel "{7B80C83A83D9FFA6}Assets/Patches/Havoc1M.xob"
    ItemMaterialsOverride {

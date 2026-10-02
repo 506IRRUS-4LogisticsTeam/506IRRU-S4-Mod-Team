@@ -1,4 +1,4 @@
-GameEntity {
+GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
  ID "6A6A4D185140DE4E"
  components {
   ParametricMaterialInstanceComponent "{6A6A4D185140DE5A}" {
@@ -9,9 +9,9 @@ GameEntity {
   }
   SignalsManagerComponent "{6A6A4D185140DE2F}" {
   }
-  InventoryItemComponent "{6A6A4D185140DE29}" {
-   Attributes SCR_ItemAttributeCollection "{6A6A4D185140DE34}" {
-    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D185140DE37}" {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
      Name "TACPO: OD"
      Description "TACPO: OD"
     }
@@ -30,22 +30,22 @@ GameEntity {
       PreviewWornModel 1
      }
     }
-    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
-  MeshObject "{6A6A4D185140DE3B}" {
+  MeshObject "{657B0C0AEEEB7DCB}" {
    Object "{ED36DCB83DFB1598}Assets/Patches/TACPO_OD.xob"
    LODFactors {
     1 1 1 1
    }
   }
-  BaseLoadoutClothComponent "{6A6A4D185140DE06}" {
-   AreaType GRS_Patch "{6A6A4D185140DE00}" {
-   }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
    WornModel "{ED36DCB83DFB1598}Assets/Patches/TACPO_OD.xob"
+   WornMaterialsOverride {
+    "{8818BCC72B9C8647}Assets/Patches/Data/PATCH5.emat"
+   }
    ItemModel "{ED36DCB83DFB1598}Assets/Patches/TACPO_OD.xob"
   }
   ActionsManagerComponent "{6A6A4D185140DE03}" {
@@ -73,7 +73,7 @@ GameEntity {
    AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
    AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
   }
-  RplComponent "{6A6A4D185140DE1A}" {
+  RplComponent "{6A85648643E1B913}" {
    "Rpl State Override" Runtime
    "Parent Node From Parent Entity" 0
    AutoHierarchy 0

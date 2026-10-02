@@ -1,4 +1,4 @@
-GameEntity {
+GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
  ID "6A6A4D18A260992F"
  components {
   ParametricMaterialInstanceComponent "{6A6A4D18A2609938}" {
@@ -9,9 +9,9 @@ GameEntity {
   }
   SignalsManagerComponent "{6A6A4D18A260990A}" {
   }
-  InventoryItemComponent "{6A6A4D18A2609914}" {
-   Attributes SCR_ItemAttributeCollection "{6A6A4D18A2609916}" {
-    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D18A2609911}" {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
      Name "Medic: OD"
      Description "Medic: OD"
     }
@@ -30,22 +30,22 @@ GameEntity {
       PreviewWornModel 1
      }
     }
-    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
-  MeshObject "{6A6A4D18A26099E0}" {
+  MeshObject "{657B0C0AEEEB7DCB}" {
    Object "{EB5B18DE483A9776}Assets/Patches/Medic_OD.xob"
    LODFactors {
     1 1 1 1
    }
   }
-  BaseLoadoutClothComponent "{6A6A4D18A26099E3}" {
-   AreaType GRS_Patch "{6A6A4D18A26099EE}" {
-   }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
    WornModel "{EB5B18DE483A9776}Assets/Patches/Medic_OD.xob"
+   WornMaterialsOverride {
+    "{8818BCC72B9C8647}Assets/Patches/Data/PATCH5.emat"
+   }
    ItemModel "{EB5B18DE483A9776}Assets/Patches/Medic_OD.xob"
   }
   ActionsManagerComponent "{6A6A4D18A26099E8}" {
@@ -73,7 +73,7 @@ GameEntity {
    AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
    AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
   }
-  RplComponent "{6A6A4D18A26099C3}" {
+  RplComponent "{6A85648643E1B913}" {
    "Rpl State Override" Runtime
    "Parent Node From Parent Entity" 0
    AutoHierarchy 0
