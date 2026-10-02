@@ -1,0 +1,91 @@
+GameEntity {
+ ID "688E96DEB51608EA"
+ components {
+  Persistence "{688E96DEB51608D6}" {
+  }
+  SignalsManagerComponent "{688E96DEB5163AF1}" {
+  }
+  InventoryItemComponent "{688E96DEB5163AEA}" {
+   Attributes SCR_ItemAttributeCollection "{688E96DEB5163AEF}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{688E96DEB5163AE2}" {
+     Name "101st Airbourne"
+     Description "101st Airbourne"
+    }
+    ItemPhysAttributes ItemPhysicalAttributes "{688E96DEB5163AE7}" {
+     Weight 0.02
+     SizeSetupStrategy Size
+     ItemDimensions 2 2 2
+     RestingUP Forward
+     ActivePhysicalSimulation None
+    }
+    CustomAttributes {
+     PreviewRenderAttributes "{688E96DEB5163ADE}" {
+      CameraDistanceToItem 0.7
+      ItemRenderRotation 20 0 20
+      FOV 10
+      PreviewWornModel 1
+     }
+    }
+    CommonItemType "GRS_PATCH"
+    m_Size SLOT_1x1
+    m_SlotType SLOT_GADGETS_STORAGE
+    m_bStackable 0
+   }
+  }
+  MeshObject "{688E96DEB5163AD1}" {
+   Object "{D8346428ECD5CA97}Assets/Patches/101stAirbourne.xob"
+   LODFactors {
+    1 1 1 1
+   }
+  }
+  ParametricMaterialInstanceComponent "{688E96DEB5163AD4}" {
+   UserParamAlpha 1
+   ApplyPropertiesWhenMeshChanged 1
+  }
+  BaseLoadoutClothComponent "{688E96DEB5163ACB}" {
+   AreaType GRS_ShirtLowerPatch "{688E96DEB5163ACF}" {
+   }
+   WornModel "{D8346428ECD5CA97}Assets/Patches/101stAirbourne.xob"
+   WornMaterialsOverride {
+    "{3C7B1AAE79D1E9AD}Assets/SF_Patch/Data/SF_Patch_2.emat"
+   }
+   ItemModel "{D8346428ECD5CA97}Assets/Patches/101stAirbourne.xob"
+   ItemMaterialsOverride {
+    "{C97D8BC079142342}Assets/Patches/Data/101st.emat"
+   }
+  }
+  ActionsManagerComponent "{688E96DEB5163AC0}" {
+   ActionContexts {
+    UserActionContext "{688E96DEB5163AC7}" {
+     ContextName "default"
+     Position PointInfo "{688E96DEB5163B19}" {
+     }
+     Radius 0.05
+    }
+   }
+   additionalActions {
+    SCR_PickUpItemAction "{688E96DEB5163B1D}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{688E96DEB5163B10}" {
+      Name "#AR-Inventory_PickUp"
+     }
+     "Sort Priority" 1
+    }
+   }
+  }
+  BaseItemAnimationComponent "{688E96DEB5163B0A}" {
+   AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
+   AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
+  }
+  RplComponent "{688E96DEB5163B0D}" {
+   "Rpl State Override" Runtime
+   "Parent Node From Parent Entity" 0
+   AutoHierarchy 0
+  }
+  Hierarchy "{688E96DEB5163B00}" {
+  }
+ }
+ coords 0 0 0
+}

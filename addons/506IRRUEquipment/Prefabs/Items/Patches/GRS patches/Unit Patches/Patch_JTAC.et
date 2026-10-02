@@ -1,0 +1,22 @@
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "JTAC Patch"
+     Description "Patch worn by Qualified JTACs"
+    }
+   }
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornMaterialsOverride {
+    "{D61A5A03397D9E35}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/JTAC.emat"
+   }
+   ItemModel "{62DBDFFA87ACBBCB}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Assets/JTAC.xob"
+   ItemMaterialsOverride {
+    "{D61A5A03397D9E35}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/JTAC.emat"
+   }
+  }
+ }
+}
