@@ -1,0 +1,26 @@
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
+ ID "657B0C0A4C1F9EDE"
+ components {
+  InventoryItemComponent "{657B0C0AEEF49C10}" {
+   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+     Name "19th ASOS: TACP"
+     Description "19th ASOS: TACP"
+    }
+   }
+  }
+  MeshObject "{657B0C0AEEEB7DCB}" {
+   Object "{B7B56290750B1115}Assets/Patches/19thasos_2.xob"
+  }
+  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
+   WornModel "{B7B56290750B1115}Assets/Patches/19thasos_2.xob"
+   WornMaterialsOverride {
+    "{B44DE7536ABF394E}Assets/Rectangle Patches/Data/24th_Patch.emat"
+   }
+   ItemModel "{B7B56290750B1115}Assets/Patches/19thasos_2.xob"
+   ItemMaterialsOverride {
+    ""
+   }
+  }
+ }
+}
