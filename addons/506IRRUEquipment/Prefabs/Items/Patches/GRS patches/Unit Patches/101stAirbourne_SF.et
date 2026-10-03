@@ -43,7 +43,7 @@ GameEntity {
    }
   }
   BaseLoadoutClothComponent "{688E96DE94A664C2}" {
-   AreaType GRS_Patch "{69861B32AE65575A}" {
+   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
    }
    WornModel "{85BCF84F87BA5859}Assets/Patches/101stAirbourne_SF.xob"
    WornMaterialsOverride {

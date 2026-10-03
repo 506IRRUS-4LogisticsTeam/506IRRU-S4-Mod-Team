@@ -43,7 +43,7 @@ GameEntity {
    ApplyPropertiesWhenMeshChanged 1
   }
   BaseLoadoutClothComponent "{688E96C81C87E213}" {
-   AreaType GRS_ShirtLowerPatch "{688E96C81C87E211}" {
+   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
    }
    WornModel "{C0AE40AC9B7F9E98}Assets/Patches/19thasos.xob"
    WornMaterialsOverride {
