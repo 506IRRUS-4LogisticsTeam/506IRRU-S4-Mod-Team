@@ -1,4 +1,4 @@
-GameEntity {
+GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
  ID "657B0C0A4C1F9EDE"
  components {
   InventoryItemComponent "{657B0C0AEEF49C10}" {
@@ -7,15 +7,12 @@ GameEntity {
      Name "ALO"
      Description "ALO"
     }
-    CommonItemType "SHS_PATCH"
    }
   }
   MeshObject "{657B0C0AEEEB7DCB}" {
    Object "{C87AC74D17EF6859}Assets/Patches/ALO.xob"
   }
   BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   AreaType SHS_FlagPatch "{6A8564841A415F49}" {
-   }
    WornModel "{C87AC74D17EF6859}Assets/Patches/ALO.xob"
    WornMaterialsOverride {
     "{B44DE7536ABF394E}Assets/Rectangle Patches/Data/24th_Patch.emat"
@@ -24,9 +21,6 @@ GameEntity {
    ItemMaterialsOverride {
     ""
    }
-  }
-  RplComponent "{6A85648643E1B913}" {
-   "Parent Node From Parent Entity" 0
   }
  }
 }

@@ -1,4 +1,4 @@
-GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
+GameEntity {
  ID "6A6A4D185CD3E56C"
  components {
   ParametricMaterialInstanceComponent "{6A6A4D185CD3E57E}" {
@@ -9,9 +9,9 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
   }
   SignalsManagerComponent "{6A6A4D185CD3E54C}" {
   }
-  InventoryItemComponent "{657B0C0AEEF49C10}" {
-   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
-    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+  InventoryItemComponent "{6A6A4D185CD3E54E}" {
+   Attributes SCR_ItemAttributeCollection "{6A6A4D185CD3E549}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D185CD3E554}" {
      Name "ALO: OD"
      Description "ALO: OD"
     }
@@ -30,22 +30,22 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
       PreviewWornModel 1
      }
     }
+    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
-  MeshObject "{657B0C0AEEEB7DCB}" {
+  MeshObject "{6A6A4D185CD3E559}" {
    Object "{23FEA463966F5460}Assets/Patches/ALO_OD.xob"
    LODFactors {
     1 1 1 1
    }
   }
-  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   WornModel "{23FEA463966F5460}Assets/Patches/ALO_OD.xob"
-   WornMaterialsOverride {
-    "{8818BCC72B9C8647}Assets/Patches/Data/PATCH5.emat"
+  BaseLoadoutClothComponent "{6A6A4D185CD3E524}" {
+   AreaType GRS_Patch "{6A6A4D185CD3E520}" {
    }
+   WornModel "{23FEA463966F5460}Assets/Patches/ALO_OD.xob"
    ItemModel "{23FEA463966F5460}Assets/Patches/ALO_OD.xob"
   }
   ActionsManagerComponent "{6A6A4D185CD3E522}" {
@@ -73,7 +73,7 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
    AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
    AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
   }
-  RplComponent "{6A85648643E1B913}" {
+  RplComponent "{6A6A4D185CD3E504}" {
    "Rpl State Override" Runtime
    "Parent Node From Parent Entity" 0
    AutoHierarchy 0

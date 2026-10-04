@@ -1,4 +1,4 @@
-GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
+GameEntity {
  ID "6A6A4D1841AA49F3"
  components {
   ParametricMaterialInstanceComponent "{6A6A4D1841AA49CC}" {
@@ -9,9 +9,9 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
   }
   SignalsManagerComponent "{6A6A4D1841AA49DC}" {
   }
-  InventoryItemComponent "{657B0C0AEEF49C10}" {
-   Attributes SCR_ItemAttributeCollection "{657B0C0AEEF49C16}" {
-    ItemDisplayName SCR_ItemHintUIInfo "{657B0C0AEEF49F14}" {
+  InventoryItemComponent "{6A6A4D1841AA49DE}" {
+   Attributes SCR_ItemAttributeCollection "{6A6A4D1841AA49D8}" {
+    ItemDisplayName SCR_ItemHintUIInfo "{6A6A4D1841AA49DB}" {
      Name "TACPO: MC"
      Description "GRS: Patch USA Flag"
     }
@@ -30,22 +30,22 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
       PreviewWornModel 1
      }
     }
+    CommonItemType "GRS_PATCH"
     m_Size SLOT_1x1
     m_SlotType SLOT_GADGETS_STORAGE
     m_bStackable 0
    }
   }
-  MeshObject "{657B0C0AEEEB7DCB}" {
+  MeshObject "{6A6A4D1841AA49A8}" {
    Object "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
    LODFactors {
     1 1 1 1
    }
   }
-  BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   WornModel "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
-   WornMaterialsOverride {
-    "{8818BCC72B9C8647}Assets/Patches/Data/PATCH5.emat"
+  BaseLoadoutClothComponent "{6A6A4D1841AA49AA}" {
+   AreaType GRS_Patch "{6A6A4D1841AA49B5}" {
    }
+   WornModel "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
    ItemModel "{40114832E92D4920}Assets/Patches/TACPO_MC.xob"
   }
   ActionsManagerComponent "{6A6A4D1841AA49B0}" {
@@ -73,7 +73,7 @@ GameEntity : "{1FDC8A009030770D}Prefabs/Items/Patches/Flag_Patches/ALO.et" {
    AnimGraph "{6A8EE4A914596E5F}anims/workspaces/animals/Columba_livia_domestica/Columba_livia_domestica.agr"
    AnimInstance "{8D91E38B00B5505F}anims/workspaces/animals/Columba_livia_domestica/pigeon.asi"
   }
-  RplComponent "{6A85648643E1B913}" {
+  RplComponent "{6A6A4D1841AA4988}" {
    "Rpl State Override" Runtime
    "Parent Node From Parent Entity" 0
    AutoHierarchy 0
