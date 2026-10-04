@@ -10,8 +10,6 @@ GameEntity : "{C3C66DFD34ADB415}Prefabs/Flag_Patches/USA_Flag_Color.et" {
    }
   }
   BaseLoadoutClothComponent "{657B0C0AEEEB7D3C}" {
-   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
-   }
    WornMaterialsOverride {
     "{D61A5A03397D9E35}Prefabs/Items/Equipment/Patches/Patches Info/USAF/Data/JTAC.emat"
    }

@@ -43,7 +43,7 @@ GameEntity {
    }
   }
   BaseLoadoutClothComponent "{68DE741ADF682818}" {
-   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
+   AreaType GRS_Patch "{69861B32913467A6}" {
    }
    WornModel "{F311B117BC1D9C4F}Assets/Patches/AFSOC.xob"
    WornMaterialsOverride {

@@ -43,7 +43,7 @@ GameEntity {
    ApplyPropertiesWhenMeshChanged 1
   }
   BaseLoadoutClothComponent "{688E96DE94A664C2}" {
-   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
+   AreaType GRS_ShirtLowerPatch "{688E96DE94A664C1}" {
    }
    WornModel "{85BCF84F87BA5859}Assets/Patches/101stAirbourne_SF.xob"
    WornMaterialsOverride {

@@ -1,4 +1,4 @@
-GameEntity {
+GameEntity : "{FBE8D2BB07B1B041}Prefabs/Rectangle_Patches/Rectangle_DemonHunter_Patch_Red.et" {
  ID "657C17E446464A1E"
  components {
   InventoryItemComponent "{657C17E446464A0E}" {
@@ -7,26 +7,26 @@ GameEntity {
      Name "GRS: SSG"
      Description "GRS: SSG"
     }
-    CommonItemType "SHS_PATCH"
    }
   }
   MeshObject "{657C17E446464A3F}" {
-   Object "{0DFCAED7D90E1606}Prefabs/Items/Patches/Patches_Info/US Army/Assets/E-6.xob"
+   Object "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
+   Materials {
+    MaterialAssignClass "{658A2C56FD6F2BD4}" {
+     SourceMaterial "Mat_Patch"
+     AssignedMaterial "{8E68508D3FFA39DA}Data/SPC OCP.emat"
+    }
+   }
   }
   BaseLoadoutClothComponent "{657C17E446464A39}" {
-   AreaType SHS_ShirtPatch "{6A857B4B00726E7F}" {
-   }
-   WornModel "{0DFCAED7D90E1606}Prefabs/Items/Patches/Patches_Info/US Army/Assets/E-6.xob"
+   WornModel "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
    WornMaterialsOverride {
-    "{9B5C5405E663B570}Prefabs/Items/Patches/Patches_Info/US Army/Data/GRS/SSG OCP.emat"
+    "{9B5C5405E663B570}Data/SSG OCP.emat"
    }
-   ItemModel "{0DFCAED7D90E1606}Prefabs/Items/Patches/Patches_Info/US Army/Assets/E-6.xob"
+   ItemModel "{CD750565D5204CB7}Assets/GRS Square Patch.xob"
    ItemMaterialsOverride {
-    "{9B5C5405E663B570}Prefabs/Items/Patches/Patches_Info/US Army/Data/GRS/SSG OCP.emat"
+    "{9B5C5405E663B570}Data/SSG OCP.emat"
    }
-  }
-  RplComponent "{6A857B4FAEFF7627}" {
-   "Parent Node From Parent Entity" 0
   }
  }
 }
