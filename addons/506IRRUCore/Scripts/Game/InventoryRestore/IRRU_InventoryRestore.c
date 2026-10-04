@@ -98,11 +98,17 @@ class IRRU_InventoryRestore : ScriptComponent
         ResourceName mapResourceName = "{922F95F91943F69A}Prefabs/Items/Equipment/Maps/Map_Paper_01/PaperMap_01_folded_US.et";
 
         //! Handed out when the player carries none of the radios below
-        ResourceName issuedRadioName = "{73950FBA2D7DB5C5}Prefabs/Items/Equipment/Radios/Radio_ANPRC68.et";
+        ResourceName issuedRadioName = "{3AAE94CE6ADC37E6}Prefabs/Accessories/IRRU_Radio_ANPRC_V3.et";
 
-        //! Vanilla AN/PRC-68. The IRRU radio prefabs were removed with the GRS
-        //! dependency (their models came from GRS).
+        //! IRRU radios, which carry RelayTransceivers and therefore transmit without a
+        //! relay in range. The superseded GRS prefabs are deliberately NOT listed: they
+        //! still use RadioTransceivers and cannot transmit at all unless a relay is in
+        //! range, so a player arriving with one (e.g. from a stale saved loadout) counts
+        //! as having no radio and is issued a working one.
         array<ResourceName> radioNames = {
+            "{DFB0F41DA8D04752}Prefabs/Accessories/IRRU_Radio_ANPRC_JTAC_Right.et",
+            "{F526F4C334526B74}Prefabs/Accessories/IRRU_Radio_ANPRC_LEFT_JTAC.et",
+            "{ED6C531BB75E8DB5}Prefabs/Accessories/IRRU_Radio_MPU5.et",
             issuedRadioName
         };
 
@@ -133,7 +139,7 @@ class IRRU_InventoryRestore : ScriptComponent
             TryAddMissingItem(storageManager, player, mapResourceName, "map", "Adding map to gear");
 
         if (!hasRadio)
-            TryAddMissingItem(storageManager, player, issuedRadioName, "radio", "Adding ANPRC68 Radio to gear");
+            TryAddMissingItem(storageManager, player, issuedRadioName, "radio", "Adding ANPRCV3 Radio to gear");
 
         if (IRRU_InventoryRestoreSettings.IsDebugEnabled())
             Print("[InventoryCheck] Inventory check completed for player: " + playerName);
