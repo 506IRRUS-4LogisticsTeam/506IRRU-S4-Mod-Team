@@ -1,0 +1,10 @@
+GenericEntity : "{A183CA89C5152A4F}Prefabs/Pouches/SHS/SLEDS/Sleds 1x3 Base.et" {
+ ID "69177A67C06C2B00"
+ components {
+  SHS_PocketStorageComponent "{69177A67C06C2BC2}" {
+   Attributes ItemAttributeCollection "{69177A67C06C2BC6}" {
+    CommonItemType "GRS_PLACARD"
+   }
+  }
+ }
+}

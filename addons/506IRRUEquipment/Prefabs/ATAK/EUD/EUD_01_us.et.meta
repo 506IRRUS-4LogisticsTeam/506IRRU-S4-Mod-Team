@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{EDCD7653A9C19D3A}Prefabs/Items/Equipment/Backpacks/506_Backpack_Delta_Assault.et"
+ Name "{A71127A1578892F4}Prefabs/EUD/EUD_01_us.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

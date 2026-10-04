@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{DCFBEF8A6E05FF1D}Prefabs/Items/Equipment/Backpacks/3RBN_Backpack_GMR_Minimap_Panel.et"
+ Name "{A183CA89C5152A4F}Prefabs/Pouches/SLEDS/Sleds 1x3 Base.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

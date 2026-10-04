@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{C47DA824C01204AE}Prefabs/Items/Equipment/Backpacks/506AIR_Backpack_Delta_Assault.et"
+ Name "{62B5A4D11022C825}Prefabs/ATAK/Kagwerks/Kagwerks_01_506.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

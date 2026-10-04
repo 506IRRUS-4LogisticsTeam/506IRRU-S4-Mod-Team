@@ -112,6 +112,14 @@ class IRRU_ContactViewHelper
 	//! Get color along a Red -> Purple -> Blue gradient (hot to cold)
 	protected static Color GetGradientColor(float progress)
 	{
+		// Maximum time without contact is exactly #1c27c7 (28, 39, 199)
+		float maxR = 28.0 / 255.0;
+		float maxG = 39.0 / 255.0;
+		float maxB = 199.0 / 255.0;
+
+		if (progress >= 1.0)
+			return new Color(maxR, maxG, maxB, 1.0);
+
 		float r, g, b;
 
 		if (progress < 0.33)
@@ -131,11 +139,11 @@ class IRRU_ContactViewHelper
 		}
 		else
 		{
-			// Purple to Blue
+			// Purple to #1c27c7
 			float t = (progress - 0.66) / 0.34;
-			r = 0.55 - 0.4 * t;
-			g = 0.1;
-			b = 1.0;
+			r = 0.55 + (maxR - 0.55) * t;
+			g = 0.1 + (maxG - 0.1) * t;
+			b = 1.0 + (maxB - 1.0) * t;
 		}
 
 		return new Color(r, g, b, 1.0);

@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{6F5AAE57F9CAAFCE}Prefabs/Items/Equipment/Backpacks/3RBN_Backpack_Spiritus_Panel_V1.et"
+ Name "{839BD206825F377A}Prefabs/ATAK/EUD/EUD_02_506.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }
