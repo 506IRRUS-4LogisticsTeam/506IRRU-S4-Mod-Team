@@ -30,10 +30,13 @@ GenericEntity {
       PreviewModel ""
      }
     }
-    CommonItemType "NONE"
+    CommonItemType "GRS_PLACARD"
     m_bDraggable 0
     m_bVisible 0
     m_bStackable 0
+    m_SHS_AdditionalCommonItemTypes {
+     "NONE"
+    }
    }
    Priority 100
    StoragePurpose 0x41 0
@@ -87,7 +90,7 @@ GenericEntity {
    }
   }
   MeshObject "{66DE4407E5F19350}" {
-   Object "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   Object "{90B6619271DAB769}Assets/Pouches/New/ARC_Placard_V3/ARC_PLACARD.xob"
    LODFactors {
     1 1 1 1
    }
@@ -117,11 +120,11 @@ GenericEntity {
   BaseLoadoutClothComponent "{66DE4407E5F1937B}" {
    AreaType GL_Vest_Mag_Placard "{66DE4407E5F1937A}" {
    }
-   WornModel "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   WornModel "{90B6619271DAB769}Assets/Pouches/New/ARC_Placard_V3/ARC_PLACARD.xob"
    WornMaterialsOverride {
     ""
    }
-   ItemModel "{90B6619271DAB769}Assets/Pouches/ARC_PLACARD.xob"
+   ItemModel "{90B6619271DAB769}Assets/Pouches/New/ARC_Placard_V3/ARC_PLACARD.xob"
    ItemMaterialsOverride {
     ""
    }

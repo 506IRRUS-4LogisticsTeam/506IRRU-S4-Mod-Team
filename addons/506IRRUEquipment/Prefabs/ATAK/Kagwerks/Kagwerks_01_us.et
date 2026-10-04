@@ -1,0 +1,12 @@
+GenericEntity {
+ ID "69421B596EE5DCA1"
+ components {
+  GAZ_EquipmentStorageComponent "{69364C2AC238310D}" {
+   Attributes SCR_ItemAttributeCollection "{69364C2AC4922A95}" {
+    m_SHS_AdditionalCommonItemTypes {
+     "SHS_ATAK"
+    }
+   }
+  }
+ }
+}

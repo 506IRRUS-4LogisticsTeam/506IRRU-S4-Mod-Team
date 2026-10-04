@@ -1,5 +1,5 @@
 MetaFileClass {
- Name "{E6B239F112D7B05C}Prefabs/Items/Equipment/Backpacks/3RBN_Backpack_Spiritus_Panel_Breacher.et"
+ Name "{EC6475D17779C437}Prefabs/Kagwerks/Kagwerks_01_us.et"
  Configurations {
   EntityTemplateResourceClass PC {
   }
@@ -12,6 +12,8 @@ MetaFileClass {
   EntityTemplateResourceClass PS5 : PC {
   }
   EntityTemplateResourceClass HEADLESS : PC {
+  }
+  EntityTemplateResourceClass Xbox : PC {
   }
  }
 }

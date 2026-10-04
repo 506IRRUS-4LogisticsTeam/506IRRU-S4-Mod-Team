@@ -1,5 +1,3 @@
-// RR_SoflamComponentFix.c
-// Put anywhere under <YourMod>/Scripts/Game/ e.g. Scripts/Game/Weapon/Soflam/RR_SoflamComponentFix.c
 //
 // Patches RVX_SoflamComponent without editing the RVX file:
 //  - lets the sights component register itself (RR_SetSights) so the link can't be missed
