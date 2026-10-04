@@ -1,0 +1,19 @@
+GenericEntity : "{54986385A6AF77B2}Prefabs/Props/Military/Arsenal/ArsenalBoxes/ArsenalBox_Base.et" {
+ ID "506C020000000010"
+ components {
+  ActionsManagerComponent "{56F2C6D1431ADB12}" {
+   additionalActions {
+    IRRU_OpenLoadoutManagerSystemAction "{506C020000000011}" {
+     ParentContextList {
+      "default"
+     }
+     UIInfo UIInfo "{506C020000000012}" {
+      Name "Open Loadout Manager System"
+     }
+     ActionTitle "Open Loadout Manager System"
+     "Sort Priority" 1
+    }
+   }
+  }
+ }
+}

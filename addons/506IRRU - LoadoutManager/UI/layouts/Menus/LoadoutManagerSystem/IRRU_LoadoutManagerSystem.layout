@@ -1,0 +1,157 @@
+FrameWidgetClass {
+ Name "IRRU_LoadoutManagerSystem"
+ {
+  PanelWidgetClass {
+   Name "Dim"
+   Slot FrameWidgetSlot { Anchor 0 0 1 1 OffsetLeft 0 OffsetTop 0 OffsetRight 0 OffsetBottom 0 }
+   Color 0 0 0 0.6
+   style full
+  }
+  FrameWidgetClass {
+   Name "KitPanel"
+   Slot FrameWidgetSlot { Anchor 0.18 0.15 0.82 0.85 OffsetLeft 0 OffsetTop 0 OffsetRight 0 OffsetBottom 0 }
+   {
+    PanelWidgetClass {
+     Name "Background"
+     Slot FrameWidgetSlot { Anchor 0 0 1 1 OffsetLeft 0 OffsetTop 0 OffsetRight 0 OffsetBottom 0 }
+     Color 0.018 0.028 0.022 1
+     style full
+    }
+    TextWidgetClass {
+     Name "Title"
+     Slot FrameWidgetSlot { Anchor 0 0 1 0 OffsetLeft 24 OffsetTop 20 OffsetRight 24 OffsetBottom -50 }
+     Text "506IRRU | LOADOUT MANAGER SYSTEM"
+     "Font Size" 24
+    }
+    TextWidgetClass {
+     Name "Access"
+     Slot FrameWidgetSlot { Anchor 0 0 1 0 OffsetLeft 24 OffsetTop 58 OffsetRight 24 OffsetBottom -84 }
+     Text "Checking server permissions..."
+     "Font Size" 16
+    }
+    ButtonWidgetClass {
+     Name "Personal"
+     Slot FrameWidgetSlot { Anchor 0 0 0.27 0 OffsetLeft 24 OffsetTop 98 OffsetRight 8 OffsetBottom -138 }
+     Color 0.23 0.28 0.24 1
+     {
+      TextWidgetClass { Name "PersonalLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "PERSONAL KITS" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Shared"
+     Slot FrameWidgetSlot { Anchor 0.27 0 0.54 0 OffsetLeft 0 OffsetTop 98 OffsetRight 8 OffsetBottom -138 }
+     Color 0.23 0.28 0.24 1
+     {
+      TextWidgetClass { Name "SharedLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "SHARED KITS" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Refresh"
+     Slot FrameWidgetSlot { Anchor 0.54 0 0.72 0 OffsetLeft 8 OffsetTop 98 OffsetRight 8 OffsetBottom -138 }
+     Color 0.12 0.18 0.14 1
+     {
+      TextWidgetClass { Name "RefreshLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "REFRESH" "Font Size" 18 }
+     }
+    }
+    TextWidgetClass {
+     Name "Count"
+     Slot FrameWidgetSlot { Anchor 0 0 0.54 0 OffsetLeft 24 OffsetTop 154 OffsetRight 8 OffsetBottom -180 }
+     Text "0 saved kits"
+     "Font Size" 16
+    }
+    ScrollLayoutWidgetClass {
+     Name "KitScroll"
+     Slot FrameWidgetSlot { Anchor 0 0 0.54 1 OffsetLeft 24 OffsetTop 190 OffsetRight 8 OffsetBottom 110 }
+     {
+      VerticalLayoutWidgetClass {
+       Name "KitRows"
+       Slot LayoutSlot { }
+      }
+     }
+    }
+    TextWidgetClass {
+     Name "NameLabel"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 0 OffsetTop 154 OffsetRight 24 OffsetBottom -180 }
+     Text "Loadout name (new / rename)"
+     "Font Size" 16
+    }
+    PanelWidgetClass {
+     Name "KitNameBorder"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 0 OffsetTop 186 OffsetRight 24 OffsetBottom -238 }
+     Color 0.65 0.72 0.61 1
+     style full
+    }
+    PanelWidgetClass {
+     Name "KitNameBackground"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 2 OffsetTop 188 OffsetRight 26 OffsetBottom -236 }
+     Color 0.07 0.1 0.08 1
+     style full
+    }
+    EditBoxWidgetClass {
+     Name "KitName"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 12 OffsetTop 194 OffsetRight 36 OffsetBottom -230 }
+     Color 1 1 1 1
+     "limit visible" 1
+     "Use placeholder text" 1
+     "Placeholder color" 0.7 0.76 0.69 1
+     "Placeholder text" "Enter loadout name..."
+    }
+    ButtonWidgetClass {
+     Name "Load"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 0 OffsetTop 254 OffsetRight 24 OffsetBottom -296 }
+     Color 0.31 0.39 0.29 1
+     {
+      TextWidgetClass { Name "LoadLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "LOAD SELECTED KIT" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Save"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 0 OffsetTop 308 OffsetRight 24 OffsetBottom -350 }
+     Color 0.23 0.28 0.24 1
+     {
+      TextWidgetClass { Name "SaveLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "SAVE CURRENT AS NEW" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Overwrite"
+     Slot FrameWidgetSlot { Anchor 0.57 0 1 0 OffsetLeft 0 OffsetTop 362 OffsetRight 24 OffsetBottom -404 }
+     Color 0.23 0.28 0.24 1
+     {
+      TextWidgetClass { Name "OverwriteLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "OVERWRITE SELECTED" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Rename"
+     Slot FrameWidgetSlot { Anchor 0.57 0 0.78 0 OffsetLeft 0 OffsetTop 416 OffsetRight 8 OffsetBottom -458 }
+     Color 0.12 0.18 0.14 1
+     {
+      TextWidgetClass { Name "RenameLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "RENAME" "Font Size" 18 }
+     }
+    }
+    ButtonWidgetClass {
+     Name "Delete"
+     Slot FrameWidgetSlot { Anchor 0.78 0 1 0 OffsetLeft 0 OffsetTop 416 OffsetRight 24 OffsetBottom -458 }
+     Color 0.32 0.13 0.12 1
+     {
+      TextWidgetClass { Name "DeleteLabel" Slot ButtonWidgetSlot { Padding 12 8 12 8 } Text "DELETE" "Font Size" 18 }
+     }
+    }
+    TextWidgetClass {
+     Name "Status"
+     Slot FrameWidgetSlot { Anchor 0 1 1 1 OffsetLeft 24 OffsetTop -92 OffsetRight 24 OffsetBottom 48 }
+     Text ""
+     "Font Size" 16
+     "Wrap" 1
+    }
+    ButtonWidgetClass {
+     Name "Close"
+     Slot FrameWidgetSlot { Anchor 0.78 1 1 1 OffsetLeft 0 OffsetTop -40 OffsetRight 24 OffsetBottom 8 }
+     Color 0.12 0.18 0.14 1
+     {
+      TextWidgetClass { Name "CloseLabel" Slot ButtonWidgetSlot { Padding 12 4 12 4 } Text "CLOSE / BACK" "Font Size" 16 }
+     }
+    }
+   }
+  }
+ }
+}

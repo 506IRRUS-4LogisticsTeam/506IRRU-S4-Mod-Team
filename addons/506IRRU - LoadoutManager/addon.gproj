@@ -1,0 +1,8 @@
+GameProject {
+ ID "506IRRULoadoutManager"
+ GUID "6A861D0FC3DA4E53"
+ TITLE "506IRRU - LoadoutManager"
+ Dependencies {
+  "58D0FB3206B6F859"
+ }
+}

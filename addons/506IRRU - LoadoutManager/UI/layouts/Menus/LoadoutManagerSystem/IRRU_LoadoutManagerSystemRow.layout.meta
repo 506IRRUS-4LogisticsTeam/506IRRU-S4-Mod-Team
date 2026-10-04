@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{506C020000000002}UI/layouts/Menus/LoadoutManagerSystem/IRRU_LoadoutManagerSystemRow.layout"
+ Configurations {
+  LayoutResourceClass PC {
+  }
+  LayoutResourceClass XBOX_ONE : PC {
+  }
+  LayoutResourceClass XBOX_SERIES : PC {
+  }
+  LayoutResourceClass PS4 : PC {
+  }
+  LayoutResourceClass PS5 : PC {
+  }
+  LayoutResourceClass HEADLESS : PC {
+  }
+ }
+}
