@@ -1,0 +1,36 @@
+GenericEntity {
+ ID "698CE53041B5E246"
+ components {
+  BaseRadioComponent "{698CE53041B5E270}" {
+   Transceivers {
+    RadioTransceiver "{698CE53041B5E27F}" {
+     ChannelFrequency 33000
+     "Transmitting Range" 5000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{698CE53041B5E27D}" {
+     ChannelFrequency 32000
+     "Transmitting Range" 5000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{698CE53041B5E27A}" {
+     ChannelFrequency 38000
+     "Transmitting Range" 5000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6ACBABFA0B891747}" {
+     "Transmitting Range" 5000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+   }
+  }
+ }
+}
