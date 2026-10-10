@@ -1,0 +1,47 @@
+GenericEntity {
+ ID "698EAAE6F97C1EB1"
+ components {
+  BaseRadioComponent "{698EAAE6F97C1EAB}" {
+   Transceivers {
+    RadioTransceiver "{698EAAE6F97C1ED6}" {
+     ChannelFrequency 32000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{698EAAE6F97C1ED4}" {
+     ChannelFrequency 32000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{698EAAE6F97C1ED5}" {
+     ChannelFrequency 33000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6AD366261A29CE76}" {
+     ChannelFrequency 35000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+    RadioTransceiver "{6A363325A338E2DB}" {
+     ChannelFrequency 32000
+     "Transmitting Range" 10000
+     "Min tunable frequency" 30000
+     "Max tunable frequency" 150000
+     "Frequency resolution" 100
+    }
+   }
+  }
+  SCR_RadioComponent "{698EAAE6F97C1465}" {
+   m_eSHS_RadioTier JTAC
+  }
+ }
+}

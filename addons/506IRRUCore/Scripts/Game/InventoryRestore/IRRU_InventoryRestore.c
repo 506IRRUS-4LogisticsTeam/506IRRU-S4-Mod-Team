@@ -98,18 +98,23 @@ class IRRU_InventoryRestore : ScriptComponent
         ResourceName mapResourceName = "{922F95F91943F69A}Prefabs/Items/Equipment/Maps/Map_Paper_01/PaperMap_01_folded_US.et";
 
         //! Handed out when the player carries none of the radios below
-        ResourceName issuedRadioName = "{3AAE94CE6ADC37E6}Prefabs/Accessories/IRRU_Radio_ANPRC_V3.et";
+        ResourceName issuedRadioName = "{3AAE94CE6ADC37E5}Prefabs/Accessories/GRS_Radio_ANPRC_V3.et";
 
-        //! IRRU radios, which carry RelayTransceivers and therefore transmit without a
-        //! relay in range. The superseded GRS prefabs are deliberately NOT listed: they
-        //! still use RadioTransceivers and cannot transmit at all unless a relay is in
-        //! range, so a player arriving with one (e.g. from a stale saved loadout) counts
-        //! as having no radio and is issued a working one.
-        array<ResourceName> radioNames = {
-            "{DFB0F41DA8D04752}Prefabs/Accessories/IRRU_Radio_ANPRC_JTAC_Right.et",
-            "{F526F4C334526B74}Prefabs/Accessories/IRRU_Radio_ANPRC_LEFT_JTAC.et",
-            "{ED6C531BB75E8DB5}Prefabs/Accessories/IRRU_Radio_MPU5.et",
-            issuedRadioName
+        //! Radios that count as already carrying one, matched by GUID because the engine reports
+        //! a prefab under the path of whichever mod loaded it last. The GRS radios carry the unit's
+        //! channel setup through 506IRRUEquipment's overrides. The IRRU copies are legacy: they
+        //! replaced the overrides from Aug 23 to Oct 2026 and still sit in kits saved then.
+        array<string> radioGuids = {
+            "{3AAE94CE6ADC37E5}", // GRS ANPRC V3
+            "{133810B5D3B81E16}", // GRS MPU5
+            "{6554BEAB4FB1BD68}", // GRS JTAC Right
+            "{CE6320EE34E29382}", // GRS JTAC Left
+            "{CDD879E4310EFE48}", // GRS ANPRC V2
+            "{6177AD2B232FDA30}", // GRS SC4200
+            "{3AAE94CE6ADC37E6}", // IRRU ANPRC V3
+            "{ED6C531BB75E8DB5}", // IRRU MPU5
+            "{DFB0F41DA8D04752}", // IRRU JTAC Right
+            "{F526F4C334526B74}"  // IRRU JTAC Left
         };
 
         foreach (IEntity item : items) {
@@ -119,12 +124,10 @@ class IRRU_InventoryRestore : ScriptComponent
                 if (IRRU_InventoryRestoreSettings.IsDebugEnabled())
                     Print("[InventoryCheck] Player already has map item prefab: " + prefabName);
             }
-            foreach (ResourceName radioName : radioNames) {
-                if (prefabName == radioName) {
-                    hasRadio = true;
-                    if (IRRU_InventoryRestoreSettings.IsDebugEnabled())
-                        Print("[InventoryCheck] Player already has radio item prefab: " + prefabName);
-                }
+            if (radioGuids.Contains(SCR_ConfigHelper.GetGUID(prefabName))) {
+                hasRadio = true;
+                if (IRRU_InventoryRestoreSettings.IsDebugEnabled())
+                    Print("[InventoryCheck] Player already has radio item prefab: " + prefabName);
             }
         }
 
