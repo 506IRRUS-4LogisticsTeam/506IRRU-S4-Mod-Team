@@ -186,7 +186,11 @@ modded class SCR_InspectCasualtyWidget : SCR_InfoDisplayExtended
 			if (damageMan.GetGroupDamageOverTime(group, EDamageType.HEALING) != 0 || damageMan.GetGroupDamageOverTime(group, EDamageType.REGENERATION) != 0)
 				regenerating = true;
 		}
-		bool isMorphined = !damageMan.GetAllPersistentEffectsOfType(SCR_MorphineDamageEffect).IsEmpty();
+		// ACE's morphine item adds its own effect class, which is not a subclass of the vanilla one,
+		// and effect lookups match the exact class
+		bool isMorphined = !damageMan.GetAllPersistentEffectsOfType(ACE_Medical_MorphineDamageEffect).IsEmpty();
+		if (!isMorphined)
+			isMorphined = !damageMan.GetAllPersistentEffectsOfType(SCR_MorphineDamageEffect).IsEmpty();
 
 		if (m_DamageInfoUI)
 		{

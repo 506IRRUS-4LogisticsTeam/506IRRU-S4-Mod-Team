@@ -9,6 +9,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected const int OPS_LOG_INTERVAL_TICKS = 30;
 
 	protected int m_iNID_OpsLogTicks = 0;
+	//! World time of the previous bleedout tick, server only
+	protected float m_fNID_LastTimerTickMS;
 
 	protected bool m_bNID_Initialized = false;
 	[RplProp()]
@@ -75,6 +77,15 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
+		// Death is final in the engine: nothing can bring the character back, so only stop the timer
+		if (newLifeState == ECharacterLifeState.DEAD)
+		{
+			if (Replication.IsServer() || !Replication.IsRunning())
+				StopBleedoutTimer("died");
+
+			return;
+		}
+
 		if (newLifeState != ECharacterLifeState.INCAPACITATED || previousLifeState != ECharacterLifeState.ALIVE)
 			return;
 
@@ -168,7 +179,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer = 0.0;
 		m_iNID_OpsLogTicks = 0;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
-		m_CachedDmgManager.ForceUnconsciousness();
+		IRRU_PinResilienceToZero();
 
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
@@ -182,6 +193,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe();
+			m_fNID_LastTimerTickMS = owner.GetWorld().GetWorldTime();
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
@@ -191,6 +203,34 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			Print(string.Format("[NoInstantDeath] %1: unconscious, %2s bleedout - Health: %3%%, Blood: %4%%, Resilience: %5%%",
 				GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime(), m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
 		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Server only. Sets Resilience to exactly 0 so the casualty stays down until treated.
+	//! A direct set rather than ForceUnconsciousness(): that one goes through the damage pipeline,
+	//! where ACE's resilience damage scale shrinks it, and it does nothing at all when
+	//! unconsciousness is not permitted.
+	protected void IRRU_PinResilienceToZero()
+	{
+		if (Replication.IsRunning() && !Replication.IsServer())
+			return;
+
+		SCR_CharacterResilienceHitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
+		if (!resilienceHZ)
+			return;
+
+		resilienceHZ.SetHealthScaled(0);
+
+		// A set-health call does not run the hit zone's OnDamage, which is what restarts passive
+		// regeneration after a hit. Restart it the same way here, with its normal delay.
+		array<ref SCR_PersistentDamageEffect> effects = {};
+		m_CachedDmgManager.FindAllDamageEffectsOfTypeOnHitZone(SCR_PassiveHitZoneRegenDamageEffect, resilienceHZ, effects);
+		foreach (SCR_PersistentDamageEffect effect : effects)
+		{
+			effect.Terminate();
+		}
+
+		m_CachedDmgManager.RegenVirtualHitZone(resilienceHZ);
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -403,23 +443,24 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 		}
 
+		// Safety net for a death the life-state callback did not report
 		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD)
 		{
-			// Something killed the character past the Kill() backstop; pin them back
-			// to unconscious and give up if that does not take.
-			m_CachedDmgManager.ForceUnconsciousness();
-			if (m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD)
-			{
-				Print(string.Format("[NoInstantDeath] %1 reached DEAD state before timer expiry", GetNameStr(owner)), LogLevel.WARNING);
-				StopBleedoutTimer("forced death");
-				return;
-			}
+			StopBleedoutTimer("died");
+			return;
 		}
+
+		// Count real elapsed time, not ticks: the call queue fires late under server load
+		float nowMS = owner.GetWorld().GetWorldTime();
+		float tickSeconds = (nowMS - m_fNID_LastTimerTickMS) / 1000.0;
+		m_fNID_LastTimerTickMS = nowMS;
+		if (tickSeconds < 0)
+			tickSeconds = 0;
 
 		bool healthStable = m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0;
 		if (!m_bReceivingCPR && !healthStable)
 		{
-			m_fUnconsciousTimer += CHECK_INTERVAL;
+			m_fUnconsciousTimer += tickSeconds;
 			Replication.BumpMe();
 		}
 
@@ -458,13 +499,14 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
-		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
-		if (hz)
-			hz.SetHealth(0);
-
+		// Clear the state first: the kill below reports DEAD through OnLifeStateChanged
 		m_bIsUnconscious = false;
 		m_fUnconsciousTimer = 0.0;
 		Replication.BumpMe();
+
+		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
+		if (hz)
+			hz.SetHealth(0);
 	}
 
 	//------------------------------------------------------------------------------------------------

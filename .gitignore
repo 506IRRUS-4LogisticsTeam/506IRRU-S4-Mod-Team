@@ -3,5 +3,6 @@ ArmaReforgerInfo/
 CLAUDE.md
 .vscode/
 .claude/
-medical_core/
-core/
+/medical_core/
+/core/
+/engine-notes/

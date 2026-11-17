@@ -5,7 +5,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
 	protected IRRU_NoInstantDeathComponent m_IRRU_NID;
-	protected int m_iIRRU_ResilienceTextState = -1;
 	protected float m_fIRRU_NextKillBlockLogTimeMS;
 
 	//------------------------------------------------------------------------------------------------
@@ -103,44 +102,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	}
 
 	//------------------------------------------------------------------------------------------------
-	override void SetResilienceHitZone(HitZone hitZone)
-	{
-		super.SetResilienceHitZone(hitZone);
-
-		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
-		if (resilienceHZ)
-			resilienceHZ.GetOnHealthChanged().Insert(IRRU_RefreshResilienceReplication);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	//! Push a replication update whenever the resilience crosses an inspection-text threshold
-	protected void IRRU_RefreshResilienceReplication()
-	{
-		if (!Replication.IsServer())
-			return;
-
-		int textState = IRRU_GetResilienceTextState();
-		if (textState == m_iIRRU_ResilienceTextState)
-			return;
-
-		m_iIRRU_ResilienceTextState = textState;
-		Replication.BumpMe();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected int IRRU_GetResilienceTextState()
-	{
-		float resiliencePercent = IRRU_GetResiliencePercentage();
-		if (resiliencePercent < 33)
-			return 0;
-		if (resiliencePercent <= 59)
-			return 1;
-		if (resiliencePercent <= 99)
-			return 2;
-		return 3;
-	}
-
-	//------------------------------------------------------------------------------------------------
 	void ACE_Medical_SetPainHitZone(ACE_Medical_PainHitZone hz) { m_pPainHitZone = hz; }
 	override ACE_Medical_PainHitZone ACE_Medical_GetPainHitZone() { return m_pPainHitZone; }
 
@@ -220,13 +181,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 
 		if (IRRU_NoInstantDeathSettings.IsDebugEnabled())
 			Print(string.Format("[NoInstantDeath] SecondChance triggered on %1 - Health: %2%%, Resilience: %3%%", nid.GetNameStr(GetOwner()), IRRU_GetHealthPercentage(), IRRU_GetResiliencePercentage()));
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override void FullHeal(bool ignoreHealingDOT = true)
-	{
-		super.FullHeal(ignoreHealingDOT);
-		RemoveAllBleedingParticles();
 	}
 
 	//------------------------------------------------------------------------------------------------
