@@ -262,7 +262,14 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (!resilienceHZ)
 			return;
 
-		resilienceHZ.HandleDamage(-resilienceHZ.GetMaxHealth() * (CPR_RESILIENCE_PERCENT_PER_SECOND / 100.0), EDamageType.HEALING, null);
+		// HandleDamage multiplies every amount by the hit zone's base damage multiplier (0.8 on
+		// Resilience), so divide it out to deliver the stated percentage
+		float healAmount = resilienceHZ.GetMaxHealth() * (CPR_RESILIENCE_PERCENT_PER_SECOND / 100.0);
+		float baseMultiplier = resilienceHZ.GetBaseDamageMultiplier();
+		if (baseMultiplier > 0)
+			healAmount = healAmount / baseMultiplier;
+
+		resilienceHZ.HandleDamage(-healAmount, EDamageType.HEALING, null);
 	}
 
 	//------------------------------------------------------------------------------------------------
