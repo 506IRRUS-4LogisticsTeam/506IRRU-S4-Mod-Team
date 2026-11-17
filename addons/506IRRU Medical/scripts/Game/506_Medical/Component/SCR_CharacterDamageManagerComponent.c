@@ -5,7 +5,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	protected ACE_Medical_PainHitZone m_pPainHitZone;
 	protected SCR_CharacterHealthHitZone m_IRRU_HealthHitZone;
 	protected IRRU_NoInstantDeathComponent m_IRRU_NID;
-	protected int m_iIRRU_ResilienceTextState = -1;
 	protected float m_fIRRU_NextKillBlockLogTimeMS;
 
 	//------------------------------------------------------------------------------------------------
@@ -100,44 +99,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 			return 0.0;
 
 		return bloodHZ.GetTotalBleedingAmount();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	override void SetResilienceHitZone(HitZone hitZone)
-	{
-		super.SetResilienceHitZone(hitZone);
-
-		SCR_CharacterResilienceHitZone resilienceHZ = GetResilienceHitZone();
-		if (resilienceHZ)
-			resilienceHZ.GetOnHealthChanged().Insert(IRRU_RefreshResilienceReplication);
-	}
-
-	//------------------------------------------------------------------------------------------------
-	//! Push a replication update whenever the resilience crosses an inspection-text threshold
-	protected void IRRU_RefreshResilienceReplication()
-	{
-		if (!Replication.IsServer())
-			return;
-
-		int textState = IRRU_GetResilienceTextState();
-		if (textState == m_iIRRU_ResilienceTextState)
-			return;
-
-		m_iIRRU_ResilienceTextState = textState;
-		Replication.BumpMe();
-	}
-
-	//------------------------------------------------------------------------------------------------
-	protected int IRRU_GetResilienceTextState()
-	{
-		float resiliencePercent = IRRU_GetResiliencePercentage();
-		if (resiliencePercent < 33)
-			return 0;
-		if (resiliencePercent <= 59)
-			return 1;
-		if (resiliencePercent <= 99)
-			return 2;
-		return 3;
 	}
 
 	//------------------------------------------------------------------------------------------------
