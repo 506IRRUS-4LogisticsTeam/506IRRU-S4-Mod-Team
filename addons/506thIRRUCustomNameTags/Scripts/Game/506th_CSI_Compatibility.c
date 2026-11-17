@@ -5,7 +5,7 @@ modded class CSI_UIHelper
 {
 	//------------------------------------------------------------------------------------------------
 	//! Get players name with custom name support, then add rank if enabled
-	override static string GetPlayersName(int playerID)
+	override static string GetPlayersName(PlayerId playerID)
 	{
 		string name;
 
