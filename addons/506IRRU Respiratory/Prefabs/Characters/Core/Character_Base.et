@@ -1,3 +1,21 @@
 SCR_ChimeraCharacter {
  ID "520EC961A090B1EE"
+ components {
+  IRRU_PneumothoraxComponent "{68CA4C6FF60BFE17}" {
+  }
+  ActionsManagerComponent "{520EA1D2F659CE02}" {
+   additionalActions {
+    IRRU_ChestSealUserAction "{68CC32692D3BF942}" {
+     ParentContextList {
+      "Chest"
+     }
+     UIInfo SCR_ActionUIInfo "{68CC32692013FEA6}" {
+      Name "Apply Chest Seal"
+     }
+     m_eHitZoneGroup UPPERTORSO
+     m_eConsumableType IRRU_CHEST_SEAL
+    }
+   }
+  }
+ }
 }
