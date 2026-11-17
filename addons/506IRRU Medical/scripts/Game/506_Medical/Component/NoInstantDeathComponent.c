@@ -9,6 +9,8 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	protected const int OPS_LOG_INTERVAL_TICKS = 30;
 
 	protected int m_iNID_OpsLogTicks = 0;
+	//! World time of the previous bleedout tick, server only
+	protected float m_fNID_LastTimerTickMS;
 
 	protected bool m_bNID_Initialized = false;
 	[RplProp()]
@@ -191,6 +193,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		if (Replication.IsServer())
 		{
 			Replication.BumpMe();
+			m_fNID_LastTimerTickMS = owner.GetWorld().GetWorldTime();
 			GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 			GetGame().GetCallqueue().CallLater(UpdateUnconsciousTimer, CHECK_INTERVAL * 1000, false);
 		}
@@ -447,10 +450,17 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 		}
 
+		// Count real elapsed time, not ticks: the call queue fires late under server load
+		float nowMS = owner.GetWorld().GetWorldTime();
+		float tickSeconds = (nowMS - m_fNID_LastTimerTickMS) / 1000.0;
+		m_fNID_LastTimerTickMS = nowMS;
+		if (tickSeconds < 0)
+			tickSeconds = 0;
+
 		bool healthStable = m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0;
 		if (!m_bReceivingCPR && !healthStable)
 		{
-			m_fUnconsciousTimer += CHECK_INTERVAL;
+			m_fUnconsciousTimer += tickSeconds;
 			Replication.BumpMe();
 		}
 
