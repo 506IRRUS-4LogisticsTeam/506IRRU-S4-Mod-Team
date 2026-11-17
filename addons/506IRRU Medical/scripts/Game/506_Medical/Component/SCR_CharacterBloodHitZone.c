@@ -35,17 +35,4 @@ modded class SCR_CharacterBloodHitZone : SCR_RegeneratingHitZone
 
 		return bleedingRate;
 	}
-
-	//------------------------------------------------------------------------------------------------
-	override void ACE_Medical_UpdateTotalBleedingAmount()
-	{
-		super.ACE_Medical_UpdateTotalBleedingAmount();
-
-		if (super.GetTotalBleedingAmount() > 0)
-			return;
-
-		SCR_CharacterDamageManagerComponent damageManager = SCR_CharacterDamageManagerComponent.Cast(GetHitZoneContainer());
-		if (damageManager)
-			damageManager.RemoveAllBleedingParticles();
-	}
 }

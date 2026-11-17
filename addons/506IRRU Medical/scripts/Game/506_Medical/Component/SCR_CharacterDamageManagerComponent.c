@@ -184,13 +184,6 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	}
 
 	//------------------------------------------------------------------------------------------------
-	override void FullHeal(bool ignoreHealingDOT = true)
-	{
-		super.FullHeal(ignoreHealingDOT);
-		RemoveAllBleedingParticles();
-	}
-
-	//------------------------------------------------------------------------------------------------
 	override void ArmorHitEventDamage(EDamageType type, float damage, IEntity instigator)
 	{
 		super.ArmorHitEventDamage(type, damage, instigator);
