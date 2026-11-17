@@ -75,6 +75,15 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 	//------------------------------------------------------------------------------------------------
 	protected void OnLifeStateChanged(ECharacterLifeState previousLifeState, ECharacterLifeState newLifeState)
 	{
+		// Death is final in the engine: nothing can bring the character back, so only stop the timer
+		if (newLifeState == ECharacterLifeState.DEAD)
+		{
+			if (Replication.IsServer() || !Replication.IsRunning())
+				StopBleedoutTimer("died");
+
+			return;
+		}
+
 		if (newLifeState != ECharacterLifeState.INCAPACITATED || previousLifeState != ECharacterLifeState.ALIVE)
 			return;
 
@@ -403,17 +412,11 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			return;
 		}
 
+		// Safety net for a death the life-state callback did not report
 		if (m_Ctrl && m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD)
 		{
-			// Something killed the character past the Kill() backstop; pin them back
-			// to unconscious and give up if that does not take.
-			m_CachedDmgManager.ForceUnconsciousness();
-			if (m_Ctrl.GetLifeState() == ECharacterLifeState.DEAD)
-			{
-				Print(string.Format("[NoInstantDeath] %1 reached DEAD state before timer expiry", GetNameStr(owner)), LogLevel.WARNING);
-				StopBleedoutTimer("forced death");
-				return;
-			}
+			StopBleedoutTimer("died");
+			return;
 		}
 
 		bool healthStable = m_CachedDmgManager.IRRU_GetHealthPercentage() > 33.0 && m_CachedDmgManager.IRRU_GetBloodPercentage() > 33.0;
@@ -458,13 +461,14 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 
 		GetGame().GetCallqueue().Remove(UpdateUnconsciousTimer);
 
-		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
-		if (hz)
-			hz.SetHealth(0);
-
+		// Clear the state first: the kill below reports DEAD through OnLifeStateChanged
 		m_bIsUnconscious = false;
 		m_fUnconsciousTimer = 0.0;
 		Replication.BumpMe();
+
+		HitZone hz = m_CachedDmgManager.GetDefaultHitZone();
+		if (hz)
+			hz.SetHealth(0);
 	}
 
 	//------------------------------------------------------------------------------------------------
