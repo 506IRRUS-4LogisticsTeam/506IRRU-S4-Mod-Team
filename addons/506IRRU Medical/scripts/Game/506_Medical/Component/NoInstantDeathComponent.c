@@ -177,7 +177,7 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 		m_fUnconsciousTimer = 0.0;
 		m_iNID_OpsLogTicks = 0;
 		m_LastKnownInstigator = m_CachedDmgManager.GetInstigator();
-		m_CachedDmgManager.ForceUnconsciousness();
+		IRRU_PinResilienceToZero();
 
 		if (Replication.IsServer() || !Replication.IsRunning())
 		{
@@ -200,6 +200,34 @@ class IRRU_NoInstantDeathComponent : ScriptComponent
 			Print(string.Format("[NoInstantDeath] %1: unconscious, %2s bleedout - Health: %3%%, Blood: %4%%, Resilience: %5%%",
 				GetNameStr(owner), IRRU_NoInstantDeathSettings.GetBleedoutTime(), m_CachedDmgManager.IRRU_GetHealthPercentage(), m_CachedDmgManager.IRRU_GetBloodPercentage(), m_CachedDmgManager.IRRU_GetResiliencePercentage()));
 		}
+	}
+
+	//------------------------------------------------------------------------------------------------
+	//! Server only. Sets Resilience to exactly 0 so the casualty stays down until treated.
+	//! A direct set rather than ForceUnconsciousness(): that one goes through the damage pipeline,
+	//! where ACE's resilience damage scale shrinks it, and it does nothing at all when
+	//! unconsciousness is not permitted.
+	protected void IRRU_PinResilienceToZero()
+	{
+		if (Replication.IsRunning() && !Replication.IsServer())
+			return;
+
+		SCR_CharacterResilienceHitZone resilienceHZ = m_CachedDmgManager.GetResilienceHitZone();
+		if (!resilienceHZ)
+			return;
+
+		resilienceHZ.SetHealthScaled(0);
+
+		// A set-health call does not run the hit zone's OnDamage, which is what restarts passive
+		// regeneration after a hit. Restart it the same way here, with its normal delay.
+		array<ref SCR_PersistentDamageEffect> effects = {};
+		m_CachedDmgManager.FindAllDamageEffectsOfTypeOnHitZone(SCR_PassiveHitZoneRegenDamageEffect, resilienceHZ, effects);
+		foreach (SCR_PersistentDamageEffect effect : effects)
+		{
+			effect.Terminate();
+		}
+
+		m_CachedDmgManager.RegenVirtualHitZone(resilienceHZ);
 	}
 
 	//------------------------------------------------------------------------------------------------
