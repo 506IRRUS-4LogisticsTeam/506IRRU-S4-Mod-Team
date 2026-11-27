@@ -192,10 +192,13 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 	}
 
 	//------------------------------------------------------------------------------------------------
-	//! Vanilla distribution with an iteration cap so a zone that refuses healing cannot spin forever
-	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones)
+	//! Vanilla distribution with an iteration cap so a zone that refuses healing cannot spin forever.
+	//! Mirrors 1.9.0.42: each heal goes through the hit zone's damage manager, using the context
+	//! template that HealHitZones always supplies.
+	override protected float HealHitZonesInParallel(float healthToDistribute, float maxHealThresholdScaled, array<HitZone> targetHitZones, SCR_DamageContext contextTemplate = null)
 	{
 		array<HitZone> damagedHitZones = {};
+		DamageManagerComponent dmgMgr;
 		int maxIterations = 100;
 		int iteration = 0;
 
@@ -222,16 +225,22 @@ modded class SCR_CharacterDamageManagerComponent : SCR_CharacterDamageManagerCom
 				if (healthToAdd <= 0.01)
 					continue;
 
+				contextTemplate.struckHitZone = hitZone;
 				if (healthPerZone > healthToAdd)
 				{
-					hitZone.HandleDamage(-healthToAdd, EDamageType.HEALING, null);
+					contextTemplate.damageValue = -healthToAdd;
 					healthToDistribute -= healthToAdd;
 				}
 				else
 				{
-					hitZone.HandleDamage(-healthPerZone, EDamageType.HEALING, null);
+					contextTemplate.damageValue = -healthPerZone;
 					healthToDistribute -= healthPerZone;
 				}
+
+				// The hit zone's own manager, so a zone on a child entity is healed too
+				dmgMgr = DamageManagerComponent.Cast(hitZone.GetHitZoneContainer());
+				if (dmgMgr)
+					dmgMgr.HandleDamage(contextTemplate);
 			}
 
 			damagedHitZones.Clear();
