@@ -216,8 +216,9 @@ class IRRU_CPRUserAction : ScriptedUserAction
 		if (!m_bCPRActive || !m_pActiveHelper)
 			return;
 
-		ApplyHealingToPatient();
+		// Tear down first: if the heal ever throws, CPR must not be left running
 		StopCPR(m_pActiveHelper.GetPerformer());
+		ApplyHealingToPatient();
 	}
 
 	//------------------------------------------------------------------------------------------------
@@ -249,7 +250,20 @@ class IRRU_CPRUserAction : ScriptedUserAction
 			return;
 		}
 
-		m_PatientDamageManager.HealHitZones(Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING), false, 1.0);
+		// 1.9.0.42 HealHitZones throws when it builds its own context (missing `new`), so pass one.
+		// The patient's own instigator, as ACE Second Chance does, keeps kill credit unchanged.
+		vector hitPosDirNorm[3];
+		SCR_DamageContext healContext = new SCR_DamageContext(
+			EDamageType.HEALING,
+			0,
+			hitPosDirNorm,
+			m_PatientDamageManager.GetOwner(),
+			null,
+			m_PatientDamageManager.GetInstigator(),
+			null, 0, 0
+		);
+
+		m_PatientDamageManager.HealHitZones(Math.RandomFloatInclusive(CPR_MIN_HEALING, CPR_MAX_HEALING), false, 1.0, null, healContext);
 	}
 
 	//------------------------------------------------------------------------------------------------
